@@ -44,7 +44,7 @@ MAX_TOUR_CALLS = 450        # 하루 호출 한도(개발계정 1,000회)를 넘
 RUN_BUDGET = 15 * 60        # 이 시간이 지나면 찾기를 멈추고 지금까지 결과를 저장 (나머지는 다음 실행 때)
 MAX_OSM_LOOKUPS = 400       # OpenStreetMap은 1초에 1번 규칙 → 한 번 실행에 약 8분 이내
 RETRY_MISS_DAYS = 14
-UA = "gwangju-eodi/1.0 (https://github.com/chogwangwoon/gwangju-eodi)"
+UA = "gwangju-eodi/1.0 (https://github.com/jngj-eodigabolcca/jngj-eodigabolcca.github.io)"
 
 tour_calls = 0
 osm_calls = 0

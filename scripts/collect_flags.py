@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "data" / "flags.json"
-REPO = os.environ.get("GITHUB_REPOSITORY", "chogwangwoon/gwangju-eodi")
+REPO = os.environ.get("GITHUB_REPOSITORY", "jngj-eodigabolcca/jngj-eodigabolcca.github.io")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
 
