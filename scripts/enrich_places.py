@@ -92,11 +92,25 @@ def tour_find(x: dict, kind: str):
     if len(core) < 2:
         return None
     district = x.get("district") or u.district_from_addr(x.get("address", ""))
-    params = {"keyword": re.split(r"[(\[]", name)[0].strip(), "numOfRows": "20", "pageNo": "1", "arrange": "A"}
-    if kind == "food":
-        params["contentTypeId"] = "39"
+    base = re.split(r"[(\[]", name)[0].strip()
+    # 관광공사 검색은 띄어쓰기·기호까지 맞아야 걸려서 여러 표기로 찾아본다
+    # 예: '광주-기아 챔피언스필드' → '광주기아 챔피언스필드', '챔피언스필드' / '광주 월드컵경기장' → '월드컵경기장'
+    keywords = []
+    for k in (base, base.replace("-", " "), base.replace("-", ""), re.sub(r"^(광주|전남)\s*", "", base),
+              max(re.split(r"[\s\-·]+", base), key=len)):
+        k = k.strip()
+        if len(k) >= 2 and k not in keywords:
+            keywords.append(k)
+    items = []
+    for kw in keywords[:4]:
+        params = {"keyword": kw, "numOfRows": "20", "pageNo": "1", "arrange": "A"}
+        if kind == "food":
+            params["contentTypeId"] = "39"
+        items = tour_get("searchKeyword2", **params)
+        if any(u.in_region(it.get("addr1") or "") for it in items):
+            break
     best = None
-    for it in tour_get("searchKeyword2", **params):
+    for it in items:
         addr = it.get("addr1") or ""
         if not u.in_region(addr):
             continue
@@ -279,7 +293,21 @@ def main():
             if not stopped and time.time() > deadline:
                 stopped = True
                 print("  시간 예산 도달 → 지금까지 찾은 것만 저장하고, 나머지는 다음 실행 때", flush=True)
-            if needs_lookup(x, kind) and (hit is None or stale_miss) and not stopped:
+            retry_img = (hit and not hit.get("miss") and kind == "place" and not x.get("image")
+                         and not hit.get("image") and not hit.get("imgTried"))
+            if retry_img and not stopped:
+                try:
+                    it = tour_find(x, kind) if u.DATA_KEY else None     # 좌표는 이미 있으니 관광공사 사진만
+                    if it and it.get("firstimage"):
+                        hit = {**hit, "image": it["firstimage"].replace("http://", "https://"),
+                               "imageCredit": "한국관광공사", "tourId": str(it.get("contentid") or "")}
+                    hit = {**hit, "imgTried": u.TODAY_ISO}
+                    cache[key] = hit
+                except RuntimeError:
+                    stopped = True                      # 호출 상한
+                except Exception:
+                    pass                                # 일시적 오류 → 다음 실행 때
+            elif needs_lookup(x, kind) and (hit is None or stale_miss) and not stopped:
                 looked += 1
                 if looked % 25 == 0:
                     print(f"  장소 정보 찾는 중 {looked}곳 (관광공사 {tour_calls}회 · 지도 {osm_calls}회)", flush=True)
