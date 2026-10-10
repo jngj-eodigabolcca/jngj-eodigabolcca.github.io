@@ -2058,7 +2058,7 @@ function sportsScheduleLine(x){
 
 /* ▼ 앱을 인터넷에 올린 주소 (GitHub Pages). 넣어 두면 PC용 파일도 열 때마다 최신 일정을 받아와요.
    예: const DATA_URL = "https://아이디.github.io/gwangju-eodi";   비워 두면 파일 안에 든 데이터만 써요. */
-const DATA_URL = "https://chogwangwoon.github.io/gwangju-eodi";
+const DATA_URL = "https://jngj-eodigabolcca.github.io";
 /* ▼ '틀린 정보 알려주기'를 받을 주소. 구글 설문지 링크나 mailto:이메일 을 넣으면 그쪽으로 받아요.
    비워 두면 GitHub 저장소의 이슈(Issues) 작성 화면으로 연결돼요. */
 const REPORT_URL = "";
@@ -5109,7 +5109,7 @@ window.reportItem = (kind, id) => {
   let url;
   if (/^mailto:/i.test(REPORT_URL)) url = `${REPORT_URL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   else if (REPORT_URL) url = REPORT_URL;
-  else url = `https://github.com/chogwangwoon/gwangju-eodi/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  else url = `https://github.com/jngj-eodigabolcca/jngj-eodigabolcca.github.io/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   window.open(url, "_blank", "noopener");
 };
 /* 공유받은 링크(#e=… #v=…)로 들어오면 그 항목을 바로 연다 */
@@ -5357,6 +5357,34 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
     if (nav.contains(e.target)) { show(); return }
     if (document.body.classList.contains("navHidden") && !e.target.closest("a,button,input,select,textarea,label,[onclick],.leaflet-container")) show();
   }, true);
+})();
+</script>
+<script id="visitCount">
+/* 방문자 숫자 세기 (GoatCounter · 쿠키·개인정보 안 받음)
+   아래 GC_NAME 에 GoatCounter 에서 정한 이름만 넣으면 켜진다. 비어 있으면 아무것도 안 함. */
+(function(){
+  const GC_NAME = "jngj-eodigabolcca";
+  if (!GC_NAME || /localhost|127\.0\.0\.1/.test(location.hostname)) return;
+  const s = document.createElement("script");
+  s.async = true; s.src = "https://gc.zgo.at/count.js";
+  s.dataset.goatcounter = `https://${GC_NAME}.goatcounter.com/count`;
+  s.dataset.goatcounterSettings = JSON.stringify({ allow_frag: false });
+  document.head.appendChild(s);
+  const sent = {};
+  const ev = (path, title) => { try { if (sent[path] && Date.now() - sent[path] < 3000) return; sent[path] = Date.now(); window.goatcounter?.count?.({ path, title: title || path, event: true }) } catch (e) {} };
+  const wrap = (name, fn) => { const o = window[name]; if (typeof o !== "function") return; window[name] = function (...a) { try { fn(...a) } catch (e) {} return o.apply(this, a) } };
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  const hook = () => {   // 다른 스크립트가 함수를 다 만든 뒤에 연결
+    wrap("showTab", t => ev("탭-" + t));
+    wrap("setPlace", (k, v) => { if (k === "group") ev("가볼곳-" + v) });
+    wrap("detail", () => ev("상세보기-일정"));
+    wrap("shareItem", k => ev("친구에게-공유-" + k));
+    wrap("addToCalendar", () => ev("내캘린더-추가"));
+    wrap("reportItem", () => ev("정보수정-제보"));
+    wrap("setRegion", r => ev("권역-" + r));
+  };
+  const start = () => setTimeout(() => { hook(); ev(standalone ? "열기-설치앱" : "열기-인터넷창"); if (/^#(e|v)=/.test(location.hash)) ev("공유링크로-들어옴") }, 1500);
+  if (document.readyState === "complete") start(); else addEventListener("load", start);
 })();
 </script>
 </body></html>
