@@ -5175,7 +5175,32 @@ setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load()
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
 let NAV_READY = false, LEAVING = false;
-function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st }, "") }
+function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
+/* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
+   앱으로 바로 시작했으면(홈 화면 아이콘 등) 앱의 맨 처음 기록까지 되돌려 두어
+   휴대폰 뒤로가기 한 번으로 바로 닫히게 한다. (자바스크립트로는 앱 창을 강제로 닫을 수 없음) */
+function leaveApp() {
+  LEAVING = true;
+  try { window.close() } catch (e) { }
+  setTimeout(() => {
+    if (document.visibilityState !== "visible") return;
+    const idx = (history.state && history.state.idx) || 0;
+    const before = history.length - 1 - idx;            // 앱보다 앞에 쌓인 페이지 수
+    if (before > 0) { history.go(-(idx + 1)); setTimeout(stayAtRoot, 900) }
+    else stayAtRoot();
+  }, 150);
+}
+function stayAtRoot() {
+  if (document.visibilityState !== "visible") return;
+  const idx = (history.state && history.state.idx) || 0;
+  if (idx > 0) history.go(-idx);
+  setTimeout(() => {
+    LEAVING = false;
+    if (CUR_TAB !== "events") showTab("events", true);
+    toast("한 번 더 뒤로가기를 누르면 앱이 닫혀요");
+  }, 400);
+}
+window.addEventListener("pageshow", e => { if (e.persisted) LEAVING = false });
 function exitDialog() {
   let d = document.getElementById("exitAsk");
   if (!d) {
@@ -5183,14 +5208,14 @@ function exitDialog() {
     d.innerHTML = `<div class="exitBox" role="dialog" aria-modal="true" aria-labelledby="exitT"><b id="exitT">앱을 나갈까요?</b><p>찜한 곳은 이 기기에 그대로 남아 있어요.</p><div><button id="exitStay" class="stay">계속 둘러보기</button><button id="exitGo">나가기</button></div></div>`;
     document.body.appendChild(d);
     d.querySelector("#exitStay").onclick = () => d.classList.remove("show");
-    d.querySelector("#exitGo").onclick = () => { LEAVING = true; d.classList.remove("show"); history.go(-2); setTimeout(() => { LEAVING = false; if (document.visibilityState === "visible") { /* 더 돌아갈 곳이 없으면 그대로 머문다 */ } }, 600) };
+    d.querySelector("#exitGo").onclick = () => { d.classList.remove("show"); leaveApp() };
     d.onclick = e => { if (e.target === d) d.classList.remove("show") };
   }
   d.classList.add("show"); setTimeout(() => d.querySelector("#exitStay").focus(), 50);
 }
 function initNav() {
-  history.replaceState({ glm: 1, root: true }, "");
-  history.pushState({ glm: 1, guard: true }, "");
+  history.replaceState({ glm: 1, root: true, idx: 0 }, "");
+  history.pushState({ glm: 1, guard: true, idx: 1 }, "");
   NAV_READY = true;
   window.addEventListener("popstate", e => {
     if (LEAVING) return;
@@ -5198,12 +5223,12 @@ function initNav() {
     // 1) 열린 상세창이 있으면 닫기
     if ($("#modal").classList.contains("show")) { closeModal(true); return }
     // 2) 검색 결과를 보고 있으면 닫기
-    if (!$("#searchView").classList.contains("hidden")) { clearSearch(); if (st.root) history.pushState({ glm: 1, guard: true }, ""); return }
+    if (!$("#searchView").classList.contains("hidden")) { clearSearch(); if (st.root) history.pushState({ glm: 1, guard: true, idx: 1 }, ""); return }
     // 3) 다른 탭에 있으면 이전 탭으로
     if (st.tab && st.tab !== CUR_TAB) { showTab(st.tab, true); return }
     if (!st.root && CUR_TAB !== "events") { showTab("events", true); return }
     // 4) 첫 화면에서 뒤로가기 → 나갈지 물어보기 (가드를 다시 쌓아 앱을 유지)
-    if (st.root) { history.pushState({ glm: 1, guard: true }, ""); if (CUR_TAB !== "events") { showTab("events", true); return } exitDialog() }
+    if (st.root) { history.pushState({ glm: 1, guard: true, idx: 1 }, ""); if (CUR_TAB !== "events") { showTab("events", true); return } exitDialog() }
   });
 }
 initNav();
@@ -5494,7 +5519,7 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
 .rightQuickPanel button:focus-visible,.rightQuickPanel button:active{background:#e6f1ed}
 .rightQuickToggle{border:0;border-radius:11px 0 0 11px;background:rgba(19,124,116,.94);color:#fff;min-height:74px;width:24px;padding:8px 2px;font-size:10.5px;letter-spacing:.04em;font-weight:800;writing-mode:vertical-rl;cursor:pointer;touch-action:manipulation}
 .rightQuick.isCollapsed .rightQuickPanel{display:none}
-body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body[data-tab="map"] .rightQuick{display:none}
+body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:has(.exitAsk.show) .rightQuick,body[data-tab="map"] .rightQuick{display:none}
 .footerManual{max-width:440px;margin:0 auto 24px}.footerManual .manualLaunch{display:flex;width:100%;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
 @media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 36px))}}
 </style>
