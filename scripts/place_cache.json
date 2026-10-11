@@ -64,7 +64,8 @@
     "lng": 126.920808,
     "geoSrc": "OpenStreetMap(주소)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|조선대학교 미술관|광주 동구 필문대로 309 조선대학교 미술대학 3층": {
     "lat": 35.141844,
@@ -80,7 +81,8 @@
     "lng": 126.930349,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|무등현대미술관|광주 동구 증심사길 9": {
     "lat": 35.134122,
@@ -182,7 +184,8 @@
     "lng": 126.895503,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|고싸움놀이테마파크|광주 남구 고싸움로 2": {
     "lat": 35.069503,
@@ -198,7 +201,8 @@
     "lng": 126.865143,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광주신세계갤러리|광주 서구 무진대로 932 광주신세계 1층": {
     "miss": "2026-10-09"
@@ -214,7 +218,8 @@
     "lng": 126.92638,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|남도향토음식박물관|광주 북구 설죽로 477": {
     "lat": 35.201751,
@@ -242,14 +247,16 @@
     "lng": 126.917704,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광주여대 유니버시아드체육관|광주 광산구 광주여대길 6": {
     "lat": 35.164587,
     "lng": 126.798508,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|김대중컨벤션센터|광주광역시 서구 상무누리로 30": {
     "lat": 35.146675,
@@ -265,7 +272,8 @@
     "lng": 126.851467,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광주 월드컵경기장|광주광역시 서구 금화로 240": {
     "lat": 35.135537,
@@ -285,7 +293,8 @@
     "lng": 126.888266,
     "geoSrc": "OpenStreetMap(주소)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|원효사 → 늦재 → 중봉 → 서석대|광주 북구 무등로 1514-35 (원효사 방면)": {
     "miss": "2026-10-09"
@@ -409,21 +418,24 @@
     "lng": 126.797193,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|무등시장|광주 남구 군분로 일원": {
     "lat": 35.1376,
     "lng": 126.893631,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|동명동 카페거리|광주 동구 동명동 일대": {
     "lat": 35.149618,
     "lng": 126.925106,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|청춘발산마을|광주 서구 양3동 발산마을 일대": {
     "lat": 35.159907,
@@ -505,35 +517,40 @@
     "lng": 126.856336,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광주김치타운|광주 남구 김치로 60": {
     "lat": 35.108409,
     "lng": 126.86669,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|풍암호수공원|광주 서구 풍암동 풍암호수공원": {
     "lat": 35.126057,
     "lng": 126.868957,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|승촌보 · 영산강 자전거길|광주 남구 승촌동 승촌보": {
     "lat": 35.065316,
     "lng": 126.76636,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광주천 산책로|광주 남구·동구 광주천변": {
     "lat": 35.168243,
     "lng": 126.864691,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|죽녹원|전남 담양군 죽녹원로 119": {
     "lat": 35.327758,
@@ -732,7 +749,8 @@
     "geoSrc": "한국관광공사",
     "tourId": "3505810",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|여수수산시장|전남 여수시 여객선터미널길 24": {
     "lat": 34.738185,
@@ -878,7 +896,8 @@
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|나주목사고을시장|전남 나주시 청동길 14": {
     "lat": 35.036249,
@@ -901,28 +920,32 @@
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|나주 문평5일시장|전남 나주시 문평면 안곡리 64-1": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|나주 성북5일시장|전남 나주시 성북동 100-1": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|나주 세지5일시장|전남 나주시 세지면 오봉리 246-3": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|나주 영산포풍물시장|전남 나주시 이창동 765": {
     "lat": 35.013927,
@@ -954,21 +977,24 @@
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|장성 사창시장|전남 장성군 삼계면 사창리 482-44": {
     "lat": 35.30012,
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|장성 황룡5일시장|전남 장성군 황룡면 월평리 151-1": {
     "lat": 35.30012,
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|화순읍재래시장|전남 화순군 화순읍 삼천리 621": {
     "miss": "2026-10-09"
@@ -978,28 +1004,32 @@
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|화순 남면재래시장|전남 화순군 남면 사평리 1046-90": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|화순 동복재래시장|전남 화순군 동복면 천변리 70": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|화순 춘양재래시장|전남 화순군 춘양면 석정리 573-10": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|강진읍5일시장|전남 강진군 강진읍 동성리 187-5": {
     "miss": "2026-10-09"
@@ -1028,35 +1058,40 @@
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|고흥 대서시장|전남 고흥군 대서면 화산리 1331-1": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|고흥 도화시장|전남 고흥군 도화면 당오리 311-1": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|고흥 동강시장|전남 고흥군 동강면 유둔리 7-1": {
     "lat": 34.780595,
     "lng": 127.334705,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|고흥 봉래시장|전남 고흥군 봉래면 신금리 878-141": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|곡성기차마을전통시장|전남 곡성군 곡성읍 읍내리 208": {
     "lat": 35.279808,
@@ -1072,28 +1107,32 @@
     "lng": 127.304458,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광양5일시장|전남 광양시 광양읍 목성리": {
     "lat": 34.971673,
     "lng": 127.590484,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광양 옥곡정기시장|전남 광양시 옥곡면 신금리 1337-1": {
     "lat": 34.956145,
     "lng": 127.587824,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|광양 진상정기시장|전남 광양시 진상면 섬거리 299-3": {
     "lat": 34.956145,
     "lng": 127.587824,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-11",
+    "imgTriedV": 2
   },
   "venues|구례5일시장|전남 구례군 구례읍 봉동리 189-5": {
     "lat": 35.210103,
