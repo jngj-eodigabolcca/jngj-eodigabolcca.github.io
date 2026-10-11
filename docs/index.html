@@ -1752,7 +1752,7 @@ button{min-height:var(--tap)}
   <div class="aiLeft">
     <div class="aiHead"><span>✨</span><div><b id="aiName">오늘어디로 길잡이</b><small id="aiSub">자동 수집된 최신 광주 정보에서 지금 가능한 선택지만 추려드려요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-    <div class="quick" id="quick"><button>비 오는 날 실내</button><button>산책하기 좋은 곳</button><button>축제 뭐 있어?</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>강아지랑 카페</button><button>양림동 데이트</button><button>아이와 무료로</button><button>시장 구경하고 먹방</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button></div>
+    <div class="quick" id="quick"><button>비 오는 날 실내</button><button>산책하기 좋은 곳</button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
 </div>
@@ -2934,7 +2934,9 @@ function renderToday() {
   // 첫 화면 순서: ① 오늘·이번 주말 (전시·공연·축제·장날) → ② 토박이 길잡이 → ③ 날씨·옷차림 → ④ 오늘 하루 플랜
   const ai = $("#aiBox") && $("#aiBox").closest("section"), wt = $("#wxTips"), cs = $("#cultureSpot"), up = $("#updated");
   // 순서를 한 곳에서만 제어: 오늘 볼거리 → 문화가 있는 날 → AI 길잡이 → 날씨 → 하루 플랜
-  [ns, cs, ai, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
+  const mh = $("#moreHome");   // '추천 더 보기' 상자가 있으면 하루 플랜은 그 안으로
+  if (mh) { [ns, cs, ai, mh, wt].forEach(el => { if (el) main.insertBefore(el, up) }); if (td) mh.querySelector(".moreHomeBody").appendChild(td) }
+  else [ns, cs, ai, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
   if (ns) ns.classList.add("first"); [cs, ai, td, wt].forEach(el => el && el.classList.remove("first"));
   renderCultureSpot();
   const w = WEATHER ? WMO(WEATHER.code) : null, rainy = WEATHER ? (w[2] || WEATHER.pp >= 60) : false, hot = WEATHER && WEATHER.max >= 31, cold = WEATHER && WEATHER.max <= 3;
@@ -5392,6 +5394,61 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
   };
   const start = () => setTimeout(() => { hook(); ev(standalone ? "열기-설치앱" : "열기-인터넷창"); if (/^#(e|v)=/.test(location.hash)) ev("공유링크로-들어옴") }, 1500);
   if (document.readyState === "complete") start(); else addEventListener("load", start);
+})();
+</script>
+<style id="homeDiet">
+/* 첫 화면 다이어트: 꼭 필요한 것만 보이고 나머지는 '더 보기' 안에 */
+#moreHome{margin:18px 0 22px}
+#moreHome>.moreHomeBtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 16px;border:1.5px dashed rgba(29,75,57,.28);border-radius:18px;background:rgba(255,255,255,.7);font-size:15px;font-weight:800;color:var(--green-d,#134e4a)}
+#moreHome>.moreHomeBtn small{font-size:12.5px;font-weight:600;color:var(--muted)}
+#moreHome>.moreHomeBody{display:none;margin-top:14px}
+#moreHome.open>.moreHomeBody{display:block}
+#quick .qMore{display:none}
+#quick.qOpen .qMore{display:inline-flex}
+#quick .qToggle{grid-column:1/-1;justify-content:center;background:transparent!important;border-style:dashed!important;font-weight:800}
+.visitLine{margin-top:6px;font-size:12px;opacity:.75}
+html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .creamingState small{color:rgba(255,255,255,.78)}
+</style>
+<script id="homeDietScript">
+(function(){
+  const LIMIT = 9;
+  function collapseQuick() {
+    const q = document.getElementById("quick"); if (!q) return;
+    q.querySelector(".qToggle")?.remove(); q.classList.remove("qOpen");
+    const bs = [...q.querySelectorAll("button")];
+    bs.forEach((b, i) => b.classList.toggle("qMore", i >= LIMIT));
+    const extra = bs.length - LIMIT; if (extra <= 0) return;
+    const t = document.createElement("button"); t.type = "button"; t.className = "qToggle";
+    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · KTX 코스 포함)`.replace(REGION !== "gj" ? " · KTX 코스 포함" : "", "");
+    t.textContent = label();
+    t.onclick = e => { e.stopPropagation(); q.classList.toggle("qOpen"); t.textContent = label() };
+    q.appendChild(t);
+  }
+  if (typeof renderQuick === "function") { const o = renderQuick; window.renderQuick = function (...a) { const r = o.apply(this, a); collapseQuick(); return r } }
+  collapseQuick();
+
+  // 자주 안 쓰는 첫 화면 칸들을 '더 보기' 안으로
+  const MOVE = ["nowStart", "themeStrip", "dailyBrief", "today", "foodQuick"];
+  const anchor = document.getElementById("cultureSpot");
+  if (anchor) {
+    const box = document.createElement("section"); box.id = "moreHome";
+    box.innerHTML = `<button type="button" class="moreHomeBtn" aria-expanded="false">✨ 추천 더 보기 <small>지금 출발·테마·브리핑·하루 플랜</small> <span>▾</span></button><div class="moreHomeBody"></div>`;
+    const aiSec = document.getElementById("aiBox")?.closest("section");
+    (aiSec || anchor).after(box);
+    const body = box.querySelector(".moreHomeBody");
+    MOVE.forEach(id => { const el = document.getElementById(id); if (el) body.appendChild(el) });
+    const btn = box.querySelector(".moreHomeBtn");
+    btn.onclick = () => { const o = box.classList.toggle("open"); btn.setAttribute("aria-expanded", o); btn.querySelector("span").textContent = o ? "▴" : "▾" };
+  }
+
+  // 누적 방문자 수 (GoatCounter 설정에서 '방문자 수 공개'를 켰을 때만 보임)
+  const foot = document.querySelector("footer.foot2 .wrap") || document.querySelector("footer");
+  if (foot && /github\.io$/.test(location.hostname)) {
+    fetch("https://jngj-eodigabolcca.goatcounter.com/counter/TOTAL.json").then(r => r.ok ? r.json() : null).then(j => {
+      if (!j || !j.count) return;
+      const d = document.createElement("div"); d.className = "visitLine"; d.textContent = `👣 지금까지 ${j.count}번 다녀갔어요`; foot.appendChild(d);
+    }).catch(() => {});
+  }
 })();
 </script>
 </body></html>
