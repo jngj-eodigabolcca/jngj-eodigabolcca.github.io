@@ -674,7 +674,10 @@
     "inout": "실내",
     "desc": "50여 년 된 한옥을 고쳐 2017년에 연 갤러리예요. 아늑한 한옥 안에서 지역 작가들의 전시를 만날 수 있어요.",
     "verified": "2026-10-05",
-    "infoSource": "https://www.ktriptips.com/kor/culture/2953091"
+    "infoSource": "https://www.ktriptips.com/kor/culture/2953091",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/81/2953081_image2_1.png",
+    "imageCredit": "한국관광공사",
+    "tourId": "2953091"
   },
   {
     "id": "leeart-center",
@@ -741,7 +744,10 @@
     "inout": "실내",
     "desc": "대인시장 안에 있는 아주 작은 갤러리로, 매달 전시가 바뀌어요. 지역 아마추어 작가들의 데뷔 무대로 사랑받아요.",
     "verified": "2026-10-05",
-    "infoSource": "https://www.ktriptips.com/kor/culture/3406745"
+    "infoSource": "https://www.ktriptips.com/kor/culture/3406745",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/20/3405920_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "3406745"
   },
   {
     "id": "kukyoon-art-museum",
@@ -1356,8 +1362,7 @@
     "kids": "",
     "url": "https://www.gwangjufc.com/match/match_schedule.php",
     "inout": "야외",
-    "image": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Worldcup%20Stadium%20%28%EC%9B%94%EB%93%9C%EC%BB%B5%EA%B2%BD%EA%B8%B0%EC%9E%A5%29%20-%20panoramio.jpg",
-    "imageCredit": "Wikimedia Commons · Worldcup Stadium (월드컵경기장) - panoramio.jpg",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/05/1587805_image2_1.jpg",
     "desc": "광주FC 홈경기와 각종 대형 행사가 열리는 대형 경기장입니다. 인근 상무·풍암지구와 묶어 스포츠 데이 코스로 이용하기 좋아요.",
     "area": "풍암·염주권",
     "access": "풍암동·염주체육시설권 · 경기·행사일 교통 혼잡 가능",
@@ -1372,7 +1377,9 @@
     "source": "광주FC 공식 경기일정",
     "lat": 35.135537,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.873915
+    "lng": 126.873915,
+    "imageCredit": "한국관광공사",
+    "tourId": "131721"
   },
   {
     "id": "uchi-zoo",
@@ -3172,7 +3179,7 @@
     ],
     "inout": "야외",
     "note": "관람시간은 방문 전 확인 · 주소는 마을 단위(대략)",
-    "imageCredit": "",
+    "imageCredit": "한국관광공사",
     "id": "jn-pilam-seowon",
     "name": "장성 필암서원",
     "kind": "역사유적",
@@ -3182,7 +3189,9 @@
     "approx": true,
     "lat": 35.310604,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.751673
+    "lng": 126.751673,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/54/4091754_image2_1.jpg",
+    "tourId": "126402"
   },
   {
     "phone": "061-749-3114",
@@ -4537,7 +4546,10 @@
     "approx": true,
     "lat": 35.013927,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.717485
+    "lng": 126.717485,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/36/1972036_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132166"
   },
   {
     "id": "m5-008",
@@ -5111,7 +5123,10 @@
     "approx": true,
     "lat": 34.679365,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.362015
+    "lng": 127.362015,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/15/3518715_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132054"
   },
   {
     "id": "m5-024",
@@ -5838,7 +5853,10 @@
     "approx": true,
     "lat": 34.766769,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.082139
+    "lng": 127.082139,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/46/1972046_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132408"
   },
   {
     "id": "m5-043",
@@ -6240,13 +6258,15 @@
       "main": false
     },
     "approx": true,
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/67/3580367_image2_1.jpg",
     "area": "서교동·연안여객선터미널·이순신광장권",
     "verified": "2026-10-06",
     "infoSource": "https://www.yeosu.go.kr/tour",
     "lat": 34.741826,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.728582
+    "lng": 127.728582,
+    "imageCredit": "한국관광공사",
+    "tourId": "132069"
   },
   {
     "id": "m5-054",
@@ -6760,7 +6780,10 @@
     "approx": true,
     "lat": 34.677301,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.903236
+    "lng": 126.903236,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/12/3535912_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132409"
   },
   {
     "id": "m5-068",
@@ -7520,7 +7543,7 @@
     ],
     "inout": "야외",
     "note": "관람 시간·개방 여부는 방문 전 확인 · 위치는 면 단위(대략)",
-    "imageCredit": "",
+    "imageCredit": "한국관광공사",
     "parkingOk": "",
     "id": "ys-garmel",
     "name": "보성 갈멜정원",
@@ -7531,7 +7554,9 @@
     "approx": true,
     "lat": 34.766769,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.082139
+    "lng": 127.082139,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/14/3018814_image2_1.jpg",
+    "tourId": "3018842"
   },
   {
     "phone": "",
@@ -8127,7 +8152,7 @@
     ],
     "inout": "야외",
     "note": "관람 정보는 방문 전 확인 · 주소는 사찰 안내 기준",
-    "imageCredit": "",
+    "imageCredit": "한국관광공사",
     "id": "ys-hwaeomsa",
     "name": "구례 화엄사",
     "kind": "역사유적",
@@ -8141,7 +8166,9 @@
     "desc": "지리산 대표 사찰. 국보 각황전과 봄 홍매화(화엄매)로 이름나요.",
     "lat": 35.25796,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.498075
+    "lng": 127.498075,
+    "image": "https://tong.visitkorea.or.kr/cms/resource/65/3563965_image2_1.jpg",
+    "tourId": "127923"
   },
   {
     "phone": "",
@@ -8807,10 +8834,12 @@
       "슬로길"
     ],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/60/3494860_image2_1.jpg",
     "lat": 34.183427,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.881143
+    "lng": 126.881143,
+    "imageCredit": "한국관광공사",
+    "tourId": "126970"
   },
   {
     "id": "mp-bogildo",
@@ -8917,10 +8946,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource_photo/59/4060859_image2_1.jpg",
     "lat": 34.328268,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.80757
+    "lng": 126.80757,
+    "imageCredit": "한국관광공사",
+    "tourId": "147317"
   },
   {
     "id": "mp-bulgapsa",
@@ -8947,10 +8978,12 @@
       "상사화"
     ],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4057234_image2_1.jpg",
     "lat": 35.200794,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.549789
+    "lng": 126.549789,
+    "imageCredit": "한국관광공사",
+    "tourId": "126349"
   },
   {
     "id": "mp-beopseongpo",
@@ -9181,10 +9214,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/07/3559007_image2_1.jpg",
     "lat": 34.860466,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.19426
+    "lng": 126.19426,
+    "imageCredit": "한국관광공사",
+    "tourId": "2650824"
   },
   {
     "id": "mp-hongdo",
@@ -9313,10 +9348,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/21/4096821_image2_1.jpg",
     "lat": 34.80782,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.896731
+    "lng": 126.896731,
+    "imageCredit": "한국관광공사",
+    "tourId": "126367"
   },
   {
     "id": "mp-duryun-cable",
@@ -9341,10 +9378,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/76/3564276_image2_1.jpg",
     "lat": 34.496766,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.625309
+    "lng": 126.625309,
+    "imageCredit": "한국관광공사",
+    "tourId": "129448"
   },
   {
     "id": "mp-usuyeong",
@@ -9450,10 +9489,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/93/1606693_image2_1.jpg",
     "lat": 35.266974,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.257673
+    "lng": 127.257673,
+    "imageCredit": "한국관광공사",
+    "tourId": "128083"
   },
   {
     "id": "ys-taeansa",
@@ -9477,10 +9518,12 @@
     "url": "",
     "aliases": [],
     "note": "",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/00/3533500_image2_1.jpg",
     "lat": 35.131623,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 127.386534
+    "lng": 127.386534,
+    "imageCredit": "한국관광공사",
+    "tourId": "126365"
   },
   {
     "id": "mp-mudflat-land",
@@ -9507,13 +9550,15 @@
       "갯벌랜드"
     ],
     "note": "갯벌 체험은 물때 영향을 크게 받으므로 방문 전 물때와 체험 운영 여부 확인이 필요해요.",
-    "image": "",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/91/3535791_image2_1.jpg",
     "area": "해제·무안갯벌권",
     "verified": "2026-10-06",
     "infoSource": "https://www.muan.go.kr/getbol",
     "lat": 34.962798,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.517578
+    "lng": 126.517578,
+    "imageCredit": "한국관광공사",
+    "tourId": "1330332"
   },
   {
     "id": "mp-hampyeong-eco",

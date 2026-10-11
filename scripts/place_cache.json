@@ -63,7 +63,8 @@
     "lat": 35.147274,
     "lng": 126.920808,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|조선대학교 미술관|광주 동구 필문대로 309 조선대학교 미술대학 3층": {
     "lat": 35.141844,
@@ -78,7 +79,8 @@
     "lat": 35.141213,
     "lng": 126.930349,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|무등현대미술관|광주 동구 증심사길 9": {
     "lat": 35.134122,
@@ -102,7 +104,11 @@
     "lat": 35.209747,
     "lng": 126.878131,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/81/2953081_image2_1.png",
+    "imageCredit": "한국관광공사",
+    "tourId": "2953091",
+    "imgTried": "2026-10-11"
   },
   "venues|리아트센터|광주 동구 서석로85번길 20-1": {
     "lat": 35.150649,
@@ -126,7 +132,11 @@
     "lat": 35.153732,
     "lng": 126.917523,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/20/3405920_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "3406745",
+    "imgTried": "2026-10-11"
   },
   "venues|국윤미술관|광주 동구 의재로 82": {
     "miss": "2026-10-09"
@@ -171,7 +181,8 @@
     "lat": 35.10572,
     "lng": 126.895503,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|고싸움놀이테마파크|광주 남구 고싸움로 2": {
     "lat": 35.069503,
@@ -186,7 +197,8 @@
     "lat": 35.140397,
     "lng": 126.865143,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광주신세계갤러리|광주 서구 무진대로 932 광주신세계 1층": {
     "miss": "2026-10-09"
@@ -201,7 +213,8 @@
     "lat": 35.164712,
     "lng": 126.92638,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|남도향토음식박물관|광주 북구 설죽로 477": {
     "lat": 35.201751,
@@ -228,13 +241,15 @@
     "lat": 35.122457,
     "lng": 126.917704,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광주여대 유니버시아드체육관|광주 광산구 광주여대길 6": {
     "lat": 35.164587,
     "lng": 126.798508,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|김대중컨벤션센터|광주광역시 서구 상무누리로 30": {
     "lat": 35.146675,
@@ -249,13 +264,18 @@
     "lat": 35.160105,
     "lng": 126.851467,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광주 월드컵경기장|광주광역시 서구 금화로 240": {
     "lat": 35.135537,
     "lng": 126.873915,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/05/1587805_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "131721",
+    "imgTried": "2026-10-11"
   },
   "venues|광주 패밀리랜드 (우치공원)|광주광역시 북구 우치로 677": {
     "miss": "2026-10-09"
@@ -264,7 +284,8 @@
     "lat": 35.168072,
     "lng": 126.888266,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|원효사 → 늦재 → 중봉 → 서석대|광주 북구 무등로 1514-35 (원효사 방면)": {
     "miss": "2026-10-09"
@@ -387,19 +408,22 @@
     "lat": 35.137122,
     "lng": 126.797193,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|무등시장|광주 남구 군분로 일원": {
     "lat": 35.1376,
     "lng": 126.893631,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|동명동 카페거리|광주 동구 동명동 일대": {
     "lat": 35.149618,
     "lng": 126.925106,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|청춘발산마을|광주 서구 양3동 발산마을 일대": {
     "lat": 35.159907,
@@ -480,31 +504,36 @@
     "lat": 35.153569,
     "lng": 126.856336,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광주김치타운|광주 남구 김치로 60": {
     "lat": 35.108409,
     "lng": 126.86669,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|풍암호수공원|광주 서구 풍암동 풍암호수공원": {
     "lat": 35.126057,
     "lng": 126.868957,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|승촌보 · 영산강 자전거길|광주 남구 승촌동 승촌보": {
     "lat": 35.065316,
     "lng": 126.76636,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광주천 산책로|광주 남구·동구 광주천변": {
     "lat": 35.168243,
     "lng": 126.864691,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|죽녹원|전남 담양군 죽녹원로 119": {
     "lat": 35.327758,
@@ -601,7 +630,11 @@
     "lat": 35.310604,
     "lng": 126.751673,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/54/4091754_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "126402",
+    "imgTried": "2026-10-11"
   },
   "venues|순천만습지|전라남도 순천시 순천만길 513-25": {
     "lat": 34.885802,
@@ -698,7 +731,8 @@
     "lng": 127.484912,
     "geoSrc": "한국관광공사",
     "tourId": "3505810",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|여수수산시장|전남 여수시 여객선터미널길 24": {
     "lat": 34.738185,
@@ -843,7 +877,8 @@
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주목사고을시장|전남 나주시 청동길 14": {
     "lat": 35.036249,
@@ -858,37 +893,46 @@
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주 다시5일시장|전남 나주시 다시면 동곡리 39-1": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주 문평5일시장|전남 나주시 문평면 안곡리 64-1": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주 성북5일시장|전남 나주시 성북동 100-1": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주 세지5일시장|전남 나주시 세지면 오봉리 246-3": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|나주 영산포풍물시장|전남 나주시 이창동 765": {
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/36/1972036_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132166",
+    "imgTried": "2026-10-11"
   },
   "venues|담양시장|전남 담양군 담양읍 담주리 7": {
     "lat": 35.322804,
@@ -909,19 +953,22 @@
     "lat": 35.30012,
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|장성 사창시장|전남 장성군 삼계면 사창리 482-44": {
     "lat": 35.30012,
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|장성 황룡5일시장|전남 장성군 황룡면 월평리 151-1": {
     "lat": 35.30012,
     "lng": 126.779682,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|화순읍재래시장|전남 화순군 화순읍 삼천리 621": {
     "miss": "2026-10-09"
@@ -930,25 +977,29 @@
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|화순 남면재래시장|전남 화순군 남면 사평리 1046-90": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|화순 동복재래시장|전남 화순군 동복면 천변리 70": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|화순 춘양재래시장|전남 화순군 춘양면 석정리 573-10": {
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|강진읍5일시장|전남 강진군 강진읍 동성리 187-5": {
     "miss": "2026-10-09"
@@ -966,37 +1017,46 @@
     "lat": 34.679365,
     "lng": 127.362015,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/15/3518715_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132054",
+    "imgTried": "2026-10-11"
   },
   "venues|고흥 녹동시장|전남 고흥군 도양읍 봉암리 2699-6": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|고흥 대서시장|전남 고흥군 대서면 화산리 1331-1": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|고흥 도화시장|전남 고흥군 도화면 당오리 311-1": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|고흥 동강시장|전남 고흥군 동강면 유둔리 7-1": {
     "lat": 34.780595,
     "lng": 127.334705,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|고흥 봉래시장|전남 고흥군 봉래면 신금리 878-141": {
     "lat": 34.760769,
     "lng": 126.398248,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|곡성기차마을전통시장|전남 곡성군 곡성읍 읍내리 208": {
     "lat": 35.279808,
@@ -1011,25 +1071,29 @@
     "lat": 35.283456,
     "lng": 127.304458,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광양5일시장|전남 광양시 광양읍 목성리": {
     "lat": 34.971673,
     "lng": 127.590484,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광양 옥곡정기시장|전남 광양시 옥곡면 신금리 1337-1": {
     "lat": 34.956145,
     "lng": 127.587824,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|광양 진상정기시장|전남 광양시 진상면 섬거리 299-3": {
     "lat": 34.956145,
     "lng": 127.587824,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|구례5일시장|전남 구례군 구례읍 봉동리 189-5": {
     "lat": 35.210103,
@@ -1077,73 +1141,88 @@
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 복내5일시장|전남 보성군 복내면 복내리 152-14": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 예당5일시장|전남 보성군 득량면 예당리 446": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/46/1972046_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132408",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 조성5일장|전남 보성군 조성면 조성리 513-1": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 회천5일시장|전남 보성군 회천면 회령리 486-1": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 괴목시장|전남 순천시 황전면 괴목리 45-1": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 별량시장|전남 순천시 별량면 봉림리 207-10": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 송광시장|전남 순천시 송광면 이읍리 1403-3": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 승주시장|전남 순천시 승주읍 423-1": {
     "lat": 35.013205,
     "lng": 127.388649,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 주암시장|전남 순천시 주암면 광천리 54-1": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|순천 창촌시장|전남 순천시 주암면 창촌리 245-2": {
     "lat": 35.057852,
     "lng": 127.279656,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|신안 지도시장|전남 신안군 지도읍 읍내리 168-5": {
     "lat": 34.658196,
     "lng": 127.339182,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|여수 덕양시장|전남 여수시 소라면 덕양리 1270-1": {
     "miss": "2026-10-09"
@@ -1152,14 +1231,19 @@
     "lat": 34.741826,
     "lng": 127.728582,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/67/3580367_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132069",
+    "imgTried": "2026-10-11"
   },
   "venues|영광터미널시장|전남 영광군 영광읍 신하리": {
     "lat": 35.275787,
     "lng": 126.503017,
     "geoSrc": "한국관광공사",
     "tourId": "2795189",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|영광 염산5일시장|전남 영광군 염산면 봉남리 721": {
     "miss": "2026-10-09"
@@ -1174,61 +1258,74 @@
     "lat": 34.724563,
     "lng": 126.567443,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|영암 구림시장|전남 영암군 군서면 동구림리 34-10": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|영암 시종시장|전남 영암군 시종면 만수리 936-1": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|영암 신북시장|전남 영암군 신북면 월평리 126-3": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|완도읍5일시장|전남 완도군 완도읍 군내리 1249-2": {
     "lat": 34.316097,
     "lng": 126.74809,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|완도 고금면5일시장|전남 완도군 고금면 농상리 385": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|완도 군외면5일시장|전남 완도군 군외면 원동리 222-8": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|완도 금일읍5일시장|전남 완도군 금일읍 화목리 739": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|완도 노화읍5일시장|전남 완도군 노화읍 이포리 678-17": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|장흥 정남진장흥토요시장|전남 장흥군 장흥읍 예양리 158-1": {
     "lat": 34.677301,
     "lng": 126.903236,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/12/3535912_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "132409",
+    "imgTried": "2026-10-11"
   },
   "venues|장흥 관산시장|전남 장흥군 관산읍 옥당리 494-10": {
     "miss": "2026-10-09"
@@ -1240,7 +1337,8 @@
     "lat": 34.614768,
     "lng": 126.915434,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|장흥 장평시장|전남 장흥군 장평면 양촌리 194-4": {
     "miss": "2026-10-09"
@@ -1255,7 +1353,8 @@
     "lat": 34.4702,
     "lng": 126.256898,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|함평시장|전남 함평군 함평읍 기각리 982": {
     "miss": "2026-10-09"
@@ -1264,19 +1363,22 @@
     "lat": 35.023684,
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|함평 월야시장|전남 함평군 월야면 월야리 산99-9": {
     "lat": 35.023684,
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|함평 해보시장|전남 함평군 해보면 금덕리 409-3": {
     "lat": 35.023684,
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남읍5일시장|전남 해남군 해남읍 고도리 106-4": {
     "miss": "2026-10-09"
@@ -1285,43 +1387,50 @@
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 남창5일시장|전남 해남군 북평면 남창리 365-3": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 송지산정중앙시장|전남 해남군 송지면 산정리 266-17": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 우수영5일시장|전남 해남군 문내면 동외리 919-17": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 좌일5일시장|전남 해남군 북일면 흥촌리 161": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 현산월송5일시장|전남 해남군 현산면 월송리 279-1": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 화원5일시장|전남 해남군 화원면 금평리 239-14": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 숲정원 윤제림|전남 보성군 겸백면 주월산길 222": {
     "lat": 34.824129,
@@ -1339,7 +1448,11 @@
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/14/3018814_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "3018842",
+    "imgTried": "2026-10-11"
   },
   "venues|보성 꿈꾸는 숲 선유원|전남 보성군 보성읍 활성산 자락": {
     "miss": "2026-10-09"
@@ -1348,7 +1461,8 @@
     "lat": 34.812363,
     "lng": 127.211546,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|화순 금호리조트 아쿠아나|전남 화순군 백아면 옥리길 14-7": {
     "miss": "2026-10-09"
@@ -1357,7 +1471,8 @@
     "lat": 34.947353,
     "lng": 126.871409,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|여수 디오션리조트 워터파크|전남 여수시 소호로 295": {
     "lat": 34.732232,
@@ -1382,7 +1497,8 @@
     "lng": 127.35227,
     "geoSrc": "한국관광공사",
     "tourId": "654770",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|벌교 현부자네 집|전남 보성군 벌교읍 홍암로 89-28": {
     "miss": "2026-10-09"
@@ -1413,7 +1529,8 @@
     "lat": 35.013927,
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|목포 유달산 (둘레길)|전라남도 목포시 유달로 180": {
     "lat": 34.789913,
@@ -1452,7 +1569,11 @@
     "lat": 35.25796,
     "lng": 127.498075,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/65/3563965_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "127923",
+    "imgTried": "2026-10-11"
   },
   "venues|곡성 섬진강기차마을|전남 곡성군 오곡면 기차마을로 232": {
     "miss": "2026-10-09"
@@ -1584,7 +1705,11 @@
     "lat": 34.183427,
     "lng": 126.881143,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/60/3494860_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "126970",
+    "imgTried": "2026-10-11"
   },
   "venues|완도 보길도 윤선도 원림 (세연정)|전남 완도군 보길면 부황리": {
     "miss": "2026-10-09"
@@ -1605,13 +1730,21 @@
     "lat": 34.328268,
     "lng": 126.80757,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource_photo/59/4060859_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "147317",
+    "imgTried": "2026-10-11"
   },
   "venues|영광 불갑사 (상사화)|전남 영광군 불갑면 불갑사로 450": {
     "lat": 35.200794,
     "lng": 126.549789,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4057234_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "126349",
+    "imgTried": "2026-10-11"
   },
   "venues|영광 법성포 굴비거리|전남 영광군 법성면 법성리": {
     "lat": 35.361508,
@@ -1662,19 +1795,25 @@
     "lat": 34.860466,
     "lng": 126.19426,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/07/3559007_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "2650824",
+    "imgTried": "2026-10-11"
   },
   "venues|신안 홍도|전남 신안군 흑산면 홍도리": {
     "lat": 34.691393,
     "lng": 125.200314,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|신안 도초도 수국공원|전남 신안군 도초면 지남리": {
     "lat": 34.697039,
     "lng": 125.961917,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|장흥 천관산|전남 장흥군 관산읍 농안리": {
     "miss": "2026-10-09"
@@ -1686,13 +1825,21 @@
     "lat": 34.80782,
     "lng": 126.896731,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/21/4096821_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "126367",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 두륜산 케이블카|전남 해남군 삼산면 대흥사길 88-45": {
     "lat": 34.496766,
     "lng": 126.625309,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/76/3564276_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "129448",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 우수영관광지 (명량대첩)|전남 해남군 문내면 학동리": {
     "miss": "2026-10-09"
@@ -1701,7 +1848,8 @@
     "lat": 34.382591,
     "lng": 126.577544,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "venues|해남 녹우당 (고산 윤선도 유적지)|전남 해남군 해남읍 녹우당길 135": {
     "miss": "2026-10-09"
@@ -1710,19 +1858,31 @@
     "lat": 35.266974,
     "lng": 127.257673,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/93/1606693_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "128083",
+    "imgTried": "2026-10-11"
   },
   "venues|곡성 태안사|전남 곡성군 죽곡면 태안로 622-215": {
     "lat": 35.131623,
     "lng": 127.386534,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/00/3533500_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "126365",
+    "imgTried": "2026-10-11"
   },
   "venues|무안 황토갯벌랜드|전라남도 무안군 해제면 만송로 36": {
     "lat": 34.962798,
     "lng": 126.517578,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/91/3535791_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "1330332",
+    "imgTried": "2026-10-11"
   },
   "venues|함평자연생태공원|전남 함평군 대동면 학동로 1398-77": {
     "lat": 35.1356,
@@ -1803,7 +1963,8 @@
     "lat": 34.966989,
     "lng": 127.160104,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "restaurants|가매|광주 서구 상무대로 1104-26": {
     "miss": "2026-10-09"
@@ -2530,36 +2691,42 @@
     "lat": 35.146827,
     "lng": 126.914769,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "cinemas|롯데시네마 광주|광주 동구 독립로 268 롯데백화점 9층": {
     "lat": 35.154338,
     "lng": 126.912462,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "cinemas|메가박스 광주상무|광주 서구 시청로60번길 21": {
     "lat": 35.154214,
     "lng": 126.854412,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "cinemas|CGV 광주상무|광주 서구 시청로 67": {
     "lat": 35.154244,
     "lng": 126.850992,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "cinemas|메가박스 전대|광주 북구 우치로 60": {
     "lat": 35.17291,
     "lng": 126.91249,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   },
   "cinemas|롯데시네마 수완(아울렛)|광주 광산구 장신로 98": {
     "lat": 35.188859,
     "lng": 126.819321,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-09"
+    "checked": "2026-10-09",
+    "imgTried": "2026-10-11"
   }
 }
