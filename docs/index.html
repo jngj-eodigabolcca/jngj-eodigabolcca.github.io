@@ -5168,7 +5168,14 @@ function initNav() {
     if (st.tab && st.tab !== CUR_TAB) { showTab(st.tab, true); return }
     if (!st.root && CUR_TAB !== "events") { showTab("events", true); return }
     // 4) 첫 화면에서 뒤로가기 → 나갈지 물어보기 (가드를 다시 쌓아 앱을 유지)
-    if (st.root) { history.pushState({ glm: 1, guard: true }, ""); if (CUR_TAB !== "events") { showTab("events", true); return } exitDialog() }
+    if (st.root) {
+      if (CUR_TAB !== "events") { history.pushState({ glm: 1, guard: true }, ""); showTab("events", true); return }
+      // 웹앱은 스스로 창을 닫을 수 없어서, 휴대폰 앱들처럼 '한 번 더 누르면 닫힘' 방식으로 나간다.
+      // 지금은 되돌아갈 칸을 비워 두므로 2.5초 안에 뒤로가기를 한 번 더 누르면 앱이 닫힌다.
+      toast("뒤로 버튼을 한 번 더 누르면 앱이 닫혀요");
+      clearTimeout(window.__exitT);
+      window.__exitT = setTimeout(() => { if (history.state && history.state.root) history.pushState({ glm: 1, guard: true }, "") }, 2500);
+    }
   });
 }
 initNav();
