@@ -3610,7 +3610,7 @@ function renderFood() {
   const q = "";
   const list = sortHome(FOOD.filter(r => (FOOD_GU === "전체" || r.district === FOOD_GU) && [r.name, r.menu, r.district, r.address, r.note, r.badge].join(" ").toLowerCase().includes(q)));
   $("#foodView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">TASTE · ${esc(RNAME())}</span><h2>징하게 맛있는 ${RW()}<small>${REGION === "gj" ? "광주 7미부터 광주시 선정 맛집까지" : "관광공사에 등록된 노포·향토 음식점"}</small></h2></div><span>${list.length}곳</span></div>
-  ${REGION === "gj" ? `<div class="mi7Head"><b>광주 7미(味)</b><span>광주 오면 이건 먹고 가야제 — 누르면 맛집이 나와요</span></div>
+  ${REGION === "gj" ? `<div class="mi7Head"><b>광주 7미<i class="mi7Han">(味)</i></b><span>광주 오면 이건 먹고 가야제 — 누르면 맛집이 나와요</span></div>
   <div class="mi7">${MI7.map(([e, n, d, q]) => `<button onclick="mi7('${q}')"><em>${e}</em><b>${n}</b><small>${d}</small></button>`).join("")}</div>` : `<div class="nowEmpty">🍲 ${esc(RNAME())} 맛집은 아직 모으는 중이에요. 그동안은 <a class="btn" target="_blank" rel="noopener" href="${mapLink(REGIONS[REGION].hub + " 맛집")}">${esc(REGIONS[REGION].hub)} 맛집 지도에서 보기 ↗</a></div>`}
   <div class="foodIntro${REGION === "gj" ? "" : " hidden"}">광주광역시가 시민·업계 추천 217곳 중 <b>전문가 평가 + 시민 5,526명 온라인 평가</b>로 고른 <b>'2025 광주맛집' 50곳</b>과, 떡갈비·오리탕·보리밥 음식거리입니다.</div>
   <div class="subchips">${gus.map(g => `<button class="${g === FOOD_GU ? "active" : ""}" onclick="setFoodGu('${g}')">${g}</button>`).join("")}</div>
@@ -5321,7 +5321,14 @@ window.openArtistFollowQuick=function(){
 };
 </script>
 </body></html>
-</script><script>(function(){const f=()=>document.documentElement.style.setProperty("--hh",document.querySelector("header.top").offsetHeight+"px");f();addEventListener("resize",f)})()</script><style id="navAutoHide">
+</script><script>(function(){const f=()=>document.documentElement.style.setProperty("--hh",document.querySelector("header.top").offsetHeight+"px");f();addEventListener("resize",f)})()</script><style id="mi7Fix">
+/* 광주 7미(味): 한 줄로, 설명은 휴대폰에선 아래 줄 */
+html body .mi7Head{flex-wrap:wrap;align-items:baseline;row-gap:2px}
+html body .mi7Head b{white-space:nowrap}
+html body .mi7Head .mi7Han{font-style:normal;font-size:.8em;margin-left:2px;color:#a0442f}
+@media (max-width:640px){html body .mi7Head span{flex-basis:100%;font-size:13px}}
+</style>
+<style id="navAutoHide">
 /* 하단 빨리가기: 팝업·나가기 창이 뜨면 비켜 주고, 아래로 내리면 숨었다가 위로 올리거나 화면을 톡 치면 다시 나타남 */
 html body nav.bottom{transition:transform .28s ease,opacity .28s ease}
 html body nav.bottom.navAway{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
