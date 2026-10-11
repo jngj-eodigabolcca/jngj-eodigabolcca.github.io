@@ -2,9 +2,9 @@
    - 화면(index.html)과 일정 자료(data/*.json)는 "인터넷 먼저": 항상 최신을 보여주고, 안 되면 저장본
    - 아이콘·글꼴·지도 라이브러리는 "저장본 먼저": 두 번째부터 빨리 뜸
    - 행사 사진 등 바깥 이미지는 저장하지 않음(용량 절약) */
-const VERSION = "v3-2026-10-11h";
+const VERSION = "v4-2026-10-12-merged";
 const SHELL = `shell-${VERSION}`, DATA = `data-${VERSION}`, LIB = `lib-${VERSION}`;
-const SHELL_FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const SHELL_FILES = ["./", "./index.html"];
 const LIB_HOSTS = ["cdnjs.cloudflare.com", "cdn.jsdelivr.net", "fonts.googleapis.com", "fonts.gstatic.com"];
 
 self.addEventListener("install", e => {

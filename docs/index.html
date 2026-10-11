@@ -676,6 +676,16 @@ nav.bottom button span{font-size:12px;font-weight:700}
 nav.bottom .on{background:rgba(255,255,255,.12);color:#fff}nav.bottom .on span{color:var(--gold)}
 @media(min-width:900px){nav.bottom{display:none}}
 
+/* 2026-10-12: 모바일 바로가기 확장 및 아이와 과학 체험 */
+nav.bottom{display:flex;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;gap:2px;scroll-snap-type:x proximity;max-width:calc(100vw - 24px)}
+nav.bottom::-webkit-scrollbar{display:none}
+nav.bottom button{flex:1 0 57px;min-width:57px;scroll-snap-align:center;font-size:19px;padding:8px 2px}
+nav.bottom button span{font-size:10.5px;white-space:nowrap}
+@media(max-width:600px){.filterBar{padding-bottom:12px;row-gap:12px}.filterBar .chk{min-height:42px;display:inline-flex;align-items:center;gap:8px}.filterBar select{min-height:42px}.placeGrid button{min-width:0;overflow-wrap:anywhere}}
+.kidsScienceNav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 12px}
+.kidsScienceNav button{background:#fff;border:1px solid #dfd7c9;border-radius:999px;padding:11px 14px;font-size:13px;font-weight:750;color:#334b43}
+.kidsScienceNav button.selected{background:#0d7770;color:#fff;border-color:#0d7770}
+
 /* ── AI 즉시 추천 결과 팝업 ── */
 .decisionResult{display:grid;gap:14px}
 .decisionResult .drHead{padding-right:42px}
@@ -3306,6 +3316,7 @@ const PLACE_GROUPS = [
   ["체험·레포츠", "🚣", v => /체험|레포츠/.test(v.kind)],
   ["무등산", "⛰", v => v.kind === "무등산 트레킹"],
   ["아이와", "🧸", v => v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids],
+  ["과학·체험", "🔬", v => /과학관|과학|천문|우주|체험|생태교육|어린이박물관/.test((v.kind || "") + " " + (v.name || "") + " " + (v.kids || ""))],
   ["워터파크·물놀이", "🌊", v => v.kind === "워터파크"],
   ["스포츠", "⚾", v => v.kind === "스포츠"],
   ["멍카페", "🐶", v => false],      // 반려견 동반 카페(CAFES)
@@ -3331,8 +3342,9 @@ function renderPlaces() {
     : sortHome(VENUES.filter(placeFilter));
   const cnt = g => PLACE_SPECIAL[g] ? PLACE_SPECIAL[g][0]().length : VENUES.filter(PLACE_GROUPS.find(x => x[0] === g)[2]).length;
   const d = DAY_KO[kstNow().getUTCDay()];
-  $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>어디 가볼랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div><span>${list.length}곳</span></div>
+  $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>어디 가볼랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div></div>
   <div class="groupGrid placeGrid">${PLACE_GROUPS.filter(([g]) => (REGION === "gj" || !["양림동", "무등산"].includes(g)) && (g === "전체" || g === PLACE_GROUP || cnt(g))).map(([g, ic]) => `<button class="${g === PLACE_GROUP ? "active" : ""}" onclick="setPlace('group','${g}')"><span>${ic}</span>${g}<small>${cnt(g)}</small></button>`).join("")}</div>
+  ${PLACE_GROUP === "아이와" || PLACE_GROUP === "과학·체험" ? `<div class="kidsScienceNav" aria-label="아이와 함께 즐길 거리"><button type="button" class="${PLACE_GROUP === "아이와" ? "selected" : ""}" onclick="setPlace('group','아이와')">🧸 아이와 전체</button><button type="button" class="${PLACE_GROUP === "과학·체험" ? "selected" : ""}" onclick="setPlace('group','과학·체험')">🔬 과학관·과학체험</button></div>` : ""}
   <div class="filterBar">
     <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === PLACE_IO ? "on" : ""}" onclick="setPlace('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
     <select id="placeGu" aria-label="구 선택" onchange="setPlace('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === PLACE_GU ? "selected" : ""} value="${g}">${distLabel(g)}</option>`).join("")}</select>
@@ -4081,7 +4093,15 @@ window.goHome = () => {   // 홈: 어느 화면에 있든 첫 화면 맨 위로
   setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 60);
   document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x.dataset.jump === "decide"));
 };
-document.querySelectorAll("nav button").forEach(b => b.onclick = () => b.dataset.jump === "decide" ? (b.closest("nav.bottom") ? goHome() : goDecision()) : showTab(b.dataset.jump));
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  if (b.dataset.jump === "kids") {
+    PLACE_GROUP = "아이와"; PLACE_IO = "전체"; PLACE_OPEN = false;
+    renderPlaces(); showTab("places");
+    document.querySelectorAll("nav.bottom button").forEach(x => x.classList.toggle("on", x === b));
+  } else if (b.dataset.jump === "decide") {
+    b.closest("nav.bottom") ? goHome() : goDecision();
+  } else showTab(b.dataset.jump);
+});
 document.querySelectorAll("#chips button").forEach(b => b.onclick = () => { document.querySelectorAll("#chips button").forEach(x => x.classList.remove("active")); b.classList.add("active"); FILTER = b.dataset.filter; showTab("events"); renderEvents() });
 /* 통합 검색: 어느 탭에 있든 일정·가볼 곳·맛집·숙소·카페를 한 번에 찾는다 */
 const norm = t => (t || "").toLowerCase().replace(/[\s·.]/g, "");
@@ -5168,14 +5188,7 @@ function initNav() {
     if (st.tab && st.tab !== CUR_TAB) { showTab(st.tab, true); return }
     if (!st.root && CUR_TAB !== "events") { showTab("events", true); return }
     // 4) 첫 화면에서 뒤로가기 → 나갈지 물어보기 (가드를 다시 쌓아 앱을 유지)
-    if (st.root) {
-      if (CUR_TAB !== "events") { history.pushState({ glm: 1, guard: true }, ""); showTab("events", true); return }
-      // 웹앱은 스스로 창을 닫을 수 없어서, 휴대폰 앱들처럼 '한 번 더 누르면 닫힘' 방식으로 나간다.
-      // 지금은 되돌아갈 칸을 비워 두므로 2.5초 안에 뒤로가기를 한 번 더 누르면 앱이 닫힌다.
-      toast("뒤로 버튼을 한 번 더 누르면 앱이 닫혀요");
-      clearTimeout(window.__exitT);
-      window.__exitT = setTimeout(() => { if (history.state && history.state.root) history.pushState({ glm: 1, guard: true }, "") }, 2500);
-    }
+    if (st.root) { history.pushState({ glm: 1, guard: true }, ""); if (CUR_TAB !== "events") { showTab("events", true); return } exitDialog() }
   });
 }
 initNav();
@@ -5329,6 +5342,7 @@ window.openArtistFollowQuick=function(){
   requestAnimationFrame(()=>requestAnimationFrame(jump));
 };
 </script>
+
 </body></html>
 </script><script>(function(){const f=()=>document.documentElement.style.setProperty("--hh",document.querySelector("header.top").offsetHeight+"px");f();addEventListener("resize",f)})()</script><style id="mi7Fix">
 /* 광주 7미(味): 한 줄로, 설명은 휴대폰에선 아래 줄 */
@@ -5456,6 +5470,57 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
       const d = document.createElement("div"); d.className = "visitLine"; d.textContent = `👣 지금까지 ${j.count}번 다녀갔어요`; foot.appendChild(d);
     }).catch(() => {});
   }
+})();
+</script>
+<style id="leftQuickStyle">
+@media(max-width:899px){
+.leftQuick{position:fixed;z-index:48;left:0;top:52%;transform:translateY(-50%);display:flex;align-items:center;filter:drop-shadow(0 5px 15px rgba(24,45,39,.16));transition:transform .25s ease,opacity .25s ease}
+.leftQuickPanel{display:grid;gap:4px;padding:9px 7px;background:rgba(255,253,248,.97);border:1px solid #e0dbcf;border-left:0;border-radius:0 16px 16px 0;max-width:170px;max-height:60vh;overflow-y:auto}
+.leftQuickPanel button{border:0;background:transparent;color:#26453c;border-radius:10px;padding:8px 9px;font-size:12px;font-weight:750;text-align:left;white-space:nowrap;min-height:39px}
+.leftQuickPanel button:active,.leftQuickPanel button:focus-visible{background:#e6f1ed}
+.leftQuickToggle{border:0;border-radius:0 13px 13px 0;background:#137c74;color:white;min-height:72px;width:28px;padding:8px 4px;font-size:11px;font-weight:800;writing-mode:vertical-rl;cursor:pointer}
+.leftQuick.isCollapsed .leftQuickPanel{display:none}
+.leftQuick.isHidden{opacity:.85}
+.leftQuick.isHidden .leftQuickToggle{opacity:1;pointer-events:auto}
+body:has(#modal.show) .leftQuick,body:has(.exitAsk.show) .leftQuick{display:none}
+}
+@media(min-width:900px){.leftQuick{display:none}}
+</style>
+<aside class="leftQuick isCollapsed" id="leftQuick" aria-label="왼쪽 빠른 메뉴">
+ <div class="leftQuickPanel" id="leftQuickPanel" aria-label="추가 바로가기">
+  <button type="button" data-leftjump="kids">🧸 아이와</button>
+  <button type="button" data-leftjump="popshows">🎤 대중공연</button>
+  <button type="button" data-leftjump="science">🔬 과학·체험</button>
+  <button type="button" data-leftjump="food">🍽️ 먹을 곳</button>
+ </div>
+ <button type="button" class="leftQuickToggle" id="leftQuickToggle" aria-controls="leftQuickPanel" aria-expanded="false" aria-label="왼쪽 빠른 메뉴 열기">☰ 빠른 메뉴</button>
+</aside>
+<script id="leftQuickScript">
+(function(){
+ const rail=document.getElementById('leftQuick'), toggle=document.getElementById('leftQuickToggle');
+ if(!rail||!toggle)return;
+ let lastY=window.scrollY, timeout;
+ function collapse(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','왼쪽 빠른 메뉴 열기')}
+ function open(){rail.classList.remove('isCollapsed','isHidden');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','왼쪽 빠른 메뉴 닫기');clearTimeout(timeout);timeout=setTimeout(collapse,5000)}
+ toggle.addEventListener('click',()=>{if(rail.classList.contains('isHidden')||rail.classList.contains('isCollapsed'))open();else collapse()});
+ rail.querySelectorAll('[data-leftjump]').forEach(btn=>btn.addEventListener('click',()=>{
+   const target=btn.dataset.leftjump;
+   if(target==='kids'||target==='science'){
+     PLACE_GROUP = target==='kids' ? '아이와' : '과학·체험';
+     PLACE_IO='전체'; PLACE_OPEN=false;
+     renderPlaces(); showTab('places');
+   } else if(typeof showTab==='function'){
+     showTab(target);
+   }
+   collapse();
+ }));
+ window.addEventListener('scroll',()=>{
+  const y=window.scrollY,d=y-lastY;
+  if(y<100){rail.classList.remove('isHidden');}
+  else if(d>10){collapse();rail.classList.add('isHidden')}
+  else if(d < -12){rail.classList.remove('isHidden')}
+  lastY=y;
+ },{passive:true});
 })();
 </script>
 </body></html>
