@@ -685,6 +685,10 @@ nav.bottom button span{font-size:10.5px;white-space:nowrap}
 .kidsScienceNav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 12px}
 .kidsScienceNav button{background:#fff;border:1px solid #dfd7c9;border-radius:999px;padding:11px 14px;font-size:13px;font-weight:750;color:#334b43}
 .kidsScienceNav button.selected{background:#0d7770;color:#fff;border-color:#0d7770}
+.kidsScienceNav{align-items:center;background:#fff8ec;border:1px solid #f0e2c8;border-radius:16px;padding:10px}
+.kidsScienceNav .kidsSubLabel{flex-basis:100%;font-size:12.5px;color:#7a5418;margin:0 2px 2px}
+.kidsScienceNav button{padding:8px 12px}
+.kidsScienceNav button small{margin-left:5px;font-size:11px;opacity:.7}
 
 /* ── AI 즉시 추천 결과 팝업 ── */
 .decisionResult{display:grid;gap:14px}
@@ -3300,6 +3304,17 @@ function placeCard(v) {
   ${trustStrip(v)}
   <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${esc(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
 }
+// 아이와 안의 세부 분류 (큰 칸과 겹치지 않도록 '아이와' 안에서만 고름)
+function isKidsScience(v) { return /과학관|과학|천문|우주|체험|생태교육|어린이박물관/.test((v.kind || "") + " " + (v.name || "") + " " + (v.kids || "")) }
+const KIDS_SUBS = [
+  ["전체", "🧸", () => true],
+  ["과학·체험", "🔬", v => isKidsScience(v)],
+  ["동물원·놀이공원", "🦁", v => v.kind === "동물원·테마파크"],
+  ["물놀이", "🌊", v => v.kind === "워터파크"],
+  ["공원·숲", "🌳", v => /공원·정원|자연·경관/.test(v.kind || "")],
+  ["미술관·박물관", "🖼", v => /미술관|박물관|전시관|복합문화공간/.test(v.kind || "")],
+];
+let PLACE_KIDS_SUB = "전체";
 const PLACE_GROUPS = [
   ["전체", "✦", () => true],
   ["양림동", "⛪", v => /양림|사직/.test(v.address + v.name) || /근대문화유산|양림 카페/.test(v.kind)],
@@ -3315,8 +3330,7 @@ const PLACE_GROUPS = [
   ["자연·경관", "🏞", v => v.kind === "자연·경관"],
   ["체험·레포츠", "🚣", v => /체험|레포츠/.test(v.kind)],
   ["무등산", "⛰", v => v.kind === "무등산 트레킹"],
-  ["아이와", "🧸", v => v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids],
-  ["과학·체험", "🔬", v => /과학관|과학|천문|우주|체험|생태교육|어린이박물관/.test((v.kind || "") + " " + (v.name || "") + " " + (v.kids || ""))],
+  ["아이와", "🧸", v => v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v)],
   ["워터파크·물놀이", "🌊", v => v.kind === "워터파크"],
   ["스포츠", "⚾", v => v.kind === "스포츠"],
   ["멍카페", "🐶", v => false],      // 반려견 동반 카페(CAFES)
@@ -3327,11 +3341,12 @@ const PLACE_GROUPS = [
 const PLACE_SPECIAL = { "도서관": [() => LIBS, l => libCard(l)], "멍카페": [() => CAFES, c => petCard(c)], "빵지순례": [() => BAKERIES, b => bakeryCard(b)], "영화관": [() => CINEMAS, c => cinemaCard(c)] };
 let PLACE_GROUP = "전체", PLACE_IO = "전체", PLACE_GU = "전체", PLACE_OPEN = false;
 function placeFilter(v) {
-  const g = PLACE_GROUPS.find(x => x[0] === PLACE_GROUP)[2];
+  const g = (PLACE_GROUPS.find(x => x[0] === PLACE_GROUP) || PLACE_GROUPS[0])[2];
   const io = PLACE_IO === "전체" || (v.inout || "").includes(PLACE_IO);
   const gu = PLACE_GU === "전체" || v.district === PLACE_GU;
   const open = !PLACE_OPEN || openToday(v) !== false;
-  return g(v) && io && gu && open;
+  const sub = PLACE_GROUP !== "아이와" || PLACE_KIDS_SUB === "전체" || (KIDS_SUBS.find(x => x[0] === PLACE_KIDS_SUB) || KIDS_SUBS[0])[2](v);
+  return g(v) && sub && io && gu && open;
 }
 function renderPlaces() {
   const sp = PLACE_SPECIAL[PLACE_GROUP], isLib = PLACE_GROUP === "도서관";
@@ -3344,7 +3359,7 @@ function renderPlaces() {
   const d = DAY_KO[kstNow().getUTCDay()];
   $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>어디 가볼랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div></div>
   <div class="groupGrid placeGrid">${PLACE_GROUPS.filter(([g]) => (REGION === "gj" || !["양림동", "무등산"].includes(g)) && (g === "전체" || g === PLACE_GROUP || cnt(g))).map(([g, ic]) => `<button class="${g === PLACE_GROUP ? "active" : ""}" onclick="setPlace('group','${g}')"><span>${ic}</span>${g}<small>${cnt(g)}</small></button>`).join("")}</div>
-  ${PLACE_GROUP === "아이와" || PLACE_GROUP === "과학·체험" ? `<div class="kidsScienceNav" aria-label="아이와 함께 즐길 거리"><button type="button" class="${PLACE_GROUP === "아이와" ? "selected" : ""}" onclick="setPlace('group','아이와')">🧸 아이와 전체</button><button type="button" class="${PLACE_GROUP === "과학·체험" ? "selected" : ""}" onclick="setPlace('group','과학·체험')">🔬 과학·체험 전체</button></div>` : ""}
+  ${PLACE_GROUP === "아이와" ? (() => { const base = VENUES.filter(PLACE_GROUPS.find(x => x[0] === "아이와")[2]); return `<div class="kidsScienceNav" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">🧸 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === PLACE_KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === PLACE_KIDS_SUB ? "selected" : ""}" onclick="setPlace('kidsSub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}</div>` })() : ""}
   <div class="filterBar">
     <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === PLACE_IO ? "on" : ""}" onclick="setPlace('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
     <select id="placeGu" aria-label="구 선택" onchange="setPlace('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === PLACE_GU ? "selected" : ""} value="${g}">${distLabel(g)}</option>`).join("")}</select>
@@ -3353,8 +3368,8 @@ function renderPlaces() {
   ${paged("renderPlaces", list, sp ? sp[1] : placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
   <div class="verify" style="margin-top:12px">비 오는 날은 '실내', 날 좋은 날은 '야외'를 눌러보세요. 관람시간·휴관일은 전시 교체·공휴일에 따라 바뀔 수 있어요.</div>`;
 }
-window.setPlace = (k, v) => { if (k === "group") PLACE_GROUP = v; if (k === "io") PLACE_IO = v; if (k === "gu") PLACE_GU = v; if (k === "open") PLACE_OPEN = v; renderPlaces() };
-window.setPlaceKind = k => { PLACE_GROUP = PLACE_GROUPS.some(x => x[0] === k) ? k : "전체"; renderPlaces() };
+window.setPlace = (k, v) => { if (k === "group") { PLACE_GROUP = v; PLACE_KIDS_SUB = "전체" } if (k === "kidsSub") PLACE_KIDS_SUB = v; if (k === "io") PLACE_IO = v; if (k === "gu") PLACE_GU = v; if (k === "open") PLACE_OPEN = v; renderPlaces() };
+window.setPlaceKind = k => { PLACE_GROUP = PLACE_GROUPS.some(x => x[0] === k) ? k : "전체"; PLACE_KIDS_SUB = "전체"; renderPlaces() };
 
 /* ───────── 🖼 전시장 · 🏺 박물관 탭 (장소는 하루 두 번 자동 발굴, 전시는 자동 수집돼 붙어요) ───────── */
 const isGallery = v => /미술관|갤러리|전시관/.test(v.kind) || /갤러리|아트폴리곤/.test(v.name) || v.id === "acc";
@@ -4095,7 +4110,7 @@ window.goHome = () => {   // 홈: 어느 화면에 있든 첫 화면 맨 위로
 };
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
   if (b.dataset.jump === "kids") {
-    PLACE_GROUP = "아이와"; PLACE_IO = "전체"; PLACE_OPEN = false;
+    PLACE_GROUP = "아이와"; PLACE_KIDS_SUB = "전체"; PLACE_IO = "전체"; PLACE_OPEN = false;
     renderPlaces(); showTab("places");
     document.querySelectorAll("nav.bottom button").forEach(x => x.classList.toggle("on", x === b));
   } else if (b.dataset.jump === "decide") {
@@ -5488,7 +5503,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body[da
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
   <button type="button" data-rightjump="kids">🧸 아이와</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
-  <button type="button" data-rightjump="science">🔬 과학·체험</button>
+  <button type="button" data-rightjump="science">🔬 아이와 체험</button>
   <button type="button" data-rightjump="food">🍽️ 먹을 곳</button>
  </div>
 </aside>
@@ -5503,7 +5518,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body[da
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=btn.dataset.rightjump;
    if(target==='kids'||target==='science'){
-     PLACE_GROUP=target==='kids'?'아이와':'과학·체험';PLACE_IO='전체';PLACE_OPEN=false;
+     PLACE_GROUP='아이와';PLACE_KIDS_SUB=target==='kids'?'전체':'과학·체험';PLACE_IO='전체';PLACE_OPEN=false;
      showTab('places');renderPlaces();
    }else if(typeof showTab==='function')showTab(target);
    close();
