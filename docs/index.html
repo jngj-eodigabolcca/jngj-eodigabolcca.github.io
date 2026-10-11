@@ -1635,7 +1635,7 @@ button{min-height:var(--tap)}
         <button type="button" class="concertQuickPrimary" onclick="showTab('popshows')">🎤 대중가수 공연 <span>공연·예매 보기 ›</span></button>
         <button type="button" class="concertQuickFollow" onclick="openArtistFollowQuick()">⭐ 관심 가수 등록 <span>새 공연 모아보기 ›</span></button>
       </div>
-      <button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button>
+      
     </div>
     <div class="photoCard">
       <div class="slides" id="slides"></div>
@@ -1808,7 +1808,7 @@ button{min-height:var(--tap)}
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로?. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로?. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
 <p style="font-size:12px;opacity:.7">크리밍 캐릭터 디자인은 저작권 등록되어 있으며, 무단 이용·복제·수정·재배포를 금지합니다.</p></div></footer>
 
 <nav class="bottom"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><img class="navHomeIcon" src="favicon-64.png" alt=""><span>홈</span></button><button data-jump="events">📅<span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
@@ -5472,55 +5472,43 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
   }
 })();
 </script>
-<style id="leftQuickStyle">
-@media(max-width:899px){
-.leftQuick{position:fixed;z-index:48;left:0;top:52%;transform:translateY(-50%);display:flex;align-items:center;filter:drop-shadow(0 5px 15px rgba(24,45,39,.16));transition:transform .25s ease,opacity .25s ease}
-.leftQuickPanel{display:grid;gap:4px;padding:9px 7px;background:rgba(255,253,248,.97);border:1px solid #e0dbcf;border-left:0;border-radius:0 16px 16px 0;max-width:170px;max-height:60vh;overflow-y:auto}
-.leftQuickPanel button{border:0;background:transparent;color:#26453c;border-radius:10px;padding:8px 9px;font-size:12px;font-weight:750;text-align:left;white-space:nowrap;min-height:39px}
-.leftQuickPanel button:active,.leftQuickPanel button:focus-visible{background:#e6f1ed}
-.leftQuickToggle{border:0;border-radius:0 13px 13px 0;background:#137c74;color:white;min-height:72px;width:28px;padding:8px 4px;font-size:11px;font-weight:800;writing-mode:vertical-rl;cursor:pointer}
-.leftQuick.isCollapsed .leftQuickPanel{display:none}
-.leftQuick.isHidden{opacity:.85}
-.leftQuick.isHidden .leftQuickToggle{opacity:1;pointer-events:auto}
-body:has(#modal.show) .leftQuick,body:has(.exitAsk.show) .leftQuick{display:none}
-}
-@media(min-width:900px){.leftQuick{display:none}}
+<style id="rightQuickStyle">
+.rightQuick{position:fixed;z-index:120;right:0;top:52%;transform:translateY(-50%);display:flex;flex-direction:row-reverse;align-items:center;filter:drop-shadow(0 5px 13px rgba(24,45,39,.18))}
+.rightQuickPanel{display:grid;gap:4px;padding:9px 7px;background:rgba(255,253,248,.98);border:1px solid #e0dbcf;border-right:0;border-radius:16px 0 0 16px;max-width:170px;max-height:60vh;overflow-y:auto}
+.rightQuickPanel button{border:0;background:transparent;color:#26453c;border-radius:10px;padding:9px;font-size:12px;font-weight:750;text-align:left;white-space:nowrap;min-height:39px;cursor:pointer}
+.rightQuickPanel button:focus-visible,.rightQuickPanel button:active{background:#e6f1ed}
+.rightQuickToggle{border:0;border-radius:13px 0 0 13px;background:#137c74;color:#fff;min-height:87px;width:34px;padding:8px 5px;font-size:11px;font-weight:800;writing-mode:vertical-rl;cursor:pointer;touch-action:manipulation}
+.rightQuick.isCollapsed .rightQuickPanel{display:none}
+body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick{display:none}
+.footerManual{max-width:440px;margin:0 auto 24px}.footerManual .manualLaunch{display:flex;width:100%;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+@media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 46px))}}
 </style>
-<aside class="leftQuick isCollapsed" id="leftQuick" aria-label="왼쪽 빠른 메뉴">
- <div class="leftQuickPanel" id="leftQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-leftjump="kids">🧸 아이와</button>
-  <button type="button" data-leftjump="popshows">🎤 대중공연</button>
-  <button type="button" data-leftjump="science">🔬 과학·체험</button>
-  <button type="button" data-leftjump="food">🍽️ 먹을 곳</button>
+<aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
+ <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">☰ 빠른 메뉴</button>
+ <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
+  <button type="button" data-rightjump="kids">🧸 아이와</button>
+  <button type="button" data-rightjump="popshows">🎤 대중공연</button>
+  <button type="button" data-rightjump="science">🔬 과학·체험</button>
+  <button type="button" data-rightjump="food">🍽️ 먹을 곳</button>
  </div>
- <button type="button" class="leftQuickToggle" id="leftQuickToggle" aria-controls="leftQuickPanel" aria-expanded="false" aria-label="왼쪽 빠른 메뉴 열기">☰ 빠른 메뉴</button>
 </aside>
-<script id="leftQuickScript">
+<script id="rightQuickScript">
 (function(){
- const rail=document.getElementById('leftQuick'), toggle=document.getElementById('leftQuickToggle');
+ const rail=document.getElementById('rightQuick'), toggle=document.getElementById('rightQuickToggle');
  if(!rail||!toggle)return;
- let lastY=window.scrollY, timeout;
- function collapse(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','왼쪽 빠른 메뉴 열기')}
- function open(){rail.classList.remove('isCollapsed','isHidden');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','왼쪽 빠른 메뉴 닫기');clearTimeout(timeout);timeout=setTimeout(collapse,5000)}
- toggle.addEventListener('click',()=>{if(rail.classList.contains('isHidden')||rail.classList.contains('isCollapsed'))open();else collapse()});
- rail.querySelectorAll('[data-leftjump]').forEach(btn=>btn.addEventListener('click',()=>{
-   const target=btn.dataset.leftjump;
+ let timeout;
+ function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout)}
+ function open(){rail.classList.remove('isCollapsed');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,5500)}
+ toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
+ rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
+   const target=btn.dataset.rightjump;
    if(target==='kids'||target==='science'){
-     PLACE_GROUP = target==='kids' ? '아이와' : '과학·체험';
-     PLACE_IO='전체'; PLACE_OPEN=false;
-     renderPlaces(); showTab('places');
-   } else if(typeof showTab==='function'){
-     showTab(target);
-   }
-   collapse();
+     PLACE_GROUP=target==='kids'?'아이와':'과학·체험';PLACE_IO='전체';PLACE_OPEN=false;
+     showTab('places');renderPlaces();
+   }else if(typeof showTab==='function')showTab(target);
+   close();
  }));
- window.addEventListener('scroll',()=>{
-  const y=window.scrollY,d=y-lastY;
-  if(y<100){rail.classList.remove('isHidden');}
-  else if(d>10){collapse();rail.classList.add('isHidden')}
-  else if(d < -12){rail.classList.remove('isHidden')}
-  lastY=y;
- },{passive:true});
+ document.addEventListener('pointerdown',e=>{if(!rail.contains(e.target))close()});
 })();
 </script>
 </body></html>
