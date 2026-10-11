@@ -44,6 +44,8 @@ MAX_TOUR_CALLS = 450        # 하루 호출 한도(개발계정 1,000회)를 넘
 RUN_BUDGET = 15 * 60        # 이 시간이 지나면 찾기를 멈추고 지금까지 결과를 저장 (나머지는 다음 실행 때)
 MAX_OSM_LOOKUPS = 400       # OpenStreetMap은 1초에 1번 규칙 → 한 번 실행에 약 8분 이내
 RETRY_MISS_DAYS = 14
+IMG_TRY_V = 2          # 사진 찾기 방식을 고치면 숫자를 올려서 사진 없는 곳을 한 번 더 찾아본다
+IMG_RETRY_MAX = 40     # 한 번 실행에 사진 다시 찾기는 40곳까지 (관광공사 호출 한도 보호)
 UA = "gwangju-eodi/1.0 (https://github.com/jngj-eodigabolcca/jngj-eodigabolcca.github.io)"
 
 tour_calls = 0
@@ -96,13 +98,14 @@ def tour_find(x: dict, kind: str):
     # 관광공사 검색은 띄어쓰기·기호까지 맞아야 걸려서 여러 표기로 찾아본다
     # 예: '광주-기아 챔피언스필드' → '광주기아 챔피언스필드', '챔피언스필드' / '광주 월드컵경기장' → '월드컵경기장'
     keywords = []
-    for k in (base, base.replace("-", " "), base.replace("-", ""), re.sub(r"^(광주|전남)\s*", "", base),
-              max(re.split(r"[\s\-·]+", base), key=len)):
+    longest = max(re.split(r"[\s\-·]+", base), key=len)
+    for k in (base, longest, base.replace("-", " "), base.replace("-", "").replace(" ", ""),
+              re.sub(r"^(광주|전남)[\s\-]*", "", base), re.sub(r"(필드|경기장|공원|미술관|박물관)$", r" \1", longest)):
         k = k.strip()
         if len(k) >= 2 and k not in keywords:
             keywords.append(k)
     items = []
-    for kw in keywords[:4]:
+    for kw in keywords[:5]:
         params = {"keyword": kw, "numOfRows": "20", "pageNo": "1", "arrange": "A"}
         if kind == "food":
             params["contentTypeId"] = "39"
@@ -278,6 +281,7 @@ def main():
     cache = u.read_json(CACHE_FILE, {})
     stats = {}
     stopped = False
+    img_retries = 0
     deadline = time.time() + RUN_BUDGET
     looked = 0
 
@@ -294,14 +298,16 @@ def main():
                 stopped = True
                 print("  시간 예산 도달 → 지금까지 찾은 것만 저장하고, 나머지는 다음 실행 때", flush=True)
             retry_img = (hit and not hit.get("miss") and kind == "place" and not x.get("image")
-                         and not hit.get("image") and not hit.get("imgTried"))
+                         and not hit.get("image") and hit.get("imgTriedV") != IMG_TRY_V
+                         and img_retries < IMG_RETRY_MAX)
             if retry_img and not stopped:
+                img_retries += 1
                 try:
                     it = tour_find(x, kind) if u.DATA_KEY else None     # 좌표는 이미 있으니 관광공사 사진만
                     if it and it.get("firstimage"):
                         hit = {**hit, "image": it["firstimage"].replace("http://", "https://"),
                                "imageCredit": "한국관광공사", "tourId": str(it.get("contentid") or "")}
-                    hit = {**hit, "imgTried": u.TODAY_ISO}
+                    hit = {**hit, "imgTried": u.TODAY_ISO, "imgTriedV": IMG_TRY_V}
                     cache[key] = hit
                 except RuntimeError:
                     stopped = True                      # 호출 상한
