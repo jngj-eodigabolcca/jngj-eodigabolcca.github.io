@@ -1008,7 +1008,6 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .pkLine a{margin-left:auto;font-size:12px;font-weight:700;color:inherit;text-decoration:underline;white-space:nowrap}
 .pkBox{margin:10px 0 4px;border-radius:14px;padding:10px 12px;font-size:14px}
 .ncBody .pkLine,.stMain .pkLine,.ncBody .goLine{white-space:normal;overflow:visible;text-overflow:clip}
-.nowMoreBtn{display:flex;align-items:center;justify-content:center;width:100%;margin-top:12px;padding:13px 16px;border:1.5px dashed rgba(29,75,57,.28);border-radius:16px;background:rgba(255,255,255,.8);font-size:15px;font-weight:800;color:var(--green-d,#134e4a);cursor:pointer}
 .nowMore button{white-space:normal;text-align:left;max-width:100%;border-radius:16px;line-height:1.4}
 /* ── 🏮 시장 둘러보기 ── */
 .mkToday{background:linear-gradient(135deg,#fff1d6,#ffe3d3);border-radius:22px;padding:16px 18px;margin-bottom:14px}
@@ -2829,9 +2828,8 @@ function upcomingFestHtml(dates) {
   const grow = a => { const last = a.last || (a.this && a.this.year < y ? a.this : null); return `<button class="stRow" onclick="showTab('events');setTimeout(()=>document.querySelector('#eventsView h3.sub:last-of-type')?.scrollIntoView({behavior:'smooth'}),300)"><span class="stDate">${a.month}월</span><span class="stMain"><b>${esc(a.name)} <small style="font-weight:600;color:var(--gold-d)">· 곧 열릴 때예요</small></b><small>📍 ${esc(a.place)} · ${esc(a.when)}${last ? ` · 작년 ${md(last.start)}~${md(last.end)}` : ""}</small></span><em>날짜 발표 전</em></button>` };
   return `<h3 class="sub" style="margin-top:22px">🎪 한 달 안에 열리는 축제 · ${esc(RNAME())} ${ev.length + guess.length}</h3><div class="stList">${ev.slice(0, 10).map(row).join("")}${guess.map(grow).join("")}</div>`;
 }
-let NOW_CAT = "전체", NOW_OPEN = false;
-window.toggleNowMore = () => { NOW_OPEN = !NOW_OPEN; renderNowShow(); if (!NOW_OPEN) document.getElementById("nowShow")?.scrollIntoView({ behavior: "smooth", block: "start" }) };
-window.setNowCat = c => { NOW_CAT = c; NOW_OPEN = false; renderNowShow() };
+let NOW_CAT = "전체";
+window.setNowCat = c => { NOW_CAT = c; renderNowShow() };
 function renderNowShow() {
   const el = document.getElementById("nowShow"); if (!el) return;
   const dates = nowDates(NOW_WHEN), t0 = isoPlus(0), off0 = isOff(t0);
@@ -2843,7 +2841,7 @@ function renderNowShow() {
   const sorted = items.slice().sort((a, b) => (lastDay(b) - lastDay(a)) || (a.iso < b.iso ? -1 : a.iso > b.iso ? 1 : 0) || (order[a.k] - order[b.k]) || (a.k === "mk" ? (!!b.v.market.main - !!a.v.market.main) : 0) || (tmin(a.h) - tmin(b.h)) || ((a.e ? daysLeft(a.e) ?? 999 : 999) - (b.e ? daysLeft(b.e) ?? 999 : 999)));
   const cat = NOW_CATS.find(c => c[0] === NOW_CAT) || NOW_CATS[0];
   const shown = sorted.filter(x => !cat[1] || x.k === cat[1] || (cat[1] === "fe" && x.k === "sp"));
-  const MAXN = 24, FIRSTN = 4, list = shown.slice(0, NOW_OPEN ? MAXN : FIRSTN), hiddenN = Math.min(shown.length, MAXN) - FIRSTN;
+  const MAXN = 24, list = shown.slice(0, MAXN);
   const wk = weekendDates(), md = s => `${Number(s.slice(5, 7))}.${Number(s.slice(8))}`;
   const labels = [`오늘 ${md(t0)}(${DAYC[isoDow(t0)]})`, `내일${HOLIDAYS[isoPlus(1)] ? "(휴일)" : ""}`, `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`];
   const counts = [0, 1, 2].map(n => n === NOW_WHEN ? items.length : nowItems(nowDates(n)).length);
@@ -2854,8 +2852,7 @@ function renderNowShow() {
     <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
-   ${hiddenN > 0 ? `<button type="button" class="nowMoreBtn" onclick="toggleNowMore()">${NOW_OPEN ? "접기 ▴" : `＋ ${hiddenN}개 더 보기 ▾`}</button>` : ""}
-   ${NOW_OPEN && shown.length > MAXN ? `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>` : ""}
+   ${shown.length > MAXN ? `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>` : ""}
    ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${esc(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
    ${upcomingFestHtml(dates)}
@@ -5618,9 +5615,10 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
   collapseQuick();
 
   // 자주 안 쓰는 첫 화면 칸들을 '더 보기' 안으로
-  const MOVE = ["themeStrip", "dailyBrief", "today", "foodQuick"];
   { const ns = document.getElementById("nowStart"), dn = document.getElementById("decideNow"); if (ns && dn) dn.after(ns) }
-  const anchor = document.getElementById("cultureSpot");
+  // 처음 쓰는 사람도 다 볼 수 있게 '추천 더 보기' 상자로 접지 않는다
+  const MOVE = ["themeStrip", "dailyBrief", "today", "foodQuick"];
+  const anchor = null;
   if (anchor) {
     const box = document.createElement("section"); box.id = "moreHome";
     box.innerHTML = `<button type="button" class="moreHomeBtn" aria-expanded="false">✨ 추천 더 보기 <small>토박이 길잡이·문화가 있는 날·하루 플랜</small> <span>▾</span></button><div class="moreHomeBody"></div>`;
