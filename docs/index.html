@@ -5541,9 +5541,10 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
   <button type="button" data-rightjump="kids">🧸 아이와</button>
-  <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="science">🔬 아이와 체험</button>
-  <button type="button" data-rightjump="food">🍽️ 먹을 곳</button>
+  <button type="button" data-rightjump="popshows">🎤 대중공연</button>
+  <button type="button" data-rightjump="indoor">☔ 오늘 실내</button>
+  <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
 <script id="rightQuickScript">
@@ -5558,6 +5559,10 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
    const target=btn.dataset.rightjump;
    if(target==='kids'||target==='science'){
      PLACE_GROUP='아이와';PLACE_KIDS_SUB=target==='kids'?'전체':'과학·체험';PLACE_IO='전체';PLACE_OPEN=false;
+     showTab('places');renderPlaces();
+   }else if(target==='indoor'){
+     // 비·더위 대비: 가볼 곳 전체 중 실내 + 오늘 문 연 곳만
+     PLACE_GROUP='전체';PLACE_KIDS_SUB='전체';PLACE_IO='실내';PLACE_OPEN=true;
      showTab('places');renderPlaces();
    }else if(typeof showTab==='function')showTab(target);
    close();
