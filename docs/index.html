@@ -677,10 +677,10 @@ nav.bottom .on{background:rgba(255,255,255,.12);color:#fff}nav.bottom .on span{c
 @media(min-width:900px){nav.bottom{display:none}}
 
 /* 2026-10-12: 모바일 바로가기 확장 및 아이와 과학 체험 */
-nav.bottom{display:flex;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;gap:2px;scroll-snap-type:x proximity;max-width:calc(100vw - 24px)}
-nav.bottom::-webkit-scrollbar{display:none}
-nav.bottom button{flex:1 0 57px;min-width:57px;scroll-snap-align:center;font-size:19px;padding:8px 2px}
-nav.bottom button span{font-size:10.5px;white-space:nowrap}
+nav.bottom{display:flex;overflow:hidden;gap:2px;max-width:calc(100vw - 24px)}
+nav.bottom button{flex:1 1 0;min-width:0;font-size:19px;padding:8px 1px}
+nav.bottom button span{font-size:10.5px;white-space:nowrap;letter-spacing:-.02em}
+@media(max-width:340px){nav.bottom button{font-size:17px}nav.bottom button span{font-size:9.5px}}
 @media(max-width:600px){.filterBar{padding-bottom:12px;row-gap:12px}.filterBar .chk{min-height:42px;display:inline-flex;align-items:center;gap:8px}.filterBar select{min-height:42px}.placeGrid button{min-width:0;overflow-wrap:anywhere}}
 .kidsTop{margin:6px 0 16px}
 @media(max-width:600px){html body .hero .photoCard{aspect-ratio:2/1}html body .hero #greet{font-size:28px;line-height:1.25}html body .hero .concertQuickAccess{margin:12px 0}html body #heroLead{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
@@ -5295,7 +5295,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.12 제보";
+const APP_VER = "10.12 하단메뉴";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
