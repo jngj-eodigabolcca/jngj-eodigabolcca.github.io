@@ -265,7 +265,7 @@
     "date": "04.04 — 10.31",
     "start": "2026-04-04",
     "end": "2026-10-31",
-    "time": "기간 중 · 시간은 공식 채널 확인",
+    "time": "매주 토요일 20:00",
     "price": "무료",
     "discount": "",
     "group": "",
@@ -278,10 +278,10 @@
     "reservation": "",
     "contact": "",
     "status": "진행중",
-    "verified": "2026-10-06",
-    "verify": "10월 31일까지 · 운영 요일·시간은 고흥군 공지 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=고흥+녹동항+드론쇼",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "고흥군 발표 · 헤럴드경제 2026.4.1",
+    "url": "https://www.heraldk.com/article/2026040121165542956",
     "tags": [
       "무료",
       "야간"
@@ -917,10 +917,10 @@
     "reservation": "",
     "contact": "",
     "status": "진행중",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=2026+남도+K-가든+페스티벌",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "한국관광공사 축제정보 (주최: 전남광주통합특별시·여수시) / ysgarden.kr",
+    "url": "https://www.ktriptips.com/kor/festival/4095228",
     "tags": [
       "축제",
       "무료",
@@ -1025,10 +1025,10 @@
     "reservation": "",
     "contact": "",
     "status": "진행중",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=2026+섬진강국제실험예술제+(SIEAF)",
+    "verified": "2026-10-12",
+    "verify": "공식 발표와 대조 완료 · 프로그램별 장소·시간 다름",
+    "source": "곡성군 발표 · 스페셜타임스 2026.9.19 / 공식 sieaf.com",
+    "url": "https://www.specialtimes.co.kr/news/articleView.html?idxno=464784",
     "tags": [
       "공연",
       "미술"
@@ -1212,40 +1212,6 @@
     }
   },
   {
-    "detailAt": "2026-10-10",
-    "id": "culture-399707",
-    "apiId": "399707",
-    "category": "전시",
-    "subtype": "전시",
-    "title": "《BECOMING》",
-    "venue": "고흥우주천문과학관",
-    "venueId": null,
-    "district": "고흥군",
-    "address": "전남광주통합특별시 고흥군 도양읍 장기산선암길 353 고흥우주천문과학관",
-    "date": "2026-10-01 ~ 2026-10-31",
-    "time": "상세 확인",
-    "price": "무료",
-    "contact": "02-790-5889",
-    "description": "갤러리조은은 오는 10월 1일부터 31일까지 권용래(b.1964)의 개인전 《BECOMING》을 개최한다. 이번 전시는 오랜 시간 빛과 금속의 관계를 탐구해온 권용래의 작업 세계를 집중적으로 조명하며, 회화와 조각, 설치의 경계를 넘나드는 독창적인 조형 언어를 담은 신작 16점을 선보인다. 권용래의 작업에서 스테인리스스틸은 단순한 재료가 아니다. 평평한 금속 유닛은 작가의 손을 거쳐 하나의 회화적 요소로 변화하고, 수백에서 수천 개의 유닛이 캔버스 위에 하나씩 쌓이며 화면을 구성한다. 그리고 빛과 만나는 순간 비로소 하나의 이미지와 장면을 만들어낸다. 스테인리스스틸이 이미지가 되고, / 평면이 공간이 되며, / 빛이 형상이 된다. 관람자의 위치와 시선에 따라 끊임없이 달라지는 장면 속에서 작품은 고정된 하나",
-    "status": "진행중",
-    "start": "2026-10-01",
-    "end": "2026-10-31",
-    "image": "https://www.culture.go.kr/upload/rdf/26/09/show_2026092221173102908.jpg",
-    "lat": 34.5525015364742,
-    "lng": 127.125055247191,
-    "source": "한국문화정보원 문화정보",
-    "url": "http://www.galleryjoeun.com",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-10-12",
-    "tags": [
-      "전시",
-      "전시",
-      "전남",
-      "무료"
-    ]
-  },
-  {
     "detailAt": "2026-10-12",
     "id": "culture-397252",
     "apiId": "397252",
@@ -1348,6 +1314,15 @@
       "checked": "2026-10-12"
     },
     "id": "lib-sansu-puppy-2026-10",
+    "aliases": [
+      "도서전",
+      "북페어",
+      "책 축제",
+      "책축제",
+      "독서",
+      "책 전시",
+      "도서 전시"
+    ],
     "title": "그림책 원화 전시 「내 강아지에게」",
     "venue": "산수도서관",
     "libKey": "산수도서관",
@@ -1425,6 +1400,15 @@
       "checked": "2026-10-12"
     },
     "id": "lib-mokpo-sangsaeng-2026-10",
+    "aliases": [
+      "도서전",
+      "북페어",
+      "책 축제",
+      "책축제",
+      "독서",
+      "책 전시",
+      "도서 전시"
+    ],
     "title": "조선미 개인전 「상생」",
     "venue": "목포시립도서관 1층 전시갤러리",
     "libKey": "목포시립도서관",
@@ -1468,6 +1452,15 @@
       "checked": "2026-10-12"
     },
     "id": "lib-mokpo-ink-2026-10",
+    "aliases": [
+      "도서전",
+      "북페어",
+      "책 축제",
+      "책축제",
+      "독서",
+      "책 전시",
+      "도서 전시"
+    ],
     "title": "한국화·문인화 전시 (김영곤 ~10.15 · 이광길 10.16~)",
     "venue": "목포시립도서관 3층 문화라운지",
     "libKey": "목포시립도서관",
@@ -1612,7 +1605,7 @@
     "date": "10.09 — 11.08",
     "start": "2026-10-09",
     "end": "2026-11-08",
-    "time": "기간 중 · 시간은 공식 채널 확인",
+    "time": "매일 19:30–21:30 · 화요일 휴무",
     "price": "무료",
     "discount": "",
     "group": "",
@@ -1625,10 +1618,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=국가유산+미디어아트+여수+진남관",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "한국관광공사 축제정보 (국가유산청 국가유산 미디어아트)",
+    "url": "https://www.ktriptips.com/kor/festival/4116779",
     "tags": [
       "축제",
       "무료",
@@ -2056,6 +2049,46 @@
     ]
   },
   {
+    "id": "gj-dolmen-flower-2026",
+    "category": "축제",
+    "subtype": "꽃축제",
+    "title": "2026 화순 고인돌 가을꽃 축제",
+    "venue": "화순 고인돌 유적지 일원",
+    "district": "화순군",
+    "address": "전남 화순군 화순읍 동헌길 23",
+    "date": "10.16(금) ~ 10.25(일)",
+    "start": "2026-10-16",
+    "end": "2026-10-25",
+    "time": "09:00–18:00",
+    "price": "첫날(10.16) 무료 · 10.17부터 5,000원(화순사랑상품권으로 전액 환급, 화순군민 무료)",
+    "discount": "",
+    "group": "",
+    "child": "",
+    "pet": "",
+    "stroller": "",
+    "nursing": "",
+    "parking": "",
+    "accessibility": "",
+    "reservation": "",
+    "contact": "",
+    "status": "예정",
+    "verified": "2026-10-12",
+    "verify": "공식 발표와 대조: 시작일 10.17→10.16 바로잡음",
+    "source": "화순군 발표 · MTN뉴스 2026.10.7",
+    "url": "https://news.mtn.co.kr/news-detail/2026100714431553836",
+    "tags": [
+      "축제",
+      "야외",
+      "가족"
+    ],
+    "origin": "manual",
+    "ticket": {
+      "status": "무료",
+      "note": "무료",
+      "checked": "2026-10-06"
+    }
+  },
+  {
     "id": "mp-port-2026",
     "category": "축제",
     "subtype": "지역축제",
@@ -2079,10 +2112,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=목포항구축제",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "목포시 발표 · MTN뉴스 2026.10.7 / 공식 누리집 mokpoharborfestival.com",
+    "url": "https://news.mtn.co.kr/news-detail/2026100716292179691",
     "tags": [
       "축제",
       "무료"
@@ -2264,46 +2297,6 @@
       "행사/축제",
       "전남"
     ]
-  },
-  {
-    "id": "gj-dolmen-flower-2026",
-    "category": "축제",
-    "subtype": "꽃축제",
-    "title": "2026 화순 고인돌 가을꽃 축제",
-    "venue": "화순 고인돌 유적지 일원",
-    "district": "화순군",
-    "address": "전남 화순군 화순읍 동헌길 23",
-    "date": "10.17 — 10.25",
-    "start": "2026-10-17",
-    "end": "2026-10-25",
-    "time": "기간 중 · 시간은 공식 채널 확인",
-    "price": "무료",
-    "discount": "",
-    "group": "",
-    "child": "",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "",
-    "accessibility": "",
-    "reservation": "",
-    "contact": "",
-    "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=2026+화순+고인돌+가을꽃+축제",
-    "tags": [
-      "축제",
-      "야외",
-      "가족"
-    ],
-    "origin": "manual",
-    "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
-    }
   },
   {
     "detailAt": "2026-10-09",
@@ -3085,10 +3078,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인 · 행사 사진 오매칭 제거",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=대한민국+국향대전",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "함평군 발표 · 위키트리 2026.9.28",
+    "url": "https://www.wikitree.co.kr/articles/1162352",
     "tags": [
       "축제",
       "가족",
@@ -3103,6 +3096,15 @@
   },
   {
     "id": "ys-bookjeok-2026",
+    "aliases": [
+      "도서전",
+      "북페어",
+      "책 축제",
+      "책축제",
+      "독서",
+      "책 전시",
+      "도서 전시"
+    ],
     "category": "축제",
     "subtype": "책·독서",
     "title": "독서문화축제 「BOOK적BOOK적 IN 여수」",
@@ -3393,10 +3395,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub·유가크루 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=강진만+춤추는+갈대축제",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "강진군 발표 · 파이낸셜뉴스 2026.10.6",
+    "url": "https://www.fnnews.com/news/202610061232572305",
     "tags": [
       "축제",
       "무료",
@@ -4117,10 +4119,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=해남미남축제",
+    "verified": "2026-10-12",
+    "verify": "공식 발표·보도와 날짜 대조 완료",
+    "source": "해남군 축제 안내 · 광주데일리뉴스 2026.10.4",
+    "url": "https://www.gjdaily.net/news/articleView.html?idxno=100796",
     "tags": [
       "축제",
       "먹거리"
@@ -4404,45 +4406,6 @@
       "축제",
       "전남"
     ]
-  },
-  {
-    "id": "mp-jindo-bobae-2026",
-    "category": "축제",
-    "subtype": "문화예술제",
-    "title": "진도군 보배섬 문화예술제",
-    "venue": "진도읍 일원",
-    "district": "진도군",
-    "address": "전남 진도군 진도읍 진도대로 7197",
-    "date": "10.31 — 11.02",
-    "start": "2026-10-31",
-    "end": "2026-11-02",
-    "time": "기간 중 · 시간은 공식 채널 확인",
-    "price": "무료",
-    "discount": "",
-    "group": "",
-    "child": "",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "",
-    "accessibility": "",
-    "reservation": "",
-    "contact": "",
-    "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=진도군+보배섬+문화예술제",
-    "tags": [
-      "축제",
-      "공연"
-    ],
-    "origin": "manual",
-    "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
-    }
   },
   {
     "detailAt": "2026-10-09",
@@ -4973,18 +4936,18 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=화순운주문화축제",
+    "verified": "2026-10-12",
+    "verify": "공식 일정 발표 전 · 예년 기준 예상 날짜예요. 가기 전에 꼭 확인하세요",
+    "source": "공식 일정 미발표 (예년 기준 예상 일정)",
+    "url": "",
     "tags": [
       "축제"
     ],
     "origin": "manual",
     "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
+      "status": "확인필요",
+      "note": "공식 일정 발표 전",
+      "checked": "2026-10-12"
     }
   },
   {
@@ -5344,10 +5307,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=미리미리+크리스마스+(화순)",
+    "verified": "2026-10-12",
+    "verify": "공식 일정 발표 전 · 예년 기준 예상 날짜예요. 가기 전에 꼭 확인하세요",
+    "source": "공식 일정 미발표 (예년 기준 예상 일정)",
+    "url": "",
     "tags": [
       "축제",
       "가족",
@@ -5355,9 +5318,9 @@
     ],
     "origin": "manual",
     "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
+      "status": "확인필요",
+      "note": "공식 일정 발표 전",
+      "checked": "2026-10-12"
     }
   },
   {
@@ -5721,10 +5684,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=양림+크리스마스+문화축제",
+    "verified": "2026-10-12",
+    "verify": "공식 일정 발표 전 · 예년 기준 예상 날짜예요. 가기 전에 꼭 확인하세요",
+    "source": "공식 일정 미발표 (예년 기준 예상 일정)",
+    "url": "",
     "tags": [
       "축제",
       "가족",
@@ -5732,9 +5695,9 @@
     ],
     "origin": "manual",
     "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
+      "status": "확인필요",
+      "note": "공식 일정 발표 전",
+      "checked": "2026-10-12"
     }
   },
   {
@@ -5761,10 +5724,10 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인 · 행사 전용 이미지 미확인으로 대표사진 미사용",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=함평+겨울빛축제",
+    "verified": "2026-10-12",
+    "verify": "공식 일정 발표 전 · 예년 기준 예상 날짜예요. 가기 전에 꼭 확인하세요",
+    "source": "공식 일정 미발표 (예년 기준 예상 일정)",
+    "url": "",
     "tags": [
       "축제",
       "야간",
@@ -5773,8 +5736,8 @@
     "origin": "manual",
     "ticket": {
       "status": "확인필요",
-      "note": "확인 필요",
-      "checked": "2026-10-06"
+      "note": "공식 일정 발표 전",
+      "checked": "2026-10-12"
     }
   },
   {
@@ -6055,19 +6018,19 @@
     "reservation": "",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-06",
-    "verify": "축제 일정 모음에서 확인 · 세부 프로그램은 공식 채널 확인",
-    "source": "FestivalHub 축제 일정 정리 (2026.10 확인)",
-    "url": "https://search.naver.com/search.naver?query=해남+땅끝+해넘이해맞이축제",
+    "verified": "2026-10-12",
+    "verify": "공식 일정 발표 전 · 예년 기준 예상 날짜예요. 가기 전에 꼭 확인하세요",
+    "source": "공식 일정 미발표 (예년 기준 예상 일정)",
+    "url": "",
     "tags": [
       "축제",
       "무료"
     ],
     "origin": "manual",
     "ticket": {
-      "status": "무료",
-      "note": "무료",
-      "checked": "2026-10-06"
+      "status": "확인필요",
+      "note": "공식 일정 발표 전",
+      "checked": "2026-10-12"
     }
   },
   {
