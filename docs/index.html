@@ -911,7 +911,7 @@ body.modal-open{overflow:hidden}
 .ncBtns .fav{height:36px;min-width:38px;font-size:16px}
 .nowEmpty{margin-top:12px}
 .nowMore{align-items:center}.nowMore>span{font-size:13.5px;font-weight:700;color:var(--muted);margin-right:4px}
-@media(max-width:640px){.nowGrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -18px;padding:2px 18px 10px;scrollbar-width:none}.nowGrid::-webkit-scrollbar{display:none}.nowCard{flex:0 0 74%;scroll-snap-align:start}}
+@media(max-width:640px){.nowGrid{display:flex;flex-direction:column;gap:10px}.nowCard{flex-direction:row;border-radius:18px}.nowCard .ncPic{flex:0 0 112px;aspect-ratio:auto;min-height:112px}.nowCard .ncIcon{font-size:34px}.nowCard .ncCat{left:6px;top:6px;font-size:11px;padding:3px 8px}.nowCard .ncHot{right:auto;left:6px;top:auto;bottom:6px;font-size:11px;padding:3px 8px}.ncBody{min-width:0;padding:10px 12px}.ncBody b{min-height:0}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.slides img{transform:none!important}}
 
 /* ── 검색 결과: 검색창 바로 아래 패널로 (어디서 찾든 결과가 바로 눈앞에) ── */
