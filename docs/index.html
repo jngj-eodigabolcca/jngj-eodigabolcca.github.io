@@ -1826,7 +1826,7 @@ button{min-height:var(--tap)}
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로?. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로?. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
 <p style="font-size:12px;opacity:.7">크리밍 캐릭터 디자인은 저작권 등록되어 있으며, 무단 이용·복제·수정·재배포를 금지합니다.</p></div></footer>
 
 <nav class="bottom"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><img class="navHomeIcon" src="favicon-64.png" alt=""><span>홈</span></button><button data-jump="events">📅<span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
@@ -3226,12 +3226,17 @@ function eventMatches(x, q) {
     (FILTER === "김대중컨벤션센터" && /김대중컨벤션센터/.test(x.venue));
   return ok && hay.includes(q);
 }
+window.EV_SHOW = { n: 12, key: "", override: null, heading: "오늘·이번 달 추천" };
 function renderEvents(listOverride = null, heading = "오늘·이번 달 추천") {
   const q = "";
   if (!listOverride && FILTER === "관람가능") return renderOpenToday(q);
   const list = listOverride || EVENTS.filter(x => eventMatches(x, q));
+  // 첫 화면이 끝없이 길어지지 않게 12개씩 (필터·권역이 바뀌면 처음부터)
+  const evKey = [REGION, FILTER, heading, list.length].join("|");
+  if (EV_SHOW.key !== evKey) { EV_SHOW.key = evKey; EV_SHOW.n = 12 }
+  EV_SHOW.override = listOverride; EV_SHOW.heading = heading;
   const annualHtml = listOverride ? { top: "", bottom: "" } : annualBlock();
-  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.map(eventCard).join("") || "<p class='empty'>조건에 맞는 일정이 없습니다.</p>"}</div>` + annualHtml.bottom;
+  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || "<p class='empty'>조건에 맞는 일정이 없습니다.</p>"}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom;
 }
 
 
@@ -3996,12 +4001,32 @@ function renderFavs() {
   const bk = ALL.BAKERIES.filter(b => FAVS.includes("b:" + b.id));
   const n = ev.length + pl.length + fd.length + bk.length + st.length + cf.length;
   $("#favoritesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">FAVORITES</span><h2>찜해둔 곳<small>♡ 누른 건 이 기기에 저장돼요 · 모든 권역을 함께 보여줘요</small></h2></div><span>${n}개</span></div>
+  <div class="favTools">${FAVS.length ? `<button type="button" onclick="shareFavs()">📤 찜 목록 링크로 보내기</button>` : ""}<small>휴대폰을 바꿀 때 이 링크를 새 휴대폰에서 열면 찜이 그대로 옮겨져요.</small></div>
   ${n ? "" : "<p class='empty'>아직 찜한 게 없네잉. 일정·장소·맛집 카드의 ♡를 눌러보쇼.</p>"}
   ${ev.length ? `<h3 class="sub">일정</h3><div class="grid">${ev.map(eventCard).join("")}</div>` : ""}
   ${pl.length ? `<h3 class="sub">공간</h3><div class="grid">${pl.map(placeCard).join("")}</div>` : ""}
   ${fd.length ? `<h3 class="sub">맛집</h3><div class="grid">${fd.map(foodCard).join("")}</div>` : ""}
   ${st.length ? `<h3 class="sub">숙소</h3><div class="grid">${st.map(stayCard).join("")}</div>` : ""}
-  ${cf.length ? `<h3 class="sub">멍카페</h3><div class="grid">${cf.map(petCard).join("")}</div>` : ""}`;
+  ${cf.length ? `<h3 class="sub">멍카페</h3><div class="grid">${cf.map(petCard).join("")}</div>` : ""}
+  ${bk.length ? `<h3 class="sub">빵집</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}`;
+}
+/* 찜 옮기기: 로그인 없이 링크 하나로 (#fav=…) — 받는 쪽은 기존 찜에 '합쳐요'(지우지 않음) */
+window.shareFavs = async () => {
+  const url = location.origin + location.pathname + "#fav=" + encodeURIComponent(FAVS.join(","));
+  try { if (navigator.share) { await navigator.share({ title: "오늘, 전남광주 어디로? 찜 목록", url }); return } } catch (e) { if (e && e.name === "AbortError") return }
+  try { await navigator.clipboard.writeText(url); toast("📋 찜 목록 링크를 복사했어요. 새 휴대폰에서 열어 주세요.") }
+  catch { prompt("아래 링크를 복사해 새 휴대폰에서 열어 주세요", url) }
+};
+function importFavsFromHash() {
+  const m = location.hash.match(/^#fav=(.*)$/); if (!m) return;
+  const ids = decodeURIComponent(m[1]).split(",").map(x => x.trim()).filter(Boolean).slice(0, 500);
+  history.replaceState(history.state, "", location.pathname + location.search);
+  if (!ids.length) return;
+  const add = ids.filter(x => !FAVS.includes(x));
+  if (!add.length) { toast("이미 같은 찜 목록이 들어 있어요."); return }
+  if (!confirm(`찜 ${add.length}개를 이 기기에 불러올까요?\n(지금 있는 찜은 그대로 두고 합쳐요)`)) return;
+  FAVS = [...FAVS, ...add]; store.set("glm_final_favs", FAVS);
+  renderFavs(); showTab("favorites"); toast(`♥ 찜 ${add.length}개를 불러왔어요`);
 }
 
 /* ───────── 지도 ───────── */
@@ -5241,14 +5266,14 @@ let dp; window.addEventListener("beforeinstallprompt", e => { e.preventDefault()
 (() => { const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = window.navigator.standalone || matchMedia("(display-mode: standalone)").matches;
   if (ios && !standalone && location.protocol.startsWith("http") && !window.__PC__) { const b = $("#install"); b.classList.remove("hidden"); b.textContent = "📲 홈 화면에 추가"; b.onclick = () => alert("아이폰에서 앱처럼 쓰기\n\n① 아래 공유 버튼(□↑)을 누르고\n② '홈 화면에 추가'를 누르면 끝!\n\n바탕화면에 '오늘어디로' 아이콘이 생겨요.") } })();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http") && !window.__PC__) window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js"));
-load().then(() => setTimeout(openSharedLink, 300)).catch(() => { });
+load().then(() => setTimeout(() => { importFavsFromHash(); openSharedLink() }, 300)).catch(() => { });
 /* 앱을 켜 둔 채 날짜가 바뀌거나, 다시 화면으로 돌아오면 '오늘' 기준으로 새로 계산 (끝난 일정 빼기·오늘 열리는 공연 다시 고르기) */
 let LAST_DAY = todayISO();
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } });
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.12 첫화면정리";
+const APP_VER = "10.12 후기";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -5604,7 +5629,6 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
   <button type="button" data-rightjump="kids">🧸 아이와</button>
   <button type="button" data-rightjump="science">🔬 아이와 체험</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
-  <button type="button" data-rightjump="indoor">☔ 오늘 실내</button>
   <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
@@ -5687,4 +5711,78 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 #dataCheck table{width:100%;border-collapse:collapse}#dataCheck th,#dataCheck td{border-bottom:1px solid #eee;padding:7px 6px;text-align:left;vertical-align:top}
 #dataCheck th{background:#f6f1e7;position:sticky;top:0}
 @media(max-width:600px){#dataCheck td:nth-child(2),#dataCheck th:nth-child(2){display:none}}</style>
+<script id="privacyScript">
+/* 개인정보 처리 안내 — 앱이 실제로 하는 일만 적었습니다. 기능이 바뀌면 이 글도 같이 고쳐 주세요. */
+window.openPrivacy = function(){
+  const box=document.getElementById("modalContent"); if(!box) return;
+  box.innerHTML=`<span class="eyebrow">PRIVACY</span><h3>🔒 개인정보 처리 안내</h3>
+  <div class="privacyDoc">
+  <p><b>이 앱은 회원가입·로그인이 없고, 이름·연락처 같은 개인정보를 모으거나 서버에 저장하지 않아요.</b></p>
+  <h4>1. 이 기기 안에만 저장하는 것</h4>
+  <p>아래 내용은 쓰시는 휴대폰·PC의 브라우저 안에만 저장되고, 운영자를 포함해 누구에게도 전송되지 않아요.</p>
+  <ul><li>찜한 일정·장소</li><li>고른 권역, 사는 동네(또는 '지금 위치로'를 눌렀을 때의 위치)</li><li>관심 가수와 새 공연 알림 설정</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li></ul>
+  <p>지우려면 브라우저 설정에서 이 사이트의 '사이트 데이터 삭제'를 하시면 돼요.</p>
+  <h4>2. 위치 정보</h4>
+  <p>'지금 위치로'나 지도의 '내 위치'를 <b>직접 누를 때만</b> 브라우저가 허락을 물은 뒤 위치를 써요. 가까운 곳부터 보여주는 데만 쓰고, 다른 곳으로 보내지 않아요. 허락하지 않아도 동네를 골라 똑같이 쓸 수 있어요.</p>
+  <h4>3. 방문 통계</h4>
+  <p>방문자 수를 세기 위해 <b>GoatCounter</b>를 써요. 쿠키 없이 어떤 화면이 몇 번 열렸는지만 세고, 이용자를 알아볼 수 있는 정보는 남기지 않아요.</p>
+  <h4>4. 화면을 그리는 데 쓰는 외부 서비스</h4>
+  <p>아래 서비스에 요청이 갈 때 일반 웹사이트처럼 접속 주소(IP)와 브라우저 정보가 함께 전달될 수 있어요. 이용자의 위치나 찜 목록은 보내지 않아요.</p>
+  <ul><li>날씨: Open-Meteo (권역 중심 좌표로만 조회)</li><li>지도: OpenStreetMap 계열 지도·주소 검색 (장소 주소로 좌표 찾기)</li><li>글꼴·지도 프로그램: jsDelivr, cdnjs</li><li>사진: 한국관광공사 등 원 출처</li></ul>
+  <h4>5. 한 줄 후기</h4>
+  <p>'한 줄 후기'에서 고른 표정과 적은 글은 이름 없이 방문 통계(GoatCounter)에 기록돼 앱을 고치는 데만 써요. 이름·연락처는 적지 말아 주세요.</p>
+  <h4>6. 정보 수정 제보</h4>
+  <p>'⚠ 정보 수정'을 누르면 메일이나 제보 페이지가 열려요. 보내기를 직접 누를 때만 전달되고, 적어 주신 내용은 정보를 고치는 데만 써요.</p>
+  <p class="privacyFoot">이 앱은 개인이 만든 비공식 안내 앱이에요. · 안내 기준일 2026.10.12</p>
+  </div>`;
+  document.getElementById("modal").classList.add("show"); document.body.classList.add("modal-open");
+  if (typeof navPush==="function") navPush({ modal: "privacy" });
+};
+</script>
+<style>.favTools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 14px}.favTools button{border:1px solid #cfe1da;background:#fff;border-radius:12px;padding:10px 14px;font-weight:800;color:#14554a}.favTools small{color:var(--muted);font-size:12px}
+.footerManual .privacyLink{display:block;margin:8px auto 0;border:0;background:transparent;color:inherit;opacity:.8;font-size:13px;text-decoration:underline;padding:8px}
+.privacyDoc h4{margin:16px 0 6px;font-size:15px}.privacyDoc p,.privacyDoc li{font-size:14px;line-height:1.65}.privacyDoc ul{padding-left:20px;margin:6px 0}.privacyDoc .privacyFoot{margin-top:16px;font-size:12px;color:#6f7b74}</style>
+<script id="reviewScript">
+/* 한 줄 후기: 서버 없이 방문 통계(GoatCounter)에 '이벤트'로 남김.
+   보는 곳: GoatCounter 관리 화면 → 이벤트(후기/좋아요 · 후기/괜찮아요 …), 제목 칸에 한 줄 글.
+   한 기기에서 하루 한 번만 받음. */
+(function(){
+  const FACES=[["최고예요","😍"],["좋아요","🙂"],["그저 그래요","😐"],["아쉬워요","🙁"]];
+  const PARTS=["오늘 뭐하지","아이와","일정·축제","가볼 곳","대중공연","맛집·빵집","동네·도서관"];
+  let pick=null, parts=[];
+  window.openReview=function(){
+    const box=document.getElementById("modalContent"); if(!box) return;
+    const last=(()=>{try{return localStorage.getItem("glm_review_day")}catch(e){return null}})();
+    if(last===todayISO()){ toast("오늘은 이미 후기를 남기셨어요. 고마워요! 💚"); return }
+    pick=null; parts=[];
+    box.innerHTML=`<span class="eyebrow">REVIEW</span><h3>💬 이 앱 어땠어요?</h3>
+      <p class="rvHint">이름 없이 보내져요. 고치는 데 큰 힘이 돼요.</p>
+      <div class="rvFaces">${FACES.map(([t,e],i)=>`<button type="button" data-i="${i}"><span>${e}</span>${t}</button>`).join("")}</div>
+      <p class="rvQ">좋았던(또는 아쉬운) 기능 <small>여러 개 골라도 돼요 · 안 골라도 돼요</small></p>
+      <div class="rvParts">${PARTS.map(p=>`<button type="button" data-p="${p}">${p}</button>`).join("")}</div>
+      <textarea id="rvText" maxlength="100" rows="2" placeholder="한 줄 남겨 주세요 (선택 · 100자) — 이름·연락처는 적지 마세요"></textarea>
+      <button type="button" class="rvSend" disabled>보내기</button>`;
+    box.querySelectorAll(".rvFaces button").forEach(b=>b.onclick=()=>{pick=+b.dataset.i;box.querySelectorAll(".rvFaces button").forEach(x=>x.classList.toggle("on",x===b));box.querySelector(".rvSend").disabled=false});
+    box.querySelectorAll(".rvParts button").forEach(b=>b.onclick=()=>{const p=b.dataset.p;parts=parts.includes(p)?parts.filter(x=>x!==p):[...parts,p];b.classList.toggle("on",parts.includes(p))});
+    box.querySelector(".rvSend").onclick=()=>{
+      const txt=(box.querySelector("#rvText").value||"").replace(/\s+/g," ").trim().slice(0,100);
+      const title=[parts.join("·"),txt].filter(Boolean).join(" | ")||"(글 없음)";
+      let sent=false;
+      try{ if(window.goatcounter&&typeof window.goatcounter.count==="function"){ window.goatcounter.count({path:"후기/"+FACES[pick][0],title:title+" · "+REGION,event:true}); sent=true } }catch(e){}
+      if(sent){ try{localStorage.setItem("glm_review_day",todayISO())}catch(e){} closeModal(); toast("고마워요! 후기가 잘 전달됐어요 💚") }
+      else toast("지금은 보낼 수 없어요. 광고 차단 기능이 켜져 있으면 잠시 꺼 주세요.");
+    };
+    document.getElementById("modal").classList.add("show"); document.body.classList.add("modal-open");
+    if(typeof navPush==="function") navPush({ modal: "review" });
+  };
+})();
+</script>
+<style>.footerManual .reviewLaunch{display:block;width:100%;margin:10px 0 0;border:1px solid #f0c98a;background:#fff6e6;color:#6a3f08;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
+.rvHint{color:var(--muted);font-size:13px;margin:4px 0 12px}.rvFaces{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rvFaces button{border:1px solid #e3dccf;background:#fff;border-radius:14px;padding:10px 4px;font-size:12.5px;font-weight:750;color:#3d4d45}.rvFaces button span{display:block;font-size:28px;line-height:1.2}
+.rvFaces button.on{border-color:#0d7770;background:#e0f2ef;color:#0d5b55}
+.rvQ{margin:16px 0 6px;font-weight:800;font-size:14px}.rvQ small{font-weight:600;color:var(--muted);font-size:12px;margin-left:4px}
+.rvParts{display:flex;flex-wrap:wrap;gap:6px}.rvParts button{border:1px solid #e3dccf;background:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;color:#3d4d45}.rvParts button.on{background:#0d7770;border-color:#0d7770;color:#fff}
+#rvText{width:100%;margin-top:14px;border:1px solid #ddd5c6;border-radius:12px;padding:10px;font-size:14px;resize:vertical}
+.rvSend{width:100%;margin-top:12px;border:0;border-radius:13px;padding:13px;font-weight:800;font-size:15px;background:var(--gold);color:#2f1d02}.rvSend:disabled{opacity:.45}</style>
 </body></html>
