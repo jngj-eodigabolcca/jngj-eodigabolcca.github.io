@@ -5236,17 +5236,39 @@ window.shareItem = async (kind, id) => {
   try { await navigator.clipboard.writeText(text + "\n" + url); toast("링크를 복사했어요. 카톡에 붙여넣기 하세요.") }
   catch { prompt("아래 내용을 복사해서 보내세요", text + "\n" + url) }
 };
-window.reportItem = (kind, id) => {
+/* 정보 수정 제보: 고르고 한 줄 쓰면 바로 전달 (방문 통계 GoatCounter 이벤트 '제보/…').
+   GitHub 계정이 있는 사람은 '자세히 쓰기'로 기존 이슈 제보도 가능 — 그쪽은 '확인 중' 표시가 자동으로 붙어요. */
+function reportLongUrl(kind, id) {
   const x = findShared(kind, id) || {};
   const name = x.title || x.name || id;
   const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
   const title = `[정보 수정] ${what} · ${name}`;
   const body = `어떤 정보가 다른가요? (예: 문 닫음, 시간 바뀜, 주소 틀림)\n\n\n---\n항목: ${what} / ${name}\nID: ${id}\n앱에 적힌 정보 확인일: ${x.verified || "-"}`;
-  let url;
-  if (/^mailto:/i.test(REPORT_URL)) url = `${REPORT_URL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-  else if (REPORT_URL) url = REPORT_URL;
-  else url = `https://github.com/jngj-eodigabolcca/jngj-eodigabolcca.github.io/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-  window.open(url, "_blank", "noopener");
+  if (/^mailto:/i.test(REPORT_URL)) return `${REPORT_URL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  if (REPORT_URL) return REPORT_URL;
+  return `https://github.com/jngj-eodigabolcca/jngj-eodigabolcca.github.io/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+}
+window.reportItem = (kind, id) => {
+  const x = findShared(kind, id) || {};
+  const name = x.title || x.name || id;
+  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
+  const REASONS = kind === "e" ? ["날짜가 달라요", "취소·연기됐어요", "장소가 달라요", "요금이 달라요", "사진이 틀려요", "기타"] : ["문 닫았어요", "시간이 달라요", "주소·위치가 틀려요", "요금이 달라요", "사진이 틀려요", "기타"];
+  const box = $("#modalContent"); let why = null;
+  box.innerHTML = `<span class="eyebrow">REPORT</span><h3>⚠ 정보가 달라요</h3><p class="rvHint">${esc(what)} · <b>${esc(name)}</b><br>알려 주시면 확인해서 고칠게요. 이름 없이 보내져요.</p>
+    <div class="rpWhy">${REASONS.map(r => `<button type="button" data-r="${r}">${r}</button>`).join("")}</div>
+    <textarea id="rpText" maxlength="120" rows="2" placeholder="맞는 정보를 아시면 한 줄 적어 주세요 (선택 · 120자) — 예: 매주 월요일 휴무예요"></textarea>
+    <button type="button" class="rvSend" disabled>보내기</button>
+    <p class="rpLong"><a href="${safeUrl(reportLongUrl(kind, id))}" target="_blank" rel="noopener">GitHub 계정이 있으면 자세히 쓰기 ↗</a></p>`;
+  box.querySelectorAll(".rpWhy button").forEach(b => b.onclick = () => { why = b.dataset.r; box.querySelectorAll(".rpWhy button").forEach(o => o.classList.toggle("on", o === b)); box.querySelector(".rvSend").disabled = false });
+  box.querySelector(".rvSend").onclick = () => {
+    const txt = (box.querySelector("#rpText").value || "").replace(/\s+/g, " ").trim().slice(0, 120);
+    let sent = false;
+    try { if (window.goatcounter && typeof window.goatcounter.count === "function") { window.goatcounter.count({ path: `제보/${what}/${id}`, title: `${name} · ${why}${txt ? " | " + txt : ""}`, event: true }); sent = true } } catch (e) { }
+    if (sent) { closeModal(); toast("고마워요! 확인해서 고칠게요 🙏") }
+    else toast("지금은 보낼 수 없어요. 아래 '자세히 쓰기'를 이용하거나 광고 차단을 잠시 꺼 주세요.");
+  };
+  $("#modal").classList.add("show"); document.body.classList.add("modal-open");
+  if (typeof navPush === "function") navPush({ modal: "report" });
 };
 /* 공유받은 링크(#e=… #v=…)로 들어오면 그 항목을 바로 연다 */
 function openSharedLink() {
@@ -5273,7 +5295,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.12 후기";
+const APP_VER = "10.12 제보";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -5732,7 +5754,7 @@ window.openPrivacy = function(){
   <h4>5. 한 줄 후기</h4>
   <p>'한 줄 후기'에서 고른 표정과 적은 글은 이름 없이 방문 통계(GoatCounter)에 기록돼 앱을 고치는 데만 써요. 이름·연락처는 적지 말아 주세요.</p>
   <h4>6. 정보 수정 제보</h4>
-  <p>'⚠ 정보 수정'을 누르면 메일이나 제보 페이지가 열려요. 보내기를 직접 누를 때만 전달되고, 적어 주신 내용은 정보를 고치는 데만 써요.</p>
+  <p>'⚠ 정보 수정'에서 고른 내용과 적은 글은 이름 없이 방문 통계(GoatCounter)에 기록되고, 정보를 고치는 데만 써요. '자세히 쓰기'를 누르면 GitHub 제보 페이지가 열리며, 이때는 GitHub에 공개 글로 올라가요.</p>
   <p class="privacyFoot">이 앱은 개인이 만든 비공식 안내 앱이에요. · 안내 기준일 2026.10.12</p>
   </div>`;
   document.getElementById("modal").classList.add("show"); document.body.classList.add("modal-open");
@@ -5784,5 +5806,7 @@ window.openPrivacy = function(){
 .rvQ{margin:16px 0 6px;font-weight:800;font-size:14px}.rvQ small{font-weight:600;color:var(--muted);font-size:12px;margin-left:4px}
 .rvParts{display:flex;flex-wrap:wrap;gap:6px}.rvParts button{border:1px solid #e3dccf;background:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;color:#3d4d45}.rvParts button.on{background:#0d7770;border-color:#0d7770;color:#fff}
 #rvText{width:100%;margin-top:14px;border:1px solid #ddd5c6;border-radius:12px;padding:10px;font-size:14px;resize:vertical}
+.rpWhy{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px}.rpWhy button{border:1px solid #e3dccf;background:#fff;border-radius:12px;padding:11px 8px;font-size:13.5px;font-weight:750;color:#3d4d45}.rpWhy button.on{background:#0d7770;border-color:#0d7770;color:#fff}
+.rpLong{text-align:center;margin:12px 0 0;font-size:12.5px}.rpLong a{color:var(--muted)}
 .rvSend{width:100%;margin-top:12px;border:0;border-radius:13px;padding:13px;font-weight:800;font-size:15px;background:var(--gold);color:#2f1d02}.rvSend:disabled{opacity:.45}</style>
 </body></html>
