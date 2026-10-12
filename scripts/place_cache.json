@@ -913,7 +913,8 @@
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|나주 다시5일시장|전남 나주시 다시면 동곡리 39-1": {
     "lat": 35.013927,
@@ -1181,14 +1182,16 @@
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|보성 복내5일시장|전남 보성군 복내면 복내리 152-14": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|보성 예당5일시장|전남 보성군 득량면 예당리 446": {
     "lat": 34.766769,
@@ -1205,63 +1208,72 @@
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|보성 회천5일시장|전남 보성군 회천면 회령리 486-1": {
     "lat": 34.766769,
     "lng": 127.082139,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 괴목시장|전남 순천시 황전면 괴목리 45-1": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 별량시장|전남 순천시 별량면 봉림리 207-10": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 송광시장|전남 순천시 송광면 이읍리 1403-3": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 승주시장|전남 순천시 승주읍 423-1": {
     "lat": 35.013205,
     "lng": 127.388649,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 주암시장|전남 순천시 주암면 광천리 54-1": {
     "lat": 34.945811,
     "lng": 127.50406,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|순천 창촌시장|전남 순천시 주암면 창촌리 245-2": {
     "lat": 35.057852,
     "lng": 127.279656,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|신안 지도시장|전남 신안군 지도읍 읍내리 168-5": {
     "lat": 34.658196,
     "lng": 127.339182,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|여수 덕양시장|전남 여수시 소라면 덕양리 1270-1": {
     "miss": "2026-10-09"
@@ -1282,7 +1294,8 @@
     "geoSrc": "한국관광공사",
     "tourId": "2795189",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|영광 염산5일시장|전남 영광군 염산면 봉남리 721": {
     "miss": "2026-10-09"
@@ -1298,63 +1311,72 @@
     "lng": 126.567443,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|영암 구림시장|전남 영암군 군서면 동구림리 34-10": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|영암 시종시장|전남 영암군 시종면 만수리 936-1": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|영암 신북시장|전남 영암군 신북면 월평리 126-3": {
     "lat": 34.758742,
     "lng": 126.530939,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|완도읍5일시장|전남 완도군 완도읍 군내리 1249-2": {
     "lat": 34.316097,
     "lng": 126.74809,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|완도 고금면5일시장|전남 완도군 고금면 농상리 385": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|완도 군외면5일시장|전남 완도군 군외면 원동리 222-8": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|완도 금일읍5일시장|전남 완도군 금일읍 화목리 739": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|완도 노화읍5일시장|전남 완도군 노화읍 이포리 678-17": {
     "lat": 34.344889,
     "lng": 126.691059,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|장흥 정남진장흥토요시장|전남 장흥군 장흥읍 예양리 158-1": {
     "lat": 34.677301,
@@ -1377,7 +1399,8 @@
     "lng": 126.915434,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|장흥 장평시장|전남 장흥군 장평면 양촌리 194-4": {
     "miss": "2026-10-09"
@@ -1393,7 +1416,8 @@
     "lng": 126.256898,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|함평시장|전남 함평군 함평읍 기각리 982": {
     "miss": "2026-10-09"
@@ -1403,21 +1427,24 @@
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|함평 월야시장|전남 함평군 월야면 월야리 산99-9": {
     "lat": 35.023684,
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|함평 해보시장|전남 함평군 해보면 금덕리 409-3": {
     "lat": 35.023684,
     "lng": 126.539079,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남읍5일시장|전남 해남군 해남읍 고도리 106-4": {
     "miss": "2026-10-09"
@@ -1427,49 +1454,56 @@
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 남창5일시장|전남 해남군 북평면 남창리 365-3": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 송지산정중앙시장|전남 해남군 송지면 산정리 266-17": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 우수영5일시장|전남 해남군 문내면 동외리 919-17": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 좌일5일시장|전남 해남군 북일면 흥촌리 161": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 현산월송5일시장|전남 해남군 현산면 월송리 279-1": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|해남 화원5일시장|전남 해남군 화원면 금평리 239-14": {
     "lat": 34.636998,
     "lng": 126.6373,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|보성 숲정원 윤제림|전남 보성군 겸백면 주월산길 222": {
     "lat": 34.824129,
@@ -1501,7 +1535,8 @@
     "lng": 127.211546,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|화순 금호리조트 아쿠아나|전남 화순군 백아면 옥리길 14-7": {
     "miss": "2026-10-09"
@@ -1511,7 +1546,8 @@
     "lng": 126.871409,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|여수 디오션리조트 워터파크|전남 여수시 소호로 295": {
     "lat": 34.732232,
@@ -1537,7 +1573,8 @@
     "geoSrc": "한국관광공사",
     "tourId": "654770",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|벌교 현부자네 집|전남 보성군 벌교읍 홍암로 89-28": {
     "miss": "2026-10-09"
@@ -1569,7 +1606,8 @@
     "lng": 126.717485,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|목포 유달산 (둘레길)|전라남도 목포시 유달로 180": {
     "lat": 34.789913,
@@ -1845,14 +1883,16 @@
     "lng": 125.200314,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|신안 도초도 수국공원|전남 신안군 도초면 지남리": {
     "lat": 34.697039,
     "lng": 125.961917,
     "geoSrc": "OpenStreetMap(이름)",
     "checked": "2026-10-09",
-    "imgTried": "2026-10-11"
+    "imgTried": "2026-10-12",
+    "imgTriedV": 2
   },
   "venues|장흥 천관산|전남 장흥군 관산읍 농안리": {
     "miss": "2026-10-09"
