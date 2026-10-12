@@ -3158,12 +3158,14 @@ function nowTimeWindow(item, event, current) {
   const start=times[0], end=times[1] ?? (event ? start+120 : null);
   if (end===null || end<=start || end>1440) return {ok:false};
   const transit=35; // 출발 후 도착까지 최소 여유 시간
-  if (t+transit>=end) return {ok:false};
+  const minStay=event?0:30; // 장소는 도착해서 최소 30분은 볼 수 있어야 추천
+  if (t+transit+minStay>end) return {ok:false};
   if (event && start>t+240) return {ok:false}; // '지금 출발'과 동떨어진 야간 공연 제외
   if (!event && start>t+120) return {ok:false};
   const hm=x=>`${String(Math.floor(x/60)).padStart(2,'0')}:${String(x%60).padStart(2,'0')}`, left=end-t, leftTxt=left>=120?`${Math.floor(left/60)}시간 남음`:left>=60?`1시간 ${left%60 ? (left%60)+'분 ' : ''}남음`:`${left}분 남음`;
   const label=t<start ? `${hm(start)} 시작 예정` : `${hm(end)} 마감 · ${leftTxt}`;
-  return {ok:true,rank:t>=start?0:1,label};
+  const unsure=/확인|출처마다|상이|변동|추정|문의/.test(raw);
+  return {ok:true,rank:t>=start?0:1,label,unsure};
 }
 function renderNowStart(refresh=false) {
   const grid=document.getElementById('nowStartGrid'),clock=document.getElementById('nowClock'),note=document.getElementById('nowStartNote');
@@ -3176,7 +3178,7 @@ function renderNowStart(refresh=false) {
     .map(x=>({kind:'event',x,window:nowTimeWindow(x,true,n)})).filter(p=>p.window.ok);
   const vv=VENUES.filter(v=>openToday(v)!==false)
     .map(x=>({kind:'venue',x,window:nowTimeWindow(x,false,n)})).filter(p=>p.window.ok);
-  let candidates=[...ev,...vv].sort((a,b)=>a.window.rank-b.window.rank || (HOME?((homeKm(a.x)??99)-(homeKm(b.x)??99)):0) || (a.kind===b.kind?0:a.kind==='venue'?-1:1));
+  let candidates=[...ev,...vv].sort((a,b)=>(!!a.window.unsure-!!b.window.unsure) || a.window.rank-b.window.rank || (HOME?((homeKm(a.x)??99)-(homeKm(b.x)??99)):0) || (a.kind===b.kind?0:a.kind==='venue'?-1:1));
   // 내 동네가 정해져 있으면 12km 안 후보부터 (3개 이상일 때)
   if(HOME){const near=candidates.filter(p=>(homeKm(p.x)??99)<=12); if(near.length>=3) candidates=near}
   // 동일 항목 및 같은 장소 중복 추천 방지
@@ -5657,6 +5659,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
   <button type="button" data-rightjump="kids">🧸 아이와</button>
   <button type="button" data-rightjump="science">🔬 아이와 체험</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
+  <button type="button" data-rightjump="dayplan">📅 하루 플랜</button>
   <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
@@ -5676,6 +5679,9 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
      // 비·더위 대비: 가볼 곳 전체 중 실내 + 오늘 문 연 곳만
      PLACE_GROUP='전체';PLACE_IO='실내';PLACE_OPEN=true;
      showTab('places');renderPlaces();
+   }else if(target==='dayplan'){
+     document.querySelector('nav.bottom [data-jump="decide"]')?.click();
+     setTimeout(()=>document.getElementById('today')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
    }else if(typeof showTab==='function')showTab(target);
    close();
  }));
