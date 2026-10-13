@@ -1,9 +1,10 @@
+/* © 2026 오늘, 전남광주 어디로? All rights reserved. 무단 복제·수정·재배포 금지 (LICENSE 참고) */
 /* 오늘어디로 · 서비스 워커
    - 화면(index.html)과 일정 자료(data/*.json, embedded-data.js)는 "인터넷 먼저": 항상 최신을 보여주고, 안 되면 저장본
    - 아이콘·글꼴·지도 라이브러리는 "저장본 먼저": 두 번째부터 빨리 뜸
    - 지도 라이브러리·글꼴은 설치할 때 미리 저장 → 첫 방문 뒤 인터넷이 끊겨도 지도가 뜸
    - 행사 사진 등 바깥 이미지는 저장하지 않음(용량 절약) */
-const VERSION = "v31-2026-10-13-dark";
+const VERSION = "v32-2026-10-13-copyright";
 const SHELL = `shell-${VERSION}`, DATA = `data-${VERSION}`, LIB = `lib-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./creaming.webp"];
 const LIB_FILES = [
