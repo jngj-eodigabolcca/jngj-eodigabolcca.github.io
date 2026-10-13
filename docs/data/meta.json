@@ -1,177 +1,124 @@
 {
-  "updated_at": "2026-10-13T09:36:14+09:00",
-  "auto_update": true,
-  "sources": [
-    {
-      "id": "tourapi",
-      "name": "관광공사 행사·축제",
-      "ok": true,
-      "count": 21,
-      "message": "정상 수집"
-    },
-    {
-      "id": "kopis",
-      "name": "KOPIS 공연",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 83건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
-    },
-    {
-      "id": "culture",
-      "name": "문화정보원 전시·체험",
-      "ok": true,
-      "count": 39,
-      "message": "정상 수집"
-    }
+ "updated_at": "2026-10-12",
+ "today": "2026-10-12",
+ "counts": {
+  "total": 77,
+  "manual": 77,
+  "auto": 0
+ },
+ "sources": [],
+ "location_audit": {
+  "checked_at": "2026-10-06",
+  "scope": "광주 주요장소 + 순천·여수·목포·무안 주요장소",
+  "method": "공식기관·지자체·공공 관광정보 대조",
+  "corrected_items": 35,
+  "synced_events": 29
+ },
+ "photo_enrichment": {
+  "checked_at": "2026-10-06",
+  "scope": "순천·여수·무안 중심 사진 보강",
+  "venues_updated": 9,
+  "events_inherited": 0,
+  "policy": "장소가 명확히 식별되는 사진만 반영",
+  "accuracy_corrections": [
+   "무안 망운장 주소/장날/운영정보",
+   "일로전통시장 주소/명칭/사진"
+  ]
+ },
+ "image_policy": {
+  "checked_at": "2026-10-06",
+  "rule": "행사 공식 이미지 > 정확한 행사장 전경 > 이미지 없음",
+  "removed_mismatched": 1,
+  "suspicious_inherited_images": 9
+ },
+ "festival_image_policy": {
+  "checked_at": "2026-10-06",
+  "rule": "행사별 전용 이미지 매칭. 함평나비대축제 이미지는 나비대축제에만 사용",
+  "removed_wrong_matches": 1
+ },
+ "bakery_updated_at": "2026-10-06",
+ "bakery_count": 15,
+ "bakery_rich_info": "대표빵·사진·지역대표빵 보강",
+ "visual_refresh": {
+  "gma_event_covers": [
+   "gma-yehyang-2026",
+   "gma-kids-2026"
   ],
-  "api_status": [
-    {
-      "id": "tourapi",
-      "name": "관광공사 행사·축제",
-      "ok": true,
-      "count": 21,
-      "message": "정상 수집"
-    },
-    {
-      "id": "kopis",
-      "name": "KOPIS 공연",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 83건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
-    },
-    {
-      "id": "culture",
-      "name": "문화정보원 전시·체험",
-      "ok": true,
-      "count": 39,
-      "message": "정상 수집"
-    }
+  "champions_field_covers": [
+   "champions",
+   "kia-regular-end-2026",
+   "kia-postseason-2026"
   ],
-  "counts": {
-    "total": 172,
-    "auto": 114,
-    "manual": 58
-  },
-  "manual_count": 77,
-  "events_count": 172,
-  "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
-  "local": {
-    "programs": {
-      "name": "평생학습 강좌",
-      "ok": true,
-      "count": 325,
-      "fetched_at": "2026-10-13T09:37:21+09:00",
-      "fields": [
-        "edcColseTime",
-        "edcEndDay",
-        "edcMthType",
-        "edcPlace",
-        "edcRdnmadr",
-        "edcStartDay",
-        "edcStartTime",
-        "edcTrgetType",
-        "homepageUrl",
-        "instrctrNm",
-        "instt_nm",
-        "lctreCo",
-        "lctreCost",
-        "lctreNm",
-        "operDay",
-        "operInstitutionNm",
-        "operPhoneNumber",
-        "psncpa",
-        "rceptEndDate",
-        "rceptMthType",
-        "rceptStartDate",
-        "referenceDate",
-        "slctnMthType",
-        "제공기관코드",
-        "직업능력개발훈련비지원강좌여부",
-        "평생학습계좌제평가인정여부",
-        "학점은행제평가(학점)인정여부"
-      ]
-    },
-    "libraries": {
-      "name": "도서관",
-      "ok": true,
-      "count": 470,
-      "fetched_at": "2026-10-13T09:37:21+09:00",
-      "fields": [
-        "bookCo",
-        "closeDay",
-        "ctprvnNm",
-        "holidayCloseOpenHhmm",
-        "holidayOperOpenHhmm",
-        "homepageUrl",
-        "latitude",
-        "lbrryNm",
-        "lbrrySe",
-        "longitude",
-        "phoneNumber",
-        "rdnmadr",
-        "referenceDate",
-        "satOperCloseHhmm",
-        "satOperOperOpenHhmm",
-        "seatCo",
-        "signguNm",
-        "weekdayOperColseHhmm",
-        "weekdayOperOpenHhmm",
-        "건물면적",
-        "대출가능권수",
-        "대출가능일수",
-        "부지면적",
-        "운영기관명",
-        "자료수(비도서)",
-        "자료수(연속간행물)",
-        "제공기관명",
-        "제공기관코드"
-      ]
-    },
-    "holidays": {
-      "name": "공휴일",
-      "ok": true,
-      "count": 46,
-      "fetched_at": "2026-10-10T07:17:05+09:00",
-      "fields": []
-    }
-  },
-  "place_fill": {
-    "checked_at": "2026-10-13T09:37:22+09:00",
-    "tourapi_calls": 0,
-    "osm_lookups": 0,
-    "unfinished": false,
-    "lists": {
-      "venues": {
-        "total": 332,
-        "with_coords": 268,
-        "coords_filled": 175,
-        "hours_filled": 0
-      },
-      "restaurants": {
-        "total": 75,
-        "with_coords": 33,
-        "coords_filled": 33,
-        "hours_filled": 16
-      },
-      "bakeries": {
-        "total": 15,
-        "with_coords": 10,
-        "coords_filled": 10,
-        "hours_filled": 0
-      },
-      "cafes": {
-        "total": 28,
-        "with_coords": 9,
-        "coords_filled": 9,
-        "hours_filled": 0
-      },
-      "cinemas": {
-        "total": 7,
-        "with_coords": 7,
-        "coords_filled": 7,
-        "hours_filled": 0
-      }
-    }
-  },
-  "kopis_last_try": "2026-10-13T09:36:14+09:00"
+  "note": "중복 커버 최소화, 스포츠 카드는 경기 분위기 중심으로 보강"
+ },
+ "visual_refresh_v2": {
+  "museum": "동일 전경 기반 다른 컷 적용",
+  "champions_field": "실제 경기장 사진으로 교체"
+ },
+ "visual_refresh_v3": {
+  "gma_exhibit_images": "광주시립미술관 공식 전시 포스터 적용",
+  "champions_field_event_image": "김도영 타격 준비 장면 적용",
+  "champions_venue_image": "실제 구장 사진 유지"
+ },
+ "visual_audit": {
+  "duplicate_groups_handled": [
+   "국립아시아문화전당 행사 7건",
+   "광주예술의전당 행사 다수",
+   "담양 국가유산야행",
+   "여수 진남관 미디어아트",
+   "여수세계섬박람회",
+   "KIA 정규시즌/가을야구 분리"
+  ],
+  "policy": "장소 대표사진 반복 시 행사 안내용 비주얼 또는 다른 컷으로 분리"
+ },
+ "kimdoyoung_update": {
+  "regular_season": "세리머니 분위기 컷으로 교체",
+  "postseason": "타격 장면 유지",
+  "note": "정확한 홈인 장면 확보 전까지 현재 확보 가능한 컷 중 더 적절한 장면으로 교체"
+ },
+ "famous_buildings_photo_fill": {
+  "updated_count": 26,
+  "note": "유명 건물·대표 관광지 이미지를 프록시 경유로 안정화"
+ },
+ "champions_field_visual": {
+  "policy": "김도영 클로즈업 대신 챔피언스필드 경기장 중심 사진 사용",
+  "event_ids": [
+   "kia-regular-end-2026",
+   "kia-postseason-2026"
+  ]
+ },
+ "image_stability_fix": {
+  "normalized_urls": 26,
+  "policy": "실제 img 태그 + proxy 우선, 원본 fallback, 실패 시 빈칸 대신 안내 표시"
+ },
+ "image_restore_fix": {
+  "fixed_items": 26,
+  "cause": "일부 이미지 URL의 https 프로토콜 손실",
+  "result": "대표 건물·전시·관광지 사진 복구"
+ },
+ "embedded_major_photos": {
+  "venues": [
+   "acc",
+   "artcenter",
+   "champions",
+   "gma",
+   "nmg"
+  ],
+  "note": "핵심 대표 장소는 외부 링크 대신 파일 내 임베드 이미지로 고정"
+ },
+ "sports_refresh_20261007": {
+  "teams": [
+   "광주FC",
+   "전남 드래곤즈"
+  ],
+  "note": "프로축구 팀·홈경기 일정 및 공식 일정 링크 보강"
+ },
+ "annual_coverage_refresh_20261007": {
+  "policy": "연례행사가 1개뿐인 시군을 우선 점검해 공식·지자체 자료 중심으로 보강"
+ },
+ "image_rights_cleanup": {
+  "checked_at": "2026-10-09",
+  "rule": "출처 불명·언론사·블로그·상업 사이트 사진 제거 → 한국관광공사(공공누리) 사진으로 자동 대체",
+  "removed": 29
+ }
 }
