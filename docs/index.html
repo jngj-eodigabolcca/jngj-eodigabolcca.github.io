@@ -2252,7 +2252,13 @@ async function load() {
   // 특히 "섬 방문의 해"와 "여수세계섬박람회"를 서로 다른 행사로 유지합니다.
   const pinnedIds = new Set(["island-visit-year-2026", "ys-island-expo-2026", "lib-sansu-puppy-2026-10", "lib-mokpo-sangsaeng-2026-10", "lib-mokpo-ink-2026-10", "ys-bookjeok-2026", "gj-dolmen-flower-2026", "mp-jindo-bobae-2026", "mp-port-2026", "mp-gangjin-reed-2026", "mp-gukhyang-2026", "ys-kgarden-2026", "ys-jinnam-media-2026", "ys-sieaf-2026", "ys-nokdong-drone-2026", "mp-haenam-minam-2026", "gj-unju-2026", "gj-hwasun-xmas-2026", "mp-hampyeong-light-2026", "mp-haenam-sun-2026", "gj-yangnim-xmas-2026"]);
   const embeddedPinned = (window.__PINNED__ || window.__DATA__?.events || []).filter(e => pinnedIds.has(e.id));
-  E0 = [...(E0 || []).filter(e => !pinnedIds.has(e.id)), ...embeddedPinned];
+  // 서버(자동 수집) 자료가 더 최신이면 서버 것을 쓴다. 서버에 없거나 서버 것이 더 오래됐을 때만 내장본 사용.
+  // (서버 항목에 확인일이 없으면 meta.updated_at 날짜를 그 자료의 날짜로 본다)
+  const serverDay = String(META0?.updated_at || "").slice(0, 10);
+  const serverById = new Map((E0 || []).map(e => [e.id, e]));
+  const usePinned = embeddedPinned.filter(p => { const s = serverById.get(p.id); return !s || (p.verified || "") > (s.verified || serverDay) });
+  const pinnedUsed = new Set(usePinned.map(e => e.id));
+  E0 = [...(E0 || []).filter(e => !pinnedUsed.has(e.id)), ...usePinned];
   // 숙소: 메뉴엔 없음. 'KTX 1박 2일'·'숙소' 같은 요청에서만 코스에 들어감
   // 동네 강좌·도서관 (없으면 빈 목록 — 자동 수집이 처음 돈 뒤부터 채워짐)
   const [P0, L0] = await Promise.all([getJSON("programs"), getJSON("libraries")]);
@@ -2266,6 +2272,7 @@ async function load() {
   const VENUE_FIX = { "citizen-forest": { address: "광주 북구 추암로 190", image: "https://tong.visitkorea.or.kr/cms/resource/03/3514703_image2_1.jpg", imageCredit: "한국관광공사" } };
   V0 = (V0 || []).map(v => VENUE_FIX[v.id] ? { ...v, ...VENUE_FIX[v.id] } : v)
     .map(v => /인근|대체|다른 장소/.test(v.imageCredit || "") ? { ...v, image: "", imageCredit: "" } : v);
+  V0 = applyKidsMuseumBoost(V0);
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
   const t = todayISO();
@@ -5119,6 +5126,76 @@ function dedupeEvents(list) {
   }
   const ids = new Set(keep.map(e => e.id));
   return list.filter(e => ids.has(e.id));       // 원래 순서 유지
+}
+/* ───────── 🧸 아이와 함께 · 박물관 보강 (2026-10-14 확인) ─────────
+   자동 수집 자료(venues.json)에 없거나 정보가 비어 있는 아이와 갈 박물관·과학관을 채운다.
+   - 같은 이름(띄어쓰기 무시)이나 같은 주소가 이미 있으면 새로 넣지 않고, 비어 있는 칸만 채운다.
+   - 출처: 한국관광공사 관광정보(ktriptips)·각 기관 누리집. 요금·시간은 바뀔 수 있어 방문 전 확인 안내. */
+const KIDS_MUSEUM_ADD = [
+  { id: "add-goheung-star", name: "고흥우주천문과학관", kind: "과학관", district: "고흥군", address: "전남 고흥군 도양읍 장기산선암길 353", phone: "061-830-6691",
+    hours: "14:00–22:00 (입장마감 21:00 · 휴게 18:15–19:15)", closed: "월요일 · 법정공휴일 다음 날", price: "어른 3,000원 · 청소년 1,500원 · 어린이 1,000원",
+    kids: "800mm 망원경 별 관측·천체투영실·누리호 모형 만들기", inout: "실내", url: "https://star.goheung.go.kr/main",
+    desc: "국내 최대급 800mm 반사망원경으로 별과 행성을 보는 천문과학관이에요. 낮에는 해시계·별자리판·누리호 모형 만들기, 밤에는 천체 관측. 나로우주센터 우주과학관과 묶어 '고흥 우주 코스'로 좋아요.",
+    aliases: ["우주천문과학관", "고흥 천문대"] },
+  { id: "add-yeosu-weather", name: "국립여수해양기상과학관", kind: "과학관", district: "여수시", address: "전남 여수시 오동도로 61-9", phone: "1899-3520",
+    hours: "10:00–17:30 (매표마감 17:00)", closed: "월요일 (공휴일이면 다음 날) · 1월 1일 · 설·추석 당일", price: "어른 3,000원 · 청소년·어린이 1,500원 · 6세 이하·65세 이상 무료",
+    kids: "날씨놀이체험관·태풍·용오름 만들기·360도 돔 영상", inout: "실내", url: "https://science.kma.go.kr/yeosu/",
+    desc: "놀면서 날씨와 바다를 배우는 기상청 과학관이에요. 태풍·토네이도를 직접 만들어 보고, 지름 12m 돔 영상관에서 지구와 바다 이야기를 봐요. 오동도 입구라 엑스포공원과 같이 둘러보기 좋아요.",
+    aliases: ["해양기상과학관", "여수 기상과학관"] },
+  { id: "add-boseong-tea", name: "한국차박물관", kind: "박물관", district: "보성군", address: "전남 보성군 보성읍 녹차로 775", phone: "061-850-8670",
+    hours: "10:00–17:00", closed: "월요일", price: "어른 1,000원 · 청소년 700원 · 어린이 500원",
+    kids: "어린이 차 낚시 체험", inout: "실내", url: "",
+    desc: "차의 역사와 만드는 과정을 보여 주는 박물관이에요. 아이들은 '차 낚시 체험'으로 차 만드는 과정을 놀이처럼 배워요. 보성 차밭과 가까워요.",
+    aliases: ["보성 차박물관", "차박물관"] },
+  { id: "add-mokpo-kidsea", name: "목포어린이바다과학관", kind: "과학관", district: "목포시", address: "전남 목포시 삼학로92번길 98", phone: "061-242-6359",
+    hours: "09:00–18:00 (입장마감 17:00)", closed: "월요일 (공휴일·연휴면 다음 날) · 1월 1일", price: "어른 3,000원 · 청소년 2,000원 · 초등학생 1,000원", parking: "무료",
+    kids: "얕은 바다부터 깊은 바다까지 어린이 과학 전시·바다아이돔", inout: "실내", url: "http://mmsm.mokpo.go.kr",
+    desc: "어린이 눈높이로 만든 바다 과학관이에요. 바다상상홀·얕은바다·중간바다·깊은바다·바다아이돔 다섯 공간을 차례로 돌며 바다를 배워요.",
+    aliases: ["어린이바다과학관", "목포 바다과학관"] },
+  { id: "add-haenam-dino", name: "해남공룡박물관", kind: "박물관", district: "해남군", address: "전남 해남군 황산면 공룡박물관길 234", phone: "061-530-5949",
+    hours: "09:00–18:00 (7~8월 주말·공휴일 1시간 연장 · 입장은 1시간 전까지)", closed: "월요일 (7~8월은 매일 개관)", price: "어른 5,000원 · 청소년 4,000원 · 어린이 3,000원",
+    kids: "어린이 공룡 과학체험관·화석 만들기 등 공룡 체험", inout: "실내·야외", url: "https://uhangridinopia.haenam.go.kr",
+    desc: "실제 공룡·익룡·물새 발자국 화석지 위에 세운 박물관이에요. 국내 유일 어린이 공룡 과학체험관이 있고, 화석·공룡비누 만들기 같은 체험(3,000~10,000원)도 해요.",
+    aliases: ["우항리 공룡박물관", "공룡박물관"] },
+  { id: "add-ttangkkeut-nature", name: "땅끝해양자연사박물관", kind: "박물관", district: "해남군", address: "전남 해남군 송지면 땅끝마을길 89", phone: "061-535-2110",
+    hours: "3~10월 10:30–18:00 · 11~2월 10:30–17:00 · 여름 성수기 09:00–19:00 (입장마감 기준)", closed: "월요일 (공휴일이면 다음 날)", price: "일반 5,000원 · 청소년 4,000원 · 어린이 3,000원",
+    kids: "바다 생물·화석·곤충 표본 관찰", inout: "실내", url: "http://www.tmnhm.co.kr",
+    desc: "조개·산호·물고기·바다 포유류부터 화석과 곤충까지 볼 수 있는 자연사박물관이에요. 큐레이터 해설은 미리 예약하면 들을 수 있어요.",
+    aliases: ["해양자연사박물관", "땅끝 자연사박물관"] },
+  { id: "add-jangheung-star", name: "정남진천문과학관", kind: "과학관", district: "장흥군", address: "전남 장흥군 장흥읍 평화우산길 180-608", phone: "061-860-7855",
+    hours: "주간 14:00~ · 야간 관측 (계절마다 다름: 10~11월 야간 19:00–21:00 입장)", closed: "월요일 · 1월 1일 · 설날 · 공휴일 다음 날", price: "어른 3,000원 · 청소년 2,000원 · 어린이 1,000원", parking: "무료",
+    kids: "천체투영실·야간 별 관측", inout: "실내", url: "http://www.jangheung.go.kr/star",
+    desc: "억불산 자락에서 낮에는 천체투영실, 밤에는 망원경으로 별을 보는 천문과학관이에요. 날씨에 따라 관측이 바뀌니 출발 전에 전화로 확인하세요.",
+    aliases: ["장흥 천문과학관", "정남진 천문대"] },
+  { id: "add-yeongam-insect", name: "영암곤충박물관", kind: "박물관", district: "영암군", address: "전남 영암군 영암읍 기찬랜드로 41", phone: "0507-1371-4300",
+    hours: "평일 10:00–17:00 · 주말 10:00–18:00 (입장은 1시간 전까지)", closed: "월요일", price: "28개월 이상 8,000원 · 영암군민·65세 이상 6,000원",
+    kids: "곤충·파충류 만나기·표본 만들기·금붕어 낚시", inout: "실내", url: "",
+    desc: "살아 있는 곤충과 파충류를 가까이서 보고 만져 보는 박물관이에요. 표본 만들기·목걸이 만들기 같은 체험이 있어 어린아이들이 특히 좋아해요.",
+    aliases: ["곤충박물관"] },
+];
+// 이미 있지만 정보가 비어 있거나 '아이와 함께'에 안 잡히던 곳 (이름으로 찾아 빈 칸만 채움)
+const KIDS_MUSEUM_PATCH = {
+  "고흥분청문화박물관": { phone: "061-830-5990", hours: "09:00–18:00 (입장마감 17:00)", closed: "월요일 · 1월 1일 · 명절 당일",
+    price: "어른 2,000원 · 청소년 1,500원 · 어린이 1,000원", kids: "분청사기 만들기 체험 (부모와 함께)", url: "http://buncheong.goheung.go.kr/", inout: "실내",
+    desc: "고흥 운대리 가마터에서 나온 분청사기를 보여 주는 박물관이에요. 아이와 함께 분청사기를 직접 빚어 보는 체험이 있어요." },
+  "나로우주센터우주과학관": { url: "http://www.narospacecenter.kr", phone: "061-830-8700", kids: "로켓·인공위성 체험·3D 영상관" },
+};
+// 같은 곳이 두 번 들어간 경우: 왼쪽(정보 부족)을 빼고 오른쪽을 남김
+const VENUE_DUP_DROP = { "강진청자박물관": "강진고려청자박물관" };
+const BLANKISH = v => !v || /확인|문의|권장/.test(String(v));
+function applyKidsMuseumBoost(list) {
+  list = Array.isArray(list) ? list.slice() : [];
+  const key = s => norm(s).replace(/[()]/g, "");
+  const names = new Set(list.map(v => key(v.name)));
+  list = list.filter(v => { const keep = VENUE_DUP_DROP[key(v.name)]; return !(keep && names.has(keep)) });
+  list = list.map(v => { const p = KIDS_MUSEUM_PATCH[key(v.name)]; if (!p) return v; const o = { ...v };
+    for (const [k, val] of Object.entries(p)) if (BLANKISH(o[k])) o[k] = val; return o });
+  const addrs = new Set(list.map(v => addrCore(v.address)).filter(Boolean));
+  for (const a of KIDS_MUSEUM_ADD) {
+    if (names.has(key(a.name)) || (a.aliases || []).some(x => names.has(key(x))) || addrs.has(addrCore(a.address))) continue;
+    list.push({ lat: null, lng: null, image: "", verified: "2026-10-14", infoSource: "한국관광공사 관광정보·기관 누리집", ...a });
+  }
+  return list;
 }
 function addrCore(a) { return norm(String(a || "").replace(/^(전남광주통합특별시|전남광주특별시|광주광역시|전라남도|광주|전남)\s*/, "").replace(/\([^)]*\)/g, "")) }
 function dedupeLibs(list) {
