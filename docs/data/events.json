@@ -172,10 +172,44 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-10-13",
+    "id": "culture-368045",
+    "apiId": "368045",
+    "category": "행사",
+    "subtype": "교육·체험",
+    "title": "2026년 어린이 단체 교육 프로그램 '학교 밖 아시아 여행'",
+    "venue": "",
+    "venueId": null,
+    "district": "",
+    "address": "",
+    "date": "2026-04-01 ~ 2026-11-27",
+    "time": "상세 확인",
+    "price": "상세 확인",
+    "contact": "edu@accf.or.kr",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-04-01",
+    "end": "2026-11-27",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202602/b4c5de41ad5643d9928707b5eb4754cc.jpg",
+    "lat": null,
+    "lng": null,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://www.acc.go.kr/main/education.do?PID=0402&amp;action=Read&amp;bnkey=EM_0000009255",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-13",
+    "tags": [
+      "행사",
+      "교육·체험",
+      "전남",
+      "체험"
     ]
   },
   {
@@ -210,7 +244,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "jeonil245",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "광주"
@@ -248,7 +282,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "광주"
@@ -351,7 +385,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=228",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -384,7 +418,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -424,7 +458,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "nmg",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "광주"
@@ -456,7 +490,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -489,7 +523,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15203110&amp;category_1=%EC%A0%84%EC%8B%9C&amp;mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -523,7 +557,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "행사",
       "교육·체험",
@@ -557,7 +591,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "행사",
       "교육·체험",
@@ -591,7 +625,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -625,7 +659,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -659,7 +693,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&amp;boardId=ART_001&amp;seq=1966136&amp;movePage=1&amp;recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -740,7 +774,7 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -774,7 +808,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -851,7 +885,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -885,7 +919,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -959,7 +993,7 @@
     "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&amp;bid=0315&amp;act=view&amp;list_no=1234&amp;mid=a70501000000&amp;bid=0315&amp;nPage=1&amp;b_list=10&amp;orderby=&amp;dept_code=&amp;tag=&amp;step_yn=&amp;list_no=1234&amp;act=view&amp;_csrf=751522b5-510b-4051-aefe-38319efb4426&amp;cg_code=C01&amp;keyField=&amp;keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "전시",
       "전시",
@@ -993,7 +1027,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4094",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "행사",
       "교육·체험",
@@ -1237,7 +1271,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4104",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "행사",
       "교육·체험",
@@ -1480,49 +1514,6 @@
     "url": "https://www.jntoday.co.kr/news/article.html?no=317511"
   },
   {
-    "time": "남은 경기 날짜·홈/원정은 KIA 공식 일정 확인",
-    "price": "",
-    "discount": "",
-    "group": "",
-    "child": "",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "",
-    "accessibility": "",
-    "reservation": "",
-    "contact": "",
-    "status": "진행중",
-    "verified": "2026-10-03",
-    "origin": "manual",
-    "tags": [
-      "스포츠",
-      "야구"
-    ],
-    "district": "북구",
-    "address": "광주광역시 북구 서림로 10",
-    "id": "kia-regular-end-2026",
-    "category": "스포츠",
-    "subtype": "프로야구",
-    "title": "KIA 타이거즈 정규시즌 마지막 경기들",
-    "venue": "광주-기아 챔피언스필드 · 원정 포함",
-    "date": "10.03 — 10.12",
-    "start": "2026-10-03",
-    "end": "2026-10-12",
-    "verify": "선수 클로즈업 대신 경기장 중심 카드 이미지로 교체",
-    "source": "KBO 잔여경기 집계 · 서울신문",
-    "url": "https://tigers.co.kr/game/schedule",
-    "ticket": {
-      "status": "확인필요",
-      "note": "홈경기 날짜·잔여석은 KIA 공식 예매처에서 확인",
-      "checked": "2026-10-03",
-      "link": "https://tigers.co.kr/game/schedule",
-      "linkName": "KIA 공식 일정"
-    },
-    "venueId": "champions",
-    "image": ""
-  },
-  {
     "time": "매주 토요일 15:00 (10월 31일 제외)",
     "price": "기사에 관람료 미기재 · 야외 공원 공연",
     "discount": "",
@@ -1695,7 +1686,7 @@
     "url": "https://ticket.yes24.com/Perf/59967",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -1878,44 +1869,6 @@
   },
   {
     "detailAt": "2026-10-09",
-    "id": "tour-2561700",
-    "apiId": "2561700",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "광주서창억새축제",
-    "venue": "영산강자전거길안내센터",
-    "district": "서구",
-    "address": "전남광주통합특별시 서구 서창둑길 377 (벽진동)",
-    "date": "2026-10-15 ~ 2026-10-18",
-    "time": "13:00~18:00",
-    "price": "입장료 무료 (일부 유료 체험 - 먹거리, 일부 체험)",
-    "age": "",
-    "program": "1. 대표프로그램 - 선율이 흐르는 억새길, 뚜벅뚜벅 억새탐험대, SG 억새밭 라운지, 휴식왕을 찾아라, 노을530 2. 주제프로그램 - 억새 사운드 스케이프, 왈왈 런!, 소리 산책지도 만들기, 감성 트롤리 버스 여행, 억새 포토존 3. 공연프로그램 - 억새 버스킹, 선셋 라이브, 가족힐링 공연 , 주민 참여 페스타 4. 체험프로그램 - 억새밭 체험 놀이터, 찾아가는 사회적경제 이음장터, 서창마을투어 5. 연계행사 - 2026 광주서창 억새노을마라톤, 제16회 빛고을 문예 백일장, 한국마사회 승마체험 6. 관람객 편의 - (안내)종합안내소, 광주관광안내소, 서구관광안내소 (먹거리)서창주막, 천원국시, 시니어카페, F&B 플리마켓 (편의)공유자건거 대여소",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "전남광주통합특별시 서구",
-    "status": "예정",
-    "start": "2026-10-15",
-    "end": "2026-10-18",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/22/3546722_image2_1.jpg",
-    "lat": 35.1384947137,
-    "lng": 126.8287603579,
-    "contact": "062-350-4792",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-10-12",
-    "tags": [
-      "축제",
-      "광주"
-    ]
-  },
-  {
-    "detailAt": "2026-10-09",
     "id": "kopis-PF300859",
     "apiId": "PF300859",
     "category": "공연",
@@ -2042,7 +1995,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "전남"
@@ -2159,7 +2112,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "전남"
@@ -2291,7 +2244,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4174",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "행사/축제",
@@ -2356,7 +2309,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&amp;action=Read&amp;bnkey=EM_0000010048",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "공연",
       "연극",
@@ -2677,7 +2630,7 @@
     "url": "https://booking.naver.com/booking/5/bizes/1237791/items/7990033?startDateTime=2026-10-18T00%3A00%3A00%2B09%3A00&amp;tab=details",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "음악",
       "국악",
@@ -2951,7 +2904,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "전남"
@@ -2983,7 +2936,7 @@
     "url": "https://ticket.yes24.com/Perf/60185",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "공연",
       "무용/발레",
@@ -4096,6 +4049,44 @@
     ]
   },
   {
+    "detailAt": "2026-10-13",
+    "id": "tour-2039752",
+    "apiId": "2039752",
+    "category": "축제",
+    "subtype": "관광공사 행사",
+    "title": "월출산 국화축제",
+    "venue": "월출산 기찬랜드",
+    "district": "영암군",
+    "address": "전남광주통합특별시 영암군 영암읍 기찬랜드로 19-10",
+    "date": "2026-10-30 ~ 2026-11-15",
+    "time": "10:00~18:00",
+    "price": "무료",
+    "age": "",
+    "program": "1. 국화 전시 - 국화 23종·20만여 점 및 국화 조형물 전시 2. 볼거리 - 월출산 기찬랜드 일원 꽃길과 억새 포토존 운영 3. 판매 행사 - 운영부스, 영암 농특산물 판매관 운영",
+    "booking": "",
+    "parking": "",
+    "spendtime": "",
+    "sponsor": "영암군",
+    "status": "예정",
+    "start": "2026-10-30",
+    "end": "2026-11-15",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/50/4121450_image2_1.jpg",
+    "lat": 34.7919316346,
+    "lng": 126.6855988347,
+    "contact": "061-470-2259",
+    "description": "",
+    "source": "한국관광공사 TourAPI",
+    "url": "",
+    "origin": "auto",
+    "api": "tourapi",
+    "venueId": null,
+    "verified": "2026-10-13",
+    "tags": [
+      "축제",
+      "전남"
+    ]
+  },
+  {
     "id": "mp-haenam-minam-2026",
     "category": "축제",
     "subtype": "먹거리축제",
@@ -4401,7 +4392,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-12",
+    "verified": "2026-10-13",
     "tags": [
       "축제",
       "전남"
