@@ -1730,7 +1730,7 @@ button{min-height:var(--tap)}
       <div class="choiceGroup"><b>누구와?</b><div class="choiceRow" data-choice="with"><button class="on">연인</button><button>혼자</button><button>친구</button><button>아이</button><button>부모님</button><button>🐶 반려견</button></div></div>
       <div class="choiceGroup"><b>얼마나?</b><div class="choiceRow" data-choice="time"><button>1시간</button><button class="on">3시간</button><button>반나절</button><button>하루</button></div></div>
       <div class="choiceGroup"><b>예산</b><div class="choiceRow" data-choice="budget"><button>무료</button><button class="on">3만원 이하</button><button>5만원 이하</button><button>상관없음</button></div></div>
-      <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button class="on">대중교통</button><button>자동차</button></div></div>
+      <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button>대중교통</button><button class="on">자동차</button></div></div>
     </div>
     <div class="detailSearch" id="detailSearch">
       <button type="button" id="detailToggle" class="detailToggle" aria-expanded="false">📍 원하는 지역·일정을 직접 말하기 <span>자세히 요청하기 ＋</span></button>
@@ -1742,7 +1742,7 @@ button{min-height:var(--tap)}
           <label>출발지<input id="detailOrigin" placeholder="예: 광주 동구" autocomplete="off"></label>
           <label>방문 권역<select id="detailRegion"><option value="auto">문장에서 자동 판단</option><option value="gj">광주권</option><option value="ys">순천여수권</option><option value="mp">무안목포권</option></select></label>
           <label>방문 시각<select id="detailWhen"><option value="auto">문장에서 자동 판단</option><option value="오전">오전</option><option value="오후">오후</option><option value="저녁">저녁</option><option value="하루">하루</option></select></label>
-          <label>이동수단<select id="detailMove"><option value="대중교통">대중교통</option><option value="자동차">자동차</option><option value="도보">도보</option></select></label>
+          <label>이동수단<select id="detailMove"><option value="자동차">자동차</option><option value="대중교통">대중교통</option><option value="도보">도보</option></select></label>
         </div>
         <div class="detailExamples"><button type="button" data-example="광주 동구에서 출발해 오후에 서구 전시회 보고 맛집도 가고 싶어">🏛 서구 전시 + 맛집</button><button type="button" data-example="퇴근하고 저녁에 북구에서 무료로 할 만한 거 추천해줘">🌙 퇴근 후 저녁 · 무료</button><button type="button" data-example="토요일 오전에 남구에서 아이랑 갈 만한 곳 추천해줘">👶 주말 오전 아이랑</button></div>
         <button id="detailSubmit" type="button" class="detailSubmit">🔎 이 조건으로 장소 찾기</button>
@@ -3172,8 +3172,8 @@ function openToday(v) {
    "지금 출발 → 이동시간 → 도착 → 충분한 관람시간 → 입장마감·폐관 전" 이 성립하는 곳만 추천한다.
    예) 16:00 출발 · 대중교통 1시간 → 17:00 도착이면 17:00 폐관(입장마감 16:30) 미술관은 빠진다.
    운영시간을 확인할 수 없는 실내 시설은 추천하지 않는다(모르는 건 단정하지 않기). */
-const TRIP_SPEED = { 도보: 4.5, 대중교통: 16, 자동차: 24 };          // km/h · 시내(처음 12km) 속도
-const TRIP_SPEED_FAR = { 도보: 4.5, 대중교통: 32, 자동차: 55 };      // km/h · 시·군을 넘는 먼 길(시외버스·국도)
+const TRIP_SPEED = { 도보: 4.5, 대중교통: 18, 자동차: 24 };          // km/h · 시내(처음 12km) 속도
+const TRIP_SPEED_FAR = { 도보: 4.5, 대중교통: 90, 자동차: 95 };      // 시외·고속버스·KTX, 고속도로      // km/h · 시·군을 넘는 먼 길(시외버스·국도)
 const TRIP_DEFAULT_LEG = { 도보: 30, 대중교통: 60, 자동차: 40 };      // 출발지·도착지 위치를 아예 모를 때만
 const TRIP_DUR = { "1시간": 60, "2시간": 120, "3시간": 180, "반나절": 300, "하루": 600 };
 /* 시·군·구 대략 중심(시청·군청 근처). 좌표가 없는 장소의 이동시간을 어림할 때만 쓴다 */
@@ -3183,7 +3183,7 @@ const DISTRICT_CENTER = {
   "순천시":[34.951,127.487],"여수시":[34.760,127.662],"광양시":[34.941,127.696],"보성군":[34.771,127.080],"구례군":[35.202,127.463],"곡성군":[35.282,127.292],"고흥군":[34.611,127.285],
   "목포시":[34.812,126.392],"무안군":[34.990,126.482],"신안군":[34.833,126.351],"영암군":[34.800,126.697],"해남군":[34.573,126.599],"진도군":[34.487,126.263],"완도군":[34.311,126.755],"강진군":[34.642,126.767],"장흥군":[34.682,126.907],"함평군":[35.066,126.517],"영광군":[35.277,126.512]
 };
-function tripMoveKey(m) { m = String(m || ""); return /도보|걸어/.test(m) ? "도보" : /자동차|자차|차로|운전|드라이브/.test(m) ? "자동차" : "대중교통" }
+function tripMoveKey(m) { m = String(m || ""); return /도보|걸어/.test(m) ? "도보" : /버스|지하철|대중교통|기차|ktx|srt|열차|택시/i.test(m) ? "대중교통" : "자동차" }
 function tripNowMin() { const n = kstNow(); return n.getUTCHours() * 60 + n.getUTCMinutes() }
 function tripHM(m) { m = Math.max(0, Math.round(m)); return `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}` }
 function tripDistrictOf(x) {
@@ -3211,8 +3211,8 @@ function kmAny(a, b) { const A = tripCoord(a), B = tripCoord(b); return A && B ?
 function tripLegMin(a, b, move) {
   const A = tripCoord(a), B = tripCoord(b); if (!A || !B) return null;
   const k = tripMoveKey(move), d = km(A, B); if (d == null) return null;
-  const road = d * 1.35, near = Math.min(road, 12), far = Math.max(0, road - 12);
-  let base = near / TRIP_SPEED[k] * 60 + far / TRIP_SPEED_FAR[k] * 60 + (k === "대중교통" ? (far ? 20 : 12) : k === "자동차" ? 8 : 0); // 기다림·갈아타기·주차
+  const road = d * 1.35, near = Math.min(road, 7), far = Math.max(0, road - 7);
+  let base = near / TRIP_SPEED[k] * 60 + far / TRIP_SPEED_FAR[k] * 60 + (k === "대중교통" ? (far ? 5 : 10) : k === "자동차" ? 8 : 0); // 기다림·갈아타기·주차
   if ((A.approx || B.approx) && d < 3) base = Math.max(base, k === "도보" ? 30 : 25); // 같은 시·군 안인데 정확한 위치를 몰라 중심으로 잰 경우
   return Math.max(5, Math.round(base / 5) * 5);
 }
@@ -3434,9 +3434,10 @@ window.tripCheck = tripCheck; window.tripFitsFrom = tripFitsFrom;
 /* 현재 시각과 현지 운영시간을 함께 검토하는 추천. 불확실한 시각은 운영 중으로 단정하지 않는다. */
 let NOWSTART_SHIFT = 0;
 function clockMinutes(s) { const m=String(s||'').match(/(\d{1,2}):(\d{2})/); return m ? +m[1]*60 + +m[2] : null; }
+function nowMove(){ return document.querySelector('.choiceRow[data-choice="move"] button.on')?.textContent.trim()||'자동차' }
 function nowTimeWindow(item, event, current) {
   // 지금 출발 → 이동(내 동네가 있으면 거리로, 없으면 대중교통 1시간) → 도착 후 충분히 볼 수 있는지 + 입장마감 확인
-  const t=current.getUTCHours()*60+current.getUTCMinutes(), leg=tripFirstLeg(item,{move:'대중교통'});
+  const t=current.getUTCHours()*60+current.getUTCMinutes(), leg=tripFirstLeg(item,{move:nowMove()});
   const r=tripCheck(item,event?'event':'venue',t+leg.min,{latest:t+leg.min+120});
   if(!r.ok) return {ok:false};
   if(r.always) return {ok:true,rank:2,label:`${leg.from?leg.from+'에서 ':''}약 ${leg.min}분 · 상시 개방 · ${tripHM(t+leg.min)}쯤 도착`,unsure:r.unsure};
@@ -3461,13 +3462,19 @@ function renderNowStart(refresh=false) {
   for(const p of candidates){const key=(p.x.venue||p.x.name||p.x.title||'').trim();if(used.has(key))continue;used.add(key);unique.push(p)}
   const rot=unique.length ? unique.slice(NOWSTART_SHIFT%unique.length).concat(unique.slice(0,NOWSTART_SHIFT%unique.length)) : [];
   const picks=rot.slice(0,3);
-  if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 가볼 곳·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
+  if(!picks.length){
+    const o=tripOriginInfo({}), R=REGIONS[REGION], hubO=ORIGINS[REGION_ORIGIN[REGION]];
+    const far=o.from&&hubO?tripLegMin(o.from,{lat:hubO[1],lng:hubO[2]},nowMove()):null;
+    const farTxt=far&&far>=60?`${o.label}에서 ${RNAME()}까지 ${nowMove()}로 약 ${Math.floor(far/60)}시간${far%60?` ${far%60}분`:''} 걸려서, 지금 출발하면 문 닫기 전에 충분히 둘러볼 곳이 없어요.`:`지금(${hh}:${mm}) 출발해서 입장마감 전에 충분히 볼 수 있는 곳을 찾지 못했어요.`;
+    const alt=hubO&&o.label!==hubO[0]?`<button class="nowRefresh" type="button" onclick="setOrigin('${REGION_ORIGIN[REGION]}')">🚩 ${hubO[0]}에서 출발로 보기</button>`:'';
+    grid.innerHTML=`<div class="nowPick" style="grid-column:1/-1"><b>🕓 ${esc(o.label||'출발지')} 기준으로는 지금 갈 만한 곳이 없어요</b><small>${esc(farTxt)} 내일 일정은 위 '오늘 뭐하지?'에서 골라 보세요.</small><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${alt}<button class="nowRefresh" type="button" onclick="showTab('places')">🏛 ${esc(RW())} 가볼 곳 전체 보기</button></div></div>`;
+    if(note)note.textContent=`🚩 ${o.label||'미정'}에서 ${nowMove()}로 출발 기준`;return}
   const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'가볼 곳');
   const name=p=>p.kind==='event'?p.x.title:p.x.name;
   const meta=p=>{const d=homeKm(p.x);return `${p.window.label} · ${p.kind==='event'?(p.x.venue||''):(p.x.district||'')}${d!=null?` · 🏠 ${d<0.95?Math.max(100,Math.round(d*10)*100)+'m':d.toFixed(1)+'km'}`:''} · ${p.kind==='event'?(p.x.time||''):(p.x.hours||'')}`};
   const click=p=>p.kind==='event'?`detail('${esc(p.x.id)}')`:`aiProfile('${esc(p.x.id)}')`;
   grid.innerHTML=picks.map((p,i)=>`<button class="nowPick" type="button" onclick="${click(p)}"><div class="nowPickTop"><span class="nowPickNo">${i+1}</span><span class="nowPickTag">${esc(tag(p))}</span></div><b>${esc(name(p))}</b><small>${esc(meta(p))}</small></button>`).join('');
-  if(note){const o=tripOriginInfo({});note.textContent=`🚩 ${o.label||'미정'}에서 대중교통으로 출발 기준 · 임시휴무는 방문 전 확인`}
+  if(note){const o=tripOriginInfo({});note.textContent=`🚩 ${o.label||'미정'}에서 ${nowMove()}로 출발 기준 · 임시휴무는 방문 전 확인`}
 }
 window.renderNowStart=renderNowStart;
 setInterval(()=>{ if(document.visibilityState!=="hidden" && typeof EVENTS!=="undefined") renderNowStart() }, 5*60e3);
@@ -4810,7 +4817,7 @@ function vStep(id, time, extra = "") {
   const now = eventsAt(v).filter(e => (!e.start || e.start <= todayISO()))[0];
   return { time, title: v.name, sub: [now ? `지금: ${now.title}` : "", v.hours, v.price, extra].filter(Boolean).join(" · "), img: v.image, id: v.id, v };
 }
-function addMoves(steps) { for (let i = 1; i < steps.length; i++) { const a = steps[i - 1].v || steps[i - 1].x, b = steps[i].v || steps[i].x; const d = a && b ? km(a, b) : null; if (d != null) steps[i].move = d <= 1.5 ? `걸어서 ${kmTxt(d)}` : `${kmTxt(d)} · 택시·버스` } return steps }
+function addMoves(steps) { for (let i = 1; i < steps.length; i++) { const a = steps[i - 1].v || steps[i - 1].x, b = steps[i].v || steps[i].x; const d = a && b ? km(a, b) : null; if (d != null) steps[i].move = d <= 1.5 ? `걸어서 ${kmTxt(d)}` : `${kmTxt(d)} · 차로 약 ${tripLegMin(a, b, "자동차") ?? Math.round(d * 2 + 8)}분` } return steps }
 /* ════════ 여행 일정표: KTX 당일치기 · 1박 2일 · 2박 3일 (자가용·시내도 같은 틀) ════════ */
 function tripMode(s) { return /2박|3일|사흘/.test(s) ? 3 : /1박|2일|이틀/.test(s) ? 2 : 1 }
 /* ════════ 권역별 KTX 일정표: 무안목포권(목포역) · 순천여수권(여수엑스포역·순천역) ════════
@@ -5414,6 +5421,7 @@ function initDecisionMiniMap(picks){
     row.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
       row.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
       btn.classList.add('on');
+      if(row.dataset.choice==='move') try{renderNowStart()}catch(e){}
     }));
   });
   const go=document.getElementById('decideGo');
