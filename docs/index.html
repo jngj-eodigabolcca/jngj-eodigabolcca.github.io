@@ -1385,7 +1385,6 @@ button{min-height:var(--tap)}
   .decideTop{margin-bottom:10px}
   .decideTop .eyebrow{display:none}
   .decideTop h2{font-size:23px!important;line-height:1.22;margin:5px 0 5px}
-  .decideTop h2 br{display:none}
   .decideTop p{font-size:12.5px;line-height:1.5}
   .autoLive{font-size:10.5px;padding:5px 8px;margin-top:7px}
   .decisionWeather{font-size:11.5px;padding:7px 9px;border-radius:11px;margin-bottom:9px}
@@ -1697,7 +1696,7 @@ button{min-height:var(--tap)}
   <div class="decide">
     <div class="decideTop">
       <div class="decisionHeroRow">
-        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2>오늘 뭐하지?<br>조건 몇 개만 고르면 바로 골라드려요.</h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 3개 코스로 묶습니다.</p></div>
+        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2><span class="dhLead">오늘 뭐하지?</span> 조건 몇 개만 고르면 바로 골라드려요.</h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 3개 코스로 묶습니다.</p></div>
         <div class="heroCreaming" aria-hidden="true">
           <div class="heroCreamingCard">
             <span class="heroCreamingBubble">크리밍이 같이 찾아볼게요</span>
@@ -1807,7 +1806,7 @@ button{min-height:var(--tap)}
   <div class="aiLeft">
     <div class="aiHead"><span>✨</span><div><b id="aiName">오늘어디로 길잡이</b><small id="aiSub">자동 수집된 최신 광주 정보에서 지금 가능한 선택지만 추려드려요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-    <div class="quick" id="quick"><button>비 오는 날 실내</button><button>산책하기 좋은 곳</button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button></div>
+    <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
 </div>
@@ -1854,7 +1853,7 @@ button{min-height:var(--tap)}
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요.</p><p style="font-size:12.5px;opacity:.75">개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</p><p style="font-size:12.5px;opacity:.75">사진: 한국관광공사 · 지도: © OpenStreetMap contributors · Esri · 날씨: Open-Meteo (연결 지연 시 보조 날씨 사용)</p><p style="font-size:12.5px;opacity:.75">일정 출처: 한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</p><p style="font-size:12px;opacity:.7">© 2026 오늘, 전남광주 어디로? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</p>
 <p style="font-size:12px;opacity:.7">크리밍 캐릭터 디자인은 저작권 등록되어 있으며, 무단 이용·복제·수정·재배포를 금지합니다.</p></div></footer>
 
 <nav class="bottom"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><img class="navHomeIcon" src="favicon-64.png" alt=""><span>홈</span></button><button data-jump="events">📅<span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
@@ -2243,7 +2242,7 @@ function renderQuick() {
   const q = document.getElementById("quick"); if (!q) return;
   if (!QUICK_GJ) QUICK_GJ = q.innerHTML;
   // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 9개, 순천여수권 12개)
-  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페"].map(t => `<button>${t}</button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
+  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
@@ -4042,7 +4041,7 @@ function renderLocal() {
   const nothing = !LIBS.length && !PROGRAMS.length;
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MY NEIGHBORHOOD</span><h2>동네서 시간 보내기<small>${esc(RW())} 도서관·구청·주민센터·평생학습관 강좌와 체험 — 대부분 무료거나 싸요</small></h2></div><span>${progs.length + openLibs.length}</span></div>
   <div class="subchips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${g}')">${g === "전체" ? "모든 동네" : g}</button>`).join("")}</div>
-  ${nothing ? `<div class="nowEmpty">🏘 동네 강좌·도서관 정보는 자동 수집이 처음 한 번 돈 뒤부터 채워져요. (공공데이터 '전국평생학습강좌표준데이터'·'전국도서관표준데이터')</div>` : ""}
+  ${nothing ? `<div class="nowEmpty">🏘 동네 강좌·도서관 정보는 자동 수집이 처음 한 번 돈 뒤부터 채워져요. (공공데이터 '전국 평생학습강좌 표준데이터'·'전국 도서관 표준데이터')</div>` : ""}
   ${exp.length ? `<h3 class="sub">이번 주 체험·교육 ${exp.length}</h3><div class="grid">${exp.slice(0, 12).map(eventCard).join("")}</div>` : ""}
   ${LIBS.length ? `<h3 class="sub" style="margin-top:22px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 12).map(([l]) => libCard(l)).join("")}</div>${libs.length > 12 ? `<p class="empty" style="text-align:left">그 밖에 ${libs.length - 12}곳 — 위에서 동네를 고르면 더 보여요.</p>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
@@ -5506,7 +5505,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.12 하단메뉴";
+const APP_VER = "10.14 줄바꿈";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6027,7 +6026,9 @@ window.openPrivacy = function(){
   };
 })();
 </script>
-<style>.footerManual .reviewLaunch{display:block;width:100%;margin:10px 0 0;border:1px solid #f0c98a;background:#fff6e6;color:#6a3f08;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
+<style>body{text-wrap:pretty}.nowRefresh{white-space:nowrap}.nw{white-space:nowrap}.quick button{text-wrap:wrap}
+.decideTop h2{word-break:keep-all;overflow-wrap:break-word;text-wrap:balance}.decideTop h2 .dhLead{display:block}.decideTop p{word-break:keep-all;text-wrap:pretty}.footNotice{max-width:440px;margin:0 auto 14px;padding:11px 14px;border-radius:14px;background:rgba(127,127,127,.09);font-size:12.5px;line-height:1.6;word-break:keep-all}.footNotice b{display:block;margin-bottom:2px;font-size:13px}
+.footerManual .reviewLaunch{display:block;width:100%;margin:10px 0 0;border:1px solid #f0c98a;background:#fff6e6;color:#6a3f08;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
 .rvHint{color:var(--muted);font-size:13px;margin:4px 0 12px}.rvFaces{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .rvFaces button{border:1px solid #e3dccf;background:#fff;border-radius:14px;padding:10px 4px;font-size:12.5px;font-weight:750;color:#3d4d45}.rvFaces button span{display:block;font-size:28px;line-height:1.2}
 .rvFaces button.on{border-color:#0d7770;background:#e0f2ef;color:#0d5b55}
