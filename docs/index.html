@@ -1248,6 +1248,18 @@ body.modal-open nav.bottom{display:none!important}
 .trustPill.sourceLink{min-height:32px;display:inline-flex;align-items:center;padding:6px 12px}
 .rightQuickToggle{min-width:32px}
 @media (pointer:coarse){.homeBar select{min-height:40px}}
+.originBar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px;font-size:13px}
+.originBar b{color:var(--green-d);margin-right:2px}.originBar button{min-height:34px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-weight:800;font-size:13px;color:var(--ink2)}
+.originBar button.on{background:var(--green);border-color:var(--green);color:#fff}.originBar small{flex-basis:100%;color:var(--muted);font-size:11.5px}
+.originBar.dark b{color:#ffe1a8}.originBar.dark small{color:#cfdcd3}.originBar.dark button{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff}.originBar.dark button.on{background:var(--gold);border-color:var(--gold);color:#2f1d02}
+:root[data-theme="dark"] .originBar:not(.dark) button{background:var(--card)}
+
+/* 오늘 하루 플랜의 식당 칸: 버튼을 아래로 내려 글자가 세로로 늘어지지 않게 */
+html body .planMeal{grid-template-columns:auto minmax(0,1fr);row-gap:4px}
+html body .planMeal span{grid-row:1/3;max-width:76px}
+html body .planMeal b,html body .planMeal small{grid-column:2;min-width:0}
+html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:4px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #f3c9bc}
+:root[data-theme="dark"] .planMeal a{background:var(--card);border-color:#5a3f37}
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -1712,6 +1724,7 @@ button{min-height:var(--tap)}
       </div>
       <span class="autoLive">자동 갱신 데이터</span>
     </div>
+    <div class="originBar"></div>
     <div class="decisionWeather" id="decisionWeather">🌤 오늘 날씨를 확인해 추천에 반영할게요.</div>
     <div class="decideGrid">
       <div class="choiceGroup"><b>누구와?</b><div class="choiceRow" data-choice="with"><button class="on">연인</button><button>혼자</button><button>친구</button><button>아이</button><button>부모님</button><button>🐶 반려견</button></div></div>
@@ -1812,6 +1825,7 @@ button{min-height:var(--tap)}
   <div class="aiLeft">
     <div class="aiHead"><span>✨</span><div><b id="aiName">오늘어디로 길잡이</b><small id="aiSub">자동 수집된 최신 광주 정보에서 지금 가능한 선택지만 추려드려요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
+    <div class="originBar dark"></div>
     <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
@@ -2229,7 +2243,7 @@ function renderRegionBar() {
 }
 function renderAll() {
   $("#eventNum").textContent = EVENTS.length; $("#placeNum").textContent = VENUES.length; $("#foodNum").textContent = FOOD.length; $("#cafeNum").textContent = CAFES.length;
-  renderRegionBar(); renderHomeBar(); renderQuick();
+  renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
   renderMeta(); renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); renderFavs(); renderGallery();
 }
 window.setRegion = r => {
@@ -3095,59 +3109,8 @@ function renderToday() {
     /광주광역시/.test(anchor.address || "") || GJ_DISTRICTS.has(anchor.district)
   );
   const mealNear = (anchor, label) => {
-    if (!anchor) return null;
-
-    if (anchor.kind === "무등산 트레킹") {
-      const f = FOOD.find(x => x.id === "st-bori");
-      if (f) return {
-        label,
-        name: f.name,
-        sub: "산에서 내려오는 동선 · " + (f.menu || f.note || "보리밥"),
-        reason: "무등산 하산 동선에 있는 식당을 우선했어요.",
-        link: mapLink(f.name + " " + (f.district || "")),
-        food: f
-      };
-    }
-
-    // 광주 안은 8km, 광주 밖(장성·담양 등)은 15km 안의 실제 좌표 후보만 허용.
-    const maxKm = isGwangjuAnchor(anchor) ? 8 : 15;
-    const near = nearest(anchor, FOOD, maxKm);
-
-    if (near) {
-      const [f, dist] = near;
-      return {
-        label,
-        name: f.name,
-        sub: [f.menu, f.district, kmTxt(dist)].filter(Boolean).join(" · "),
-        reason: `직전 장소에서 ${kmTxt(dist)} · 반경 ${maxKm}km 안의 등록 식당 중 가까운 곳을 골랐어요.`,
-        link: mapLink(f.name + " " + (f.district || "")),
-        food: f
-      };
-    }
-
-    // 광주 안에서 좌표 후보가 없을 때만 같은 구의 공식 맛집을 보조 후보로 사용.
-    if (isGwangjuAnchor(anchor) && anchor.district) {
-      const sameGu = official.filter(x => x.district === anchor.district);
-      const f = pickR(sameGu, r);
-      if (f) return {
-        label,
-        name: f.name,
-        sub: [f.menu, f.district, "같은 구 후보"].filter(Boolean).join(" · "),
-        reason: "가까운 거리값을 확인할 수 없어 같은 구의 공식 선정 맛집으로만 보조 추천했어요. 이동거리는 지도로 확인해 주세요.",
-        link: mapLink(f.name + " " + f.district),
-        food: f
-      };
-    }
-
-    // 장성·담양·전남 등에서 가까운 등록 식당이 없으면 엉뚱한 광주 식당을 추천하지 않는다.
-    return {
-      label,
-      name: `${anchor.name || anchor.title || "현재 장소"} 근처 식당`,
-      sub: `등록된 식당 중 ${maxKm}km 이내 검증 후보가 없어요.`,
-      reason: "멀리 돌아가는 식당을 임의 추천하지 않고, 직전 장소 주변 검색으로 안내해요.",
-      link: searchNear(anchor.name || anchor.title || anchor.address || "현재 위치", "맛집"),
-      searchOnly: true
-    };
+    const m = pickMeal(anchor, FOOD, "plan" + label);
+    return m && { label, name: m.name, sub: m.sub, reason: m.why, link: m.link, food: m.food, searchOnly: m.searchOnly };
   };
   const evPlan = (e, slot, icon, extra) => { const dl = daysLeft(e); return { slot, icon, img: imgOf(e), title: e.title, desc: `${e.venue} · ${e.time || e.date}`, why: [extra || "", dl === 0 ? "오늘 마지막 날!" : dl != null && dl <= 10 ? `D-${dl} 마감` : "", tLabel(e)[1]].filter(Boolean), query: `${e.title} 보고 맛집 카페`, anchor: e, eventId: e.id, x: VENUES.find(v => v.id === e.venueId) || e } };
   const vPlan = (v, slot, icon, extra) => ({ slot, icon, img: v.image, title: v.name, desc: v.desc || v.note || v.hours, why: [extra, v.inout, /무료/.test(v.price || "") ? "무료" : "", openToday(v) === true ? "오늘 문 열어요" : ""].filter(Boolean), query: `${v.name} 보고 맛집 카페`, anchor: v, mapId: v.id, x: v });
@@ -3254,11 +3217,29 @@ function tripLegMin(a, b, move) {
   return Math.max(5, Math.round(base / 5) * 5);
 }
 /* 출발지: ① 문장에 적은 출발지 ② 🏠 내 동네(또는 지금 위치) ③ 고른 권역의 중심 도시 */
+/* 🚩 출발지: 시청 기준으로 고름 (광주·목포·순천·여수). 안 고르면 권역의 대표 시청 */
+const ORIGINS = { gj: ["광주시청", 35.1601, 126.8514], mp: ["목포시청", 34.8118, 126.3922], sc: ["순천시청", 34.9507, 127.4872], ys: ["여수시청", 34.7604, 127.6622] };
+const REGION_ORIGIN = { gj: "gj", mp: "mp", ys: "sc" };
+let ORIGIN = (() => { try { const v = JSON.parse(localStorage.getItem("glm_origin")); return ORIGINS[v] ? v : null } catch (e) { return null } })();
+function originKey() { return ORIGIN || REGION_ORIGIN[REGION] || "gj" }
+function renderOriginBars() {
+  document.querySelectorAll(".originBar").forEach(el => {
+    const k = originKey();
+    el.innerHTML = `<b>🚩 어디서 출발해요?</b>` + Object.entries(ORIGINS).map(([key, o]) => `<button type="button" class="${key === k ? "on" : ""}" onclick="setOrigin('${key}')">${o[0].replace("시청", "")}</button>`).join("") + `<small>${ORIGINS[k][0]} 기준으로 이동시간을 계산해요${ORIGIN ? "" : " (권역에 맞춰 자동)"}</small>`;
+  });
+}
+window.setOrigin = k => {
+  ORIGIN = ORIGINS[k] ? k : null; try { localStorage.setItem("glm_origin", JSON.stringify(ORIGIN)) } catch (e) {}
+  renderOriginBars(); try { renderNowStart() } catch (e) {}
+  const q = document.getElementById("aiq")?.value; if (q && document.querySelector("#answer .course")) recommend(q);
+  toast(`🚩 ${ORIGINS[k][0]}에서 출발하는 것으로 계산할게요`);
+};
 function tripOriginInfo(opt = {}) {
   if (opt.from) return { from: opt.from, label: opt.fromLabel || "입력한 출발지", how: "input" };
+  if (ORIGIN) { const o = ORIGINS[ORIGIN]; return { from: { lat: o[1], lng: o[2] }, label: o[0], how: "origin" } }
   try { if (typeof HOME !== "undefined" && HOME && HOME.lat != null) return { from: { lat: HOME.lat, lng: HOME.lng }, label: HOME.src === "gps" ? `지금 위치(${HOME.gu})` : `🏠 ${HOME.gu}`, how: "home" } } catch (e) {}
   const R = (typeof REGIONS !== "undefined" && REGIONS[REGION]) || null;
-  if (R && R.wx) return { from: { lat: R.wx[0], lng: R.wx[1] }, label: `${R.hub} 시내`, how: "hub" };
+  if (R) { const o = ORIGINS[originKey()]; return { from: { lat: o[1], lng: o[2] }, label: o[0], how: "hub" } }
   return { from: null, label: "", how: "none" };
 }
 function tripFirstLeg(x, opt = {}) {
@@ -3273,7 +3254,7 @@ function tripOriginNote(leg, move) {
   const mv = tripMoveKey(move);
   if (leg.how === "none") return `출발지를 몰라 첫 장소까지 ${mv} 약 ${leg.min}분으로 어림했어요`;
   let t = `출발 기준: ${leg.from} · 첫 장소까지 ${mv} 약 ${leg.min}분`;
-  if (leg.how === "hub") t += ` (출발지를 몰라 ${leg.from} 기준으로 잡았어요 · 맨 위 🏠 사는 동네를 고르거나 '○○에서 출발'이라고 적으면 거기서 계산해요)`;
+  if (leg.how === "hub") t += ` (위 '어디서 출발해요?'에서 바꿀 수 있어요)`;
   if (leg.approx) t += " · 정확한 위치가 없는 곳은 시·군 중심으로 어림했어요";
   return t;
 }
@@ -3486,7 +3467,7 @@ function renderNowStart(refresh=false) {
   const meta=p=>{const d=homeKm(p.x);return `${p.window.label} · ${p.kind==='event'?(p.x.venue||''):(p.x.district||'')}${d!=null?` · 🏠 ${d<0.95?Math.max(100,Math.round(d*10)*100)+'m':d.toFixed(1)+'km'}`:''} · ${p.kind==='event'?(p.x.time||''):(p.x.hours||'')}`};
   const click=p=>p.kind==='event'?`detail('${esc(p.x.id)}')`:`aiProfile('${esc(p.x.id)}')`;
   grid.innerHTML=picks.map((p,i)=>`<button class="nowPick" type="button" onclick="${click(p)}"><div class="nowPickTop"><span class="nowPickNo">${i+1}</span><span class="nowPickTag">${esc(tag(p))}</span></div><b>${esc(name(p))}</b><small>${esc(meta(p))}</small></button>`).join('');
-  if(note){const o=tripOriginInfo({});note.textContent=`출발 기준: ${o.label||'미정'} · 대중교통${o.how==='hub'?' · 🏠 사는 동네를 고르면 거기서 계산해요':''} · 임시휴무는 방문 전 확인`}
+  if(note){const o=tripOriginInfo({});note.textContent=`🚩 ${o.label||'미정'}에서 대중교통으로 출발 기준 · 임시휴무는 방문 전 확인`}
 }
 window.renderNowStart=renderNowStart;
 setInterval(()=>{ if(document.visibilityState!=="hidden" && typeof EVENTS!=="undefined") renderNowStart() }, 5*60e3);
@@ -4667,6 +4648,37 @@ function coordOf(x) { if (x && x.lat) return { lat: x.lat, lng: x.lng }; const v
 function km(a, b) { const A = coordOf(a), B = coordOf(b); if (!A || !B) return null; const R = 6371, r = Math.PI / 180, dLat = (B.lat - A.lat) * r, dLng = (B.lng - A.lng) * r; const h = Math.sin(dLat / 2) ** 2 + Math.cos(A.lat * r) * Math.cos(B.lat * r) * Math.sin(dLng / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)) }
 function nearest(anchor, list, maxKm = 4) { return list.map(x => [x, km(anchor, x)]).filter(([, d]) => d != null && d <= maxKm).sort((a, b) => a[1] - b[1])[0] || null }
 const kmTxt = d => d == null ? "" : d < 0.1 ? "바로 옆" : d < 1 ? `약 ${Math.round(d * 10) * 100}m` : `약 ${d.toFixed(1)}km`;
+
+/* 🍲 직전 장소 근처 식당 고르기: 가까운 등록 식당 → 범위 넓혀서 → 같은 시·군 → 그래도 없으면 지역 향토음식 안내 */
+const LOCAL_DISH = {"동구":"떡갈비·오리탕·육전","서구":"오리탕·육전·떡갈비","남구":"떡갈비·한정식","북구":"보리밥·오리탕","광산구":"송정떡갈비·국밥",
+  "담양군":"떡갈비·대통밥","화순군":"흑염소","나주시":"나주곰탕","장성군":"민물매운탕",
+  "순천시":"꼬막정식·짱뚱어탕","여수시":"게장백반·서대회","광양시":"광양불고기","보성군":"벌교꼬막·녹돈","구례군":"산채정식","곡성군":"참게탕","고흥군":"장어구이",
+  "목포시":"세발낙지·민어회","무안군":"뻘낙지·양파한우","신안군":"짱뚱어탕·민어","영암군":"갈낙탕","해남군":"닭코스요리·남도한정식","진도군":"간재미무침·꽃게탕",
+  "완도군":"전복","강진군":"남도한정식","장흥군":"한우삼합","함평군":"육회비빔밥","영광군":"굴비정식"};
+const MEAL_TIP = "맛·평점·영업시간은 지도 후기에서 확인하고 가세요";
+function pickMeal(anchor, pool = FOOD, seedKey = "meal") {
+  if (!anchor) return null;
+  const nm = (anchor.name || anchor.title || anchor.venue || "현재 장소").split(" (")[0];
+  const fmt = (f, d, reason) => ({ name: f.name, food: f,
+    sub: [f.menu, f.district, d != null ? kmTxt(d) : ""].filter(Boolean).join(" · "),
+    why: `${reason} · ${MEAL_TIP}`, link: mapLink(f.name + " " + (f.district || "")) });
+  if (anchor.kind === "무등산 트레킹") { const f = FOOD.find(x => x.id === "st-bori"); if (f) return fmt(f, null, "무등산에서 내려오는 길목 식당") }
+  const withD = pool.map(f => [f, kmAny(anchor, f)]).filter(([, d]) => d != null).sort((a, b) => a[1] - b[1]);
+  for (const lim of [8, 20, 35]) {
+    const c = withD.filter(([, d]) => d <= lim).slice(0, 6);
+    if (c.length) { const f = aiDiverse(c.map(x => x[0]), seedKey + lim, 1, 6)[0]; const d = c.find(x => x[0] === f)[1];
+      return fmt(f, d, `${nm}에서 ${kmTxt(d)} 떨어진 앱 등록 식당`) }
+  }
+  const dist = anchor.district || tripDistrictOf(anchor);
+  const same = pool.filter(f => f.district && f.district === dist);
+  if (same.length) return fmt(aiDiverse(same, seedKey + "gu", 1, 8)[0], null, `${nm}와 같은 ${dist}의 앱 등록 식당`);
+  // 앱에 등록된 식당이 아직 없으면: 지어내지 않고 그 지역 대표 음식 + 근처 검색
+  const dish = LOCAL_DISH[dist] || "향토음식";
+  return { name: `${(dist || nm).replace(/[시군]$/, "")} 대표 음식: ${dish}`, searchOnly: true,
+    sub: `${nm} 근처에서 ${dish.split("·")[0]} 잘하는 집을 지도로 바로 찾아드려요`,
+    why: `이 지역 식당 정보는 아직 모으는 중이에요 · ${MEAL_TIP}`,
+    link: searchNear(nm, dish.split("·")[0]) };
+}
 const searchNear = (place, what) => `https://map.naver.com/p/search/${encodeURIComponent(place + " 근처 " + what)}`;
 
 /* 이름으로 바로 찾기: '하정웅', '수목원'처럼 장소 이름 일부가 들어 있으면 그곳을 우선 */
@@ -5176,55 +5188,10 @@ function recommend(t, forced = null, fixedMeal = null) {
       }
     } else {
     let fd = FOOD.filter(r => !want || (r.menu || "").includes(want) || r.name.includes(want));
-    if (anchor && /증심사/.test((anchor.name || "") + (anchor.address || "")) && !want) {
-      fd = FOOD.filter(r => r.id === "st-bori").concat(fd.filter(r => r.id !== "st-bori"));
-    }
-
-    const gjDistricts = new Set(["동구","서구","남구","북구","광산구"]);
-    const anchorInGwangju = !!anchor && (/광주광역시/.test(anchor.address || "") || gjDistricts.has(anchor.district));
-    const foodRadius = anchorInGwangju ? 8 : 15;
-    const nearPool = anchor ? aiNearestChoices(anchor, fd, foodRadius, 10) : [];
-    const nearPick = aiDiverse(nearPool, aiQueryKey(s,"food"), 1, 10)[0];
-    const near = nearPick && anchor ? [nearPick, km(anchor, nearPick)] : null;
-
-    if (near && near[1] != null) {
-      out.push({
-        t: "맛집",
-        name: near[0].name,
-        sub: `${near[0].badge || ""}${near[0].menu ? " · " + near[0].menu : ""} · ${near[0].district || ""} · ${kmTxt(near[1])}`,
-        why: `추천 이유 · 직전 장소에서 ${kmTxt(near[1])}, 반경 ${foodRadius}km 안의 등록 식당 중 가까운 후보`,
-        d: near[0].district,
-        x: near[0]
-      });
-    } else if (anchorInGwangju && gu) {
-      const sameGu = fd.filter(r => r.district === gu);
-      const pick = aiDiverse(sameGu, aiQueryKey(s,"food-same-gu"), 1, 10)[0];
-      if (pick) {
-        out.push({
-          t: "맛집",
-          name: pick.name,
-          sub: `${pick.badge || ""}${pick.menu ? " · " + pick.menu : ""} · ${pick.district} · 같은 구 후보`,
-          why: "추천 이유 · 가까운 거리값이 없어 같은 구의 검증된 후보로 제한했어요. 실제 이동거리는 지도에서 확인하세요.",
-          d: pick.district,
-          x: pick
-        });
-      }
-    }
-
-    if (!out.some(o => o.t === "맛집") && !anchor && want) {
-      out.push({t:"맛집",name:`${want} 맛집 찾아보기 ↗`,sub:"등록된 식당에서 조건에 맞는 곳을 찾지 못했어요. 지도에서 가까운 식당을 확인해 주세요.",link:searchNear(RNAME(),want)});
-    }
-    // 가까운 검증 후보가 없으면 원거리 식당을 억지로 붙이지 않는다.
-    const hasFood = out.some(o => o.t === "맛집");
-    if (!hasFood && anchor) {
-      out.push({
-        t: "맛집",
-        name: `${anchor.name || anchor.title || "현재 장소"} 근처 맛집 찾기 ↗`,
-        sub: `등록 데이터에서 ${foodRadius}km 이내 검증 식당을 찾지 못했어요.`,
-        why: "추천 이유 · 엉뚱한 원거리 식당 대신 직전 장소 주변의 최신 지도 검색을 안내합니다.",
-        link: searchNear(anchor.name || anchor.title || anchor.address || "현재 장소", "맛집")
-      });
-    }
+    if (!fd.length) fd = FOOD;
+    const m = anchor ? pickMeal(anchor, fd, aiQueryKey(s, "food")) : null;
+    if (m) out.push({ t: "맛집", name: m.name + (m.searchOnly ? " ↗" : ""), sub: m.sub, why: m.why, d: m.food?.district, x: m.food || null, link: m.searchOnly ? m.link : "" });
+    else if (want) out.push({ t: "맛집", name: `${want} 맛집 찾아보기 ↗`, sub: MEAL_TIP, link: searchNear(RNAME(), want) });
     }
   }
   // 3) 카페: 4km 안에 등록된 카페가 없으면 지어내지 않고 '근처 카페' 지도 검색으로
@@ -5249,13 +5216,13 @@ function recommend(t, forced = null, fixedMeal = null) {
     for (let i = 0; i < out.length; i++) {
       const o = out[i]; if (!o.x || o.link) continue; const k = kindOf(o.x); if (k === "stay") continue;
       let leg;
-      if (prev) { leg = tripLegMin(prev, o.x, s); if (leg == null) { out.splice(i, 1); i--; continue } }
+      if (prev) { leg = tripLegMin(prev, o.x, s); if (leg == null || (leg > (/자동차|자차|차로/.test(s) ? 60 : 75) && !FOOD.includes(o.x))) { out.splice(i, 1); i--; continue } }
       else { firstLeg = tripFirstLeg(o.x, { move: s, from: originC, fromLabel: originName }); leg = firstLeg.min }
       const r = tripCheck(o.x, k, tt + leg);
       if (!r.ok) { out.splice(i, 1); i--; continue }
       o.sub = `⏰ ${prev ? "이동 약 " + leg + "분 → " : ""}${r.note}${r.unsure ? " · 가기 전 확인" : ""}${o.sub ? " · " + o.sub : ""}`; tt = r.leave; prev = o.x;
     }
-    if (firstLeg) tripHead = `🕓 ${tripHM(t0)} 출발 · ` + tripOriginNote(firstLeg, s);
+    if (firstLeg) tripHead = `🚩 ${tripHM(t0)} ${firstLeg.from || "출발지 미정"}에서 출발 → 첫 장소까지 약 ${firstLeg.min}분` ;
     if (!out.length) { $("#answer").innerHTML = `<b>🕓 지금 출발하면 제대로 볼 수 있는 곳이 마땅치 않아요</b><p class="pfNote">이동시간과 입장마감·폐관 시각을 따져보니, 남은 시간 안에 충분히 둘러볼 곳을 찾지 못했어요. 야경·산책·맛집처럼 늦게까지 여는 곳으로 다시 물어보세요.</p>`; scrollAI?.(); return; }
   }
 
@@ -5263,8 +5230,10 @@ function recommend(t, forced = null, fixedMeal = null) {
   const pts = out.filter(o => o.x && coordOf(o.x));
   let far = 0; for (let i = 1; i < pts.length; i++) far = Math.max(far, km(pts[i - 1].x, pts[i].x) || 0);
   const note = pts.length >= 2 ? (far <= 1.5 ? `걸어서 이동할 수 있는 거리예요 (구간 최대 ${kmTxt(far)}).` : `구간 최대 ${kmTxt(far)} · 차나 버스로 이동하세요.`) : "거리는 지도 탭에서 확인해 보세요.";
-  const head = [rain ? "☔ 실내 위주" : outdoor ? "🌤 야외 위주" : "", gu ? `${gu} 중심` : ""].filter(Boolean).join(" · ");
-  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,3).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
+  const firstX = out.find(o => o.x && !o.link)?.x;
+  if (!tripHead && firstX) { const o0 = tripOriginInfo({}); if (o0.label) tripHead = `🚩 ${o0.label}에서 출발 기준` }
+  const head = [rain ? "☔ 실내 위주" : outdoor ? "🌤 야외 위주" : "", firstX && tripDistrictOf(firstX) ? `${tripDistrictOf(firstX)} 일대 코스` : ""].filter(Boolean).join(" · ");
+  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
 }
 function petList(s) {
   const gu = (s.match(/(동구|서구|남구|북구|광산구)/) || [])[1], big = /대형|큰|마당|야외/.test(s);
