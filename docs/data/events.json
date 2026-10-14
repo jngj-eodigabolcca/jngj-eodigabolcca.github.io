@@ -172,7 +172,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "광주"
@@ -204,7 +204,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&amp;action=Read&amp;bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "행사",
       "교육·체험",
@@ -244,7 +244,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "광주"
@@ -282,7 +282,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "광주"
@@ -385,7 +385,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=228",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -418,7 +418,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -458,7 +458,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "광주"
@@ -490,7 +490,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -523,7 +523,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15203110&amp;category_1=%EC%A0%84%EC%8B%9C&amp;mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -557,7 +557,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "행사",
       "교육·체험",
@@ -591,7 +591,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "행사",
       "교육·체험",
@@ -625,7 +625,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -659,7 +659,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -693,7 +693,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&amp;boardId=ART_001&amp;seq=1966136&amp;movePage=1&amp;recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -749,6 +749,40 @@
     "aliases": "여수세계섬박람회 여수섬박람회 섬박람회 2026 여수 국제 섬 박람회"
   },
   {
+    "detailAt": "2026-10-14",
+    "id": "culture-398725",
+    "apiId": "398725",
+    "category": "전시",
+    "subtype": "전시",
+    "title": "[광주광역시 남구 이강하미술관] 제16회 광주비엔날레 캐나다 파빌리온 《스간나 고와 겅? 당신은 커다란 평화를 품고 있습니까?》",
+    "venue": "이강하 미술관",
+    "venueId": "leekangha",
+    "district": "남구",
+    "address": "전남광주통합특별시 남구 3·1만세운동길 6 이강하 미술관",
+    "date": "2026-09-05 ~ 2026-11-15",
+    "time": "상세 확인",
+    "price": "무료",
+    "contact": "이강하미술관 062-674-8515",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-09-05",
+    "end": "2026-11-15",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202609/01f6455b21e742b893e9020d98228800.jpg",
+    "lat": 35.13688577785184,
+    "lng": 126.91562051289922,
+    "source": "한국문화정보원 문화정보",
+    "url": "http://lkh-artmuseum.com/default/",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-14",
+    "tags": [
+      "전시",
+      "전시",
+      "광주",
+      "무료"
+    ]
+  },
+  {
     "detailAt": "2026-10-13",
     "id": "culture-396666",
     "apiId": "396666",
@@ -774,7 +808,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -826,6 +860,40 @@
     "imageCredit": "한국관광공사 VISITKOREA · 대표 이미지"
   },
   {
+    "detailAt": "2026-10-14",
+    "id": "culture-396664",
+    "apiId": "396664",
+    "category": "전시",
+    "subtype": "전시",
+    "title": "제16회 광주비엔날레 대만 파빌리온 《인스턴스 던전: 회색지대》",
+    "venue": "국립아시아문화전당 문화창조원 복합 5관",
+    "venueId": "acc",
+    "district": "동구",
+    "address": "전남광주통합특별시 동구 문화전당로 38 국립아시아문화전당",
+    "date": "2026-09-05 ~ 2026-11-15",
+    "time": "상세 확인",
+    "price": "무료",
+    "contact": "국립아시아문화전당 1899-5566",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-09-05",
+    "end": "2026-11-15",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202609/93fba5655e984cfeb679d2059473c672.jpg",
+    "lat": 35.14704938925195,
+    "lng": 126.92005723156174,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009929",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-14",
+    "tags": [
+      "전시",
+      "전시",
+      "광주",
+      "무료"
+    ]
+  },
+  {
     "detailAt": "2026-10-13",
     "id": "culture-394038",
     "apiId": "394038",
@@ -851,7 +919,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -925,7 +993,7 @@
     "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&amp;bid=0315&amp;act=view&amp;list_no=1234&amp;mid=a70501000000&amp;bid=0315&amp;nPage=1&amp;b_list=10&amp;orderby=&amp;dept_code=&amp;tag=&amp;step_yn=&amp;list_no=1234&amp;act=view&amp;_csrf=751522b5-510b-4051-aefe-38319efb4426&amp;cg_code=C01&amp;keyField=&amp;keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "전시",
       "전시",
@@ -959,7 +1027,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4094",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "행사",
       "교육·체험",
@@ -1203,7 +1271,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4104",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "행사",
       "교육·체험",
@@ -1442,6 +1510,40 @@
     }
   },
   {
+    "detailAt": "2026-10-14",
+    "id": "culture-401602",
+    "apiId": "401602",
+    "category": "전시",
+    "subtype": "전시",
+    "title": "파노라마 워크 준공 기념전 《PANORAMA WALK : THE INFINITE LIGHT》",
+    "venue": "포스코미술관 광양",
+    "venueId": null,
+    "district": "광양시",
+    "address": "전남광주통합특별시 광양시 금호로 187-7 Park1538광양",
+    "date": "2026-10-06 ~ 2026-11-28",
+    "time": "상세 확인",
+    "price": "무료",
+    "contact": "포스코미술관 광양 061-790-1538",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-10-06",
+    "end": "2026-11-28",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202610/0b65fcf44e144821b034cf177dfa26c7.png",
+    "lat": 34.9425815129148,
+    "lng": 127.721939879768,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-14",
+    "tags": [
+      "전시",
+      "전시",
+      "전남",
+      "무료"
+    ]
+  },
+  {
     "time": "매주 목요일 19:30 (8일 가곡 · 15일 고흐 인문학 · 22일 오페라 · 29일 렉처콘서트)",
     "price": "예매 시 확인",
     "discount": "",
@@ -1559,6 +1661,40 @@
     "venueId": "ys-jinnamgwan",
     "image": "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23425b3b%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239eb682%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3E%EC%97%AC%EC%88%98%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%95%84%ED%8A%B8%20%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
     "imageCredit": "행사 안내용 비주얼"
+  },
+  {
+    "detailAt": "2026-10-14",
+    "id": "culture-401411",
+    "apiId": "401411",
+    "category": "행사",
+    "subtype": "교육·체험",
+    "title": "[저녁노을미술관] 작은 숲 탐험대",
+    "venue": "",
+    "venueId": null,
+    "district": "",
+    "address": "",
+    "date": "2026-10-10 ~ 2026-11-28",
+    "time": "상세 확인",
+    "price": "상세 확인",
+    "contact": "061-240-8062",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-10-10",
+    "end": "2026-11-28",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202610/271c1c67c95048a1be4218fd48c0ba18.jpg",
+    "lat": null,
+    "lng": null,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://www.shinan.go.kr/home/museum/education/education_02/show/144217?page=1&amp;search=&amp;keyword=",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-14",
+    "tags": [
+      "행사",
+      "교육·체험",
+      "전남",
+      "체험"
+    ]
   },
   {
     "detailAt": "2026-10-13",
@@ -1858,7 +1994,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "전남"
@@ -1942,44 +2078,6 @@
       "note": "무료",
       "checked": "2026-10-06"
     }
-  },
-  {
-    "detailAt": "2026-10-13",
-    "id": "tour-2485123",
-    "apiId": "2485123",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "순천 푸드앤아트페스티벌",
-    "venue": "전남광주통합특별시 순천시 중앙로 일원",
-    "district": "순천시",
-    "address": "전남광주통합특별시 순천시 중앙로 93 (영동)",
-    "date": "2026-10-16 ~ 2026-10-18",
-    "time": "12:00~22:00",
-    "price": "입장료 무료 (음식 및 체험 요금 부스별 상이)",
-    "age": "",
-    "program": "1. 메인프로그램 - 개막식, 축하공연, 푸드마켓, 아트마켓, 거리공연 2. 부대프로그램 - 이모카세 김미령 셰프 푸드토크쇼, 원도심 맛보기 창업품평회, 댕스파티, 대한민국 청소년 트로트 경연대회 3. 소비자 참여 프로그램 - 대형 캔버스 드로잉월, 컬러헌팅, 로컬티하우스, 명인과 함께하는 티톡스, 원물 전시존 등 4. 기타 내용 - 푸드마켓 전체 다회용기 사용, 축제상품권 운영, 축제 셔틀버스 운영",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "전남광주통합특별시 순천시",
-    "status": "예정",
-    "start": "2026-10-16",
-    "end": "2026-10-18",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/23/4119023_image2_1.jpg",
-    "lat": 34.9539016178,
-    "lng": 127.4831806612,
-    "contact": "061-749-5796",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-10-13",
-    "tags": [
-      "축제",
-      "전남"
-    ]
   },
   {
     "detailAt": "2026-10-13",
@@ -2107,7 +2205,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4174",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "행사/축제",
@@ -2172,7 +2270,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&amp;action=Read&amp;bnkey=EM_0000010048",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "공연",
       "연극",
@@ -2493,7 +2591,7 @@
     "url": "https://booking.naver.com/booking/5/bizes/1237791/items/7990033?startDateTime=2026-10-18T00%3A00%3A00%2B09%3A00&amp;tab=details",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "음악",
       "국악",
@@ -2831,7 +2929,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "전남"
@@ -2863,7 +2961,7 @@
     "url": "https://ticket.yes24.com/Perf/60185",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "공연",
       "무용/발레",
@@ -3976,6 +4074,44 @@
     ]
   },
   {
+    "detailAt": "2026-10-14",
+    "id": "tour-2559006",
+    "apiId": "2559006",
+    "category": "축제",
+    "subtype": "관광공사 행사",
+    "title": "목포 국가유산야행",
+    "venue": "목포근대역사문화공간 일원",
+    "district": "목포시",
+    "address": "전남광주통합특별시 목포시 번화로 18 (중앙동2가)",
+    "date": "2026-10-30 ~ 2026-11-01",
+    "time": "18:00~22:00",
+    "price": "무료",
+    "age": "",
+    "program": "- 야경 : 역사의 빛, 문화유산산책, 근대역사 미디어아트, 만호싸롱 - 야화 : 해설이 있는 옥공예 전시, 근대 경성복 체험, 화가의 골목 미술체험, 명무의 춤, 맥 등 - 야로 : 타임로드 퍼레이드, 역사길 도보투어, 어린이 탐험길 등 - 야시 : 플리마켓, 도장공예체험, 업사이클링 공방체험 등 - 야설 : 남도명창열전, 달빛 버스킹 공연, 문화유산 속 재즈콘서트, 밤하늘 오케스트라 중창단 등 - 야식 : 미식푸드트럭 야시장, 목포술야, 목포맛집로드 - 야사 : 해설이 있는 근대가요콘서트, 개항식 거리극, 해양 유물 전시 및 관련 체험 등 - 야숙 : 목포야행스테이",
+    "booking": "",
+    "parking": "",
+    "spendtime": "",
+    "sponsor": "목포시",
+    "status": "예정",
+    "start": "2026-10-30",
+    "end": "2026-11-01",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/22/4122722_image2_1.jpg",
+    "lat": 34.785963747,
+    "lng": 126.3814912601,
+    "contact": "061-270-8321",
+    "description": "",
+    "source": "한국관광공사 TourAPI",
+    "url": "",
+    "origin": "auto",
+    "api": "tourapi",
+    "venueId": null,
+    "verified": "2026-10-14",
+    "tags": [
+      "축제",
+      "전남"
+    ]
+  },
+  {
     "detailAt": "2026-10-13",
     "id": "kopis-PF302485",
     "apiId": "PF302485",
@@ -4039,7 +4175,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "전남"
@@ -4351,7 +4487,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-13",
+    "verified": "2026-10-14",
     "tags": [
       "축제",
       "전남"
