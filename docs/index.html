@@ -2996,6 +2996,43 @@ const DATES = [
   { id: "picnic", emoji: "🧺", name: "첨단 공원 피크닉 데이트", area: "광산구 · 북구 첨단", mood: "호수공원 · 과학관 · 피크닉", rainOk: false,
     img: "https://tong.visitkorea.or.kr/cms/resource/78/3366478_image2_1.jpg",
     steps: [["11:00", "v:science", "천체투영관 시간 맞춰서"], ["13:00", "c:어반피크닉", "피크닉 용품 빌려서"], ["13:30", "v:ssangam", "호수 둘레 잔디밭 피크닉"], ["16:00", "v:citizen-forest", "숲길 산책"]] },
+
+  /* ── 🔵 순천여수권 ── */
+  { id: "ys-bay", region: "ys", emoji: "🌾", name: "순천만 갈대숲 노을 데이트", area: "순천시 순천만", mood: "국가정원 · 갈대 데크길 · 용산전망대 노을", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/14/4088614_image2_1.jpg",
+    steps: [["13:00", "v:ys-national-garden", "정원 한 바퀴 · 습지 입장권까지 한 번에"], ["15:30", "v:ys-suncheonman", "갈대숲 데크길 지나 용산전망대까지 (왕복 약 1시간 30분)"], ["17:30", "t:용산전망대 노을", "S자 물길 위로 해 지는 시간 맞추기", "순천만 용산전망대"], ["18:30", "f:ys-jjangttungeo", "순천만 별미 짱뚱어탕"]] },
+  { id: "ys-night", region: "ys", emoji: "🌃", name: "여수 밤바다 데이트", area: "여수시 오동도 · 돌산", mood: "동백섬 산책 · 바다 위 케이블카 · 낭만포차", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/64/3422964_image2_1.png",
+    steps: [["15:00", "v:ys-odongdo", "방파제 길 따라 동백숲 섬 한 바퀴"], ["17:00", "v:ys-cablecar", "해 질 녘 바다 위로 건너기"], ["18:30", "f:ys-yeosu-nangman", "포차 거리에서 해물삼합"], ["20:00", "v:ys-yisunsin", "밤바다 따라 광장까지 걷기"]] },
+  { id: "ys-indoor", region: "ys", emoji: "☔", name: "여수 비 와도 좋은 실내 데이트", area: "여수시", mood: "미디어아트 · 게장백반 · 빵집", rainOk: true, indoor: true,
+    img: "https://tong.visitkorea.or.kr/cms/resource/72/3350972_image2_1.jpg",
+    steps: [["10:30", "v:ys-arte", "몰입형 미디어아트 · 입장마감 17:00"], ["12:30", "f:ys-yeosu-gejang", "봉산동 게장백반"], ["14:00", "v:ys-expo", "아쿠아플라넷 등 실내 시설 골라 보기"], ["16:00", "t:여수당", "여수 빵 한 봉지 사서 돌아가기", "여수당"]] },
+  { id: "ys-tea", region: "ys", emoji: "🍵", name: "보성 녹차밭 숲길 데이트", area: "보성군", mood: "초록 차밭 · 녹돈 한 상 · 숲정원", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/20/4061220_image2_1.jpg",
+    steps: [["10:00", "v:ys-boseong-tea", "삼나무길 지나 차밭 전망대까지"], ["12:00", "f:ys-boseong-tea-food", "녹돈 삼겹살 · 녹차 떡갈비"], ["13:30", "v:ys-yunjerim", "숲정원 산책 · 입장마감 확인"], ["16:00", "t:율포솔밭해변", "소나무 숲 바닷가에서 마무리", "보성 율포솔밭해수욕장"]] },
+  { id: "ys-gurye", region: "ys", emoji: "🍂", name: "구례 지리산 자락 데이트", area: "구례군", mood: "천년 고찰 · 산채 한 상 · 고택 정원 · 섬진강 절벽 암자", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/83/1917883_image2_1.jpg",
+    steps: [["10:00", "v:ys-hwaeomsa", "지리산 품 천년 고찰"], ["12:00", "f:tour-food-2787945", "산채 한정식"], ["13:30", "v:ys-ssangsanjae", "고택 정원에서 차 한 잔 · 화요일 휴무"], ["15:30", "v:ys-saseongam", "절벽 암자에서 섬진강 내려다보기"]] },
+
+  /* ── 🟠 무안목포권 ── */
+  { id: "mp-old", region: "mp", emoji: "🏛", name: "목포 근대골목 · 유달산 데이트", area: "목포시 원도심", mood: "근대 건축 · 중깐 · 빵집 · 케이블카 노을", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/03/4067003_image2_1.JPG",
+    steps: [["10:30", "v:mp-modern1", "옛 일본영사관 건물부터"], ["11:20", "v:mp-modern2", "근대 골목 따라 걸어서"], ["12:30", "f:tour-food-2844027", "목포식 짜장면 '중깐'"], ["14:00", "t:코롬방제과점", "원도심 오래된 빵집 들르기", "코롬방제과점 목포"], ["15:00", "v:mp-yudalsan", "노적봉에서 둘레길 조금만"], ["17:00", "v:mp-cablecar", "바다 건너 고하도까지 노을 케이블카"]] },
+  { id: "mp-sunset", region: "mp", emoji: "🌅", name: "목포 갓바위 바다 노을 데이트", area: "목포시 갓바위 일대", mood: "박물관 · 바다 카페 · 해상 보행교 노을 · 목포 5미", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/12/3551212_image2_1.jpg",
+    steps: [["14:00", "v:mp-natural-history", "공룡·바다 생물 전시"], ["15:30", "v:mp-namnong", "남종화 미술관 · 월·화 휴관"], ["16:30", "c:커피 파나쉐 전망대점", "바다 보이는 카페"], ["17:30", "v:mp-gatbawi", "바다 위 보행교에서 해 질 녘 갓바위"], ["19:00", "f:mp-mokpo-nakji", "민어·갈치·낙지 중 하나 골라 저녁"]] },
+  { id: "mp-indoor", region: "mp", emoji: "☔", name: "목포 비 와도 좋은 실내 데이트", area: "목포시", mood: "해양유물 · 자연사박물관 · 갈치찜 · 빵집", rainOk: true, indoor: true,
+    img: "https://tong.visitkorea.or.kr/cms/resource/10/3533710_image2_1.jpg",
+    steps: [["10:00", "v:mp-maritime", "옛 보물선 유물 · 무료"], ["11:20", "v:mp-natural-history", "바로 옆 자연사박물관"], ["13:00", "f:tour-food-2843996", "갈치찜 백반 · 15시 마감"], ["14:30", "v:mp-modern1", "비 오는 날 더 운치 있는 근대 건축"], ["15:30", "t:씨엘비베이커리", "빵 사서 돌아가기", "씨엘비베이커리 목포"]] },
+  { id: "mp-purple", region: "mp", emoji: "💜", name: "신안 천사대교 · 퍼플섬 드라이브 데이트", area: "신안군 자은도 · 안좌도", mood: "바다 위 다리 · 분재정원 · 보랏빛 섬", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/07/3559007_image2_1.jpg",
+    steps: [["10:00", "v:mp-cheonsa-bridge", "다리 건너며 드라이브"], ["10:40", "v:mp-museumpark", "자은도 뮤지엄파크 · 월요일 휴관"], ["12:00", "v:mp-bonsai", "바다 보이는 분재정원 · 월요일 휴관"], ["13:30", "t:점심: 섬 밥상", "안좌도 가는 길에", "신안 안좌도 맛집"], ["15:00", "v:mp-purple", "보랏빛 퍼플교 걸어서 건너기"]] },
+  { id: "mp-gangjin", region: "mp", emoji: "🍵", name: "강진 다산 오솔길 데이트", area: "강진군", mood: "다산초당 · 백련사 동백숲 · 연탄불고기 · 청자", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/02/4101902_image2_1.jpg",
+    steps: [["10:00", "v:mp-dasan", "다산초당 뿌리길 오르기"], ["11:00", "v:mp-baengnyeonsa", "초당에서 백련사로 넘어가는 동백 오솔길"], ["12:30", "f:tour-food-642756", "연탄불고기 백반"], ["14:30", "t:가우도 출렁다리", "바다 위 다리 건너 섬 한 바퀴", "강진 가우도"], ["16:00", "v:mp-celadon", "청자 박물관 · 입장마감 17:30 · 월요일 휴관"]] },
+  { id: "mp-haenam", region: "mp", emoji: "🌄", name: "해남 땅끝 노을 데이트", area: "해남군", mood: "두륜산 대흥사 · 닭코스 · 달마산 미황사 · 땅끝 노을", rainOk: false,
+    img: "https://tong.visitkorea.or.kr/cms/resource/52/3564352_image2_1.jpg",
+    steps: [["10:30", "v:mp-daeheungsa", "숲길 따라 천년 고찰"], ["12:30", "f:mp-haenam-dak", "해남식 닭 코스 요리"], ["14:30", "v:mp-mihwangsa", "달마산 아래 절집"], ["16:30", "v:mp-ttangkkeut", "땅끝탑·전망대에서 해 지는 바다"]] },
 ];
 
 function courseTransportMode(steps=[], hint="") {
@@ -5109,17 +5146,21 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (!forced) {
     if (/태백산맥|벌교|문학길/.test(s)) { if (REGION !== "ys") setRegion("ys"); return dateCourse("taebaek") }
     if (REGION !== "gj" && KTX_REGION[REGION] && /ktx|srt|기차|열차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|여행 코스|일정 짜/.test(s) && !/5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s)) return itinerary(s);
-    if (REGION !== "gj" && (/데이트|연인|커플/.test(s) || /5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s))) {
+    if (REGION !== "gj" && ((/데이트|연인|커플/.test(s) && !DATES.some(d => (d.region || "gj") === REGION)) || /5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s))) {
       $("#answer").innerHTML = `🧭 <b>${esc(RNAME())}</b> 데이트 코스는 아직 준비 중이에요. ${esc(RNAME())}은 지금 <b>KTX 당일치기·1박 2일·2박 3일</b> 코스가 있고, 데이트 코스는 <b>광주권</b>에 있어요.<br><br><button class="btn" onclick="setRegion('gj');$('#aiq').value='${jsq(t.replace(/['"\\]/g, ""))}';recommend('${jsq(t.replace(/['"\\]/g, ""))}')">🟢 광주권 코스로 보기 →</button><br><br><small>대신 '박물관 + 맛집', '산책하기 좋은 곳', '축제 뭐 있어?'처럼 물어보면 ${esc(RNAME())} 자료로 골라 드려요.</small>`; return;
     }
     if (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|하루 종일|여행 코스|일정 짜/.test(s)) return itinerary(s);
     if (/강아지|반려|멍멍|멍카페|애견|댕댕/.test(s)) return petList(s);
     if (/데이트|연인|커플/.test(s) || (/시장/.test(s) && /먹방|구경|투어/.test(s))) {
-      const map = [[/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비|실내|우천/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"]];
-      const hit = map.find(([re]) => re.test(s));
+      const map = [[/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비|실내|우천/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"],
+        [/순천만|갈대|국가정원|노을/, "ys-bay"], [/여수|밤바다|오동도|케이블카|낭만포차|야경/, "ys-night"], [/비|실내|우천|아르떼/, "ys-indoor"], [/보성|녹차|차밭/, "ys-tea"], [/구례|지리산|화엄사|사성암/, "ys-gurye"], [/벌교|태백산맥|꼬막/, "taebaek"],
+        [/근대|원도심|유달산|케이블카|중깐/, "mp-old"], [/갓바위|노을|바다|평화광장/, "mp-sunset"], [/비|실내|우천|박물관/, "mp-indoor"], [/신안|퍼플|천사대교|드라이브/, "mp-purple"], [/강진|다산|가우도|청자/, "mp-gangjin"], [/해남|땅끝|대흥사|미황사/, "mp-haenam"]];
       // 현재 선택 권역의 코스만 후보로 사용한다. 예: 광주권에서 '연인'만 골랐는데 벌교 코스가 튀어나오는 일을 막는다.
+      const inRegionDate = id => { const d = DATES.find(x => x.id === id); return d && (d.region || "gj") === REGION };
+      const hit = map.find(([re, id]) => re.test(s) && inRegionDate(id));
       const regionDates = DATES.filter(d => (d.region || "gj") === REGION && !d.indoor);
-      return dateCourse(hit ? hit[1] : pickR(regionDates, rnd(Number(todayISO().replace(/-/g, "")) + TODAY_SEED))?.id);
+      const pick = hit ? hit[1] : pickR(regionDates, rnd(Number(todayISO().replace(/-/g, "")) + TODAY_SEED))?.id;
+      if (pick) return dateCourse(pick);
     }
     const listy = /볼만한|볼 만한|갈만한|갈 만한|뭐 있|뭐있|뭐 하|뭐하|어디|추천해|알려|목록|전부|모두|리스트|있어\?|있나|하는 곳|할 만한/.test(s);
     const single = namedPlace(s);
@@ -5962,7 +6003,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.14 점검수정";
+const APP_VER = "10.15 코스추가";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6341,10 +6382,10 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 <aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-rightjump="kids">🧸 아이와</button>
+  <button type="button" data-rightjump="today">📅 오늘 뭐할까</button>
+  <button type="button" data-rightjump="weekend">🗓 주말엔 뭐할까</button>
   <button type="button" data-rightjump="weather">🌤 오늘 날씨</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
-  <button type="button" data-rightjump="dayplan">📅 하루 플랜</button>
   <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
@@ -6375,6 +6416,12 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
      if(typeof WEATHER==='undefined'||!WEATHER)loadWeather(true);else if(typeof renderWxTips==='function')renderWxTips();
      const go=()=>{const t=document.getElementById('wxTips');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-10),behavior:'instant'})};
      [60,350,800].forEach(ms=>setTimeout(go,ms));
+   }else if(target==='today'||target==='weekend'){
+     // 홈의 '오늘 뭐 하고 놀까?' 목록을 오늘 / 이번 주말로 바꿔서 보여준다
+     document.querySelector('nav.bottom [data-jump="decide"]')?.click();
+     if(typeof setNowWhen==='function')setNowWhen(target==='weekend'?2:0);
+     const go=()=>{const t=document.getElementById('nowShow');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-10),behavior:'instant'})};
+     [120,450,900].forEach(ms=>setTimeout(go,ms));
    }else if(target==='dayplan'){
      document.querySelector('nav.bottom [data-jump="decide"]')?.click();
      setTimeout(()=>document.getElementById('today')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
