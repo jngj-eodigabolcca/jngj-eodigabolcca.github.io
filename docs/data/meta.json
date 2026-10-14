@@ -1,61 +1,60 @@
 {
-  "updated_at": "2026-10-13T18:26:28+09:00",
+  "updated_at": "2026-10-14T15:50:01+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
-      "ok": true,
-      "count": 21,
-      "message": "정상 수집"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 21건 유지 (<urlopen error timed out>)"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 105,
+      "count": 106,
       "message": "정상 수집"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
-      "ok": true,
-      "count": 42,
-      "message": "정상 수집"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 21건 유지 (문화정보원 period 호출 실패 → period2/PageNo: <urlopen error timed out> | period2/PageNo-tp: <urlopen error timed out> | period2/pageNo: <urlopen error timed out>)"
     }
   ],
   "api_status": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
-      "ok": true,
-      "count": 21,
-      "message": "정상 수집"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 21건 유지 (<urlopen error timed out>)"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 105,
+      "count": 106,
       "message": "정상 수집"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
-      "ok": true,
-      "count": 42,
-      "message": "정상 수집"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 21건 유지 (문화정보원 period 호출 실패 → period2/PageNo: <urlopen error timed out> | period2/PageNo-tp: <urlopen error timed out> | period2/pageNo: <urlopen error timed out>)"
     }
   ],
   "counts": {
-    "total": 145,
-    "auto": 145,
-    "manual": 0
+    "total": 181,
+    "auto": 124,
+    "manual": 57
   },
-  "manual_count": 0,
-  "events_count": 145,
+  "manual_count": 77,
+  "events_count": 181,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
-  "kopis_last_try": "2026-10-13T18:26:28+09:00",
   "local": {
     "holidays": {
       "name": "공휴일",
@@ -68,7 +67,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-13T18:30:31+09:00",
+      "fetched_at": "2026-10-14T15:55:12+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -103,8 +102,8 @@
     "programs": {
       "name": "평생학습 강좌",
       "ok": true,
-      "count": 325,
-      "fetched_at": "2026-10-13T18:30:31+09:00",
+      "count": 324,
+      "fetched_at": "2026-10-14T15:55:12+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -137,41 +136,42 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-13T18:30:49+09:00",
-    "tourapi_calls": 0,
+    "checked_at": "2026-10-14T15:55:14+09:00",
+    "tourapi_calls": 1,
     "osm_lookups": 0,
     "unfinished": false,
     "lists": {
       "venues": {
-        "total": 0,
-        "with_coords": 0,
-        "coords_filled": 0,
+        "total": 332,
+        "with_coords": 268,
+        "coords_filled": 175,
         "hours_filled": 0
       },
       "restaurants": {
-        "total": 0,
-        "with_coords": 0,
-        "coords_filled": 0,
-        "hours_filled": 0
+        "total": 75,
+        "with_coords": 33,
+        "coords_filled": 33,
+        "hours_filled": 16
       },
       "bakeries": {
-        "total": 0,
-        "with_coords": 0,
-        "coords_filled": 0,
+        "total": 15,
+        "with_coords": 10,
+        "coords_filled": 10,
         "hours_filled": 0
       },
       "cafes": {
-        "total": 0,
-        "with_coords": 0,
-        "coords_filled": 0,
+        "total": 28,
+        "with_coords": 9,
+        "coords_filled": 9,
         "hours_filled": 0
       },
       "cinemas": {
-        "total": 0,
-        "with_coords": 0,
-        "coords_filled": 0,
+        "total": 7,
+        "with_coords": 7,
+        "coords_filled": 7,
         "hours_filled": 0
       }
     }
-  }
+  },
+  "kopis_last_try": "2026-10-14T15:50:01+09:00"
 }
