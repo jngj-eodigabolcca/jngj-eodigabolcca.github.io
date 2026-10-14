@@ -12,13 +12,13 @@
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="오늘어디로">
 <meta name="author" content="오늘, 전남광주 어디로?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디로? All rights reserved.">
-<meta name="description" content="광주·전남 권역의 전시·공연·대중가수 콘서트·축제·스포츠 일정, 가볼 곳, 맛집과 나들이 코스를 한눈에.">
+<meta name="description" content="공공기관 문화·생활 정보를 자동으로 모아 전남광주 시민의 오늘 하루를 안내하는 앱. 전시·공연·축제·장날, 도서관과 동네 강좌를 권역별로 한눈에.">
 <!-- 카카오톡·페이스북·문자 공유 미리보기 (주소가 바뀌면 아래 3곳의 주소도 바꾸세요) -->
 <link rel="canonical" href="https://jngj-eodigabolcca.github.io/">
 <meta property="og:type" content="website"><meta property="og:site_name" content="오늘어디로"><meta property="og:locale" content="ko_KR">
 <meta property="og:url" content="https://jngj-eodigabolcca.github.io/">
 <meta property="og:title" content="오늘, 전남광주 어디로?">
-<meta property="og:description" content="광주·순천여수·무안목포의 전시·공연·축제·맛집·나들이 코스를 한눈에. 오늘 갈 곳을 크리밍이 골라드려요.">
+<meta property="og:description" content="공공기관 문화·생활 정보를 자동으로 모아 광주·순천여수·무안목포 시민의 오늘 하루를 안내해요. 전시·공연·축제·장날, 도서관·동네 강좌까지 크리밍이 골라드려요.">
 <meta property="og:image" content="https://jngj-eodigabolcca.github.io/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="오늘, 전남광주 어디로? — 전시·공연·축제·맛집을 한눈에">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://jngj-eodigabolcca.github.io/og-image.jpg">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2247,8 +2247,8 @@ let QUICK_GJ = "";
 function renderQuick() {
   const q = document.getElementById("quick"); if (!q) return;
   if (!QUICK_GJ) QUICK_GJ = q.innerHTML;
-  // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 9개, 순천여수권 12개)
-  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
+  // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 12개, 순천여수권 15개 · KTX 코스 3개 포함)
+  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 KTX 당일치기", "🚄 KTX 1박 2일", "🚄 KTX 2박 3일"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
@@ -4494,11 +4494,11 @@ function hitsAll(q, item) {
   return q.split(/\s+/).filter(Boolean).every(w => { const k = norm(w); return has(k) || (SEARCH_SYN[k] || []).some(x => has(norm(x))) });
 }
 /* 앱 기능 바로가기: 장소·일정 자료가 아니라 앱 안의 메뉴·코스·도구도 검색되게 */
-const goTrip = s => { clearSearch(); const run = () => { itinerary(s); setTimeout(() => $("#answer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80) }; if (REGION !== "gj") { setRegion("gj"); setTimeout(run, 120) } else run() };
+const goTrip = s => { clearSearch(); const run = () => { itinerary(s); setTimeout(() => $("#answer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80) }; if (REGION !== "gj" && !KTX_REGION[REGION]) { setRegion("gj"); setTimeout(run, 120) } else run() };
 const APP_FEATURES = [
-  ["🚄 KTX 당일치기 코스", "광주송정역에서 시작하는 하루 동선", "ktx srt 기차 열차 송정역 당일치기 하루 여행 코스 일정표", () => goTrip("ktx 하루")],
-  ["🚄 KTX 1박 2일 코스", "송정역 도착부터 출발까지 이틀 동선", "ktx srt 기차 열차 송정역 1박2일 1박 여행 코스 일정표", () => goTrip("ktx 1박 2일")],
-  ["🚄 KTX 2박 3일 코스", "광주 사흘 여행 동선", "ktx srt 기차 열차 송정역 2박3일 2박 여행 코스 일정표", () => goTrip("ktx 2박 3일")],
+  ["🚄 KTX 당일치기 코스", "광주송정역·목포역·여수엑스포역에서 시작하는 하루 동선", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 당일치기 하루 여행 코스 일정표", () => goTrip("ktx 하루")],
+  ["🚄 KTX 1박 2일 코스", "역 도착부터 출발까지 이틀 동선 (고른 권역 기준)", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 1박2일 1박 여행 코스 일정표", () => goTrip("ktx 1박 2일")],
+  ["🚄 KTX 2박 3일 코스", "사흘 여행 동선 (고른 권역 기준)", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 2박3일 2박 여행 코스 일정표", () => goTrip("ktx 2박 3일")],
   ["🚗 자가용 하루 코스", "차로 도는 광주 하루 동선", "자가용 차 드라이브 하루 여행 코스 일정표", () => goTrip("하루")],
   ["✨ 맞춤 추천", "누구와·시간·예산을 고르면 오늘 코스를 골라 줘요", "추천 코스 오늘 뭐하지 뭐할까 길잡이 크리밍 데이트", () => { clearSearch(); goDecision() }],
   ["☀️ 오늘 날씨·옷차림", "나가기 전에 챙길 것", "날씨 비 우산 옷차림 기온 미세먼지", () => { clearSearch(); const el = document.getElementById("wxTips"); if (el) el.classList.remove("hidden"); if (!WEATHER) loadWeather(true); setTimeout(() => el?.scrollIntoView({ behavior: "smooth", block: "start" }), 60) }],
@@ -4739,7 +4739,132 @@ function vStep(id, time, extra = "") {
 function addMoves(steps) { for (let i = 1; i < steps.length; i++) { const a = steps[i - 1].v || steps[i - 1].x, b = steps[i].v || steps[i].x; const d = a && b ? km(a, b) : null; if (d != null) steps[i].move = d <= 1.5 ? `걸어서 ${kmTxt(d)}` : `${kmTxt(d)} · 택시·버스` } return steps }
 /* ════════ 여행 일정표: KTX 당일치기 · 1박 2일 · 2박 3일 (자가용·시내도 같은 틀) ════════ */
 function tripMode(s) { return /2박|3일|사흘/.test(s) ? 3 : /1박|2일|이틀/.test(s) ? 2 : 1 }
+/* ════════ 권역별 KTX 일정표: 무안목포권(목포역) · 순천여수권(여수엑스포역·순천역) ════════
+   등록된 장소는 이름으로 찾아 '자세히'·휴관일·주차 정보를 붙이고, 없으면 지도 검색 링크로 보여준다. */
+const KTX_REGION = {
+  mp: {
+    city: "목포", st: "목포역", endSt: "목포역",
+    box: ["서울 용산(KTX)·수서(SRT) → 목포역 약 2시간 20분~3시간 (열차마다 달라요)", "목포역 → 근대역사관·유달산 원도심은 걸어서 10~20분 · 갓바위·평화광장은 택시로 15분 안팎", "시간표·예매는 코레일·SR 앱에서 확인하세요"],
+    arrTip: "용산·수서에서 KTX·SRT로 약 2시간 20분~3시간",
+    labels: ["목포 원도심 · 유달산 · 해상케이블카", "갓바위 문화타운 · 삼학도", "신안 퍼플섬 · 천사대교"]
+  },
+  ys: {
+    city: "여수·순천", st: "여수엑스포역", endSt: "순천역",
+    box: ["서울 용산(KTX) → 여수엑스포역 약 3시간 안팎 · 순천역은 20분쯤 덜 걸려요", "수서(SRT) 출발 전라선 열차는 하루 몇 편뿐이라 미리 예매하세요", "여수엑스포역 → 오동도 걸어서 20~30분 · 이순신광장은 버스·택시로 10분 안팎", "시간표·예매는 코레일·SR 앱에서 확인하세요"],
+    arrTip: "용산에서 KTX로 약 3시간 안팎",
+    labels: ["오동도 · 해상케이블카 · 이순신광장", "순천만국가정원 · 순천만습지", "낙안읍성 · 벌교 태백산맥 문학길"]
+  }
+};
+function itineraryRegion(s) {
+  const R = KTX_REGION[REGION]; if (!R) return false;
+  const days = tripMode(s), ktx = /ktx|srt|기차|열차|목포역|여수엑스포역|순천역/.test(s);
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && (w[2] || WEATHER.pp >= 60));
+  const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
+  const T_ = (time, title, sub, extra = {}) => Object.assign({ time, title, sub }, extra);
+  const nk = t => String(t || "").replace(/\s/g, "");
+  // K_: 이 권역에 등록된 장소면 그 자료로, 아니면 지도 검색 링크로
+  const K_ = (keys, time, extra, q, day = dow) => {
+    keys = [].concat(keys);
+    const v = VENUES.find(x => keys.some(k => nk(x.name).includes(nk(k))));
+    if (v) {
+      const st = vStep(v.id, time, extra);
+      if (st) { if (openOn(v, day) === false) st.tip = "이날은 휴관일일 수 있어요 · '자세히'에서 확인하세요"; return st }
+    }
+    return T_(time, keys[0], extra, { link: mapLink(q || keys[0]), linkText: "지도 ↗" });
+  };
+  const M_ = (time, title, sub, q) => T_(time, title, sub, { cls: "meal", link: mapLink(q), linkText: "지도 ↗" });
+  const MV = (time, title, sub) => T_(time, title, sub, { cls: "move" });
+  const STAY = (where, q) => T_("21:30", `숙소: ${where}`, "묵을 곳은 지도에서 요금·후기 보고 고르세요", { link: mapLink(q), linkText: "숙소 찾기 ↗" });
+  const evTip = n => { const iso = isoPlus(n); const es = EVENTS.filter(e => e.start && e.start <= iso && (!e.end || e.end >= iso) && /음악|공연|스포츠|축제/.test(e.category || "")).slice(0, 2); return es.length ? `이날 열리는 행사: ${es.map(e => e.title).join(" / ")}` : "" };
+  const clean = a => addMoves(a.filter(Boolean));
+  let d1 = [], d2 = [], d3 = [];
+
+  if (REGION === "mp") {
+    if (ktx) d1.push(T_("09:50", "🚄 목포역 도착", "짐이 있으면 역 물품보관함에 맡기고 가볍게", { cls: "move", tip: R.arrTip }));
+    d1.push(K_(["목포근대역사관 1관", "목포근대역사관", "구 목포일본영사관"], "10:10", "개항기 붉은 벽돌 옛 영사관 건물", "목포근대역사관 1관"));
+    d1.push(K_(["목포근대역사관 2관", "동양척식"], "10:50", "옛 동양척식주식회사 건물", "목포근대역사관 2관"));
+    d1.push(T_("11:30", "원도심 골목 산책", "근대 건축물과 시화골목 사이로 천천히", { link: mapLink("목포 서산동 시화골목"), linkText: "지도 ↗" }));
+    d1.push(M_("12:30", "점심: 목포 바다 한 상", "세발낙지·민어·꽃게 등 철 따라", "목포 원도심 맛집"));
+    d1.push(K_(["목포해상케이블카", "해상케이블카"], "14:00", "유달산 넘어 고하도까지 바다 위를 건너요", "목포해상케이블카"));
+    d1.push(K_(["고하도"], "15:00", "해안 데크길 · 전망대", "고하도 전망대"));
+    if (days === 1 && ktx) {
+      d1.push(M_("17:00", "저녁: 목포역 근처", "기차 시간 맞추기 편하게 역 가까이서", "목포역 맛집"));
+      d1.push(MV("18:30", "🚄 목포역 출발", "다음엔 갓바위·평화광장 야경까지"));
+    } else {
+      d1.push(K_(["갓바위"], "17:00", "바다 위 보행교 산책 · 해 질 녘이 좋아요", "목포 갓바위"));
+      d1.push(M_("18:30", "저녁: 하당·평화광장 근처", "바닷가 식당가", "목포 평화광장 맛집"));
+      d1.push(K_(["평화광장"], "19:30", "바닷가 야경 · 분수 공연이 있는 기간이면 함께", "목포 평화광장"));
+      if (days > 1) d1.push(STAY("평화광장·하당 일대", "목포 평화광장 숙소"));
+    }
+    if (days >= 2) {
+      d2 = [K_(["해양유물전시관", "국립해양유산연구소"], "10:00", "바닷속에서 건진 옛 배와 유물", "국립해양유산연구소 해양유물전시관", dayOf(1)),
+        K_(["목포자연사박물관"], "11:10", "공룡 화석 · 아이와 함께면 강추", "목포자연사박물관", dayOf(1)),
+        K_(["목포문학관"], "12:10", "목포 출신 문인들 이야기", "목포문학관", dayOf(1)),
+        M_("12:50", "점심: 갓바위 문화타운 근처", "", "목포 갓바위 맛집"),
+        rainy ? T_("14:20", "실내: 원도심 카페·책방에서 쉬어가기", "비 오는 날엔 무리하지 말고", { link: mapLink("목포 원도심 카페"), linkText: "지도 ↗" })
+          : K_(["삼학도"], "14:20", "섬 세 개를 이은 물가 산책 공원", "목포 삼학도공원", dayOf(1))];
+      if (days === 2) { if (ktx) { d2.push(M_("16:30", "이른 저녁: 목포역 근처", "", "목포역 맛집")); d2.push(MV("17:40", "🚄 목포역 출발", "")) } }
+      else { d2.push(M_("18:00", "저녁: 원도심 노포", "", "목포 원도심 맛집")); d2.push(STAY("목포역·원도심 일대", "목포역 숙소")) }
+    }
+    if (days === 3) {
+      d3 = [MV("09:00", "🚗 신안 퍼플섬으로", "목포에서 차로 1시간 남짓 · 천사대교 건너 · 렌터카나 시티투어버스 이용"),
+        K_(["퍼플섬", "반월도", "박지도"], "10:20", "보랏빛 다리로 이어진 섬 산책", "신안 퍼플섬", dayOf(2)),
+        M_("12:30", "점심: 신안 섬마을 밥상", "", "신안 안좌도 맛집"),
+        K_(["천사대교"], "14:00", "1004개 섬의 관문 · 다리 전망 쉼터", "천사대교 전망", dayOf(2)),
+        MV("15:30", "목포로 돌아오기", "차로 1시간 남짓")];
+      if (ktx) { d3.push(M_("17:00", "저녁: 목포역 근처", "마지막은 목포 바다 맛으로", "목포역 맛집")); d3.push(MV("18:30", "🚄 목포역 출발", "다음엔 또 오쇼잉!")) }
+    }
+  } else {
+    if (ktx) d1.push(T_("09:40", "🚄 여수엑스포역 도착", "짐이 있으면 역 물품보관함에 맡기고 가볍게", { cls: "move", tip: R.arrTip }));
+    d1.push(K_(["오동도"], "10:00", "방파제길 따라 동백숲·등대까지", "여수 오동도"));
+    d1.push(K_(["여수해상케이블카", "해상케이블카"], "11:50", "자산공원에서 돌산까지 바다 위로", "여수해상케이블카"));
+    d1.push(M_("12:50", "점심: 여수 게장백반", "", "여수 게장백반"));
+    d1.push(K_(["이순신광장"], "14:20", "거북선 모형 · 바다 앞 광장", "여수 이순신광장"));
+    d1.push(K_(["진남관"], "15:00", "전라좌수영의 객사였던 큰 목조 건물", "여수 진남관"));
+    d1.push(K_(["고소동 벽화마을", "벽화마을"], "15:40", "골목 따라 바다 전망", "여수 고소동 벽화마을"));
+    if (days === 1 && ktx) {
+      d1.push(M_("17:00", "저녁: 서대회·갈치조림", "", "여수 서대회"));
+      d1.push(MV("18:30", "🚄 여수엑스포역 출발", "다음엔 여수 밤바다까지"));
+    } else {
+      d1.push(M_("17:30", "저녁: 서대회·갈치조림", "", "여수 서대회"));
+      d1.push(T_("19:00", "🌃 여수 밤바다", "종포해양공원·낭만포차 거리 · 돌산대교 야경", { link: mapLink("여수 종포해양공원"), linkText: "지도 ↗" }));
+      if (days > 1) d1.push(STAY("이순신광장·돌산 일대", "여수 숙소"));
+    }
+    if (days >= 2) {
+      if (rainy) d2.push(K_(["아쿠아플라넷"], "09:30", "실내 아쿠아리움 · 비 오는 날 딱", "아쿠아플라넷 여수", dayOf(1)));
+      d2.push(MV(rainy ? "11:00" : "09:30", ktx ? "🚆 여수 → 순천" : "🚗 여수 → 순천", ktx ? "여수엑스포역 → 순천역 열차 약 20분 · 순천역에서 정원까지 버스·택시" : "차로 40분 안팎"));
+      d2.push(K_(["순천만국가정원"], rainy ? "11:40" : "10:20", "세계 정원과 호수정원 · 넓으니 편한 신발로", "순천만국가정원", dayOf(1)));
+      d2.push(M_("13:00", "점심: 정원 근처", "", "순천만국가정원 맛집"));
+      d2.push(K_(["순천만습지", "순천만 습지"], "14:30", "갈대밭 데크길 · 시간 되면 용산전망대까지", "순천만습지", dayOf(1)));
+      if (days === 2) { if (ktx) { d2.push(M_("17:00", "이른 저녁: 순천역 근처", "", "순천역 맛집")); d2.push(MV("18:00", "🚄 순천역 출발", "여수엑스포역보다 서울이 20분쯤 가까워요")) } }
+      else { d2.push(M_("18:00", "저녁: 순천 원도심", "", "순천 원도심 맛집")); d2.push(STAY("순천역·원도심 일대", "순천역 숙소")) }
+    }
+    if (days === 3) {
+      d3 = [MV("09:30", "🚌 순천 → 낙안읍성", "버스·차로 40분 안팎"),
+        K_(["낙안읍성"], "10:10", "초가집에 지금도 사람이 사는 조선 읍성", "낙안읍성 민속마을", dayOf(2)),
+        M_("12:00", "점심: 벌교 꼬막정식", "꼬막철(11~3월)이면 더 좋아요", "벌교 꼬막정식"),
+        K_(["태백산맥문학관", "태백산맥"], "13:30", "소설 《태백산맥》의 무대", "벌교 태백산맥문학관", dayOf(2)),
+        K_(["홍교"], "14:30", "300년 된 무지개 돌다리", "벌교 홍교", dayOf(2))];
+      if (ktx) { d3.push(MV("16:00", "🚗 벌교 → 순천역", "차로 30~40분")); d3.push(M_("16:50", "이른 저녁: 순천역 근처", "", "순천역 맛집")); d3.push(MV("18:00", "🚄 순천역 출발", "다음엔 또 오쇼잉!")) }
+    }
+  }
+
+  const c1 = REGION === "ys" ? "여수" : R.city;
+  const title = (days === 1 ? (ktx ? `${c1} KTX 당일치기` : `${c1} 하루 코스`) : days === 2 ? `${R.city} 1박 2일` : `${R.city} 2박 3일`) + (ktx && days > 1 ? " · KTX" : "");
+  const box = ktx ? `<div class="ktxBox"><b>🚄 KTX로 오면</b>${R.box.map(t => `<span>· ${esc(t)}</span>`).join("")}</div>` : "";
+  const dayHtml = (n, label, steps, tip) => `<h4>${n}일차 · ${DAY_KO[dayOf(n - 1)]}요일 · ${label}</h4>${tip ? `<p class="pfNote">🎪 ${esc(tip)}</p>` : ""}<ol class="trip">${clean(steps).map(stepHtml).join("")}</ol>`;
+  const itineraryTransport = /자가용|자동차|드라이브|차량/.test(s) ? "car" : (ktx ? "train" : "transit");
+  let html = `<div class="aiTrip"><div class="alHead"><b>${esc(title)} ${creamingTransport(itineraryTransport)}</b><span>${rainy ? "☔ 비 소식 반영" : WEATHER ? "🌤 날씨 반영" : "휴관일 반영"}</span></div>
+   <div class="tripTabs">${[["KTX 당일치기", 1, 1], ["KTX 1박 2일", 2, 1], ["KTX 2박 3일", 3, 1], ["자가용 하루", 1, 0]].map(([l, d, k]) => `<button class="${d === days && !!k === ktx ? "on" : ""}" onclick="itinerary('${k ? "ktx " : ""}${d === 1 ? "하루" : d === 2 ? "1박 2일" : "2박 3일"}${rainy ? " 비" : ""}')">${l}</button>`).join("")}</div>${box}
+   ${dayHtml(1, R.labels[0], d1, evTip(0))}`;
+  if (days >= 2) html += dayHtml(2, R.labels[1], d2, evTip(1));
+  if (days === 3) html += dayHtml(3, R.labels[2] + (rainy ? " (비 오면 실내 위주로 바꾸세요)" : ""), d3, evTip(2));
+  html += `<p class="pfNote">시간은 권장 동선이에요. 앱에 등록된 곳은 '자세히'에서 관람시간·요금을, 나머지는 '지도'에서 운영시간을 확인하세요. 열차 시간에 맞춰 마음에 드는 것만 골라 가도 돼요잉.</p></div>`;
+  $("#answer").innerHTML = html;
+  return true;
+}
 function itinerary(s) {
+  if (REGION !== "gj" && KTX_REGION[REGION]) return itineraryRegion(s);
   const days = tripMode(s), ktx = /ktx|srt|기차|송정역|열차/.test(s);
   const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && (w[2] || WEATHER.pp >= 60));
   const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
@@ -4853,8 +4978,9 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (!forced && /빵지순례|빵집|베이커리|제과점|빵\s*투어/.test(s)) return bakeryListAI(s);
   if (!forced) {
     if (/태백산맥|벌교|문학길/.test(s)) { if (REGION !== "ys") setRegion("ys"); return dateCourse("taebaek") }
-    if (REGION !== "gj" && (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|여행 코스|일정 짜|데이트|연인|커플/.test(s) || /5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s))) {
-      $("#answer").innerHTML = `🧭 <b>${esc(RNAME())}</b> 여행 코스는 아직 준비 중이에요. 지금은 <b>광주권</b> 코스(KTX 당일치기·1박 2일·데이트)만 있어요.<br><br><button class="btn" onclick="setRegion('gj');$('#aiq').value='${esc(t.replace(/['"\\]/g, ""))}';recommend('${esc(t.replace(/['"\\]/g, ""))}')">🟢 광주권 코스로 보기 →</button><br><br><small>대신 '박물관 + 맛집', '산책하기 좋은 곳', '축제 뭐 있어?'처럼 물어보면 ${esc(RNAME())} 자료로 골라 드려요.</small>`; return;
+    if (REGION !== "gj" && KTX_REGION[REGION] && /ktx|srt|기차|열차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|여행 코스|일정 짜/.test(s) && !/5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s)) return itinerary(s);
+    if (REGION !== "gj" && (/데이트|연인|커플/.test(s) || /5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s))) {
+      $("#answer").innerHTML = `🧭 <b>${esc(RNAME())}</b> 데이트 코스는 아직 준비 중이에요. ${esc(RNAME())}은 지금 <b>KTX 당일치기·1박 2일·2박 3일</b> 코스가 있고, 데이트 코스는 <b>광주권</b>에 있어요.<br><br><button class="btn" onclick="setRegion('gj');$('#aiq').value='${esc(t.replace(/['"\\]/g, ""))}';recommend('${esc(t.replace(/['"\\]/g, ""))}')">🟢 광주권 코스로 보기 →</button><br><br><small>대신 '박물관 + 맛집', '산책하기 좋은 곳', '축제 뭐 있어?'처럼 물어보면 ${esc(RNAME())} 자료로 골라 드려요.</small>`; return;
     }
     if (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|하루 종일|여행 코스|일정 짜/.test(s)) return itinerary(s);
     if (/강아지|반려|멍멍|멍카페|애견|댕댕/.test(s)) return petList(s);
@@ -5936,7 +6062,7 @@ initNav();
 <div class="manualOverlay" id="userManual" hidden onclick="if(event.target===this)closeUserManual()">
  <section class="manualPanel" role="dialog" aria-modal="true" aria-labelledby="manualTitle" tabindex="-1">
   <div class="manualTop"><div><small>오늘, 전남광주 어디로?</small><h2 id="manualTitle">📖 앱 사용설명서</h2><p>처음 이용하는 분도 쉽게 찾을 수 있도록 정리했어요.</p></div><button type="button" class="manualClose" onclick="closeUserManual()" aria-label="설명서 닫기">×</button></div>
-  <div class="manualIntro"><b>이 앱은 무엇인가요?</b><div>광주·전남의 전시, 축제, 콘서트, 영화, 관광지, 맛집과 카페를 한곳에서 찾아보고, 오늘 일정에 맞는 나들이 코스를 추천받는 지역 생활 여가 안내 앱입니다.</div></div>
+  <div class="manualIntro"><b>이 앱은 무엇인가요?</b><div>여러 공공기관에 흩어진 문화·생활 정보를 자동으로 모아, 전남광주 시민이 오늘 무엇을 할지 한곳에서 정할 수 있게 돕는 지역 생활 여가 안내 앱입니다. 전시·공연·축제·장날 일정, 도서관과 동네 강좌를 권역별로 보여 주고, 날씨와 요일에 맞는 하루 코스를 추천해요.</div></div>
   <h3>주요 기능</h3>
   <div class="manualGrid">
    <div class="manualItem"><strong>📍 권역 선택</strong><p>광주권·순천여수권·무안목포권 등 원하는 방문 지역을 먼저 선택해요.</p></div>
@@ -6069,7 +6195,7 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
     bs.forEach((b, i) => b.classList.toggle("qMore", i >= LIMIT));
     const extra = bs.length - LIMIT; if (extra <= 0) return;
     const t = document.createElement("button"); t.type = "button"; t.className = "qToggle";
-    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · KTX 코스 포함)`.replace(REGION !== "gj" ? " · KTX 코스 포함" : "", "");
+    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · KTX 코스 포함)`;
     t.textContent = label();
     t.onclick = e => { e.stopPropagation(); q.classList.toggle("qOpen"); t.textContent = label() };
     q.appendChild(t);
