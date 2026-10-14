@@ -1740,7 +1740,7 @@ button{min-height:var(--tap)}
 <div class="tabsBar" id="tabsBar">
 <div class="tabs" id="tabs"><button data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button class="on" data-tab="events"><i>📅</i>일정</button><button data-tab="kids"><i>🧸</i>아이와</button><button data-tab="places"><i>🏛</i>가볼 곳</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="food"><i>🍽</i>먹을 곳</button><button data-tab="map"><i>🗺</i>지도</button></div>
 <div class="chips" id="chips">
-<button class="active" data-filter="전체">전체</button><button data-filter="전시">🖼 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="관람가능">✅ 지금 볼 수 있는</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button data-filter="가족">👶 아이와</button><button data-filter="김대중컨벤션센터">김대중컨벤션센터</button>
+<button class="active" data-filter="전체">전체</button><button data-filter="전시">🖼 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="관람가능">✅ 지금 볼 수 있는</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button data-filter="김대중컨벤션센터">김대중컨벤션센터</button>
 </div>
 </div>
 </section>
@@ -3481,7 +3481,7 @@ function renderKids() {
   const d = DAY_KO[kstNow().getUTCDay()];
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH KIDS · ${esc(RNAME())}</span><h2>🧸 아이랑 어디 갈까?<small>아이와 볼 행사와 갈 곳을 한곳에 모았어요</small></h2></div><span>${base.length}곳</span></div>
   <div class="kidsScienceNav kidsTop" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">🧸 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === KIDS_SUB ? "selected" : ""}" onclick="setKids('sub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}</div>
-  ${evs.length ? `<h3 class="sub">📅 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.slice(0, 3).map(kidsEvRow).join("")}</div>${evs.length > 3 ? `<div style="text-align:center;margin:12px 0 4px"><button class="btn" onclick="kidsEventsAll()">아이와 행사 모두 보기 (${evs.length}개) →</button></div>` : ""}` : ""}
+  ${evs.length ? `<h3 class="sub" id="kidsEvents">📅 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.map(kidsEvRow).join("")}</div>` : ""}
   <h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
   <div class="filterBar">
     <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === KIDS_IO ? "on" : ""}" onclick="setKids('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
@@ -3494,7 +3494,8 @@ function renderKids() {
 function kidsScrollToPlaces() { setTimeout(() => { const h = document.getElementById("kidsPlaces"); if (!h) return; const hh = document.querySelector("header.top")?.offsetHeight || 0; window.scrollTo({ top: Math.max(0, h.getBoundingClientRect().top + scrollY - hh - 12), behavior: "smooth" }) }, 380) }
 window.setKids = (k, v) => { if (k === "sub") KIDS_SUB = v; if (k === "io") KIDS_IO = v; if (k === "gu") KIDS_GU = v; if (k === "open") KIDS_OPEN = v; renderKids(); if (k === "sub") kidsScrollToPlaces() };
 window.showKids = (sub = "전체") => { KIDS_SUB = sub; KIDS_IO = "전체"; KIDS_OPEN = false; renderKids(); showTab("kids"); if (sub !== "전체") kidsScrollToPlaces() };
-window.kidsEventsAll = () => { FILTER = "가족"; document.querySelectorAll("#chips button").forEach(b => b.classList.toggle("active", b.dataset.filter === "가족")); renderEvents(); showTab("events") };
+// 아이와 행사는 '아이와' 화면 한 곳에서 모두 보여 준다 (일정 화면의 '아이와' 칸은 합쳐서 없앰)
+window.kidsEventsAll = () => { showKids("전체"); setTimeout(() => document.getElementById("kidsEvents")?.scrollIntoView({ behavior: "smooth", block: "start" }), 350) };
 
 /* ───────── 🖼 전시장 · 🏺 박물관 탭 (장소는 하루 두 번 자동 발굴, 전시는 자동 수집돼 붙어요) ───────── */
 const isGallery = v => /미술관|갤러리|전시관/.test(v.kind) || /갤러리|아트폴리곤/.test(v.name) || v.id === "acc";
@@ -4322,7 +4323,7 @@ const APP_FEATURES = [
   ["🎤 대중공연", "가수·콘서트 찾기", "대중공연 콘서트 가수 팬미팅 티켓", () => { clearSearch(); showTab("popshows") }],
   ["🖼 전시장", "미술관·갤러리 전시", "전시장 전시 미술관 갤러리", () => { clearSearch(); showTab("galleries") }],
   ["🏛 박물관", "박물관 모아 보기", "박물관 역사", () => { clearSearch(); showTab("museums") }],
-  ["🧸 아이와 함께", "가족 행사·체험·과학관", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
+  ["🧸 아이와", "아이와 갈 곳·볼 행사·과학 체험", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
   ["🌳 나들이·가볼 곳", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
   ["🍽 맛집", "주변 식사", "맛집 식사 밥 먹을곳 음식점", () => { clearSearch(); showTab("food") }],
   ["🥐 빵지순례", "빵집 모아 보기", "빵 빵집 베이커리 빵지순례", () => { clearSearch(); showTab("bakeries") }],
@@ -5861,7 +5862,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
   <button type="button" data-rightjump="kids">🧸 아이와</button>
-  <button type="button" data-rightjump="science">🔬 아이와 체험</button>
+  <button type="button" data-rightjump="indoor">🌧 비 오는 날 실내</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="dayplan">📅 하루 플랜</button>
   <button type="button" data-rightjump="favorites">♡ 찜</button>
@@ -5883,6 +5884,10 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
      // 비·더위 대비: 가볼 곳 전체 중 실내 + 오늘 문 연 곳만
      PLACE_GROUP='전체';PLACE_IO='실내';PLACE_OPEN=true;
      showTab('places');renderPlaces();
+     // 다시 그린 뒤 목록 맨 위(필터 칩이 보이는 곳)로 이동
+     // 화면 밖 카드 높이가 그려지면서 위치가 밀리므로, 부드럽게 굴리지 않고 바로 옮긴 뒤 한 번 더 맞춘다
+     const toTop=()=>{const t=document.getElementById('placesView');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-12),behavior:'instant'})};
+     [60,350,800].forEach(ms=>setTimeout(toTop,ms));
    }else if(target==='dayplan'){
      document.querySelector('nav.bottom [data-jump="decide"]')?.click();
      setTimeout(()=>document.getElementById('today')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
