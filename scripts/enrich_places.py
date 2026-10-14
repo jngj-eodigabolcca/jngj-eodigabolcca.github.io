@@ -202,11 +202,94 @@ def osm_find(x: dict):
     return None
 
 
+# ───────── 관광공사 음식점 자동 발굴 ─────────
+# 앱에 직접 넣은 맛집(광주 2025 맛집 등)은 전남 시·군마다 1~2곳뿐이라, 코스에 식당을 붙이기 어려웠다.
+# 관광공사에 등록된 음식점을 시·군마다 몇십 곳씩 받아 맛집 목록에 더한다. (일주일에 한 번만 새로 받음)
+FOOD_FILE = u.ROOT / "scripts" / "food_discovered.json"
+FOOD_REFRESH_DAYS = 7
+FOOD_AREAS = [("38", 14, 30), ("5", 5, 15)]   # (지역코드, 최대 페이지, 시·군·구마다 최대 몇 곳) · 전남 38 / 광주 5
+FOOD_MIN_MODIFIED = "2021"                    # 너무 오래 안 고친 자료(폐업 가능성)는 뺀다
+FOOD_DETAIL_MAX = 80                          # 한 번 실행에 영업시간 상세는 80곳까지 (호출 한도 보호)
+CAT3 = {"A05020100": "한식", "A05020200": "양식", "A05020300": "일식", "A05020400": "중식",
+        "A05020700": "이색음식", "A05020800": "", "A05020900": "카페"}
+food_details = 0
+
+
+def discover_food(existing: list) -> list:
+    saved = u.read_json(FOOD_FILE, {})
+    fresh = saved.get("fetched") and (
+        datetime.strptime(u.TODAY_ISO, "%Y-%m-%d") - datetime.strptime(saved["fetched"], "%Y-%m-%d")
+    ).days < FOOD_REFRESH_DAYS
+    items = saved.get("items") or []
+    if not fresh and u.DATA_KEY:
+        got, per = [], {}
+        try:
+            for area, pages, cap in FOOD_AREAS:
+                for page in range(1, pages + 1):
+                    rows = tour_get("areaBasedList2", areaCode=area, contentTypeId="39",
+                                    numOfRows="100", pageNo=str(page), arrange="Q")
+                    for it in rows:
+                        addr = (it.get("addr1") or "").strip()
+                        title = u.clean_api_text(it.get("title") or "").strip()
+                        lat, lng = u.to_float(it.get("mapy")), u.to_float(it.get("mapx"))
+                        dist = u.district_from_addr(addr)
+                        cat = CAT3.get(it.get("cat3") or "", "")
+                        if not (title and u.in_region(addr) and in_area(lat, lng) and dist):
+                            continue
+                        if cat == "카페" or re.search(r"카페|커피|베이커리|제과|빵", title):
+                            continue                      # 카페·빵집은 따로 다룸
+                        if str(it.get("modifiedtime") or "9999") < FOOD_MIN_MODIFIED:
+                            continue
+                        if per.get(dist, 0) >= cap or any(g["tourId"] == str(it.get("contentid")) for g in got):
+                            continue
+                        per[dist] = per.get(dist, 0) + 1
+                        got.append({
+                            "id": f"tour-food-{it.get('contentid')}", "tourId": str(it.get("contentid") or ""),
+                            "name": title, "menu": cat, "district": dist, "address": addr,
+                            "lat": round(lat, 6), "lng": round(lng, 6), "geoSrc": "한국관광공사",
+                            "phone": (it.get("tel") or "").strip(),
+                            "badge": "관광공사 등록 음식점", "source": "한국관광공사 TourAPI",
+                            "note": "", "verified": u.TODAY_ISO, "origin": "auto",
+                        })
+                    if len(rows) < 100:
+                        break
+            if got:
+                items = got
+                u.write_json(FOOD_FILE, {"fetched": u.TODAY_ISO, "items": items})
+                print(f"  관광공사 음식점 {len(items)}곳 새로 받음 · 시군구 {len(per)}곳", flush=True)
+        except Exception as e:
+            print(f"  ⚠ 음식점 발굴 실패 → 지난번 목록 사용: {u.scrub(e)}", flush=True)
+    # 앱에 직접 넣은 맛집과 겹치면 직접 넣은 쪽만 남김
+    have = {(u.norm_title(x.get("name")), x.get("district")) for x in existing}
+    return [x for x in items if (u.norm_title(x["name"]), x["district"]) not in have]
+
+
 # ───────── 한 곳 조사 ─────────
 def lookup(x: dict, kind: str) -> dict:
     """찾은 정보 묶음(캐시에 저장되는 값)을 돌려준다. 못 찾으면 {'miss': 날짜}."""
+    global food_details
     found = {}
     it = None
+    if kind == "food" and x.get("tourId") and x.get("lat"):
+        # 관광공사에서 발굴한 음식점: 위치는 이미 있으니 영업시간 상세만 아이디로 바로 묻는다
+        if food_details >= FOOD_DETAIL_MAX:
+            raise Temporary("상세 상한")
+        food_details += 1
+        try:
+            d = tour_food_detail(x["tourId"])
+        except RuntimeError:
+            raise
+        except Exception as e:
+            raise Temporary(str(e))
+        clean = u.clean_api_text
+        if clean(d.get("opentimefood")):
+            found.update(hours=clean(d.get("opentimefood")), hoursSrc="한국관광공사")
+        if clean(d.get("restdatefood")):
+            found["closed"] = clean(d.get("restdatefood"))
+        if clean(d.get("firstmenu")):
+            found["menu"] = clean(d.get("firstmenu"))
+        found["checked"] = u.TODAY_ISO
+        return found if len(found) > 1 else {"miss": u.TODAY_ISO}
     if u.DATA_KEY:
         try:
             it = tour_find(x, kind)
@@ -262,6 +345,8 @@ def needs_lookup(x: dict, kind: str) -> bool:
 def apply(x: dict, found: dict) -> dict:
     """빈칸만 채운다. 직접 입력한 값은 그대로."""
     y = dict(x)
+    if found.get("menu") and y.get("menu") in CAT3.values():
+        y["menu"] = ""                      # '한식' 같은 분류 대신 실제 대표메뉴로
     for k in ("lat", "lng", "phone", "hours", "closed", "menu"):
         if found.get(k) and not y.get(k):
             y[k] = found[k]
@@ -278,6 +363,10 @@ def apply(x: dict, found: dict) -> dict:
 
 def main():
     data = u.embedded_data()
+    if not data:
+        print("  ⚠ 내장 자료가 비어 있어 이번엔 장소 파일을 덮어쓰지 않아요", flush=True)
+        return
+    data["restaurants"] = list(data.get("restaurants") or []) + discover_food(data.get("restaurants") or [])
     cache = u.read_json(CACHE_FILE, {})
     stats = {}
     stopped = False

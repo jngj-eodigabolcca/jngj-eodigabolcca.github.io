@@ -53,22 +53,36 @@ def write_json(path: Path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
 
+EMBED_JS = ROOT / "docs" / "embedded-data.js"
+
+def _embedded_text():
+    """내장 자료(window.__DATA__=...)가 든 파일 내용을 돌려준다.
+    예전엔 index.html 안에 있었고, 지금은 docs/embedded-data.js 로 따로 빠져 있다. 둘 다 찾아본다."""
+    for f in (INDEX, EMBED_JS):
+        try:
+            t = f.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if re.search(r"window\.__DATA__\s*=\s*\{", t):   # 앱 코드 속 'window.__DATA__ &&' 는 건너뜀
+            return t
+    return ""
+
 def embedded_data():
-    html = INDEX.read_text(encoding="utf-8")
-    i = html.find("window.__DATA__=")
-    if i < 0:
+    html = _embedded_text()
+    m = re.search(r"window\.__DATA__\s*=\s*(?=\{)", html)
+    if not m:
+        print("  ⚠ 내장 자료(window.__DATA__)를 index.html·embedded-data.js 어디서도 못 찾았어요", flush=True)
         return {}
-    d, _ = json.JSONDecoder().raw_decode(html[i + len("window.__DATA__="):])
+    d, _ = json.JSONDecoder().raw_decode(html[m.end():])
     return d
 
 def embedded_manual_events():
-    """현재 index.html에 들어 있는 수동 데이터를 읽는다."""
-    html = INDEX.read_text(encoding="utf-8")
-    token = "window.__DATA__="
-    i = html.find(token)
-    if i < 0:
+    """현재 index.html(또는 embedded-data.js)에 들어 있는 수동 데이터를 읽는다."""
+    html = _embedded_text()
+    m = re.search(r"window\.__DATA__\s*=\s*(?=\{)", html)
+    if not m:
         return []
-    i += len(token)
+    i = m.end()
 
     # JSON 객체의 중괄호 균형을 직접 추적한다.
     depth = 0
