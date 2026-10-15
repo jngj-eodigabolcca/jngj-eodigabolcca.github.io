@@ -4255,7 +4255,7 @@
     "id": "tour-food-2876310",
     "tourId": "2876310",
     "name": "정원",
-    "menu": "한식",
+    "menu": "떡갈비 정식",
     "district": "순천시",
     "address": "전남광주통합특별시 순천시 해룡면 매안로 137",
     "lat": 34.935473,
@@ -4266,13 +4266,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:30~21:30 / - 준비시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2876642",
     "tourId": "2876642",
     "name": "강화식당",
-    "menu": "한식",
+    "menu": "특보리굴비정식",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 굴비로 9-2",
     "lat": 35.36169,
@@ -4283,13 +4286,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 10:30~20:30 / - 준비시간 15:00~17:00 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 둘째, 넷째 월요일"
   },
   {
     "id": "tour-food-2876701",
     "tourId": "2876701",
     "name": "동원정",
-    "menu": "한식",
+    "menu": "굴비한정식",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 법성면 법성포로3길 12-19",
     "lat": 35.359085,
@@ -4300,13 +4306,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~20:40 / - 준비시간(평일) 15:00~17:00 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매월 둘째, 넷째 수요일"
   },
   {
     "id": "tour-food-2876736",
     "tourId": "2876736",
     "name": "등대식당",
-    "menu": "한식",
+    "menu": "해물칼국수",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 홍농읍 계마길 61",
     "lat": 35.394516,
@@ -4317,13 +4326,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "설·추석 당일"
   },
   {
     "id": "tour-food-2876875",
     "tourId": "2876875",
     "name": "법성포굴비정식",
-    "menu": "한식",
+    "menu": "굴비정식",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 법성면 법성포로 7",
     "lat": 35.361237,
@@ -4334,13 +4346,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-2876899",
     "tourId": "2876899",
     "name": "사거리식육식당",
-    "menu": "한식",
+    "menu": "생고기",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 홍농읍 홍농로 487",
     "lat": 35.397789,
@@ -4351,13 +4366,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 10:00~21:00 / - 준비시간 15:00~16:00 / - 마지막 주문 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 일요일 / 설·추석 연휴"
   },
   {
     "id": "tour-food-2876958",
     "tourId": "2876958",
     "name": "영광맛집 호타루",
-    "menu": "일식",
+    "menu": "아보카도롤세트",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 영광읍 대하길 35",
     "lat": 35.274192,
@@ -4368,13 +4386,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 10:00~20:30 / - 마지막 주문 20:20",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-2876981",
     "tourId": "2876981",
     "name": "영광백수식당",
-    "menu": "한식",
+    "menu": "백합회",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 백수읍 천마길 9",
     "lat": 35.28274,
@@ -4385,13 +4406,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~20:00 / - 준비시간 15:00~16:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매월 넷째 월요일"
   },
   {
     "id": "tour-food-2877000",
     "tourId": "2877000",
     "name": "장어명가 청산",
-    "menu": "한식",
+    "menu": "장어구이",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 법성면 법성포로 15-7",
     "lat": 35.360651,
@@ -4402,13 +4426,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~20:30 / - 준비시간 14:00~17:00 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 첫째, 셋째 화요일"
   },
   {
     "id": "tour-food-2877102",
     "tourId": "2877102",
     "name": "풍성한 집",
-    "menu": "한식",
+    "menu": "풍성 한정식",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 법성면 법성포로3길 60",
     "lat": 35.359187,
@@ -4419,13 +4446,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~20:00 / - 준비시간 15:00~17:00 / - 마지막 주문 19:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2877124",
     "tourId": "2877124",
     "name": "한성식당",
-    "menu": "한식",
+    "menu": "백합죽",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 백수읍 천마길 10",
     "lat": 35.282785,
@@ -4436,13 +4466,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:30~19:00 / - 준비시간 14:00~16:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매월 첫째, 셋째 월요일"
   },
   {
     "id": "tour-food-2878105",
     "tourId": "2878105",
     "name": "모래골",
-    "menu": "한식",
+    "menu": "굴비백반",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 백수읍 해안로 1389",
     "lat": 35.363248,
@@ -4453,13 +4486,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00~20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2878107",
     "tourId": "2878107",
     "name": "문정한정식",
-    "menu": "한식",
+    "menu": "한정식",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 영광읍 중앙로5길 16-10",
     "lat": 35.27492,
@@ -4470,13 +4506,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~20:20",
+    "hoursSrc": "한국관광공사",
+    "closed": "설·추석 당일"
   },
   {
     "id": "tour-food-2891266",
     "tourId": "2891266",
     "name": "병암산장",
-    "menu": "한식",
+    "menu": "닭숯불구이",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 신재로 1678-67",
     "lat": 35.097014,
@@ -4487,13 +4526,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~18:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891272",
     "tourId": "2891272",
     "name": "광양 소낭구",
-    "menu": "한식",
+    "menu": "마늘 닭구이",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 광양읍 서평로 40",
     "lat": 34.977705,
@@ -4504,13 +4546,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "[평일] / - 11:00~21:00 / - 준비시간 15:00~17:00 / - 마지막 주문 14:00, 20:00 / [주말] / - 11:00~21:00 / - 마지막 주문 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891278",
     "tourId": "2891278",
     "name": "민속촌 영광점",
-    "menu": "한식",
+    "menu": "양념돼지갈비",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 영광읍 신남로1길 54-22",
     "lat": 35.27309,
@@ -4521,13 +4566,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:30~22:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891279",
     "tourId": "2891279",
     "name": "장끄방횟집",
-    "menu": "한식",
+    "menu": "물회",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 광양읍 서평1길 25",
     "lat": 34.978055,
@@ -4538,13 +4586,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~21:00 / - 준비시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891291",
     "tourId": "2891291",
     "name": "장원회관",
-    "menu": "한식",
+    "menu": "광양불고기",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 광양읍 매천로 821-5",
     "lat": 34.975753,
@@ -4555,13 +4606,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~21:30 / - 준비시간 15:00~16:30 / - 마지막 주문더 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891292",
     "tourId": "2891292",
     "name": "법성토우",
-    "menu": "한식",
+    "menu": "토우한상",
     "district": "영광군",
     "address": "전남광주통합특별시 영광군 법성면 법성포로3길 26-9",
     "lat": 35.36054,
@@ -4572,13 +4626,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:300~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891299",
     "tourId": "2891299",
     "name": "차도리가든",
-    "menu": "한식",
+    "menu": "닭숯불갈비",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 옥룡면 신재로 337",
     "lat": 34.996662,
@@ -4589,13 +4646,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~21:00 / - 준비시간 15:00~17:00 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 수요일"
   },
   {
     "id": "tour-food-2891325",
     "tourId": "2891325",
     "name": "광양정",
-    "menu": "한식",
+    "menu": "꽃게간장게장",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 발섬4길 17-12 (중동)",
     "lat": 34.934776,
@@ -4606,13 +4666,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 일요일"
   },
   {
     "id": "tour-food-2891332",
     "tourId": "2891332",
     "name": "이화원",
-    "menu": "중식",
+    "menu": "XO소스게살볶음밥",
     "district": "나주시",
     "address": "전남광주통합특별시 나주시 상야1길 20",
     "lat": 35.022067,
@@ -4623,13 +4686,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~21:30 (준비시간 15:00~17:00)",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2891370",
     "tourId": "2891370",
     "name": "무안명가",
-    "menu": "한식",
+    "menu": "낙지코스",
     "district": "무안군",
     "address": "전남광주통합특별시 무안군 망운면 톱머리길 38",
     "lat": 34.968345,
@@ -4640,13 +4706,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 10:00~20:30 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 셋째 일요일"
   },
   {
     "id": "tour-food-2892979",
     "tourId": "2892979",
     "name": "약선명가",
-    "menu": "한식",
+    "menu": "한방 삼계탕",
     "district": "나주시",
     "address": "전남광주통합특별시 나주시 황동2길 3-5 (빛가람동)",
     "lat": 35.013546,
@@ -4657,13 +4726,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:00~22:00 / - 마지막 주문 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 일요일 (10월~4월)"
   },
   {
     "id": "tour-food-2892995",
     "tourId": "2892995",
     "name": "풍차",
-    "menu": "중식",
+    "menu": "짜장",
     "district": "영암군",
     "address": "전남광주통합특별시 영암군 금정면 여운재로 996",
     "lat": 34.859985,
@@ -4674,13 +4746,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "[월요일] / - 11:00~15:00 / - 마지막 주문 14:30 / [수요일~일요일] / - 11:00~20:00 / - 준비시간 15:00~16:30 / - 마지막 주문 19:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 화요일"
   },
   {
     "id": "tour-food-2893014",
     "tourId": "2893014",
     "name": "장터남악점",
-    "menu": "한식",
+    "menu": "꽃게살",
     "district": "무안군",
     "address": "전남광주통합특별시 무안군 삼향읍 남악5로52번길 8",
     "lat": 34.810011,
@@ -4691,13 +4766,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 첫째, 셋째, 다섯째 일요일 / 둘째, 넷째 월요일"
   },
   {
     "id": "tour-food-2923354",
     "tourId": "2923354",
     "name": "여수맛집 봉초밥",
-    "menu": "일식",
+    "menu": "모둠초밥",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 시청서5길 7",
     "lat": 34.757034,
@@ -4708,13 +4786,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~22:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2923668",
     "tourId": "2923668",
     "name": "통큰샤브",
-    "menu": "한식",
+    "menu": "소고기 샤브샤브",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 망마로 25",
     "lat": 34.760331,
@@ -4725,13 +4806,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:30~22:00 / - 마지막 주문 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2923884",
     "tourId": "2923884",
     "name": "대감게장",
-    "menu": "한식",
+    "menu": "게장정식",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 시청서2길 51-8 (학동)",
     "lat": 34.760345,
@@ -4742,13 +4826,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:00~20:40",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 넷째 수요일"
   },
   {
     "id": "tour-food-3337314",
     "tourId": "3337314",
     "name": "순천양조장",
-    "menu": "양식",
+    "menu": "크레인버거",
     "district": "순천시",
     "address": "전남광주통합특별시 순천시 역전길 57 (조곡동)",
     "lat": 34.947504,
@@ -4759,7 +4846,10 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "[평일] / - 13:00~23:00 / - 마지막 주문 22:30 / [주말] / - 11:00~23:00 / - 마지막 주문 22:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-3354974",
@@ -4776,7 +4866,9 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:30~19:00 (재료 소진시 조기 마감)",
+    "hoursSrc": "한국관광공사"
   },
   {
     "id": "tour-food-3355103",
@@ -4793,13 +4885,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~20:30 (라스트오더 19:50)",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 토요일"
   },
   {
     "id": "tour-food-3444492",
     "tourId": "3444492",
     "name": "최대감벌교꼬막",
-    "menu": "한식",
+    "menu": "대감정식(짱뚱어탕 포함), 꼬막정식",
     "district": "순천시",
     "address": "전남광주통합특별시 순천시 낙안면 삼일로 63",
     "lat": 34.90499,
@@ -4810,13 +4905,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "월~금 09:00 - 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 2번째 수요일 정기휴무"
   },
   {
     "id": "tour-food-133727",
     "tourId": "133727",
     "name": "원조제일숯불갈비",
-    "menu": "한식",
+    "menu": "수제 한우 떡갈비",
     "district": "담양군",
     "address": "전남광주통합특별시 담양군 담양읍 마두길 4",
     "lat": 35.300631,
@@ -4827,13 +4925,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~20:30 / - 마지막 주문 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-134971",
     "tourId": "134971",
     "name": "그린식당",
-    "menu": "한식",
+    "menu": "낙지초무침",
     "district": "영암군",
     "address": "전남광주통합특별시 영암군 학산면 독천로 171-1",
     "lat": 34.725444,
@@ -4844,13 +4945,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00~22:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-607409",
     "tourId": "607409",
     "name": "묵은지",
-    "menu": "한식",
+    "menu": "한우특모둠",
     "district": "진도군",
     "address": "전남광주통합특별시 진도군 진도읍 남동1길 12-5",
     "lat": 34.48115,
@@ -4861,13 +4965,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:30~21:15 / -준비 시간 14:30 ~ 17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-645102",
     "tourId": "645102",
     "name": "약산흑염소가든",
-    "menu": "한식",
+    "menu": "흑염소수육",
     "district": "화순군",
     "address": "전남광주통합특별시 화순군 화순읍 상삼2길 13",
     "lat": 35.052881,
@@ -4878,13 +4985,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:30 ~ 20:30 / - 마지막 주문 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절 당일"
   },
   {
     "id": "tour-food-729774",
     "tourId": "729774",
     "name": "담양숯불갈비",
-    "menu": "한식",
+    "menu": "숯불갈비",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 옥암로 65",
     "lat": 34.805141,
@@ -4895,13 +5005,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~22:00 / - 마지막 주문 21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1342984",
     "tourId": "1342984",
     "name": "마띠유",
-    "menu": "양식",
+    "menu": "마띠유 정식",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 소라면 서부로 791",
     "lat": 34.791087,
@@ -4912,13 +5025,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 수요일"
   },
   {
     "id": "tour-food-1348733",
     "tourId": "1348733",
     "name": "오죽헌한정식",
-    "menu": "한식",
+    "menu": "충무공 밥상",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 시청서1길 36",
     "lat": 34.758345,
@@ -4929,13 +5045,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~21:00 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1350590",
     "tourId": "1350590",
     "name": "태백산맥 꼬막맛집",
-    "menu": "한식",
+    "menu": "꼬막정식",
     "district": "보성군",
     "address": "전남광주통합특별시 보성군 벌교읍 벌교천2길 58-1",
     "lat": 34.84798,
@@ -4946,13 +5065,15 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 평일 09:00~21:00 / - 주말 08:30~21:00",
+    "hoursSrc": "한국관광공사"
   },
   {
     "id": "tour-food-1364148",
     "tourId": "1364148",
     "name": "다도해회관",
-    "menu": "한식",
+    "menu": "자연산 모둠회",
     "district": "고흥군",
     "address": "전남광주통합특별시 고흥군 봉래면 나로도항길 103-18",
     "lat": 34.46498,
@@ -4963,13 +5084,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 화요일"
   },
   {
     "id": "tour-food-1369138",
     "tourId": "1369138",
     "name": "둥근지붕",
-    "menu": "한식",
+    "menu": "쌈밥",
     "district": "화순군",
     "address": "전남광주통합특별시 화순군 도곡면 지강로 260",
     "lat": 35.019353,
@@ -4980,13 +5104,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "[하절기] 10:30~21:00 / [동절기] 10:30~20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1985799",
     "tourId": "1985799",
     "name": "3대곰탕",
-    "menu": "한식",
+    "menu": "곰탕",
     "district": "장흥군",
     "address": "전남광주통합특별시 장흥군 장흥읍 토요시장3길 16-2",
     "lat": 34.676591,
@@ -4997,13 +5124,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00 ~ 19:00 / - 마지막 주문 18:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1985883",
     "tourId": "1985883",
     "name": "다향보성녹돈촌",
-    "menu": "한식",
+    "menu": "녹돈생삽겹",
     "district": "보성군",
     "address": "전남광주통합특별시 보성군 회천면 남부관광로 2320",
     "lat": 34.670329,
@@ -5014,13 +5144,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2507741",
     "tourId": "2507741",
     "name": "해촌산장어숯불구이",
-    "menu": "한식",
+    "menu": "장어구이 (소금/양념)",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 충무로 76",
     "lat": 34.74322,
@@ -5031,13 +5164,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절연휴"
   },
   {
     "id": "tour-food-2580668",
     "tourId": "2580668",
     "name": "[착한가게] 다순구미감자탕",
-    "menu": "한식",
+    "menu": "감자탕",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 자유로 48",
     "lat": 34.793237,
@@ -5048,13 +5184,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:50~22:00 / - 월요일~토요일 준비 시간 15:00~17:00 / - 마지막 주문 21:20",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-2580820",
     "tourId": "2580820",
     "name": "성균관",
-    "menu": "중식",
+    "menu": "짜장면",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 비파로 135",
     "lat": 34.809452,
@@ -5065,13 +5204,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:30 ~ 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2580847",
     "tourId": "2580847",
     "name": "[착한가게]푸른솔아구집",
-    "menu": "한식",
+    "menu": "아귀찜",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 번화로 8-1",
     "lat": 34.786001,
@@ -5082,13 +5224,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 일요일"
   },
   {
     "id": "tour-food-2583173",
     "tourId": "2583173",
     "name": "고흥삼계탕",
-    "menu": "한식",
+    "menu": "삼계탕",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 복산길6번길 40",
     "lat": 34.806366,
@@ -5099,13 +5244,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:30~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2583245",
     "tourId": "2583245",
     "name": "시골집순두부 목포본점",
-    "menu": "한식",
+    "menu": "시골집반상",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 복산길6번길 44",
     "lat": 34.806739,
@@ -5116,13 +5264,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:30~21:00 / 라스트 오더 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 토요일"
   },
   {
     "id": "tour-food-2583263",
     "tourId": "2583263",
     "name": "수일식",
-    "menu": "일식",
+    "menu": "수 런치코스",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 평화로 103",
     "lat": 34.798048,
@@ -5133,13 +5284,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 11:30~22:00 / - 준비시간 14:00~17:00 / - 마지막 주문 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-2616101",
     "tourId": "2616101",
     "name": "[백년가게]대한식당",
-    "menu": "한식",
+    "menu": "광양불고기",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 광양읍 매일시장길 12-15",
     "lat": 34.976228,
@@ -5150,13 +5304,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~21:30 / - 준비 시간 15:30~16:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절연휴"
   },
   {
     "id": "tour-food-2824402",
     "tourId": "2824402",
     "name": "개성순두부전문점",
-    "menu": "한식",
+    "menu": "소고기순두부",
     "district": "완도군",
     "address": "전남광주통합특별시 완도군 개포로 19",
     "lat": 34.316404,
@@ -5167,13 +5324,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "- 05:30~20:00 / - 준비시간 14:30~17:00 / - 마지막 주문 19:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 금요일 / 토요일"
   },
   {
     "id": "tour-food-2867862",
     "tourId": "2867862",
     "name": "벽오동 본점",
-    "menu": "한식",
+    "menu": "쌀밥정식",
     "district": "담양군",
     "address": "전남광주통합특별시 담양군 의병로 41",
     "lat": 35.231475,
@@ -5184,13 +5344,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:30~19:40 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 수요일"
   },
   {
     "id": "tour-food-2868063",
     "tourId": "2868063",
     "name": "녹양관",
-    "menu": "한식",
+    "menu": "꽃게 간장게장",
     "district": "장흥군",
     "address": "전남광주통합특별시 장흥군 장평중앙길 49",
     "lat": 34.77429,
@@ -5201,13 +5364,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~21:00 / ※ 전화 문의 후 방문 요망",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-133481",
     "tourId": "133481",
     "name": "천일식당",
-    "menu": "한식",
+    "menu": "떡갈비정식",
     "district": "해남군",
     "address": "전남광주통합특별시 해남군 해남읍 읍내길 20-8",
     "lat": 34.570612,
@@ -5218,13 +5384,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 2, 4번째 월요일 휴일 (8월만 4번째 월요일 하루 휴일) / 명절 전날부터 3일간 휴무"
   },
   {
     "id": "tour-food-134271",
     "tourId": "134271",
     "name": "전통식당",
-    "menu": "한식",
+    "menu": "전통한정식",
     "district": "담양군",
     "address": "전남광주통합특별시 담양군 고서면 고읍현길 38-4",
     "lat": 35.208036,
@@ -5235,13 +5404,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00 ~ 20:00 / - 준비 시간 15:00~16:30 / - 마지막 주문 19:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절휴무"
   },
   {
     "id": "tour-food-134277",
     "tourId": "134277",
     "name": "예향한정식",
-    "menu": "한식",
+    "menu": "특한정식",
     "district": "나주시",
     "address": "전남광주통합특별시 나주시 나주천1길 79",
     "lat": 35.030029,
@@ -5252,13 +5424,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30 ~ 21:00 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 첫째주, 셋째주 월요일"
   },
   {
     "id": "tour-food-134495",
     "tourId": "134495",
     "name": "싱싱회마을",
-    "menu": "한식",
+    "menu": "활어회",
     "district": "장흥군",
     "address": "전남광주통합특별시 장흥군 장흥읍 건산로 48",
     "lat": 34.680816,
@@ -5269,13 +5444,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~20:30 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 일요일"
   },
   {
     "id": "tour-food-134655",
     "tourId": "134655",
     "name": "어가일식",
-    "menu": "일식",
+    "menu": "회정식",
     "district": "완도군",
     "address": "전남광주통합특별시 완도군 완도읍 해변공원로113번길 6",
     "lat": 34.323726,
@@ -5286,13 +5464,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00 ~ 22:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-134992",
     "tourId": "134992",
     "name": "동락식당",
-    "menu": "한식",
+    "menu": "갈낙탕",
     "district": "영암군",
     "address": "전남광주통합특별시 영암군 영암읍 서문로 10",
     "lat": 34.799077,
@@ -5303,13 +5484,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~20:00 / - 준비 시간 14:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 2번째 화요일"
   },
   {
     "id": "tour-food-135091",
     "tourId": "135091",
     "name": "이학식당",
-    "menu": "한식",
+    "menu": "짱뚱어탕",
     "district": "신안군",
     "address": "전남광주통합특별시 신안군 증도면 증도중앙길 39",
     "lat": 35.001106,
@@ -5320,13 +5504,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:00~20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-404070",
     "tourId": "404070",
     "name": "청자골종가집",
-    "menu": "한식",
+    "menu": "한정식",
     "district": "강진군",
     "address": "전남광주통합특별시 강진군 군동면 종합운동장길 106-11",
     "lat": 34.647276,
@@ -5337,13 +5524,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:30~20:30 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절연휴 (전화문의)"
   },
   {
     "id": "tour-food-404077",
     "tourId": "404077",
     "name": "남평할매집",
-    "menu": "한식",
+    "menu": "곰탕",
     "district": "나주시",
     "address": "전남광주통합특별시 나주시 금성관길 2 (중앙동)",
     "lat": 35.031893,
@@ -5354,13 +5544,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00~20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-642995",
     "tourId": "642995",
     "name": "삼대광양불고기집",
-    "menu": "한식",
+    "menu": "호주산 불고기",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 서천1길 52",
     "lat": 34.970159,
@@ -5371,13 +5564,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00 ~ 21:00 / - 마지막 주문 20:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-643329",
     "tourId": "643329",
     "name": "한미르",
-    "menu": "한식",
+    "menu": "한정식",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 유달로 112",
     "lat": 34.791192,
@@ -5388,13 +5584,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "10:00~22:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-643451",
     "tourId": "643451",
     "name": "나무포",
-    "menu": "한식",
+    "menu": "갈비찜정식",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 수문로 19-1",
     "lat": 34.791831,
@@ -5405,13 +5604,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "07:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매달 2, 4번째 일요일"
   },
   {
     "id": "tour-food-649521",
     "tourId": "649521",
     "name": "덕인홍어집",
-    "menu": "한식",
+    "menu": "흑산홍어",
     "district": "목포시",
     "address": "전남광주통합특별시 목포시 영산로73번길 1-1",
     "lat": 34.789148,
@@ -5422,13 +5624,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "12:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일 / 명절연휴"
   },
   {
     "id": "tour-food-764548",
     "tourId": "764548",
     "name": "전사마",
-    "menu": "한식",
+    "menu": "전복갈비찜",
     "district": "완도군",
     "address": "전남광주통합특별시 완도군 완도읍 장보고대로 197",
     "lat": 34.317943,
@@ -5439,13 +5644,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "매월 둘째, 넷째주 일요일"
   },
   {
     "id": "tour-food-1349170",
     "tourId": "1349170",
     "name": "섬진강 다슬기",
-    "menu": "한식",
+    "menu": "다슬기 수제비",
     "district": "구례군",
     "address": "전남광주통합특별시 구례군 토지면 섬진강대로 5041",
     "lat": 35.196952,
@@ -5456,13 +5664,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00~19:30 / - 마지막 주문 19:15",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1349270",
     "tourId": "1349270",
     "name": "지리산식당",
-    "menu": "한식",
+    "menu": "싸리버섯전골",
     "district": "구례군",
     "address": "전남광주통합특별시 구례군 마산면 화엄사로 381",
     "lat": 35.243157,
@@ -5473,13 +5684,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "07:30~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1364103",
     "tourId": "1364103",
     "name": "고흥한우직판장",
-    "menu": "한식",
+    "menu": "불고기버섯전골",
     "district": "고흥군",
     "address": "전남광주통합특별시 고흥군 고흥읍 고흥로 1892-67",
     "lat": 34.612661,
@@ -5490,13 +5704,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00 ~ 21:00 / - 마지막 주문 20:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "명절 당일 / 근로자의 날"
   },
   {
     "id": "tour-food-1364558",
     "tourId": "1364558",
     "name": "예원",
-    "menu": "한식",
+    "menu": "더덕정식",
     "district": "구례군",
     "address": "전남광주통합특별시 구례군 마산면 화엄사로 381",
     "lat": 35.243157,
@@ -5507,13 +5724,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "08:00~19:00 / - 준비 시간 15:00~17:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1364817",
     "tourId": "1364817",
     "name": "이대순두부",
-    "menu": "한식",
+    "menu": "순두부찌개",
     "district": "구례군",
     "address": "전남광주통합특별시 구례군 산동면 지리산온천로 257",
     "lat": 35.317095,
@@ -5524,13 +5744,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "06:00~23:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1369432",
     "tourId": "1369432",
     "name": "대성식당",
-    "menu": "한식",
+    "menu": "삼치회정식",
     "district": "여수시",
     "address": "전남광주통합특별시 여수시 교동남1길 5-9",
     "lat": 34.739796,
@@ -5541,13 +5764,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:00 ~ 21:00 / - 마지막 주문 20:10 / ※ 재료 소진 시 조기 마감",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 월요일"
   },
   {
     "id": "tour-food-1373338",
     "tourId": "1373338",
     "name": "궁전회관",
-    "menu": "한식",
+    "menu": "보리굴비정식",
     "district": "곡성군",
     "address": "전남광주통합특별시 곡성군 곡성읍 중앙로 54",
     "lat": 35.278275,
@@ -5558,13 +5784,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1374674",
     "tourId": "1374674",
     "name": "영일관",
-    "menu": "한식",
+    "menu": "꽃게장한정식",
     "district": "광양시",
     "address": "전남광주통합특별시 광양시 옥곡면 신금산단5길 76",
     "lat": 34.975111,
@@ -5575,13 +5804,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "11:00~20:00 / - 준비 시간 15:00~17:00 / - 마지막 주문 19:10",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1377508",
     "tourId": "1377508",
     "name": "보성 한우직판장",
-    "menu": "한식",
+    "menu": "돼지숯불갈비",
     "district": "보성군",
     "address": "전남광주통합특별시 보성군 회천면 우암1길 10",
     "lat": 34.673228,
@@ -5592,13 +5824,16 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:30~21:30",
+    "hoursSrc": "한국관광공사",
+    "closed": "매주 주말 / 명절 연휴 (전화문의)"
   },
   {
     "id": "tour-food-1377542",
     "tourId": "1377542",
     "name": "정가네원조꼬막회관",
-    "menu": "한식",
+    "menu": "꼬막정식",
     "district": "보성군",
     "address": "전남광주통합특별시 보성군 벌교읍 조정래길 55",
     "lat": 34.848085,
@@ -5609,7 +5844,10 @@
     "source": "한국관광공사 TourAPI",
     "note": "",
     "verified": "2026-10-15",
-    "origin": "auto"
+    "origin": "auto",
+    "hours": "09:00 ~ 21:00",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴"
   },
   {
     "id": "tour-food-1378430",

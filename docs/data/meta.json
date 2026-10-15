@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T16:55:53+09:00",
+  "updated_at": "2026-10-15T18:35:53+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -14,7 +14,7 @@
       "name": "KOPIS 공연",
       "ok": true,
       "count": 99,
-      "message": "하루 한 번만 받아요 · 7시간 전 자료 99건 사용"
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 99건 사용"
     },
     {
       "id": "culture",
@@ -37,7 +37,7 @@
       "name": "KOPIS 공연",
       "ok": true,
       "count": 99,
-      "message": "하루 한 번만 받아요 · 7시간 전 자료 99건 사용"
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 99건 사용"
     },
     {
       "id": "culture",
@@ -67,7 +67,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-15T16:57:07+09:00",
+      "fetched_at": "2026-10-15T18:36:42+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -103,7 +103,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 323,
-      "fetched_at": "2026-10-15T16:57:07+09:00",
+      "fetched_at": "2026-10-15T18:36:42+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -136,9 +136,9 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-15T16:57:09+09:00",
-    "tourapi_calls": 91,
-    "osm_lookups": 3,
+    "checked_at": "2026-10-15T18:36:43+09:00",
+    "tourapi_calls": 85,
+    "osm_lookups": 0,
     "unfinished": false,
     "lists": {
       "venues": {
@@ -151,7 +151,7 @@
         "total": 382,
         "with_coords": 340,
         "coords_filled": 33,
-        "hours_filled": 176
+        "hours_filled": 256
       },
       "bakeries": {
         "total": 15,
