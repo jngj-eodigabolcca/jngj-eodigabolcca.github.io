@@ -9,8 +9,6 @@
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fff3e2">
-<script>/* 안드로이드: 화면을 휴대폰 버튼(뒤로가기·홈) 줄 밑까지 깔지 않음 → 휴대폰이 그 줄을 따로 칠하고 밤 모드에도 잘 보이는 버튼 색을 씀 (아이폰은 그대로) */
-if(/Android/i.test(navigator.userAgent)){var vp=document.querySelector('meta[name="viewport"]');if(vp)vp.setAttribute("content","width=device-width,initial-scale=1")}</script>
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="오늘어디로">
 <meta name="author" content="오늘, 전남광주 어디로?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디로? All rights reserved.">
@@ -1207,7 +1205,7 @@ html body nav.bottom button{border:4px solid transparent!important;background-cl
 html body nav.bottom button.on{background-color:#fff!important;background-image:none!important;color:#16302b!important}
 html body nav.bottom button.on span{color:#16302b!important}
 /* 밤 모드: 하단 메뉴가 어두운 화면에 묻히지 않게 한 톤 밝은 판 + 또렷한 테두리 */
-:root[data-theme="dark"] html body nav.bottom,html:root[data-theme="dark"] body nav.bottom{background:#34433d!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important}
+:root[data-theme="dark"] html body nav.bottom,html:root[data-theme="dark"] body nav.bottom{background:#2f6b5e!important;border:1px solid rgba(255,255,255,.35)!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important}
 html:root[data-theme="dark"] body nav.bottom button{color:#e6eeea!important}
 html:root[data-theme="dark"] body nav.bottom button span{color:#e6eeea!important}
 html:root[data-theme="dark"] body nav.bottom button.on,html:root[data-theme="dark"] body nav.bottom button.on span{color:#16302b!important}
@@ -6467,8 +6465,9 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 /* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
    어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
 :root[data-theme="dark"]{background-color:#1a1917!important;color-scheme:dark}
-.sysNavBack{position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:var(--bg,#f6f1e7);z-index:99;pointer-events:none}
-:root[data-theme="dark"] .sysNavBack{background:#1a1917}
+.sysNavBack{position:fixed;left:0;right:0;bottom:0;height:max(env(safe-area-inset-bottom,0px),0px);background:var(--bg,#f6f1e7);z-index:99;pointer-events:none}
+:root[data-theme="dark"] .sysNavBack{background:#7f8b85}
+/* 밤 모드: 휴대폰 키(뒤로가기·홈) 줄 밑을 중간 밝기 회색으로 → 휴대폰이 키를 검게 그리든 희게 그리든 둘 다 보임 */
 </style>
 <div class="sysNavBack" aria-hidden="true"></div>
 <script id="navAutoHideScript">
