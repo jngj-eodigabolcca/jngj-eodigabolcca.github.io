@@ -1194,8 +1194,8 @@ small,.gu,.kind,.tag{letter-spacing:0}
 .concertQuickAccess button:focus-visible{outline:3px solid #f5a524;outline-offset:3px}
 @media(max-width:759px){.concertQuickAccess{gap:8px;margin-top:10px}.concertQuickAccess button{padding:12px 10px;font-size:13px}.concertQuickAccess button span{font-size:11px}}
 
-/* 앱 아이콘과 같은 '검정 바탕 크리밍' 로고 */
-.logo{background:#111!important;box-shadow:none!important;overflow:hidden;padding:0}
+/* 앱 아이콘과 같은 '노랑 바탕 크리밍' 로고 */
+.logo{background:#eccd6e!important;box-shadow:none!important;overflow:hidden;padding:0}
 .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* 하단 '홈' 버튼: 크리밍 아이콘 */
@@ -3131,32 +3131,51 @@ function renderToday() {
   const take = v => { if (v) used.add(v.id); return v };
   const fresh = v => !used.has(v.id);
   const mm = Number(t.slice(5, 7)), dd = Number(t.slice(8, 10));
-  // 히어로 문구: 선택한 권역 + 시간대에 맞춰 바뀌는 인사
-  const GREET = {
+  // 히어로 문구: 전라도 사투리 인사(시간대별) + 권역별 한 줄을 무작위로 짝지어 보여줌
+  // 같은 화면에서 깜빡이지 않게, 한 번 고른 문구는 '다른 추천'을 누르기 전까지 유지
+  const GREET_HI = {
+    dawn: ["오메, 아직 안 잤는가?", "새벽부터 뭣허요잉?", "아따, 부지런도 하시네잉", "잠은 포도시 잤는가?", "해도 안 떴는디 벌써?"],
+    morning: ["아따, 아침부터 부지런허네잉!", "워메, 벌써 일어났당가?", "아침밥은 묵었는가?", "오메, 오늘 하늘 솔찬히 좋네", "오늘도 쪼까만 힘내보장께!", "눈꼽은 떼고 왔는가? 히히", "아따, 오늘은 뭐시든 잘 풀리겄네", "싸게싸게 준비허고 나가보장께!"],
+    lunch: ["아따, 배꼽시계 울리는 소리!", "점심은 뭐 묵을랑가?", "워메, 벌써 점심이여?", "밥은 든든허게 묵어야제잉", "오전에 고생 많았당께!"],
+    afternoon: ["오메, 눈꺼풀이 무거워지제?", "쪼까만 더 버티먼 저녁이여!", "커피 한 잔 허고 기지개 쭉~", "아따, 오늘 겁나게 열심히 허네잉", "거시기, 물은 챙겨 묵었는가?", "오후가 후딱 가부네잉"],
+    night: ["오늘도 징하게 고생혔당께~", "워메, 수고했네잉!", "아따, 하루가 후딱 가부렀네", "저녁은 맛난 거 묵어야제!", "오메, 아직 안 잤는가?", "오늘 하루 어쨌당가?"]
+  };
+  const GREET_GO = {
     gj: {
-      dawn:["아직 하루가 시작되기 전이에요", "광주에서 갈 곳, 미리 골라볼까요?"],
-      morning:["아따, 아침부터 부지런하네잉!", "오늘 광주 어디 가볼까?"],
-      lunch:["점심 먹고 어디 가볼까요?", "광주 오후 코스를 골라드릴게요"],
-      afternoon:["오후가 금방 가네요", "광주에서 저녁까지 이어가볼까요?"],
-      night:["광주 저녁, 아직 안 끝났어요", "야경·공연·맛집부터 골라볼까요?"]
+      dawn: ["광주 어디 갈지 미리 골라볼랑가?", "날 밝으면 광주 어디 가볼까?"],
+      morning: ["오늘 광주 어디 가볼까?", "양림동? 무등산? 골라만 보쇼잉", "광주 한 바퀴 돌아볼랑가?"],
+      lunch: ["광주 오후 코스 짜드릴랑께", "밥 묵고 광주 어디 가볼까?"],
+      afternoon: ["광주서 저녁까지 이어가볼랑가?", "남은 오후, 광주 어디 갈까?"],
+      night: ["광주 밤, 아직 안 끝났어라", "야경·공연·맛집 골라볼랑가?"]
     },
     ys: {
-      dawn:["순천·여수의 하루를 미리 골라봐요", "정원부터 바다까지 어디로 갈까요?"],
-      morning:["순천·여수의 아침이 열렸어요", "정원·바다 중 어디부터 가볼까요?"],
-      lunch:["점심 먹고 남해안으로 나가볼까요?", "순천·여수 오후 코스를 골라드릴게요"],
-      afternoon:["남해안 오후가 아깝잖아요", "순천·여수에서 저녁까지 이어가볼까요?"],
-      night:["순천·여수의 밤도 볼 게 많아요", "야경·밤바다·공연부터 골라볼까요?"]
+      dawn: ["정원이랑 바다, 미리 골라볼랑가?", "날 밝으면 순천·여수 가볼까?"],
+      morning: ["정원·바다 중 어디부터 갈랑가?", "순천·여수 오늘 어디 가볼까?", "남해안 한 바퀴 돌아볼랑가?"],
+      lunch: ["밥 묵고 남해안 나가볼랑가?", "순천·여수 오후 코스 짜드릴랑께"],
+      afternoon: ["남해안 오후가 아깝잖애", "순천·여수서 저녁까지 가볼랑가?"],
+      night: ["여수 밤바다 보러 갈랑가?", "야경·밤바다·공연 골라볼랑가?"]
     },
     mp: {
-      dawn:["목포·무안의 하루를 미리 골라봐요", "원도심부터 바다까지 어디로 갈까요?"],
-      morning:["목포·무안의 아침이 열렸어요", "근대거리·바다 중 어디부터 가볼까요?"],
-      lunch:["점심 먹고 서남해를 둘러볼까요?", "목포·무안 오후 코스를 골라드릴게요"],
-      afternoon:["서남해 오후가 아직 남았어요", "목포·무안에서 저녁까지 이어가볼까요?"],
-      night:["목포·무안의 저녁, 어디로 갈까요?", "야경·맛집·바닷길부터 골라볼까요?"]
+      dawn: ["원도심부터 바다까지 골라볼랑가?", "날 밝으면 목포·무안 가볼까?"],
+      morning: ["근대거리·바다 중 어디 갈랑가?", "목포·무안 오늘 어디 가볼까?", "유달산 한 바퀴 돌아볼랑가?"],
+      lunch: ["밥 묵고 서남해 둘러볼랑가?", "목포·무안 오후 코스 짜드릴랑께"],
+      afternoon: ["서남해 오후가 아직 남았어라", "갓바위 노을 보러 갈랑가?"],
+      night: ["목포 밤바다, 어디로 갈랑가?", "야경·맛집·바닷길 골라볼랑가?"]
     }
   };
+  // 계절 인사: 그 철에만 섞여 나와요 (월 범위는 [시작월, 끝월], 해를 넘기면 11→3처럼)
+  const GREET_SEASON = [
+    [[11, 3], { dawn: ["이불 밖은 징하게 춥제?"], morning: ["이불 밖은 춥제? 그래도 일어났네잉", "오메, 손 시렵제? 따숩게 입으쇼"], night: ["이불 꼭 덮고 자드라고잉", "밤바람 차다, 싸매고 다니쇼"] }],
+    [[3, 5], { morning: ["아따, 꽃 핀 거 봤는가?", "봄바람 솔찬히 좋네잉"], afternoon: ["봄볕 좋을 때 쪼까 걸어보장께"] }],
+    [[6, 8], { morning: ["아따, 아침부터 덥다 더워", "오늘도 겁나 덥겄는디?"], lunch: ["더운디 시원한 거 묵으쇼잉"], afternoon: ["워메, 쪄 죽겄네잉", "더위 묵지 말고 그늘로 댕기쇼"], night: ["열대야여, 시원하게 자드라고잉"] }],
+    [[9, 11], { morning: ["오메, 아침저녁 선선해졌네잉", "가을 하늘 솔찬히 높네"], afternoon: ["단풍 구경 가기 딱이여"], night: ["밤공기 선선하니 걷기 좋겄네잉"] }]
+  ];
   const part = h < 5 ? "dawn" : h < 11 ? "morning" : h < 14 ? "lunch" : h < 18 ? "afternoon" : "night";
-  const greet = (GREET[REGION] || GREET.gj)[part];
+  const inMonths = ([a, b]) => a <= b ? mm >= a && mm <= b : mm >= a || mm <= b;
+  const seasonHi = GREET_SEASON.filter(([r]) => inMonths(r)).flatMap(([, x]) => x[part] || []);
+  const gKey = [REGION, part, TODAY_SEED].join("|"), GP = window.__GREET_PICK || (window.__GREET_PICK = {});
+  if (!GP[gKey]) { const hi = [...GREET_HI[part], ...seasonHi], go = (GREET_GO[REGION] || GREET_GO.gj)[part]; GP[gKey] = [hi[Math.floor(Math.random() * hi.length)], go[Math.floor(Math.random() * go.length)]] }
+  const greet = GP[gKey];
   $("#greet").innerHTML = `${esc(greet[0])}<br><em>${esc(greet[1])}</em>`;
   $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : RNAME()}</span>`;
   $("#wx").innerHTML = WEATHER ? `${w[0]} ${w[1]} · 지금 ${WEATHER.now}°<small>최고 ${WEATHER.max}° / 최저 ${WEATHER.min}° · 비 올 확률 ${WEATHER.pp}%</small><small>${indoorDay ? "☔ 오늘은 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small>인터넷 연결 시 표시돼요</small>`;
@@ -6094,7 +6113,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.15 크리밍코스";
+const APP_VER = "10.15 사투리인사";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7300,7 +7319,7 @@ window.openPrivacy = function(){
 :where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome{border:1px solid #574528;background:linear-gradient(120deg,#1d1910,#251b0c);color:#e4b281}
 :where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome span{color:#d9a565}
 :where(:root[data-theme="dark"]) .concertQuickAccess button:focus-visible{outline:3px solid #604a2f}
-:where(:root[data-theme="dark"]) .logo{background:#111 !important;box-shadow:none !important}
+:where(:root[data-theme="dark"]) .logo{background:#eccd6e !important;box-shadow:none !important}
 :where(:root[data-theme="dark"]) .homeBar .homeAsk{background:#1a1812;border:1px solid #4c4330;color:#cdb996}
 :where(:root[data-theme="dark"]) .homeBar .homeAsk b{color:#d9c8a7}
 :where(:root[data-theme="dark"]) .homeBar select,:where(:root[data-theme="dark"]) .homeBar button{border:1px solid #51472f;background:#202020;color:#cdb996}
