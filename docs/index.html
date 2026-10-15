@@ -5958,8 +5958,24 @@ function applyKidsMuseumBoost(list) {
 }
 function addrCore(a) { return norm(String(a || "").replace(/^(전남광주통합특별시|전남광주특별시|광주광역시|전라남도|광주|전남)\s*/, "").replace(/\([^)]*\)/g, "")) }
 function dedupeLibs(list) {
-  const seen = new Set();
-  return list.filter(l => { const k = norm(l.name) + "|" + addrCore(l.address); if (seen.has(k)) return false; seen.add(k); return true });
+  // 같은 도서관이 이름만 다르게 두 번 올라온 경우(예: '광주중앙도서관'·'광주광역시교육청중앙도서관',
+  // '산수도서관'·'전남광주통합특별시립산수도서관')를 하나로 합친다: 주소와 전화번호가 둘 다 같으면 같은 곳.
+  // 짧은(평소 부르는) 이름을 남기고, 빈 칸은 다른 쪽 자료로 채운다.
+  const byName = new Map(), byPlace = new Map(), out = [];
+  const tel = p => { const d = String(p || "").replace(/\D/g, ""); return /^0*$/.test(d) ? "" : d };
+  for (const l of list) {
+    const k1 = norm(l.name) + "|" + addrCore(l.address);
+    if (byName.has(k1)) continue;
+    const t = tel(l.phone), k2 = t && addrCore(l.address) ? addrCore(l.address) + "|" + t : "";
+    const prev = k2 && byPlace.get(k2);
+    if (prev) {
+      const i = out.indexOf(prev), keep = String(l.name).length < String(prev.name).length ? l : prev, other = keep === l ? prev : l;
+      const m = { ...keep }; for (const [k, v] of Object.entries(other)) if (m[k] == null || m[k] === "") m[k] = v;
+      out[i] = m; byPlace.set(k2, m); byName.set(k1, m); continue;
+    }
+    out.push(l); byName.set(k1, l); if (k2) byPlace.set(k2, l);
+  }
+  return out;
 }
 
 /* ───────── 🏠 내 동네: 사는 구를 고르면(또는 지금 위치) 가까운 곳부터 ───────── */
@@ -6440,6 +6456,14 @@ html body .exitBox div{gap:6px}
 html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 </style>
 <div class="navPeek" aria-hidden="true"></div>
+<style id="sysNavContrast">
+/* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
+   어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
+:root[data-theme="dark"]{background-color:#1a1917!important;color-scheme:dark}
+.sysNavBack{position:fixed;left:0;right:0;bottom:0;height:env(safe-area-inset-bottom,0px);background:var(--bg,#f6f1e7);z-index:99;pointer-events:none}
+:root[data-theme="dark"] .sysNavBack{background:#1a1917}
+</style>
+<div class="sysNavBack" aria-hidden="true"></div>
 <script id="navAutoHideScript">
 (function(){
   const nav = document.querySelector("nav.bottom"); if (!nav) return;
@@ -6553,6 +6577,9 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
 .rightQuickPanel button:focus-visible,.rightQuickPanel button:active{background:#e6f1ed}
 .rightQuickToggle{border:0;border-radius:11px 0 0 11px;background:rgba(19,124,116,.94);color:#fff;min-height:74px;width:24px;padding:8px 2px;font-size:10.5px;letter-spacing:.04em;font-weight:800;writing-mode:vertical-rl;cursor:pointer;touch-action:manipulation}
 .rightQuick.isCollapsed .rightQuickPanel{display:none}
+/* 오른쪽 빠른 메뉴도 하단 메뉴와 같이: 아래로 내리면 오른쪽으로 숨고, 위로 올리거나 화면을 톡 치면 다시 나옴 */
+.rightQuick{transition:transform .28s ease,opacity .28s ease}
+body.navHidden .rightQuick{transform:translate(calc(100% + 8px),-50%);opacity:0;pointer-events:none}
 body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:has(.exitAsk.show) .rightQuick,body[data-tab="map"] .rightQuick{display:none}
 .footerManual{max-width:440px;margin:0 auto 24px}.footerManual .manualLaunch{display:flex;width:100%;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
 @media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 36px))}}
