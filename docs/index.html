@@ -6577,9 +6577,10 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
 .rightQuickPanel button:focus-visible,.rightQuickPanel button:active{background:#e6f1ed}
 .rightQuickToggle{border:0;border-radius:11px 0 0 11px;background:rgba(19,124,116,.94);color:#fff;min-height:74px;width:24px;padding:8px 2px;font-size:10.5px;letter-spacing:.04em;font-weight:800;writing-mode:vertical-rl;cursor:pointer;touch-action:manipulation}
 .rightQuick.isCollapsed .rightQuickPanel{display:none}
-/* 오른쪽 빠른 메뉴도 하단 메뉴와 같이: 아래로 내리면 오른쪽으로 숨고, 위로 올리거나 화면을 톡 치면 다시 나옴 */
+/* 오른쪽 '빠른 메뉴' 탭: 평소엔 오른쪽 끝에 가는 줄만 남기고 숨어 있다가, 화면을 터치하면 나타남.
+   나타난 탭을 누르면 안의 메뉴가 펼쳐지고, 펼쳐져 있는 동안은 숨지 않음 */
 .rightQuick{transition:transform .28s ease,opacity .28s ease}
-body.navHidden .rightQuick{transform:translate(calc(100% + 8px),-50%);opacity:0;pointer-events:none}
+.rightQuick.rqHidden.isCollapsed{transform:translate(calc(100% - 5px),-50%);opacity:.55;pointer-events:none}
 body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:has(.exitAsk.show) .rightQuick,body[data-tab="map"] .rightQuick{display:none}
 .footerManual{max-width:440px;margin:0 auto 24px}.footerManual .manualLaunch{display:flex;width:100%;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
 @media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 36px))}}
@@ -6598,9 +6599,16 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 (function(){
  const rail=document.getElementById('rightQuick'), toggle=document.getElementById('rightQuickToggle');
  if(!rail||!toggle)return;
- let timeout;
- function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout)}
- function open(){rail.classList.remove('isCollapsed');toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,5500)}
+ let timeout, tabTimer;
+ // 탭 보이기/숨기기: 터치하면 4초 동안 보였다가 다시 숨음 (메뉴가 펼쳐져 있으면 숨지 않음)
+ function hideTab(){clearTimeout(tabTimer);if(rail.classList.contains('isCollapsed'))rail.classList.add('rqHidden')}
+ function showTab(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideTab,ms||4000)}
+ function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);showTab(2500)}
+ function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,8000)}
+ showTab(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
+ let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed'))showTab()},true);
+ let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showTab();else if(d>6&&Date.now()-touchAt>800)hideTab();lastY=scrollY},{passive:true});
+ rail.addEventListener('scroll',()=>{if(!rail.classList.contains('isCollapsed')){clearTimeout(timeout);timeout=setTimeout(close,8000)}},true);
  toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=btn.dataset.rightjump;
