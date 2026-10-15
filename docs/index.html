@@ -325,7 +325,7 @@ button.briefCard{cursor:pointer}
 /* 홈은 결정 중심: 사진 갤러리·데이터 파이프라인 설명은 숨기고 상세 데이터는 그대로 유지 */
 #gallerySec,.trust{display:none!important}
 .decisionExplain{margin:12px 0 0;padding:12px;border-radius:14px;background:#f7f7f3;border:1px solid var(--line2)}.decisionExplain>b{display:block;font-size:13.5px;color:var(--green-d);margin-bottom:7px}.decisionExplain .chipsWhy{display:flex;flex-wrap:wrap;gap:6px}.decisionExplain .chipsWhy span{font-size:12px;border-radius:999px;padding:5px 8px;background:#fff;border:1px solid var(--line);color:var(--ink2)}
-.realityScore{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;background:#edf7ef;border:1px solid #d6ead9;margin:10px 0}.realityScore strong{font-size:23px;color:#1e6b3b}.realityScore b{font-size:13px;color:#1e6b3b}.realityScore small{display:block;color:var(--muted);font-size:11.5px;margin-top:1px}
+
 .routePreview{margin-top:12px;padding:12px;border-radius:16px;background:#fff;border:1px solid var(--line)}.routePreview>b{display:block;color:var(--green-d);font-size:13.5px;margin-bottom:8px}.routeSteps{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}.routeSteps::-webkit-scrollbar{display:none}.routeStop{flex:0 0 auto;max-width:210px;border-radius:12px;background:#f6f3ec;padding:9px 11px}.routeStop small{display:block;color:#9a5b42;font-size:10.5px;font-weight:800;margin-bottom:2px}.routeStop b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.routeStop em{display:block;font-style:normal;color:var(--muted);font-size:10.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.routeArrow{flex:0 0 auto;color:var(--gold-d);font-weight:900;font-size:17px}.decisionMiniMap{height:220px;border-radius:15px;overflow:hidden;margin-top:10px;background:#edf1ee;border:1px solid var(--line)}
 @media(max-width:699px){.decisionMiniMap{height:190px}.routeStop{max-width:150px}}
 
@@ -5394,15 +5394,6 @@ function decisionReasonSet(selected){
   if(/반려견/.test(selected.with)) r.push('🐶 반려견 동반 장소 우선');
   return r.slice(0,6);
 }
-function decisionRealityScore(selected){
-  let score=82;
-  if(EVENTS.length) score+=4;
-  if(WEATHER) score+=4;
-  if(selected.move) score+=2;
-  if(selected.time) score+=2;
-  if(selected.budget) score+=2;
-  return Math.min(96,score);
-}
 /* 크리밍 코스 공통 규칙 */
 const DEC_FIRST_CAP = { "도보": 35, "대중교통": 60, "자동차": 60 };   // 출발지 → 첫 장소 최대 이동(분)
 const DEC_LEG_CAP = { "도보": 25, "대중교통": 45, "자동차": 40 };     // 장소 → 장소 최대 이동(분)
@@ -6799,10 +6790,6 @@ window.openPrivacy = function(){
 :where(:root[data-theme="dark"]) .decisionExplain{background:#191917;border:1px solid var(--line2)}
 :where(:root[data-theme="dark"]) .decisionExplain>b{color:var(--green-d)}
 :where(:root[data-theme="dark"]) .decisionExplain .chipsWhy span{background:#202020;border:1px solid var(--line);color:var(--ink2)}
-:where(:root[data-theme="dark"]) .realityScore{background:#171b18;border:1px solid #3d473e}
-:where(:root[data-theme="dark"]) .realityScore strong{color:#7fc993}
-:where(:root[data-theme="dark"]) .realityScore b{color:#7fc993}
-:where(:root[data-theme="dark"]) .realityScore small{color:var(--muted)}
 :where(:root[data-theme="dark"]) .routePreview{background:#202020;border:1px solid var(--line)}
 :where(:root[data-theme="dark"]) .routePreview>b{color:var(--green-d)}
 :where(:root[data-theme="dark"]) .routeStop{background:#1b1a17}
