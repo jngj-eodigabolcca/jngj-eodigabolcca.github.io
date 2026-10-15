@@ -1417,7 +1417,10 @@ button{min-height:var(--tap)}
   .decideGo{min-height:46px;font-size:14px;border-radius:13px;margin-top:7px}
 
   /* app home sections: tighter hierarchy */
-  .quickNavIntro{display:none!important}
+  .quickNavIntro{position:static;margin:8px 0 14px;padding:6px 6px 7px}
+  .quickNavIntro .quickNavHead,.quickNavIntro .tabs{display:none}
+  .quickNavIntro .chips{border-top:0;padding-top:1px}
+  body:not([data-tab="events"]) .quickNavIntro{display:none!important}
   .nowStart{margin:12px 0 10px}
   .nowStartBox{border-radius:22px;padding:14px 13px}
   .nowStartHead{align-items:flex-start;margin-bottom:10px}
@@ -5596,7 +5599,7 @@ function initDecisionMiniMap(picks){
   if(go) go.addEventListener('click',()=>{
     const pick=k=>document.querySelector(`.choiceRow[data-choice="${k}"] button.on`)?.textContent.trim()||'';
     const selected={with:pick('with').replace('🐶 ','').trim(),time:pick('time'),budget:pick('budget'),move:pick('move')};
-    const reasons=decisionReasonSet(selected), reality=decisionRealityScore(selected), routePicks=decisionRoutePicks(selected);
+    const reasons=decisionReasonSet(selected), routePicks=decisionRoutePicks(selected);
     const wideOk = false; // 권역 선택 시 다른 권역으로 자동 확대하지 않음
     // 짧은 일정·제한 예산은 현재 권역을 절대 벗어나지 않는다. 광주권 확장은 '하루+자동차+예산 상관없음'일 때만 허용한다.
     const scope = wideOk
@@ -5616,7 +5619,6 @@ function initDecisionMiniMap(picks){
         <div class="drHead"><div class="appResultHint">오늘어디로가 방금 고른 코스</div><span class="eyebrow">TODAY PICK</span><h3>오늘은 이렇게 가보세요.</h3><p style="margin:0;color:var(--muted);font-size:14px">${wideOk ? `${esc(RNAME())}을 우선으로 보고, 조건상 먼 권역까지 갈 수 있는 경우에만 범위를 넓혀요.` : `${esc(RNAME())} 안에서만, 고른 조건과 오늘 이용 가능한 정보를 기준으로 추렸어요.`} 모바일에서는 이 화면이 앱 결과 페이지처럼 열립니다.</p></div>
         <div class="creamingGuide"><img class="creamingMascot" src="${CREAMING_SRC}" alt="크리밍"><div class="creamingBubble"><b>크리밍이 골라봤어요!</b>${esc(selected.time)} 동안 ${esc(selected.move)}로 이동하기 좋은 코스를 먼저 묶었어요. 아래에서 이동 순서도 같이 확인해보세요.</div></div>
         <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>💰 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
-        <div class="realityScore"><strong>${reality}%</strong><div><b>오늘 가기 현실성</b><small>운영 정보 · 날씨 · 선택 조건 확인 정도를 바탕으로 표시해요.</small></div></div>
         <div class="decisionExplain"><b>왜 이 코스를 추천했어요?</b><div class="chipsWhy">${reasons.map(r=>`<span>✓ ${esc(r)}</span>`).join('')}</div></div>
         ${routePreviewHtml(routePicks,selected.move)}
         <div class="drBody">${decisionDetailHtml(routePicks,selected)}</div>
