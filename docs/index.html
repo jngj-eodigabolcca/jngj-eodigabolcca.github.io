@@ -2217,6 +2217,15 @@ function regionOfItem(x) {
     d = (linked && linked.district) || districtFromAddr(placeText) || (!placeText && districtFromAddr(x.title || "")) || (d ? "?" : "");
   }
 
+  // ── '시·군' 없이 도시 이름만 적힌 자료 (예: "여수 서커스", 장소 "여수 웅천") ──
+  // 광주 주소가 분명하지 않을 때만, 장소·제목에 다른 권역 도시 이름이 있으면 그 권역으로 보낸다.
+  // 진도(進度)·강진(地震)·영광(榮光)처럼 일반 낱말과 겹치는 이름은 '군'이 붙어야만 인정한다.
+  if (!GJ_GU.includes(d) && !GJ_GU.includes(districtFromAddr(placeText))) {
+    const clueText = placeText + " " + (x.title || "");
+    if (/(?:^|[^가-힣])(여수|순천|광양|고흥|구례)|(?:^|[^가-힣])(보성|곡성)군|여수엑스포|여수세계섬박람회|오동도|순천만/.test(clueText)) return "ys";
+    if (/(?:^|[^가-힣])(목포|해남|완도|신안|영암|함평)|(?:^|[^가-힣])(진도|강진|장흥|영광)군/.test(clueText)) return "mp";
+  }
+
   if (!d) return "gj"; // 지역 단서가 전혀 없는 기존 광주 자료만 광주권으로 유지
   return (Object.entries(REGIONS).find(([, r]) => r.districts.includes(d)) || [""])[0];
 }
