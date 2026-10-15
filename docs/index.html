@@ -1843,7 +1843,7 @@ button{min-height:var(--tap)}
     <div class="aiHead"><span>✨</span><div><b id="aiName">오늘어디로 길잡이</b><small id="aiSub">자동 수집된 최신 광주 정보에서 지금 가능한 선택지만 추려드려요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
     <div class="originBar dark"></div>
-    <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 KTX 당일치기</button><button class="ktx">🚄 KTX 1박 2일</button><button class="ktx">🚄 KTX 2박 3일</button></div>
+    <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
 </div>
@@ -2261,7 +2261,7 @@ function renderRegionBar() {
     ys: ["순천·여수·광양 · 남해안 오늘의 순천여수권", "<b>정원과 바다, 전시·공연·축제를 한 번에.</b> 순천의 정원·원도심부터 여수의 바다·야경, 광양·보성·구례까지 오늘 움직이기 좋은 코스로 골라드려요."],
     mp: ["목포·무안·신안 · 서남해 오늘의 무안목포권", "<b>목포 원도심과 서남해 바다, 오늘 즐길 곳을 한눈에.</b> 목포·무안·신안부터 해남·진도·완도까지 시간과 이동 조건에 맞춰 무리 없는 코스로 골라드려요."]
   };
-  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / KTX 1박 2일", "원하는 하루를 말해보쇼. 같은 동네로 묶어서 코스 짜드릴랑께요."],
+  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "원하는 하루를 말해보쇼. 같은 동네로 묶어서 코스 짜드릴랑께요."],
     ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "순천·여수·광양·보성·구례·곡성·고흥, 같은 동네로 묶어서 골라드릴랑께요."],
     mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "목포·무안·신안·해남·강진·진도·완도…, 가까운 데끼리 묶어서 골라드릴랑께요."] }[REGION];
   const an = document.getElementById("aiName"), as = document.getElementById("aiSub"), aq = document.getElementById("aiq");
@@ -2293,8 +2293,8 @@ let QUICK_GJ = "";
 function renderQuick() {
   const q = document.getElementById("quick"); if (!q) return;
   if (!QUICK_GJ) QUICK_GJ = q.innerHTML;
-  // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 12개, 순천여수권 15개 · KTX 코스 3개 포함)
-  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 KTX 당일치기", "🚄 KTX 1박 2일", "🚄 KTX 2박 3일"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
+  // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 12개, 순천여수권 15개 · 기차 당일치기·자가용 하루·하루 더 머문다면 포함)
+  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 기차 타고 당일치기", "🚗 자가용 하루 코스", "🛏 하루 더 머문다면 1박"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
@@ -4747,9 +4747,8 @@ function hitsAll(q, item) {
 /* 앱 기능 바로가기: 장소·일정 자료가 아니라 앱 안의 메뉴·코스·도구도 검색되게 */
 const goTrip = s => { clearSearch(); const run = () => { itinerary(s); setTimeout(() => $("#answer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80) }; if (REGION !== "gj" && !KTX_REGION[REGION]) { setRegion("gj"); setTimeout(run, 120) } else run() };
 const APP_FEATURES = [
-  ["🚄 KTX 당일치기 코스", "광주송정역·목포역·여수엑스포역에서 시작하는 하루 동선", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 당일치기 하루 여행 코스 일정표", () => goTrip("ktx 하루")],
-  ["🚄 KTX 1박 2일 코스", "역 도착부터 출발까지 이틀 동선 (고른 권역 기준)", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 1박2일 1박 여행 코스 일정표", () => goTrip("ktx 1박 2일")],
-  ["🚄 KTX 2박 3일 코스", "사흘 여행 동선 (고른 권역 기준)", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 2박3일 2박 여행 코스 일정표", () => goTrip("ktx 2박 3일")],
+  ["🚄 기차 타고 당일치기", "광주송정역·목포역·여수엑스포역에 내려서 바로 도는 하루 동선", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 당일치기 하루 여행 코스 일정표", () => goTrip("ktx 하루")],
+  ["🛏 하루 더 머문다면 (1박 2일)", "당일치기에 하루를 더 붙인 동선 (고른 권역 기준)", "ktx srt 기차 열차 송정역 목포역 여수엑스포역 순천역 1박2일 1박 여행 코스 일정표", () => goTrip("ktx 1박 2일")],
   ["🚗 자가용 하루 코스", "차로 도는 광주 하루 동선", "자가용 차 드라이브 하루 여행 코스 일정표", () => goTrip("하루")],
   ["✨ 맞춤 추천", "누구와·시간·예산을 고르면 오늘 코스를 골라 줘요", "추천 코스 오늘 뭐하지 뭐할까 길잡이 크리밍 데이트", () => { clearSearch(); goDecision() }],
   ["☀️ 오늘 날씨·옷차림", "나가기 전에 챙길 것", "날씨 비 우산 옷차림 기온 미세먼지", () => { clearSearch(); const el = document.getElementById("wxTips"); if (el) el.classList.remove("hidden"); if (!WEATHER) loadWeather(true); setTimeout(() => el?.scrollIntoView({ behavior: "smooth", block: "start" }), 60) }],
@@ -5143,7 +5142,7 @@ function itineraryRegion(s) {
   const dayHtml = (n, label, steps, tip) => `<h4>${n}일차 · ${DAY_KO[dayOf(n - 1)]}요일 · ${label}</h4>${tip ? `<p class="pfNote">🎪 ${esc(tip)}</p>` : ""}<ol class="trip">${clean(steps).map(stepHtml).join("")}</ol>`;
   const itineraryTransport = /자가용|자동차|드라이브|차량/.test(s) ? "car" : (ktx ? "train" : "transit");
   let html = `<div class="aiTrip"><div class="alHead"><b>${esc(title)} ${creamingTransport(itineraryTransport)}</b><span>${rainy ? "☔ 비 소식 반영" : WEATHER ? "🌤 날씨 반영" : "휴관일 반영"}</span></div>
-   <div class="tripTabs">${[["KTX 당일치기", 1, 1], ["KTX 1박 2일", 2, 1], ["KTX 2박 3일", 3, 1], ["자가용 하루", 1, 0]].map(([l, d, k]) => `<button class="${d === days && !!k === ktx ? "on" : ""}" onclick="itinerary('${k ? "ktx " : ""}${d === 1 ? "하루" : d === 2 ? "1박 2일" : "2박 3일"}${rainy ? " 비" : ""}')">${l}</button>`).join("")}</div>${box}
+   <div class="tripTabs">${[["기차 당일치기", 1, 1], ["자가용 하루", 1, 0], ["하루 더 머문다면 +1박", 2, 0]].map(([l, d, k]) => `<button class="${d === days && (d > 1 || !!k === ktx) ? "on" : ""}" onclick="itinerary('${k ? "ktx " : ""}${d === 1 ? "하루" : d === 2 ? "1박 2일" : "2박 3일"}${rainy ? " 비" : ""}')">${l}</button>`).join("")}</div>${box}
    ${dayHtml(1, R.labels[0], d1, evTip(0))}`;
   if (days >= 2) html += dayHtml(2, R.labels[1], d2, evTip(1));
   if (days === 3) html += dayHtml(3, R.labels[2] + (rainy ? " (비 오면 실내 위주로 바꾸세요)" : ""), d3, evTip(2));
@@ -5207,7 +5206,7 @@ function itinerary(s) {
   const dayHtml = (n, label, steps, tip) => `<h4>${n}일차 · ${DAY_KO[dayOf(n - 1)]}요일 · ${label}</h4>${tip ? `<p class="pfNote">🎪 ${esc(tip)}</p>` : ""}<ol class="trip">${clean(steps).map(stepHtml).join("")}</ol>`;
   const itineraryTransport = /자가용|자동차|드라이브|차량/.test(s) ? "car" : (ktx ? "train" : "transit");
   let html = `<div class="aiTrip"><div class="alHead"><b>${title} ${creamingTransport(itineraryTransport)}</b><span>${rainy ? "☔ 비 소식 반영" : WEATHER ? "🌤 날씨 반영" : "휴관일 반영"}</span></div>
-   <div class="tripTabs">${[["KTX 당일치기", 1, 1], ["KTX 1박 2일", 2, 1], ["KTX 2박 3일", 3, 1], ["자가용 하루", 1, 0]].map(([l, d, k]) => `<button class="${d === days && !!k === ktx ? "on" : ""}" onclick="itinerary('${k ? "ktx " : ""}${d === 1 ? "하루" : d === 2 ? "1박 2일" : "2박 3일"}${rainy ? " 비" : ""}')">${l}</button>`).join("")}</div>${box}
+   <div class="tripTabs">${[["기차 당일치기", 1, 1], ["자가용 하루", 1, 0], ["하루 더 머문다면 +1박", 2, 0]].map(([l, d, k]) => `<button class="${d === days && (d > 1 || !!k === ktx) ? "on" : ""}" onclick="itinerary('${k ? "ktx " : ""}${d === 1 ? "하루" : d === 2 ? "1박 2일" : "2박 3일"}${rainy ? " 비" : ""}')">${l}</button>`).join("")}</div>${box}
    ${dayHtml(1, "5·18 도심 · ACC · 양림동 근대길", d1, tip1)}`;
   if (days >= 2) html += dayHtml(2, rainy ? "박물관·미술관 (실내)" : "무등산 산책과 미술관", d2, evTip(1));
   if (days === 3) html += dayHtml(3, rainy ? "실내 전시·체험" : "광주호와 정자 드라이브", d3, evTip(2));
@@ -5268,7 +5267,7 @@ function recommend(t, forced = null, fixedMeal = null) {
     if (/태백산맥|벌교|문학길/.test(s)) { if (REGION !== "ys") setRegion("ys"); return dateCourse("taebaek") }
     if (REGION !== "gj" && KTX_REGION[REGION] && /ktx|srt|기차|열차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|여행 코스|일정 짜/.test(s) && !/5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s)) return itinerary(s);
     if (REGION !== "gj" && ((/데이트|연인|커플/.test(s) && !DATES.some(d => (d.region || "gj") === REGION)) || /5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s))) {
-      $("#answer").innerHTML = `🧭 <b>${esc(RNAME())}</b> 데이트 코스는 아직 준비 중이에요. ${esc(RNAME())}은 지금 <b>KTX 당일치기·1박 2일·2박 3일</b> 코스가 있고, 데이트 코스는 <b>광주권</b>에 있어요.<br><br><button class="btn" onclick="setRegion('gj');$('#aiq').value='${jsq(t.replace(/['"\\]/g, ""))}';recommend('${jsq(t.replace(/['"\\]/g, ""))}')">🟢 광주권 코스로 보기 →</button><br><br><small>대신 '박물관 + 맛집', '산책하기 좋은 곳', '축제 뭐 있어?'처럼 물어보면 ${esc(RNAME())} 자료로 골라 드려요.</small>`; return;
+      $("#answer").innerHTML = `🧭 <b>${esc(RNAME())}</b> 데이트 코스는 아직 준비 중이에요. ${esc(RNAME())}은 지금 <b>기차 타고 당일치기</b> 코스가 있고, 데이트 코스는 <b>광주권</b>에 있어요.<br><br><button class="btn" onclick="setRegion('gj');$('#aiq').value='${jsq(t.replace(/['"\\]/g, ""))}';recommend('${jsq(t.replace(/['"\\]/g, ""))}')">🟢 광주권 코스로 보기 →</button><br><br><small>대신 '박물관 + 맛집', '산책하기 좋은 곳', '축제 뭐 있어?'처럼 물어보면 ${esc(RNAME())} 자료로 골라 드려요.</small>`; return;
     }
     if (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|하루 종일|여행 코스|일정 짜/.test(s)) return itinerary(s);
     if (/강아지|반려|멍멍|멍카페|애견|댕댕/.test(s)) return petList(s);
@@ -6542,7 +6541,7 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
     bs.forEach((b, i) => b.classList.toggle("qMore", i >= LIMIT));
     const extra = bs.length - LIMIT; if (extra <= 0) return;
     const t = document.createElement("button"); t.type = "button"; t.className = "qToggle";
-    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · KTX 코스 포함)`;
+    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · 기차 당일치기 코스 포함)`;
     t.textContent = label();
     t.onclick = e => { e.stopPropagation(); q.classList.toggle("qOpen"); t.textContent = label() };
     q.appendChild(t);
