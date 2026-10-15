@@ -133,6 +133,49 @@ def tour_food_detail(content_id: str):
     return items[0] if items else {}
 
 
+# ───────── 위키백과 대표사진 (관광공사에 사진이 없을 때만) ─────────
+# 위키백과 문서의 대표사진 가운데 '자유 이용'(CC·퍼블릭 도메인) 사진만 받는다. 문서 제목이 장소 이름과 같을 때만.
+WIKI_V = 1              # 찾는 방식을 고치면 숫자를 올려서 사진 없는 곳을 한 번 더 찾아본다
+WIKI_MAX = 150          # 한 번 실행에 위키백과 조회는 150곳까지
+wiki_calls = 0
+
+
+def wiki_image(x: dict):
+    global wiki_calls
+    name = x.get("name") or x.get("title") or ""
+    base = re.split(r"[(\[]", name)[0].strip()
+    parts = [p.strip() for p in re.split(r"\s*·\s*", base) if p.strip()]
+    district = x.get("district") or u.district_from_addr(x.get("address", ""))
+    city = "광주" if district in u.GJ_GU else re.sub(r"[시군]$", "", district or "")
+    cands = []
+    for b in [base] + parts[:2]:
+        for k in (b, re.sub(r"^(광주|전남)[\s\-]*", "", b), f"{city} {b}" if city and not b.startswith(city) else "",
+                  b.replace("-", " "), re.sub(r"^옛\s*", "구 ", b)):
+            k = (k or "").strip()
+            if len(u.norm_title(k)) >= 3 and k not in cands:
+                cands.append(k)
+    if not cands:
+        return None
+    want = {u.norm_title(c) for c in cands}
+    # 위키백과 검색으로 문서를 찾고, 문서 제목이 장소 이름(띄어쓰기·기호 무시)과 같을 때만 사진을 쓴다
+    for query in ([base] + parts[:1] if len(parts) > 1 else [base])[:2]:
+        wiki_calls += 1
+        q = {"action": "query", "format": "json", "generator": "search", "gsrsearch": query, "gsrlimit": "5",
+             "gsrnamespace": "0", "prop": "pageimages", "piprop": "thumbnail|name", "pithumbsize": "800",
+             "pilicense": "free"}
+        req = urllib.request.Request("https://ko.wikipedia.org/w/api.php?" + urllib.parse.urlencode(q),
+                                     headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode("utf-8"))
+        for pg in sorted(((j.get("query") or {}).get("pages") or {}).values(), key=lambda p: p.get("index", 99)):
+            t = u.norm_title(re.split(r"\s*\(", pg.get("title", ""))[0])
+            th = (pg.get("thumbnail") or {}).get("source")
+            if th and t in want:
+                return {"image": th, "imageCredit": "위키백과(자유 이용 사진)",
+                        "imagePage": "https://ko.wikipedia.org/wiki/" + urllib.parse.quote(pg["title"].replace(" ", "_"))}
+    return None
+
+
 class Temporary(Exception):
     """네트워크 오류 등 일시적 실패: 캐시에 '못 찾음'으로 남기지 않는다."""
 
@@ -213,6 +256,7 @@ FOOD_DETAIL_MAX = 80                          # 한 번 실행에 영업시간 �
 CAT3 = {"A05020100": "한식", "A05020200": "양식", "A05020300": "일식", "A05020400": "중식",
         "A05020700": "이색음식", "A05020800": "", "A05020900": "카페"}
 food_details = 0
+FOOD_V = 2                                    # 2: 대표사진(firstimage)도 함께 받음
 
 
 def discover_food(existing: list) -> list:
@@ -221,6 +265,8 @@ def discover_food(existing: list) -> list:
         datetime.strptime(u.TODAY_ISO, "%Y-%m-%d") - datetime.strptime(saved["fetched"], "%Y-%m-%d")
     ).days < FOOD_REFRESH_DAYS
     items = saved.get("items") or []
+    if saved.get("v") != FOOD_V:
+        fresh = False                     # 사진을 안 받던 예전 목록 → 한 번 새로 받음
     if not fresh and u.DATA_KEY:
         got, per = [], {}
         try:
@@ -248,6 +294,8 @@ def discover_food(existing: list) -> list:
                             "name": title, "menu": cat, "district": dist, "address": addr,
                             "lat": round(lat, 6), "lng": round(lng, 6), "geoSrc": "한국관광공사",
                             "phone": (it.get("tel") or "").strip(),
+                            "image": (it.get("firstimage") or "").replace("http://", "https://"),
+                            "imageCredit": "한국관광공사" if it.get("firstimage") else "",
                             "badge": "관광공사 등록 음식점", "source": "한국관광공사 TourAPI",
                             "note": "", "verified": u.TODAY_ISO, "origin": "auto",
                         })
@@ -255,7 +303,7 @@ def discover_food(existing: list) -> list:
                         break
             if got:
                 items = got
-                u.write_json(FOOD_FILE, {"fetched": u.TODAY_ISO, "items": items})
+                u.write_json(FOOD_FILE, {"fetched": u.TODAY_ISO, "v": FOOD_V, "items": items})
                 print(f"  관광공사 음식점 {len(items)}곳 새로 받음 · 시군구 {len(per)}곳", flush=True)
         except Exception as e:
             print(f"  ⚠ 음식점 발굴 실패 → 지난번 목록 사용: {u.scrub(e)}", flush=True)
@@ -414,6 +462,20 @@ def main():
                 except Temporary:
                     pass                                # 다음 실행 때 다시
             y = apply(x, hit or {}) if hit and not hit.get("miss") else dict(x)
+            if not y.get("image"):
+                wkey = key + "|wiki"
+                w = cache.get(wkey)
+                if (not w or w.get("v") != WIKI_V) and wiki_calls < WIKI_MAX and not stopped:
+                    try:
+                        found = wiki_image(x)
+                        w = {**(found or {}), "v": WIKI_V, "checked": u.TODAY_ISO}
+                        cache[wkey] = w
+                    except Exception:
+                        w = None                        # 일시적 오류 → 다음 실행 때
+                if w and w.get("image"):
+                    y["image"], y["imageCredit"] = w["image"], w.get("imageCredit", "")
+                    if w.get("imagePage"):
+                        y["imagePage"] = w["imagePage"]
             filled_geo += bool(y.get("lat") and not x.get("lat"))
             filled_hours += bool(y.get("hours") and not x.get("hours"))
             out.append(y)
@@ -423,6 +485,7 @@ def main():
             "with_coords": sum(1 for y in out if y.get("lat")),
             "coords_filled": filled_geo,
             "hours_filled": filled_hours,
+            "with_image": sum(1 for y in out if y.get("image")),
         }
 
     u.write_json(CACHE_FILE, cache)
@@ -432,6 +495,7 @@ def main():
         "checked_at": u.NOW.isoformat(timespec="seconds"),
         "tourapi_calls": tour_calls,
         "osm_lookups": osm_calls,
+        "wiki_lookups": wiki_calls,
         "unfinished": stopped,
         "lists": stats,
     }
