@@ -2305,6 +2305,24 @@ async function load() {
   const usePinned = embeddedPinned.filter(p => { const s = serverById.get(p.id); return !s || (p.verified || "") > (s.verified || serverDay) });
   const pinnedUsed = new Set(usePinned.map(e => e.id));
   E0 = [...(E0 || []).filter(e => !pinnedUsed.has(e.id)), ...usePinned];
+  // 광주시립미술관 누리집 '현재전시' (2026-10-15 확인) — 서버 자료에 같은 전시가 없을 때만 더함
+  const GMA_NOW = [
+    ["gma-turin-2026", "2026 국내외문화기관교류전 [번안된 풍경 제2장: 토리노에서 광주까지]", "2026-09-05", "2026-11-15", "국제교류전"],
+    ["gma-gb16-luxembourg", "제16회 광주비엔날레 카지노 룩셈부르크 파빌리온 《사마귀의 날 The Day of the Mantis》", "2026-09-05", "2026-11-15", "광주비엔날레 파빌리온"],
+    ["gma-gb16-mongol", "제16회 광주비엔날레 몽골 파빌리온 《오랜 기억과 아득한 미래: 공동의 기억과 현대적 도전》", "2026-09-05", "2026-11-15", "광주비엔날레 파빌리온"],
+    ["gma-maze-2026", "실재와 환영의 미로", "2026-10-14", "2027-02-14", "기획전"],
+    ["gmap-gb16-uccn", "제16회 광주비엔날레 유네스코 창의도시 네트워크(UCCN) 파빌리온 《몬디아컬트 스케이프: 도시의 그 어떤 것도 사라지지 않았다》", "2026-09-05", "2026-11-15", "광주비엔날레 파빌리온",
+      { venue: "광주미디어아트플랫폼 G.MAP (1·2·3·4전시실·미디어 파사드)", venueId: "gmap", district: "남구", address: "", url: "https://gmap.gwangju.go.kr/", source: "광주미디어아트플랫폼 누리집", verify: "G.MAP 누리집 '현재전시' 기준 · 유네스코 창의도시 10여 곳이 함께 여는 첫 파빌리온", time: "관람시간은 G.MAP 안내 확인" }],
+    ["nmg-dogi-2026", "특별전 「도기陶器, 우리를 담은 질그릇」", "", "2026-10-25", "특별전",
+      { venue: "국립광주박물관 본관 1층 특별전시실", venueId: "nmg", address: "", url: "https://gwangju.museum.go.kr/prog/specialDisplay/kor/sub02_02/s/new/list.do", source: "국립광주박물관 특별전 보도(비건뉴스, 2026.10.1)",
+        verify: "고대~근대 도기 295건 306점 · 완도 청해진 주름무늬 병, 태안 마도 물항아리, 조선 태종 태항아리 등 · 10월 25일 끝나요", time: "관람시간은 박물관 안내 확인", price: "관람료는 박물관 안내 확인", date: "~ 10.25" }],
+  ].map(([id, title, start, end, sub, o = {}]) => ({ id, title, start, end, category: "전시", subtype: sub, venue: "광주시립미술관", venueId: "gma", district: "북구", address: "광주 북구 하서로 52",
+    date: !start ? `~ ${end.slice(5).replace("-", ".")}` : `${start.slice(5).replace("-", ".")} ~ ${end.slice(0, 4) !== start.slice(0, 4) ? end.slice(2).replace(/-/g, ".") : end.slice(5).replace("-", ".")}`,
+    time: "10:00–18:00 · 월요일 휴관 · 정규 해설 화~일 11:00·14:00·15:30", price: "관람료는 미술관 안내 확인", status: !start || start <= todayISO() ? "진행중" : "예정",
+    verified: "2026-10-15", verify: "광주시립미술관 누리집 '현재전시' 기준", source: "광주시립미술관 누리집", url: "https://artmuse.gwangju.go.kr/",
+    tags: ["전시", "실내"], origin: "manual", ticket: { status: "관람가능", note: "전시 기간 중 관람", checked: "2026-10-15" }, ...o }));
+  const seenTitles = new Set((E0 || []).map(e => titleCore(e.title)));
+  E0 = [...E0, ...GMA_NOW.filter(e => !E0.some(x => x.id === e.id) && !seenTitles.has(titleCore(e.title)))];
   // 숙소: 메뉴엔 없음. 'KTX 1박 2일'·'숙소' 같은 요청에서만 코스에 들어감
   // 동네 강좌·도서관 (없으면 빈 목록 — 자동 수집이 처음 돈 뒤부터 채워짐)
   const [P0, L0] = await Promise.all([getJSON("programs"), getJSON("libraries")]);
@@ -3715,16 +3733,69 @@ function eventsAt(v) {
   const names = [v.name, ...(v.aliases || [])].map(vkey).filter(Boolean);
   return EVENTS.filter(e => e.venueId === v.id || names.some(n => vkey(e.venue).includes(n) || (vkey(e.venue) && n.includes(vkey(e.venue)))));
 }
+/* 상설·소장품 전시: '등록된 특별전 없음'을 '전시 없음'으로 잘못 보이지 않게
+   · 박물관·기념관·문학관·과학관·주제 전시관·5·18 사적지 → 상설전시가 기본
+   · 미술관 → 소장품전·기획전을 번갈아 여는 곳이 많아 '지금 걸린 전시는 확인'으로
+   · 갤러리·대관 공간 → 기획·대관 전시만 (없을 때만 '지금 전시 정보 없음')
+   아래 목록은 기관 누리집·관광공사·언론 보도로 확인한 곳 (2026-10-15) */
+const PERMANENT_NOTE = [
+  // has: true = 상설전시 확인 · "collection" = 작가·소장품 미술관(전시 주제는 바뀜) · false = 기획·대관 전시 위주
+  [/비움박물관/, { has: true, text: "관장이 50여 년 모은 옛 생활 민예품 3만여 점을 늘 전시해요" }],
+  [/금융박물관/, { has: true, text: "금융·경제를 주제로 한 상설·체험 전시 · 평일만 열고 무료 · 휴관 중일 수 있어 가기 전 전화 확인" }],
+  [/의재미술관/, { has: true, text: "의재 허백련의 작품을 보여주는 상설전 + 기획전 · 13세 미만·65세 이상 무료" }],
+  [/무등현대미술관/, { has: true, text: "2층은 관장 작업실 겸 상설전시 공간, 1층은 기획·대관전 · 무료 · 20~30분이면 둘러봐요" }],
+  [/드영미술관/, { has: true, text: "상설전시와 기획·특별전을 함께 열어요 · 무료, 주차도 무료 · 어린이 뮤지엄 교육 운영" }],
+  [/gmap|미디어아트플랫폼/, { has: false, text: "기획전이 바뀌며 열리는 미디어아트 전시장 (상설전은 확인 안 됨) · 지금은 광주비엔날레 UCCN 파빌리온(9.5~11.15, 1~4전시실·외벽 미디어 파사드) · 올해 앞서 5·18 미디어아트 특별전, VR 가상박물관전이 열렸어요" }],
+  [/광주시립미술관$/, { has: true, text: "소장품 상설전 〈예향, 남도 미술의 맥〉(2026.3.17~2027.2.28) · 10:00~18:00 · 월요일 휴관(공휴일이어도 휴관) · 정규 전시해설 화~일 11:00·14:00·15:30 (문의 062-613-7135)" }],
+  [/국립광주박물관$/, { has: true, text: "선사~조선 유물 상설전시 · 무료 · 같은 단지에 도자문화관도 있어요" }],
+  [/금봉미술관/, { has: "collection", text: "금봉 박행보 화백이 기증한 문인화 등 291점으로 세운 남도 문인화 미술관 · 무료" }],
+  [/하정웅미술관/, { has: "collection", text: "재일 기증가 하정웅이 광주시립미술관에 기증한 2,603점을 연구·전시하는 분관 · 기본 무료" }],
+  [/이강하미술관/, { has: "collection", text: "고 이강하 화백의 유작 400여 점을 보관하며 시대별 작품을 보여줘요 · 무료 · 점심시간(12~13시) 확인" }],
+  [/한희원미술관/, { has: "collection", text: "양림동 화가 한희원의 작품을 중심으로 한 작은 미술관 · 무료 · 평일은 16시까지" }],
+  [/우제길미술관/, { has: "collection", text: "화가 우제길이 세운 미술관(작업실 함께) · 상설전은 기간을 정해 열려요 · 지금은 기획전 '유연한 공간: 연대의 힘'(10.1~11.8) · 3,000원" }],
+  [/양림미술관/, { has: "collection", text: "남구가 운영하는 공립 미술관 · 상시 전시와 시기별 특별전, 그림 그리기 체험 공간 · 무료" }],
+  [/조선대학교미술관/, { has: false, text: "특별기획전·대관 전시 위주라 상시 소장품 전시는 확인되지 않아요 · 조선대 본관 1층 '김보현&실비아올드 미술관'에서 부부 화가 기증작품을 볼 수 있어요 · 평일만, 무료" }],
+  [/은암미술관/, { has: false, text: "기획전·초대전과 신진작가 전시 위주 · 무료 · 일요일·공휴일 휴관" }],
+  [/아트폴리곤/, { has: false, text: "호랑가시나무 창작소 입주 작가 작품을 정기적으로 전시 · 전시 준비 기간엔 쉬어요 · 무료" }],
+  [/주안미술관/, { has: false, text: "젊은 작가 기획전과 어린이 체험(색칠·만들기) · 무료" }],
+  [/국윤미술관/, { has: false, text: "전시와 어린이 체험 프로그램을 함께 운영하는 사립 미술관 · 무료" }],
+  [/소암미술관/, { has: false, text: "정기 전시와 체험 프로그램을 여는 사립 미술관 · 무료" }],
+  [/호심미술관/, { has: false, text: "광주대 캠퍼스 미술관 · 2026년 3월 AI·VR 몰입형 미디어 전시 공간을 갖췄어요 · 일반 관람은 미리 확인" }],
+];
+function permanentInfo(v) {
+  if (!v) return null;
+  const nm = norm(v.name || "");
+  const hit = PERMANENT_NOTE.find(([re]) => re.test(nm));
+  if (hit) return hit[1];
+  if (v.permanent) return { has: true, text: v.permanent };
+  const k = v.kind || "";
+  // 종류 칸이 '복합문화공간'·'역사유적' 등으로 들어와도 이름이 박물관이면 상설전시로 본다 (예: 국립나주박물관)
+  if (/박물관|기념관|역사관|문학관|과학관|자료관/.test(v.name || "") && !/갤러리/.test(k)) return { has: true, text: "상설전시는 늘 볼 수 있어요" };
+  if (/박물관|기념관|문학관|과학관|5·18 사적지/.test(k) || (/전시관/.test(k) && !/비엔날레|사진전시관/.test(v.name || ""))) return { has: true, text: "상설전시는 늘 볼 수 있어요" };
+  if (/미술관/.test(k)) return { has: null, text: "소장품전·기획전을 번갈아 열어요 · 지금 걸린 전시는 누리집·전화로 확인" };
+  if (/갤러리/.test(k)) return { has: false, text: "기획·대관 전시만 열려요" };
+  return null;
+}
 /* 공연장·전시장 카드: 지금 하는 것 / 예정 / 없음 을 분명하게 */
 function hereBox(v) {
-  if (!/공연장|전시·컨벤션|미술관|갤러리|박물관|기념관|전시관|복합문화공간|문학관|5·18 사적지|스포츠/.test(v.kind)) return "";
-  const word = /공연장/.test(v.kind) ? "공연" : /스포츠/.test(v.kind) ? "경기" : /전시·컨벤션|복합문화공간/.test(v.kind) ? "행사" : "전시";
+  const museumByName = /박물관|기념관|역사관|문학관|과학관|자료관|미술관/.test(v.name || "");
+  if (!museumByName && !/공연장|전시·컨벤션|미술관|갤러리|박물관|기념관|전시관|복합문화공간|문학관|5·18 사적지|스포츠/.test(v.kind)) return "";
+  const word = /공연장/.test(v.kind) ? "공연" : /스포츠/.test(v.kind) ? "경기" : museumByName ? "전시" : /전시·컨벤션|복합문화공간/.test(v.kind) ? "행사" : "전시";
   const t = todayISO(), ev = eventsAt(v);
   const now = ev.filter(e => !e.start || e.start <= t), next = ev.filter(e => e.start && e.start > t).sort((a, b) => a.start < b.start ? -1 : 1);
   const when = META?.updated_at ? new Date(META.updated_at).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "numeric", day: "numeric" }) + " 기준" : "";
   const row = e => `<button onclick="detail('${jsq(e.id)}')"><em class="${(TICKET[ticketOf(e).status] || TICKET["확인필요"])[0]}">${(TICKET[ticketOf(e).status] || TICKET["확인필요"])[1]}</em> ${esc(e.date)} · ${esc(e.title)}</button>`;
-  if (!ev.length) return `<div class="here none"><b>지금 ${word} 없음</b><span>앱에 등록된 진행 중·예정 ${word}${josa(word)} 없어요 ${when ? "(" + when + ")" : ""} · 새로 잡히면 자동으로 여기에 떠요</span></div>`;
-  return `<div class="here">${now.length ? `<b>지금 하는 ${word} ${now.length}</b>${now.slice(0, 3).map(row).join("")}` : `<b>지금 하는 ${word} 없음</b>`}${next.length ? `<b class="nx">다가오는 ${word} ${next.length}</b>${next.slice(0, 3).map(row).join("")}` : ""}</div>`;
+  const pm = word === "전시" ? permanentInfo(v) : null, closedNow = openToday(v) === false;
+  const pmHead = pm ? (pm.has === true ? "🏛 상설·소장품 전시" : pm.has === "collection" ? "🎨 작가·소장품 미술관" : "") : "";
+  const pmLine = pm ? (pmHead ? `<b>${pmHead}${closedNow ? " · 오늘은 휴관" : ""}</b><span>${esc(pm.text)}</span>` : `<span>${esc(pm.text)}</span>`) : "";
+  const label = pm && pm.has === true ? "특별전" : word;
+  if (!ev.length) {
+    if (pm && pm.has === true) return `<div class="here">${pmLine}<span>앱에 등록된 특별전은 지금 없어요 ${when ? "(" + when + ")" : ""}</span></div>`;
+    if (pm && pm.has === "collection") return `<div class="here">${pmLine}<span>지금 걸린 전시 제목은 누리집·전화로 확인하세요 · 새 전시가 들어오면 여기에 떠요</span></div>`;
+    const head = pm ? `지금 걸린 ${word}은 앱에 아직 없어요` : `지금 ${word} 없음`;
+    return `<div class="here none"><b>${head}</b>${pmLine}<span>앱에 등록된 진행 중·예정 ${word}${josa(word)} 없어요 ${when ? "(" + when + ")" : ""} · 새로 잡히면 자동으로 여기에 떠요</span></div>`;
+  }
+  return `<div class="here">${pm && pm.has === true ? pmLine : ""}${now.length ? `<b>지금 하는 ${label} ${now.length}</b>${now.slice(0, 3).map(row).join("")}` : `<b>지금 하는 ${label} 없음</b>`}${next.length ? `<b class="nx">다가오는 ${label} ${next.length}</b>${next.slice(0, 3).map(row).join("")}` : ""}${pm && pm.has !== true ? pmLine : ""}</div>`;
 }
 function placeCard(v) {
   const trail = v.kind === "무등산 트레킹";
@@ -4828,6 +4899,7 @@ function placeProfile(v) {
   const t = todayISO(), d = DAY_KO[kstNow().getUTCDay()], open = openToday(v);
   const ev = eventsAt(v), now = ev.filter(e => !e.start || e.start <= t), next = ev.filter(e => e.start && e.start > t);
   const word = /공연장/.test(v.kind) ? "공연" : /스포츠/.test(v.kind) ? "경기" : "전시";
+  const pmInfo = word === "전시" ? permanentInfo(v) : null, pmLabel = pmInfo && pmInfo.has === true ? "특별전" : word;
   const near = VENUES.filter(x => x !== v && x.kind !== "무등산 트레킹").map(x => [x, km(v, x)]).filter(([, d]) => d != null && d <= 1.5).sort((a, b) => a[1] - b[1]).slice(0, 3);
   const fdNear = nearest(v, FOOD, 3), cfNear = nearest(v, CAFES, 3), stNear = nearest(v, STAYS, 6);
   const fdGu = FOOD.filter(f => f.badge === "2025 광주맛집" && f.district === v.district).slice(0, 3);
@@ -4841,7 +4913,8 @@ function placeProfile(v) {
    ${v.desc && v.note ? `<p class="pfNote">💡 ${esc(v.note)}</p>` : ""}
    ${v.highlights?.length ? `<div class="pfHighlights">${v.highlights.map(x => `<span>✓ ${esc(x)}</span>`).join("")}</div>` : ""}
    ${visitLine(v)}${parkLine(v, true)}
-   ${(ev.length || /공연장|전시·컨벤션|미술관|갤러리|박물관|기념관|전시관|복합문화공간|문학관|스포츠/.test(v.kind)) ? `<h4>${now.length ? `지금 하는 ${word}` : `지금 하는 ${word} 없음`}</h4>${now.length ? `<ul class="pfEv">${now.map(evRow).join("")}</ul>` : `<p class="pfNone">앱에 등록된 진행 중 ${word}${josa(word)} 없어요. 새로 잡히면 자동으로 떠요.</p>`}` : ""}
+   ${pmInfo && pmInfo.has ? `<h4>${pmInfo.has === true ? "🏛 상설·소장품 전시" : "🎨 작가·소장품 미술관"}${open === false ? " · 오늘은 휴관" : ""}</h4><p class="pfNone">${esc(pmInfo.text)}</p>` : ""}
+   ${(ev.length || /공연장|전시·컨벤션|미술관|갤러리|박물관|기념관|전시관|복합문화공간|문학관|스포츠/.test(v.kind)) ? `<h4>${now.length || pmInfo ? `지금 하는 ${pmLabel}` : `지금 하는 ${word} 없음`}</h4>${now.length ? `<ul class="pfEv">${now.map(evRow).join("")}</ul>` : `<p class="pfNone">앱에 등록된 진행 중 ${pmLabel}${josa(pmLabel)} 없어요.${pmInfo && !pmInfo.has ? " " + esc(pmInfo.text) + "." : pmInfo && pmInfo.has === "collection" ? " 지금 걸린 전시는 누리집·전화로 확인하세요." : ""} 새로 잡히면 자동으로 떠요.</p>`}` : ""}
    ${next.length ? `<h4>다가오는 ${word}</h4><ul class="pfEv">${next.slice(0, 3).map(evRow).join("")}</ul>` : ""}
    <h4>이용 정보</h4><dl class="pfInfo">${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
    <h4>같이 가기 좋은 곳</h4><ul class="pfNear">
@@ -4889,7 +4962,7 @@ function aiPlaceCard(v, w) {
   const open = w ? openOn(v, w.days[0]) : openToday(v), now = eventsAt(v).filter(e => activeIn(e, w || whenOf("")));
   return `<article class="aiCard">${v.image ? `<div class="acPic"><div class="ph"${bg(v.image)}></div></div>` : ""}
   <div class="acBody"><div class="acTags"><span>${esc(v.kind)}</span><span>${esc(v.district)}</span>${open === true ? `<span class="on">문 열어요</span>` : open === false ? `<span class="hot">휴관</span>` : ""}${/무료/.test(v.price || "") ? `<span class="free">무료</span>` : ""}</div>
-  <b>${esc(v.name)}</b>${now.length ? `<small>🖼 지금: ${esc(now[0].title)} (${esc(now[0].date)})</small>` : ""}<small>${esc(v.desc || v.note || "")}</small>
+  <b>${esc(v.name)}</b>${now.length ? `<small>🖼 지금: ${esc(now[0].title)} (${esc(now[0].date)})</small>` : (permanentInfo(v)?.has ? `<small>${permanentInfo(v).has === true ? "🏛" : "🎨"} ${esc(permanentInfo(v).text)}</small>` : "")}<small>${esc(v.desc || v.note || "")}</small>
   ${v.hours ? `<small>🕘 ${esc(v.hours)}${v.closed ? " · 휴관 " + esc(v.closed) : ""}</small>` : ""}${v.kids ? `<small>👶 ${esc(v.kids)}</small>` : ""}${visitLine(v)}${parkLine(v)}
   <div class="acBtns"><button onclick="aiProfile('${jsq(v.id)}')">자세히</button><button onclick="showOnMap('venue','${jsq(v.id)}')">지도</button></div></div></article>`;
 }
@@ -6104,7 +6177,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.15 사투리인사";
+const APP_VER = "10.15 상설전시";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
