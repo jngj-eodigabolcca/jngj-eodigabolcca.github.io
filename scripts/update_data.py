@@ -929,11 +929,70 @@ def merge_events(manual, api_events):
     return merged
 
 
+# ───────── 매주 정해진 요일에 열리는 정기 프로그램 ─────────
+# 공공데이터(관광공사·KOPIS·문화정보원)에 올라오지 않는 곳의 '매주 ○요일' 행사를
+# 실행할 때마다 앞으로 WEEKS_AHEAD 주치 날짜로 새로 만들어 넣는다. (지난 날짜는 자동으로 빠짐)
+# 줄을 더하면 다른 정기 행사도 똑같이 자동으로 들어간다.
+#   weekday: 월0 화1 수2 목3 금4 토5 일6   months: 운영하는 달 (쉬는 달은 빼기)
+#   skip: 쉬는 날짜 "YYYY-MM-DD" 목록 (명절·행사 등으로 공연이 없는 토요일)
+WEEKS_AHEAD = 5
+RECURRING = [
+    {
+        "id": "gtcc-saturday",
+        "weekday": 5,
+        "months": [4, 5, 6, 7, 8, 9, 10, 11],
+        "skip": [],
+        "event": {
+            "category": "공연", "subtype": "국악",
+            "title": "전통문화관 토요상설공연",
+            "venue": "광주전통문화관", "venueId": "traditional-culture",
+            "district": "동구", "address": "광주 동구 의재로 222",
+            "lat": 35.1329, "lng": 126.9695,
+            "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+            "price": "무료",
+            "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+            "source": "광주문화재단 전통문화관",
+            "url": "http://www.gtcc.or.kr/", "contact": "062-670-8550",
+            "tags": ["공연", "국악", "무료", "전통체험"],
+            "ticket": {"status": "무료", "note": "현장 등록 · 연령 제한 없음"},
+        },
+    },
+]
+
+
+def recurring_events():
+    out = []
+    today = NOW.date()
+    for r in RECURRING:
+        skip = set(r.get("skip") or [])
+        d = today + timedelta(days=(r["weekday"] - today.weekday()) % 7)
+        for _ in range(WEEKS_AHEAD):
+            iso = d.isoformat()
+            if d.month in r.get("months", range(1, 13)) and iso not in skip:
+                e = json.loads(json.dumps(r["event"], ensure_ascii=False))
+                e.update({
+                    "id": f"{r['id']}-{iso}",
+                    "title": f"{e['title']} ({d.month}/{d.day})",
+                    "date": f"{d.month:02d}.{d.day:02d} — {d.month:02d}.{d.day:02d}",
+                    "start": iso, "end": iso,
+                    "status": "예정", "origin": "manual", "recurring": r["id"],
+                    "verified": TODAY_ISO,
+                })
+                e.setdefault("ticket", {})["checked"] = TODAY_ISO
+                out.append(e)
+            d += timedelta(days=7)
+    return out
+
+
 def main():
     global VENUES
     data = embedded_data()
     VENUES = data.get("venues", [])
     manual = [e for e in data.get("events", []) if e.get("origin", "manual") == "manual"]
+    rec = recurring_events()
+    rec_ids = {e["id"] for e in rec}
+    manual = [e for e in manual if e.get("id") not in rec_ids] + rec   # 정기 행사도 '직접 확인한 일정'으로 취급
+    log(f"✔ 정기 프로그램 {len(rec)}건 ({', '.join(e['title'] for e in rec)})")
 
     previous = read_json(OUT_EVENTS, [])
     for e in previous:
