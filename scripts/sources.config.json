@@ -1,0 +1,159 @@
+{
+ "_설명": "AI가 읽어 일정을 뽑아낼 웹페이지 목록. 줄을 더하면 그 사이트도 자동으로 읽어요. venueId 를 적으면 그 장소 일정으로 묶여요(venues.json 의 id). enabled:false 면 쉬어요. 주소가 바뀌어도 AI가 새 주소를 스스로 찾아요(state/web-sources.json 에 기억). 개인·업체가 직접 사이트를 추가할 수는 없어요(이 파일은 저장소 관리자만 고칠 수 있음).",
+ "web": [
+  {
+   "id": "omae-festival",
+   "name": "오매광주 축제·행사",
+   "url": "https://tour.gwangju.go.kr/home/tour/culture/festival.cs?m=315",
+   "purpose": "광주 축제·행사 목록",
+   "enabled": true
+  },
+  {
+   "id": "omae-calendar",
+   "name": "오매광주 문화행사 캘린더",
+   "url": "https://tour.gwangju.go.kr/home/tour/culture/calendar.cs?m=319",
+   "purpose": "이달의 공연·전시·행사 캘린더",
+   "enabled": true
+  },
+  {
+   "id": "omae-monthly",
+   "name": "오매광주 월별 행사일정",
+   "url": "https://tour.gwangju.go.kr/home/sub.cs?m=347",
+   "purpose": "월별 행사 일정",
+   "enabled": true
+  },
+  {
+   "id": "gma",
+   "name": "광주시립미술관",
+   "url": "https://artmuse.gwangju.go.kr/",
+   "venueId": "gma",
+   "purpose": "현재·예정 전시 목록",
+   "enabled": true
+  },
+  {
+   "id": "acc",
+   "name": "국립아시아문화전당",
+   "url": "https://www.acc.go.kr/",
+   "venueId": "acc",
+   "purpose": "전시·공연 프로그램 목록",
+   "enabled": true
+  },
+  {
+   "id": "artcenter",
+   "name": "광주예술의전당",
+   "url": "https://gjart.gwangju.go.kr/ko/cmd.do?opencode=p0101",
+   "venueId": "artcenter",
+   "purpose": "이달 공연·전시 일정 (대극장·소극장)",
+   "enabled": true
+  },
+  {
+   "id": "nmg",
+   "name": "국립광주박물관",
+   "url": "https://gwangju.museum.go.kr/",
+   "venueId": "nmg",
+   "purpose": "특별전·전시·교육 행사",
+   "enabled": true
+  },
+  {
+   "id": "biennale",
+   "name": "광주비엔날레",
+   "url": "https://www.gwangjubiennale.org/",
+   "venueId": "biennale",
+   "purpose": "전시 일정",
+   "enabled": true
+  },
+  {
+   "id": "chosun-art",
+   "name": "조선대학교 미술관",
+   "url": "https://artmuseum.chosun.ac.kr",
+   "venueId": "chosun-univ-art-museum",
+   "purpose": "현재 전시",
+   "enabled": true
+  },
+  {
+   "id": "shinsegae",
+   "name": "광주신세계갤러리",
+   "url": "https://www.shinsegae.com/culture/gallery/index.do",
+   "venueId": "gwangju-shinsegae-gallery",
+   "purpose": "광주신세계갤러리 현재 전시",
+   "enabled": true
+  },
+  {
+   "id": "deyoung",
+   "name": "드영미술관",
+   "url": "http://www.deyoungmuseum.co.kr/",
+   "venueId": "deyoung-museum",
+   "purpose": "현재 전시",
+   "enabled": true
+  },
+  {
+   "id": "artspace-zip",
+   "name": "예술공간 집",
+   "url": "https://www.artspacehouse.com/",
+   "venueId": "artspace-zip",
+   "purpose": "현재 전시",
+   "enabled": true
+  },
+  {
+   "id": "gjcf",
+   "name": "광주문화재단",
+   "url": "https://www.gjcf.or.kr/",
+   "purpose": "공연·전시·축제 소식",
+   "enabled": true
+  },
+  {
+   "id": "artcenter-troupe",
+   "name": "광주예술의전당 예술단 공연",
+   "url": "https://gjart.gwangju.go.kr/ko/cmd.do?opencode=p0102",
+   "venueId": "artcenter",
+   "purpose": "시립교향악단·발레단·오페라단·국극단·합창단 공연 일정",
+   "enabled": true
+  },
+  {
+   "id": "518center",
+   "name": "5·18기념문화센터",
+   "url": "https://www.gwangju.go.kr/518/contentsView.do?pageId=maycenter35",
+   "venueId": "518center",
+   "purpose": "민주홀·대동홀 공연·행사 일정",
+   "enabled": true
+  },
+  {
+   "id": "bitgoeul",
+   "name": "빛고을시민문화관",
+   "url": "https://www.gjcf.or.kr/cf/space/citizen.do",
+   "venueId": "bitgoeul",
+   "purpose": "빛고을시민문화관 공연 일정",
+   "enabled": true
+  },
+  {
+   "id": "universiade",
+   "name": "유니버시아드체육관 공연 (스테이지픽)",
+   "url": "https://www.stagepick.co.kr/venues/detail/607",
+   "venueId": "universiade",
+   "purpose": "광주여대 유니버시아드체육관 콘서트 일정",
+   "enabled": true
+  },
+  {
+   "id": "nol-concert",
+   "name": "NOL티켓 콘서트 (광주·전라)",
+   "url": "https://nol.yanolja.com/ticket/genre/concert",
+   "purpose": "광주에서 열리는 대중음악 콘서트만",
+   "enabled": true
+  },
+  {
+   "id": "nol-musical",
+   "name": "NOL티켓 뮤지컬·연극 (광주·전라)",
+   "url": "https://nol.yanolja.com/ticket/genre/musical",
+   "purpose": "광주에서 열리는 뮤지컬·연극만",
+   "enabled": true
+  },
+  {
+   "id": "gtcc",
+   "name": "광주전통문화관",
+   "url": "http://www.gtcc.or.kr/",
+   "venueId": "traditional-culture",
+   "purpose": "토요상설공연·무등풍류 뎐·무등울림축제·전통체험 일정",
+   "enabled": true
+  }
+ ]
+}
