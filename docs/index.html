@@ -2356,8 +2356,10 @@ async function load() {
     time: "10:00–18:00 · 월요일 휴관 · 정규 해설 화~일 11:00·14:00·15:30", price: "관람료는 미술관 안내 확인", status: !start || start <= todayISO() ? "진행중" : "예정",
     verified: "2026-10-15", verify: "광주시립미술관 누리집 '현재전시' 기준", source: "광주시립미술관 누리집", url: "https://artmuse.gwangju.go.kr/",
     tags: ["전시", "실내"], origin: "manual", ticket: { status: "관람가능", note: "전시 기간 중 관람", checked: "2026-10-15" }, ...o }));
-  const seenTitles = new Set((E0 || []).map(e => titleCore(e.title)));
-  E0 = [...E0, ...GMA_NOW.filter(e => !E0.some(x => x.id === e.id) && !seenTitles.has(titleCore(e.title)))];
+  // 괄호·'특별전' 같은 꾸밈말은 빼고 비교 → 같은 전시가 자동 수집 쪽에 있으면 내장본은 안 더함 (중복 방지)
+  const looseT = t => String(t || "").replace(/특별전|기획전|[^0-9a-z가-힣]/gi, "");
+  const seenTitles = new Set((E0 || []).map(e => looseT(e.title)));
+  E0 = [...E0, ...GMA_NOW.filter(e => !E0.some(x => x.id === e.id) && !seenTitles.has(looseT(e.title)))];
   // 숙소: 메뉴엔 없음. 'KTX 1박 2일'·'숙소' 같은 요청에서만 코스에 들어감
   // 동네 강좌·도서관 (없으면 빈 목록 — 자동 수집이 처음 돈 뒤부터 채워짐)
   const [P0, L0] = await Promise.all([getJSON("programs"), getJSON("libraries")]);
@@ -3903,7 +3905,7 @@ function renderPlaces() {
   const libOpen = l => { const t = libToday(l); return t.open !== false && !t.done };
   const isOpen = x => { try { return isLib ? libOpen(x) : openToday(x) !== false } catch (e) { return true } };
   const list = sp
-    ? sortHome(sp[0]().filter(x => (PLACE_GU === "전체" || x.district === PLACE_GU) && (!PLACE_OPEN || isOpen(x))))
+    ? (isLib ? sortLibs : sortHome)(sp[0]().filter(x => (PLACE_GU === "전체" || x.district === PLACE_GU) && (!PLACE_OPEN || isOpen(x))))
     : sortHome(VENUES.filter(placeFilter));
   const cnt = g => PLACE_SPECIAL[g] ? PLACE_SPECIAL[g][0]().length : VENUES.filter(PLACE_GROUPS.find(x => x[0] === g)[2]).length;
   const d = DAY_KO[kstNow().getUTCDay()];
