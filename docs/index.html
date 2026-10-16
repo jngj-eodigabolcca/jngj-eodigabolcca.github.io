@@ -2107,12 +2107,34 @@ function trLine(x) {
 }
 /* ⏳ 머무는 시간(종류별 보통 시간 · 앱 추정)과 오늘 마감까지 남은 시간(앱에 있는 운영시간으로 계산) */
 const STAY_KIND = { "미술관": "1~1.5시간", "박물관": "1.5~2시간", "과학관": "2~3시간", "동물원·테마파크": "2~3시간", "공원·정원": "1시간 안팎", "5·18 사적지": "30분~1시간", "근대문화유산": "20~30분", "골목·시장": "1~2시간", "역사유적": "30분~1시간", "복합문화공간": "2시간 이상", "전시관": "1~1.5시간", "갤러리": "30분~1시간", "기념관": "1시간", "문학관": "1시간", "양림 카페": "1시간", "워터파크": "3~4시간", "자연·경관": "1~2시간", "체험": "1~2시간", "레포츠": "2시간 안팎" };
+/* 장소별 머무는 시간 (종류별 기본값보다 우선) — 규모·전시 구성을 보고 잡은 앱 추정값.
+   [이름·id에 맞출 패턴, 시간]. 작은 작가 미술관은 짧게, 큰 복합시설은 길게. 자료에 stayTime이 있으면 그 값이 먼저예요. */
+const STAY_PLACE = [
+  [/^acc$|국립아시아문화전당/, "1.5~3시간"],
+  [/^nmg$|국립광주박물관$/, "1.5~2시간"],
+  [/^gma$|광주시립미술관$/, "1~2시간"],
+  [/^biennale$|비엔날레\s*전시관/, "1.5~2.5시간"],
+  [/^gmap$|미디어아트플랫폼|G\.MAP/i, "40분~1시간"],
+  [/^518archive$|5·18민주화운동기록관/, "1시간 안팎"],
+  [/무등현대미술관/, "20~30분"],
+  [/한희원미술관|양림미술관|주안미술관|국윤미술관|소암미술관|은암미술관|금융박물관/, "30분 안팎"],
+  [/이강하미술관|우제길미술관|금봉미술관|하정웅미술관|드영미술관|아트폴리곤|조선대학교미술관|호심미술관/, "30분~1시간"],
+  [/의재미술관|비움박물관/, "40분~1시간"],
+];
+function stayOverride(v) {
+  if (!v) return "";
+  if (v.stayTime) return v.stayTime;
+  const key = (v.id || "") + " " + String(v.name || "").replace(/\s*\(.*$/, "");
+  const hit = STAY_PLACE.find(([re]) => re.test(v.id || "") || re.test(String(v.name || "").replace(/\s*\(.*$/, "").trim()) || re.test(key));
+  return hit ? hit[1] : "";
+}
+const stayOf = v => stayOverride(v) || (v && STAY_KIND[v.kind]) || "";
 function hhmm(t) { const [h, m] = t.split(":").map(Number); return h * 60 + m }
 function visitLine(v) {
   if (!v || !v.kind || v.kind === "무등산 트레킹") return "";
   const out = [];
-  const stay = v.stayTime || STAY_KIND[v.kind];
-  if (stay) out.push(`⏱ 보통 ${stay} 머물러요`);
+  const stay = stayOf(v);
+  if (stay) out.push(`⏱ 보통 ${stay}쯤 머물러요 (앱 추정)`);
   const open = openToday(v), hrs = v.hours || "";
   if (open === false) out.push("오늘은 휴관이에요");
   else if (!/상시|상이|공연|기간/.test(hrs)) {
@@ -3438,18 +3460,27 @@ function tripNightBlocked(x, kind, arrive, stay, date) {
   if (/노을|일몰|해넘이|낙조/.test(txt)) return arrive > sun + 20;
   return arrive + Math.min(stay, 60) > sun;
 }
-/* 머무는 시간(분): 종류별 보통 시간의 가운데 값. 공연은 회차 시작 전에 도착해야 하므로 따로 처리 */
-function tripStayMin(x, kind) {
+/* 머무는 시간(분): 보통은 범위의 가운데 값, 짧게(lo)는 범위의 짧은 쪽.
+   '갈 수 있나' 판정은 짧은 쪽으로, 코스 시간표는 가운데 값으로 잡는다.
+   (예: 1~1.5시간 → 짧게 60분 · 보통 80분. 18시 마감에 17시 도착이면 '짧게 보기'로 추천에 남음) */
+function tripStayMin(x, kind, which) {
   if (kind === "food") return 60;
   if (kind === "cafe") return 45;
   if (kind === "cinema") return 150;
   if (kind === "event" && !/전시/.test(x.category || "")) return /축제|행사/.test(x.category || "") ? 60 : 120;
-  const s = String(x.stayTime || STAY_KIND[x.kind] || (kind === "event" ? STAY_KIND["전시관"] : "") || "");
+  let s = String(x.stayTime || (kind === "event" ? "" : stayOf(x)) || "");
+  if (!s && kind === "event") {   // 전시 일정: 그 장소에 정해 둔 시간이 있으면 그걸, 없으면 전시관 기본값
+    const v = (ALL.VENUES || []).find(v => v.id === x.venueId) || (ALL.VENUES || []).find(v => v.name === x.venue);
+    s = stayOverride(v) || STAY_KIND["전시관"];
+  }
   const toks = [...s.matchAll(/(\d+(?:\.\d+)?)\s*(시간|분)?/g)].map(m => ({ n: +m[1], u: m[2] || null }));
   for (let i = toks.length - 1; i >= 0; i--) if (!toks[i].u) toks[i].u = (toks[i + 1] || {}).u || "시간";
   const mins = toks.map(t => t.u === "분" ? t.n : t.n * 60).filter(n => n > 0 && n <= 600);
-  if (!mins.length) return /미술관|박물관|과학관|전시|기념관|문학관/.test(x.kind || "") ? 60 : 45;
+  if (!mins.length) return which === "lo" ? 30 : /미술관|박물관|과학관|전시|기념관|문학관/.test(x.kind || "") ? 60 : 45;
   const lo = Math.min(...mins), hi = Math.max(...mins);
+  // '안팎'·'쯤' 처럼 한 값만 있으면 짧게 보기는 그 값의 3/4
+  const short = mins.length === 1 ? Math.max(20, Math.round(lo * 0.75 / 10) * 10) : lo;
+  if (which === "lo") return short;
   return Math.max(lo, Math.round((lo + hi) / 2 / 10) * 10);
 }
 /* 오늘(또는 지정일) 적용되는 운영시간 해석 */
@@ -3548,6 +3579,7 @@ function tripCheck(x, kind, arrive, opt = {}) {
     if (venue && /전시|체험|박물관|미술관/.test(x.category || "") && openOn(venue, new Date(day + "T00:00:00Z").getUTCDay()) === false) return { ok: false, why: "행사 장소 휴관일" };
   }
   const H = tripHours(x, kind, opt.date), stay = opt.stay != null && kind !== "food" && kind !== "cafe" ? Math.min(opt.stay, tripStayMin(x, kind)) : tripStayMin(x, kind); // opt.stay: 코스에서 줄여 잡은 머무는 시간
+  const stayLo = Math.min(stay, tripStayMin(x, kind, "lo"));   // 짧게 봐도 이만큼은 있어야 함
   if (H.closed) return { ok: false, why: "오늘 휴관" };
   if (tripNightBlocked(x, kind, arrive, stay, opt.date)) return { ok: false, why: `해가 진 뒤 도착 (일몰 ${tripHM(tripSunset(opt.date))}쯤)` };
   if (H.always && /외관|근대문화유산/.test((x.hours || "") + " " + (x.kind || "")) && !/야경|야간|조명/.test((x.hours || "") + (x.tags || []).join(" ")) && arrive + stay > tripSunset(opt.date) + 30) return { ok: false, why: "해가 진 뒤라 건물 외관 보기 어려움" };
@@ -3567,10 +3599,11 @@ function tripCheck(x, kind, arrive, opt = {}) {
   if (opt.latest != null && a > opt.latest) return { ok: false, why: "여는 시간이 너무 늦음" };
   if (H.lastIn != null && a > H.lastIn - 10) return { ok: false, why: `입장마감 ${tripHM(H.lastIn)}에 너무 빠듯해요` }; // 매표·줄 서는 시간 10분 여유
   if (a >= H.close) return { ok: false, why: `${tripHM(H.close)} 마감 뒤 도착` };
-  const usable = H.close - a, need = (kind === "food" || kind === "cafe") ? Math.min(stay, 50) : stay;
-  if (usable < need) return { ok: false, why: `도착 뒤 ${usable}분뿐 (보통 ${stay}분 필요)` };
+  const usable = H.close - a, need = (kind === "food" || kind === "cafe") ? Math.min(stay, 50) : stayLo;
+  if (usable < need) return { ok: false, why: `도착 뒤 ${usable}분뿐 (짧게 봐도 ${need}분 필요)` };
   const cut = H.lastIn != null ? `입장마감 ${tripHM(H.lastIn)} · ` : "";
-  return { ok: true, arrive: a, leave: a + stay, stay, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${stay}분 관람 가능` };
+  const view = (kind === "food" || kind === "cafe") ? stay : Math.min(stay, usable), short = view < stay;
+  return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${short ? `${view}분 짧게 보기` : `${view}분 관람 가능`}` };
 }
 /* 출발 시각 기준 한 곳 판정 (첫 장소용) */
 function tripFitsFrom(x, kind, opt = {}) {
