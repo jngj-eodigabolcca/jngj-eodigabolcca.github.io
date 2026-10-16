@@ -236,6 +236,31 @@ def district_from_addr(addr: str):
     m = re.search(r"(?:^|\s)([가-힣]{1,4}(?:시|군)|광산구)(?=\s|$)", a)
     return m.group(1) if m and not re.fullmatch(SIDO_RE, m.group(1)) else ""
 
+# 주소가 비어 온 공연장: 이름으로 시·군을 알아낸다 (KOPIS 공연장 주소 조회가 자주 실패함)
+VENUE_DISTRICT = [
+    (r"한국트로트가요센터", "영암군"), (r"남도소리울림터", "무안군"), (r"목포시민문화체육센터", "목포시"),
+    (r"예울마루|여수시민회관|여수월드", "여수시"), (r"포스코광양|백운아트홀", "광양시"),
+    (r"순천문화예술회관", "순천시"), (r"담양문화회관", "담양군"), (r"소록도", "고흥군"),
+    (r"5\.18기념문화센터|광주서구문화센터|상무지구", "서구"), (r"국립아시아문화전당|빛고을시민문화관|광주디자인센터", "동구"),
+]
+CITY_DISTRICT = {"여수": "여수시", "순천": "순천시", "광양": "광양시", "목포": "목포시", "무안": "무안군", "영암": "영암군",
+                 "담양": "담양군", "나주": "나주시", "화순": "화순군", "장성": "장성군", "해남": "해남군", "완도": "완도군",
+                 "고흥": "고흥군", "보성": "보성군", "구례": "구례군", "곡성": "곡성군", "강진": "강진군", "장흥": "장흥군",
+                 "함평": "함평군", "영광": "영광군", "진도": "진도군", "신안": "신안군"}
+
+
+def district_hint(title: str, venue: str) -> str:
+    """주소가 없을 때: ① 공연장 이름 ② 제목 끝 [여수]·[광양] 같은 지역 표시 순서로 시·군을 찾는다."""
+    for pat, d in VENUE_DISTRICT:
+        if re.search(pat, f"{venue} {title}"):
+            return d
+    for tag in re.findall(r"\[([^\]]+)\]", title or ""):
+        for city, d in CITY_DISTRICT.items():
+            if city in tag:
+                return d
+    return ""
+
+
 def in_region(text: str):
     t = text or ""
     if re.search(r"경기도|경기\s*광주|^경기", t):     # 경기도 광주시는 다른 도시
@@ -825,7 +850,7 @@ def kopis_performances():
         except Exception:
             pass
         addr = kopis_facility_addr(detail.get("mt10id"))
-        district = district_from_addr(addr)
+        district = district_from_addr(addr) or district_hint(title, venue)
 
         out.append({
             "detailAt": TODAY_ISO,
@@ -855,6 +880,90 @@ def kopis_performances():
             "verified": TODAY_ISO,
             "tags": ["공연", genre, region_tag(district)],
         })
+    return out
+
+
+# ───────── 광주시립미술관 누리집: 현재·예정 전시 (특별전·기획전 포함) ─────────
+# 공공데이터(문화정보원·관광공사)에 시립미술관 기획전이 거의 안 올라와서 누리집 전시 목록을 직접 읽는다.
+GMA_BASE = "https://gjartmuse.jeonnam-gwangju.go.kr"
+GMA_LISTS = [("N", "artmuse0209000000", "진행중"), ("F", "artmuse0210000000", "예정")]
+GMA_SKIP = re.compile(r"G&J|지앤제이")            # G&J갤러리는 서울 인사동 분관 → 뺌
+
+
+def _text(html_part: str) -> str:
+    t = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", html_part, flags=re.S | re.I)
+    t = re.sub(r"<br\s*/?>|</(p|div|li|dd|dt|tr|h\d)>", "\n", t, flags=re.I)
+    t = html.unescape(re.sub(r"<[^>]+>", " ", t))
+    return re.sub(r"[ \t\xa0]+", " ", t)
+
+
+def gma_exhibitions():
+    found = {}
+    for tp, page_id, status in GMA_LISTS:
+        url = f"{GMA_BASE}/pj/pjExhibit.php?pageID={page_id}&action=list&exhiTp={tp}"
+        page = http_get(url, timeout=25).decode("utf-8", "replace")
+        anchors = list(re.finditer(r'<a\b[^>]*href="([^"]*eSeq=(\d+)[^"]*)"[^>]*>(.*?)</a>', page, re.S | re.I))
+        for m in anchors:
+            href, seq, inner = html.unescape(m.group(1)), m.group(2), m.group(3)
+            names = [_text(inner).strip()] + re.findall(r'(?:title|alt)="([^"]+)"', inner)
+            names = [re.sub(r"\s+", " ", html.unescape(n)).strip(" -·") for n in names if n and n.strip()]
+            g = found.setdefault(seq, {"seq": seq, "titles": [], "href": "", "ctx": "", "status": status})
+            g["titles"] += names
+            if re.search(r"exhiCd=\d", href) and not g["href"]:
+                g["href"] = href
+                g["ctx"] = _text(page[m.start(): m.start() + 4000])     # 이 전시 칸의 글자 (장소·기간)
+    out = []
+    for seq, g in found.items():
+        ctx = g["ctx"] or ""
+        dm = re.search(r"(20\d\d)[.\-/]\s*(\d{1,2})[.\-/]\s*(\d{1,2})\.?\s*[~∼-]\s*(20\d\d)[.\-/]\s*(\d{1,2})[.\-/]\s*(\d{1,2})", ctx)
+        if not dm:
+            continue
+        y1, m1, d1, y2, m2, d2 = (int(x) for x in dm.groups())
+        start, end = f"{y1:04d}-{m1:02d}-{d1:02d}", f"{y2:04d}-{m2:02d}-{d2:02d}"
+        if end < TODAY_ISO:
+            continue
+        before = ctx[: dm.start()]
+        pm = re.search(r"장소\s*[:：]?\s*([^\n]+)", ctx) or re.search(r"([^\n]*(?:전시실|미술관|갤러리|로비|광장)[^\n]*)", before)
+        place = re.sub(r"\s*(전시)?기간.*$", "", pm.group(1)).strip(" :·") if pm else ""
+        place = re.sub(r"^(광주|시립)미술관\s*", "", place)          # '광주미술관 본관 제1전시실' → '본관 제1전시실'
+        titles = [t for t in g["titles"] if len(t) >= 2 and not re.fullmatch(r"(자세히|더보기|상세보기|view|more)", t, re.I)]
+        full = [t for t in titles if not re.search(r"(\.\.\.|…)$", t)]
+        title = max(full or titles or [""], key=len)
+        title = re.sub(r"(\.\.\.|…)$", "", title).strip()
+        if not title or GMA_SKIP.search(place + title):
+            continue
+        detail_url = urllib.parse.urljoin(GMA_BASE + "/pj/", g["href"]) if g["href"] else f"{GMA_BASE}/pj/pjExhibit.php?action=view&eSeq={seq}"
+        image, price = "", "누리집 확인"
+        try:
+            dp = http_get(detail_url, timeout=20).decode("utf-8", "replace")
+            im = re.search(r'["\']([^"\']*/upload/pj/PJ_EXHIBIT/[^"\']+\.(?:jpe?g|png|gif|webp))["\']', dp, re.I)
+            if im:
+                image = urllib.parse.urljoin(GMA_BASE, im.group(1))
+            dt = _text(dp)
+            fee = re.search(r"일반[^0-9\n]{0,20}([\d,]{3,})\s*원", dt)
+            if fee:
+                price = f"유료 · 일반 {fee.group(1)}원"
+            elif re.search(r"관람료[^\n]{0,30}무료|무료\s*관람", dt):
+                price = "무료"
+        except Exception as e:
+            log(f"  · 시립미술관 상세 실패 {seq}: {scrub(str(e))[:80]}")
+        photo = "사진전시관" in place
+        out.append({
+            "id": f"gma-{seq}", "apiId": seq, "category": "전시", "subtype": "미술",
+            "title": title,
+            "venue": "광주시립미술관" + (f" · {place}" if place and "시립미술관" not in place else (f" ({place})" if place else "")),
+            "venueId": "gmoa-photo-gallery" if photo else "gma",
+            "district": "북구", "address": "" if photo else "광주 북구 하서로 52",
+            "date": f"{m1:02d}.{d1:02d} — {m2:02d}.{d2:02d}", "start": start, "end": end,
+            "time": "운영시간·휴관일은 누리집 확인", "price": price,
+            "status": "진행중" if start <= TODAY_ISO else "예정",
+            "image": image, "imageCredit": "광주시립미술관" if image else "",
+            "source": "광주시립미술관 누리집", "url": detail_url,
+            "tags": ["전시", "미술", "실내"] + (["무료"] if price == "무료" else []),
+            "origin": "auto", "api": "gma", "verified": TODAY_ISO,
+        })
+    if not out:
+        raise RuntimeError("시립미술관 전시 목록을 읽지 못함 (누리집 구조가 바뀌었을 수 있음)")
     return out
 
 
@@ -1006,6 +1115,7 @@ def main():
         ("tourapi", "관광공사 행사·축제", tourapi_festivals),
         ("kopis", "KOPIS 공연", kopis_performances),
         ("culture", "문화정보원 전시·체험", culture_events),
+        ("gma", "광주시립미술관 전시", gma_exhibitions),
     ]:
         if source_id == "kopis":
             last = old_meta.get("kopis_last_try")
