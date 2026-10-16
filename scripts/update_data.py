@@ -564,7 +564,9 @@ def tourapi_festivals():
 # 공공데이터포털 End Point (사용자 계정 화면에서 확인: 2026-10-09)
 CULTURE_BASE = "https://apis.data.go.kr/B553457/cultureinfo"
 # 세부 기능 이름은 버전에 따라 다를 수 있어 순서대로 시도하고, 성공한 이름을 기억한다.
-CULTURE_OPS = {"period": ["period2", "period"], "detail": ["detail2", "detail"]}
+CULTURE_OPS = {"period": ["period2", "period"], "area": ["area2", "area"], "detail": ["detail2", "detail"]}
+CULTURE_SIDO = ["광주", "전남"]          # 지역별 조회(area2): 광주·전남 것만 받아서 전국 목록에 묻혀 빠지는 일이 없게
+CULTURE_BUDGET = 10 * 60
 _CULTURE_OK = {}
 CULTURE_TYPES = {"A": "전시·공연", "B": "행사·축제", "C": "교육·체험"}
 
@@ -668,13 +670,34 @@ def culture_events():
         raise RuntimeError("DATA_GO_KR_KEY가 없습니다.")
     frm, to = NOW.strftime("%Y%m%d"), (NOW + timedelta(days=45)).strftime("%Y%m%d")
     out, seen = [], set()
-    deadline = time.time() + SOURCE_BUDGET
+    t0 = time.time()
+    deadline = t0 + CULTURE_BUDGET
+    use_area = [True]
+    raw_seen = set()                    # 지역 거르기 전 기준: 이번 쪽에 처음 보는 게 하나도 없으면 끝
+
+    def listing(tp, page):
+        """지역별(광주·전남) 조회를 먼저 쓰고, 안 되면 예전처럼 기간별 전국 조회"""
+        if use_area[0]:
+            try:
+                recs = []
+                for sd in CULTURE_SIDO:
+                    recs += culture_xml("area", **{"sido": sd, "from": frm, "to": to, "cPage": str(page), "rows": "100", "serviceTp": tp})
+                return recs
+            except Exception as e:
+                use_area[0] = False
+                log(f"  문화정보원 지역별 조회 안 됨 → 기간별 조회 사용 ({scrub(str(e))[:120]})")
+        return culture_xml("period", **{"from": frm, "to": to, "cPage": str(page), "rows": "100", "serviceTp": tp})
+
     for tp, tp_name in CULTURE_TYPES.items():
         for page in range(1, 41):
             if time.time() > deadline:
                 log("  문화정보원: 시간 예산 도달 → 여기까지만"); break
-            recs = culture_xml("period", **{"from": frm, "to": to, "cPage": str(page), "rows": "100", "serviceTp": tp})
+            recs = listing(tp, page)
+            new_on_page = 0
             for r in recs:
+                rs = (r.get("seq") or r.get("id") or "") + "|" + str(r.get("title") or "")
+                if rs not in raw_seen:
+                    raw_seen.add(rs); new_on_page += 1
                 place_text = " ".join([r.get("area", ""), r.get("sigungu", ""), r.get("place", "")])
                 if not in_region(r.get("area", "") or place_text):
                     continue
@@ -698,8 +721,8 @@ def culture_events():
 
                 d = {}
                 try:   # 상세: 가격·주소·전화·원문 링크 (없어도 목록 정보만으로 표시)
-                    if time.time() > deadline - 60:
-                        raise RuntimeError("시간 예산")
+                    if time.time() > t0 + CULTURE_BUDGET * 0.6:
+                        raise RuntimeError("시간 예산 → 목록 정보만")   # 목록을 끝까지 받는 게 먼저
                     recs_d = guarded("문화정보원", culture_xml, "detail", seq=seq)
                     d = recs_d[0] if recs_d else {}
                 except Exception:
@@ -738,8 +761,8 @@ def culture_events():
                                          "무료" if re.search(r"무료", price or "") else "",
                                          "체험" if tp == "C" else ""] if t],
                 })
-            if len(recs) < 100:
-                break
+            if not recs or new_on_page == 0:
+                break            # 더 받을 게 없음 (한 쪽에 몇 개씩 주든 상관없이)
         log(f"  문화정보원 {tp_name}: 지금까지 광주·전남 {len(out)}건")
     return out
 
@@ -1057,7 +1080,9 @@ RECURRING = [
             "venue": "광주전통문화관", "venueId": "traditional-culture",
             "district": "동구", "address": "광주 동구 의재로 222",
             "lat": 35.1329, "lng": 126.9695,
-            "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+            "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연 (약 1시간)",
+            "description": "무등산 들머리 광주전통문화관에서 매주 토요일 열리는 무료 프로그램이에요. 오후 1시부터 민속놀이·한복 입기 등 전통 체험, 3시부터 서석당에서 국악·전통춤 공연이 이어져요. 나이 제한 없이 누구나 볼 수 있어요.",
+            "child": "민속놀이·한복 체험 (나이 제한 없음)", "parking": "무료 주차",
             "price": "무료",
             "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
             "source": "광주문화재단 전통문화관",
