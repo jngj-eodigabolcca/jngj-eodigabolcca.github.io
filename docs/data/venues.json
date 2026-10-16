@@ -1422,10 +1422,12 @@
     "lng": 126.8935926,
     "inout": "야외",
     "parkingOk": "관광공사 2026.10.04 확인",
-    "image": "",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/79/%EA%B4%91%EC%A3%BC%ED%8C%A8%EB%B0%80%EB%A6%AC%EB%9E%9C%EB%93%9C.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
     "area": "우치공원·생용동권",
     "verified": "2026-10-06",
-    "infoSource": "광주패밀리랜드 공식 안내"
+    "infoSource": "광주패밀리랜드 공식 안내",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EA%B4%91%EC%A3%BC%ED%8C%A8%EB%B0%80%EB%A6%AC%EB%9E%9C%EB%93%9C"
   },
   {
     "id": "lake-eco",
@@ -1601,7 +1603,7 @@
     "url": "https://tigers.co.kr/",
     "note": "KIA 타이거즈 홈구장 (프로야구)",
     "inout": "야외",
-    "image": "",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Gwangju_Kia_Champions_Field_View_04.jpg/960px-Gwangju_Kia_Champions_Field_View_04.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
     "desc": "KIA 타이거즈의 홈구장으로, 2014년 개장한 광주의 대표 야구장입니다. 경기 있는 날엔 주변 식당·카페와 함께 저녁 코스로 묶기 좋고, 응원 분위기를 즐기기 좋아요.",
     "access": "임동·무등경기장 일대 · 경기일에는 주변 교통 혼잡 가능",
     "area": "임동·무등경기장권",
@@ -1609,7 +1611,9 @@
     "infoSource": "https://tigers.co.kr/",
     "lat": 35.168072,
     "geoSrc": "OpenStreetMap(주소)",
-    "lng": 126.888266
+    "lng": 126.888266,
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EA%B4%91%EC%A3%BC%EA%B8%B0%EC%95%84%EC%B1%94%ED%94%BC%EC%96%B8%EC%8A%A4%ED%95%84%EB%93%9C"
   },
   {
     "id": "pepperstadium",
@@ -1865,7 +1869,10 @@
     "walk": true,
     "lat": 35.1383,
     "lng": 126.9163,
-    "approx": true
+    "approx": true,
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Replace_this_image_male-ko.svg/960px-Replace_this_image_male-ko.svg.png?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%9E%A5%EC%9A%B0_%EA%B0%80%EC%98%A5"
   },
   {
     "id": "choiseunghyo",
@@ -1887,7 +1894,10 @@
     "walk": true,
     "lat": 35.1388,
     "lng": 126.9176,
-    "approx": true
+    "approx": true,
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/%EC%B5%9C%EC%8A%B9%ED%9A%A8_%EA%B0%80%EC%98%A5.jpg/960px-%EC%B5%9C%EC%8A%B9%ED%9A%A8_%EA%B0%80%EC%98%A5.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EC%B5%9C%EC%8A%B9%ED%9A%A8_%EA%B0%80%EC%98%A5"
   },
   {
     "id": "missionary-cemetery",
@@ -7857,7 +7867,7 @@
     ],
     "inout": "실내",
     "note": "관람 시간·휴관일은 방문 전 확인",
-    "imageCredit": "",
+    "imageCredit": "위키백과(자유 이용 사진)",
     "parkingOk": "",
     "id": "ys-taebaek-museum",
     "name": "태백산맥문학관",
@@ -7868,7 +7878,9 @@
     "lat": 34.849196,
     "geoSrc": "한국관광공사",
     "lng": 127.35227,
-    "tourId": "654770"
+    "tourId": "654770",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/b/b9/%ED%83%9C%EB%B0%B1%EC%82%B0%EB%A7%A5%EB%AC%B8%ED%95%99%EA%B4%80.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "imagePage": "https://ko.wikipedia.org/wiki/%ED%83%9C%EB%B0%B1%EC%82%B0%EB%A7%A5%EB%AC%B8%ED%95%99%EA%B4%80"
   },
   {
     "phone": "061-850-5206",
@@ -9706,7 +9718,10 @@
     "verified": "2026-10-07",
     "source": "K LEAGUE 공식 · 전남 드래곤즈",
     "lat": 34.93308,
-    "lng": 127.72746
+    "lng": 127.72746,
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Map_Jeollanam-do.png/960px-Map_Jeollanam-do.png?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EA%B4%91%EC%96%91%EC%B6%95%EA%B5%AC%EC%A0%84%EC%9A%A9%EA%B5%AC%EC%9E%A5"
   },
   {
     "id": "gj-sochon-art-factory",

@@ -172,7 +172,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "광주"
@@ -204,7 +204,41 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&amp;action=Read&amp;bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
+    "tags": [
+      "행사",
+      "교육·체험",
+      "전남",
+      "체험"
+    ]
+  },
+  {
+    "detailAt": "2026-10-16",
+    "id": "culture-370660",
+    "apiId": "370660",
+    "category": "행사",
+    "subtype": "교육·체험",
+    "title": "제4기 소록도박물관 서포터즈 활동",
+    "venue": "",
+    "venueId": null,
+    "district": "",
+    "address": "",
+    "date": "2026-04-01 ~ 2026-11-30",
+    "time": "상세 확인",
+    "price": "상세 확인",
+    "contact": "061-840-0695",
+    "description": "",
+    "status": "진행중",
+    "start": "2026-04-01",
+    "end": "2026-11-30",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202603/74743fd95dc94e71aa736a57018f2d9f.png",
+    "lat": null,
+    "lng": null,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&amp;board_id=033&amp;menu_cd=04_01&amp;bn=newsView&amp;depth=nn",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -244,7 +278,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "광주"
@@ -282,7 +316,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "광주"
@@ -385,7 +419,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=228",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -418,7 +452,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -458,7 +492,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "광주"
@@ -490,7 +524,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -523,7 +557,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15203110&amp;category_1=%EC%A0%84%EC%8B%9C&amp;mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -557,7 +591,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -591,7 +625,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -625,7 +659,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -659,7 +693,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -693,7 +727,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&amp;boardId=ART_001&amp;seq=1966136&amp;movePage=1&amp;recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -774,7 +808,7 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -808,7 +842,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -885,7 +919,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -919,7 +953,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -993,7 +1027,7 @@
     "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&amp;bid=0315&amp;act=view&amp;list_no=1234&amp;mid=a70501000000&amp;bid=0315&amp;nPage=1&amp;b_list=10&amp;orderby=&amp;dept_code=&amp;tag=&amp;step_yn=&amp;list_no=1234&amp;act=view&amp;_csrf=751522b5-510b-4051-aefe-38319efb4426&amp;cg_code=C01&amp;keyField=&amp;keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -1027,7 +1061,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4094",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -1271,7 +1305,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4104",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -1495,7 +1529,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -1569,7 +1603,7 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -1722,7 +1756,7 @@
     "url": "https://www.shinan.go.kr/home/museum/education/education_02/show/144217?page=1&amp;search=&amp;keyword=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "행사",
       "교육·체험",
@@ -1868,106 +1902,10 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "광주"
-    ]
-  },
-  {
-    "detailAt": "2026-10-13",
-    "id": "kopis-PF300859",
-    "apiId": "PF300859",
-    "category": "공연",
-    "subtype": "연극",
-    "title": "로큰롤 심봉사전 [강진]",
-    "venue": "강진아트홀",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-15 ~ 2026-10-15",
-    "time": "KOPIS 상세 확인",
-    "price": "KOPIS 상세 확인",
-    "age": "",
-    "cast": "",
-    "runtime": "",
-    "status": "공연중",
-    "start": "2026-10-15",
-    "end": "2026-10-15",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF300859_260914_151439.jpg",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300859",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-10-15",
-    "tags": [
-      "공연",
-      "연극",
-      "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-10-13",
-    "id": "kopis-PF302322",
-    "apiId": "PF302322",
-    "category": "공연",
-    "subtype": "복합",
-    "title": "재즈와 탱고가 흐르는 가을밤 집으로 가는 길: 하루의 끝, 음악에 머무는 시간 [전남 광주]",
-    "venue": "북구문화센터",
-    "venueId": null,
-    "district": "북구",
-    "address": "전남광주통합특별시 북구 하서로 299 (양산동)",
-    "date": "2026-10-15 ~ 2026-10-15",
-    "time": "목요일(19:00)",
-    "price": "전석 20,000원",
-    "age": "만 19세 이상",
-    "cast": "표지윤, 장양유, 김도영, 박한울, 문성원, 김국주",
-    "runtime": "2시간",
-    "status": "공연중",
-    "start": "2026-10-15",
-    "end": "2026-10-15",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302322_261002_113212.jpg",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "http://www.ticketlink.co.kr/product/66023",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-10-15",
-    "tags": [
-      "공연",
-      "복합",
-      "광주"
-    ]
-  },
-  {
-    "detailAt": "2026-10-13",
-    "id": "kopis-PF300657",
-    "apiId": "PF300657",
-    "category": "음악",
-    "subtype": "서양음악(클래식)",
-    "title": "전남광주통합특별시예술의전당 기획공연, 그랜드스테이지: Into the New World",
-    "venue": "전남광주통합특별시 예술의전당 (구. 광주예술의전당)",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-15 ~ 2026-10-15",
-    "time": "KOPIS 상세 확인",
-    "price": "KOPIS 상세 확인",
-    "age": "",
-    "cast": "",
-    "runtime": "",
-    "status": "공연중",
-    "start": "2026-10-15",
-    "end": "2026-10-15",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF300657_260911_104251.jpg",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300657",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-10-15",
-    "tags": [
-      "공연",
-      "서양음악(클래식)",
-      "전남"
     ]
   },
   {
@@ -1989,7 +1927,7 @@
     "parking": "",
     "spendtime": "",
     "sponsor": "문화체육관광부, 전남광주통합특별시, 여수시",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-10-16",
     "end": "2026-10-19",
     "image": "https://tong.visitkorea.or.kr/cms/resource/99/4119199_image2_1.jpg",
@@ -2002,7 +1940,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
@@ -2074,7 +2012,7 @@
     "url": "https://blog.naver.com/kr_gallery/224442490830",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "전시",
       "전시",
@@ -2247,7 +2185,7 @@
     "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&amp;cat=-1&amp;sk=&amp;sv=&amp;yy=2026&amp;page=1&amp;mode=view&amp;aseq=4174",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "행사/축제",
@@ -2312,7 +2250,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&amp;action=Read&amp;bnkey=EM_0000010048",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "공연",
       "연극",
@@ -2512,6 +2450,42 @@
     ]
   },
   {
+    "category": "공연",
+    "subtype": "국악",
+    "title": "전통문화관 토요상설공연 (10/17)",
+    "venue": "광주전통문화관",
+    "venueId": "traditional-culture",
+    "district": "동구",
+    "address": "광주 동구 의재로 222",
+    "lat": 35.1329,
+    "lng": 126.9695,
+    "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+    "price": "무료",
+    "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+    "source": "광주문화재단 전통문화관",
+    "url": "http://www.gtcc.or.kr/",
+    "contact": "062-670-8550",
+    "tags": [
+      "공연",
+      "국악",
+      "무료",
+      "전통체험"
+    ],
+    "ticket": {
+      "status": "무료",
+      "note": "현장 등록 · 연령 제한 없음",
+      "checked": "2026-10-16"
+    },
+    "id": "gtcc-saturday-2026-10-17",
+    "date": "10.17 — 10.17",
+    "start": "2026-10-17",
+    "end": "2026-10-17",
+    "status": "예정",
+    "origin": "manual",
+    "recurring": "gtcc-saturday",
+    "verified": "2026-10-16"
+  },
+  {
     "detailAt": "2026-10-13",
     "id": "kopis-PF302376",
     "apiId": "PF302376",
@@ -2633,7 +2607,7 @@
     "url": "https://booking.naver.com/booking/5/bizes/1237791/items/7990033?startDateTime=2026-10-18T00%3A00%3A00%2B09%3A00&amp;tab=details",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "음악",
       "국악",
@@ -2971,7 +2945,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
@@ -3003,7 +2977,7 @@
     "url": "https://ticket.yes24.com/Perf/60185",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "공연",
       "무용/발레",
@@ -3687,7 +3661,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "ys-nagan",
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
@@ -3821,6 +3795,42 @@
       "한국음악(국악)",
       "전남"
     ]
+  },
+  {
+    "category": "공연",
+    "subtype": "국악",
+    "title": "전통문화관 토요상설공연 (10/24)",
+    "venue": "광주전통문화관",
+    "venueId": "traditional-culture",
+    "district": "동구",
+    "address": "광주 동구 의재로 222",
+    "lat": 35.1329,
+    "lng": 126.9695,
+    "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+    "price": "무료",
+    "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+    "source": "광주문화재단 전통문화관",
+    "url": "http://www.gtcc.or.kr/",
+    "contact": "062-670-8550",
+    "tags": [
+      "공연",
+      "국악",
+      "무료",
+      "전통체험"
+    ],
+    "ticket": {
+      "status": "무료",
+      "note": "현장 등록 · 연령 제한 없음",
+      "checked": "2026-10-16"
+    },
+    "id": "gtcc-saturday-2026-10-24",
+    "date": "10.24 — 10.24",
+    "start": "2026-10-24",
+    "end": "2026-10-24",
+    "status": "예정",
+    "origin": "manual",
+    "recurring": "gtcc-saturday",
+    "verified": "2026-10-16"
   },
   {
     "detailAt": "2026-10-13",
@@ -4249,7 +4259,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
@@ -4319,7 +4329,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
@@ -4631,11 +4641,47 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-15",
+    "verified": "2026-10-16",
     "tags": [
       "축제",
       "전남"
     ]
+  },
+  {
+    "category": "공연",
+    "subtype": "국악",
+    "title": "전통문화관 토요상설공연 (10/31)",
+    "venue": "광주전통문화관",
+    "venueId": "traditional-culture",
+    "district": "동구",
+    "address": "광주 동구 의재로 222",
+    "lat": 35.1329,
+    "lng": 126.9695,
+    "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+    "price": "무료",
+    "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+    "source": "광주문화재단 전통문화관",
+    "url": "http://www.gtcc.or.kr/",
+    "contact": "062-670-8550",
+    "tags": [
+      "공연",
+      "국악",
+      "무료",
+      "전통체험"
+    ],
+    "ticket": {
+      "status": "무료",
+      "note": "현장 등록 · 연령 제한 없음",
+      "checked": "2026-10-16"
+    },
+    "id": "gtcc-saturday-2026-10-31",
+    "date": "10.31 — 10.31",
+    "start": "2026-10-31",
+    "end": "2026-10-31",
+    "status": "예정",
+    "origin": "manual",
+    "recurring": "gtcc-saturday",
+    "verified": "2026-10-16"
   },
   {
     "detailAt": "2026-10-13",
@@ -4845,6 +4891,49 @@
       "연극",
       "광주"
     ]
+  },
+  {
+    "time": "경기 시간은 구단 공지 확인",
+    "price": "",
+    "discount": "",
+    "group": "",
+    "child": "",
+    "pet": "",
+    "stroller": "",
+    "nursing": "",
+    "parking": "",
+    "accessibility": "",
+    "reservation": "",
+    "contact": "",
+    "status": "예정",
+    "verified": "2026-10-03",
+    "origin": "manual",
+    "tags": [
+      "스포츠",
+      "배구",
+      "가족"
+    ],
+    "district": "서구",
+    "address": "광주 서구 금화로 278",
+    "id": "soop-home-opener-2026",
+    "category": "스포츠",
+    "subtype": "여자배구",
+    "title": "전남광주 SOOP 수퍼스 첫 홈경기 vs 한국도로공사",
+    "venue": "염주종합체육관 (옛 페퍼스타디움)",
+    "date": "11.05",
+    "start": "2026-11-05",
+    "end": "2026-11-05",
+    "verify": "페퍼저축은행 배구단을 인수한 SOOP 수퍼스가 광주를 연고로 확정(7.30) · 창단 첫 홈경기 11월 5일 한국도로공사전 · 홈경기장은 구단 공지로 최종 확인",
+    "source": "머니투데이 · 서플 (2026.8.18 / 7.30)",
+    "url": "https://www.mt.co.kr/sports/2026/08/18/2026081812182294749",
+    "ticket": {
+      "status": "예매예정",
+      "note": "예매 오픈 일정은 구단 공지 확인",
+      "checked": "2026-10-03"
+    },
+    "lat": 35.1365407,
+    "lng": 126.878155,
+    "venueId": "pepperstadium"
   },
   {
     "detailAt": "2026-10-13",
@@ -5141,6 +5230,42 @@
       "뮤지컬",
       "전남"
     ]
+  },
+  {
+    "category": "공연",
+    "subtype": "국악",
+    "title": "전통문화관 토요상설공연 (11/7)",
+    "venue": "광주전통문화관",
+    "venueId": "traditional-culture",
+    "district": "동구",
+    "address": "광주 동구 의재로 222",
+    "lat": 35.1329,
+    "lng": 126.9695,
+    "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+    "price": "무료",
+    "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+    "source": "광주문화재단 전통문화관",
+    "url": "http://www.gtcc.or.kr/",
+    "contact": "062-670-8550",
+    "tags": [
+      "공연",
+      "국악",
+      "무료",
+      "전통체험"
+    ],
+    "ticket": {
+      "status": "무료",
+      "note": "현장 등록 · 연령 제한 없음",
+      "checked": "2026-10-16"
+    },
+    "id": "gtcc-saturday-2026-11-07",
+    "date": "11.07 — 11.07",
+    "start": "2026-11-07",
+    "end": "2026-11-07",
+    "status": "예정",
+    "origin": "manual",
+    "recurring": "gtcc-saturday",
+    "verified": "2026-10-16"
   },
   {
     "detailAt": "2026-10-13",
@@ -5480,6 +5605,42 @@
       "서커스/마술",
       "전남"
     ]
+  },
+  {
+    "category": "공연",
+    "subtype": "국악",
+    "title": "전통문화관 토요상설공연 (11/14)",
+    "venue": "광주전통문화관",
+    "venueId": "traditional-culture",
+    "district": "동구",
+    "address": "광주 동구 의재로 222",
+    "lat": 35.1329,
+    "lng": 126.9695,
+    "time": "13:00 전통 체험(민속놀이·한복) · 15:00 서석당 공연",
+    "price": "무료",
+    "verify": "매주 토요일 정기 프로그램 · 그날 공연 여부·출연진은 누리집 확인",
+    "source": "광주문화재단 전통문화관",
+    "url": "http://www.gtcc.or.kr/",
+    "contact": "062-670-8550",
+    "tags": [
+      "공연",
+      "국악",
+      "무료",
+      "전통체험"
+    ],
+    "ticket": {
+      "status": "무료",
+      "note": "현장 등록 · 연령 제한 없음",
+      "checked": "2026-10-16"
+    },
+    "id": "gtcc-saturday-2026-11-14",
+    "date": "11.14 — 11.14",
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "status": "예정",
+    "origin": "manual",
+    "recurring": "gtcc-saturday",
+    "verified": "2026-10-16"
   },
   {
     "detailAt": "2026-10-13",

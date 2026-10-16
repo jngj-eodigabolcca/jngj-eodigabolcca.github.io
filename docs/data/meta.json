@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-15T18:35:53+09:00",
+  "updated_at": "2026-10-16T09:42:22+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -12,9 +12,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "ok": true,
-      "count": 99,
-      "message": "하루 한 번만 받아요 · 8시간 전 자료 99건 사용"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 99건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
     },
     {
       "id": "culture",
@@ -35,9 +35,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "ok": true,
-      "count": 99,
-      "message": "하루 한 번만 받아요 · 8시간 전 자료 99건 사용"
+      "ok": false,
+      "count": 0,
+      "message": "수집 실패 · 지난 자료 99건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
     },
     {
       "id": "culture",
@@ -48,12 +48,12 @@
     }
   ],
   "counts": {
-    "total": 192,
-    "auto": 135,
-    "manual": 57
+    "total": 196,
+    "auto": 133,
+    "manual": 63
   },
-  "manual_count": 77,
-  "events_count": 192,
+  "manual_count": 83,
+  "events_count": 196,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "local": {
     "holidays": {
@@ -67,7 +67,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-15T18:36:42+09:00",
+      "fetched_at": "2026-10-16T09:43:35+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -102,8 +102,8 @@
     "programs": {
       "name": "평생학습 강좌",
       "ok": true,
-      "count": 323,
-      "fetched_at": "2026-10-15T18:36:42+09:00",
+      "count": 322,
+      "fetched_at": "2026-10-16T09:43:35+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -136,42 +136,48 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-15T18:36:43+09:00",
-    "tourapi_calls": 85,
+    "checked_at": "2026-10-16T09:43:36+09:00",
+    "tourapi_calls": 72,
     "osm_lookups": 0,
+    "wiki_lookups": 150,
     "unfinished": false,
     "lists": {
       "venues": {
         "total": 334,
         "with_coords": 268,
         "coords_filled": 175,
-        "hours_filled": 0
+        "hours_filled": 0,
+        "with_image": 199
       },
       "restaurants": {
-        "total": 382,
-        "with_coords": 340,
+        "total": 381,
+        "with_coords": 339,
         "coords_filled": 33,
-        "hours_filled": 256
+        "hours_filled": 321,
+        "with_image": 246
       },
       "bakeries": {
         "total": 15,
         "with_coords": 10,
         "coords_filled": 10,
-        "hours_filled": 0
+        "hours_filled": 0,
+        "with_image": 2
       },
       "cafes": {
         "total": 28,
         "with_coords": 9,
         "coords_filled": 9,
-        "hours_filled": 0
+        "hours_filled": 0,
+        "with_image": 4
       },
       "cinemas": {
         "total": 7,
         "with_coords": 7,
         "coords_filled": 7,
-        "hours_filled": 0
+        "hours_filled": 0,
+        "with_image": 1
       }
     }
   },
-  "kopis_last_try": "2026-10-15T09:42:07+09:00"
+  "kopis_last_try": "2026-10-16T09:42:22+09:00"
 }
