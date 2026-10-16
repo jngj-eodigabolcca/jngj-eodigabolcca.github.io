@@ -256,7 +256,10 @@
     "note": "",
     "lat": 35.219113,
     "geoSrc": "OpenStreetMap(이름)",
-    "lng": 126.846158
+    "lng": 126.846158,
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Banda_Calypso_ao_vivo_2009_%283%29.jpg/960px-Banda_Calypso_ao_vivo_2009_%283%29.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EB%9E%8C%EB%B0%94%EB%8B%A4"
   },
   {
     "id": "gm25-19",
@@ -284,7 +287,10 @@
     "hours": "[평일]- 11:00~21:30- 준비 시간 15:00~17:00- 마지막 주문 20:30[주말]- 11:00~21:30- 준비 시간 16:00~17:00- 마지막 주문 20:30",
     "hoursSrc": "한국관광공사",
     "closed": "설·추석 연휴",
-    "tourId": "816554"
+    "tourId": "816554",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Skyline-Dubai-2010.jpg/960px-Skyline-Dubai-2010.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EB%A7%88%EC%B2%9C%EB%A3%A8"
   },
   {
     "id": "gm25-21",
@@ -5329,8 +5335,8 @@
     "lng": 126.259649,
     "geoSrc": "한국관광공사",
     "phone": "",
-    "image": "",
-    "imageCredit": "",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/1/13/Mugeun-ji.png?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "imageCredit": "위키백과(자유 이용 사진)",
     "badge": "관광공사 등록 음식점",
     "source": "한국관광공사 TourAPI",
     "note": "",
@@ -5338,7 +5344,8 @@
     "origin": "auto",
     "hours": "10:30~21:15 / -준비 시간 14:30 ~ 17:00",
     "hoursSrc": "한국관광공사",
-    "closed": "매주 월요일"
+    "closed": "매주 월요일",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EB%AC%B5%EC%9D%80%EC%A7%80"
   },
   {
     "id": "tour-food-645102",
@@ -5482,8 +5489,8 @@
     "lng": 126.908501,
     "geoSrc": "한국관광공사",
     "phone": "",
-    "image": "",
-    "imageCredit": "",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pentagonal_rotunda.png?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "imageCredit": "위키백과(자유 이용 사진)",
     "badge": "관광공사 등록 음식점",
     "source": "한국관광공사 TourAPI",
     "note": "",
@@ -5491,7 +5498,8 @@
     "origin": "auto",
     "hours": "[하절기] 10:30~21:00 / [동절기] 10:30~20:30",
     "hoursSrc": "한국관광공사",
-    "closed": "연중무휴"
+    "closed": "연중무휴",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EB%91%A5%EA%B7%BC%EC%A7%80%EB%B6%95"
   },
   {
     "id": "tour-food-1985799",
@@ -5592,8 +5600,8 @@
     "lng": 126.42186,
     "geoSrc": "한국관광공사",
     "phone": "",
-    "image": "",
-    "imageCredit": "",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Shrine_of_Confucius_%EB%8C%80%EC%84%B1%EC%A0%84.jpg/960px-Shrine_of_Confucius_%EB%8C%80%EC%84%B1%EC%A0%84.jpg?utm_source=ko.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "imageCredit": "위키백과(자유 이용 사진)",
     "badge": "관광공사 등록 음식점",
     "source": "한국관광공사 TourAPI",
     "note": "",
@@ -5601,7 +5609,8 @@
     "origin": "auto",
     "hours": "09:30 ~ 20:00",
     "hoursSrc": "한국관광공사",
-    "closed": "연중무휴"
+    "closed": "연중무휴",
+    "imagePage": "https://ko.wikipedia.org/wiki/%EC%84%B1%EA%B7%A0%EA%B4%80"
   },
   {
     "id": "tour-food-2580847",
