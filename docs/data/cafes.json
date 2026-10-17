@@ -1,5 +1,29 @@
 [
   {
+    "id": "pet-tour-2718743",
+    "name": "브루웍스",
+    "district": "순천시",
+    "address": "전남광주통합특별시 순천시 역전길 61 (조곡동)",
+    "phone": "",
+    "hours": "10:00~22:00 (마지막 주문 21:50)※ 설·추석 당일은 13:00부터 영업",
+    "pet": "일부구역 동반가능 · 가능: 이동장(켄넬)에 들어가는 전 견종 동반 가능 · 필요: 이동장(켄넬)사용",
+    "note": "- 반려견의 몸체가 땅에 닿으면 동반 불가- 배변봉투 지참 및 배변처리 필수",
+    "big": false,
+    "bigDog": true,
+    "lat": 34.9472601979,
+    "lng": 127.498393034,
+    "image": "",
+    "imageCredit": "",
+    "tourId": "2718743",
+    "source": "한국관광공사 반려동물 동반여행 공공데이터",
+    "publicListed": true,
+    "verified": "2026-10-18",
+    "detailAt": "2026-10-18",
+    "hoursSrc": "한국관광공사",
+    "closed": "연중무휴",
+    "menu": "더치커피 아이스"
+  },
+  {
     "name": "헤이블루",
     "near": "매월동",
     "district": "서구",
@@ -12,7 +36,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet01"
+    "id": "pet01",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페얼씨",
@@ -28,6 +54,8 @@
     "reviews": "",
     "price": "",
     "id": "pet02",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.163294,
     "geoSrc": "한국관광공사",
     "lng": 126.983157,
@@ -51,6 +79,8 @@
     "reviews": "",
     "price": "",
     "id": "pet03",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.170685,
     "geoSrc": "OpenStreetMap(이름)",
     "lng": 126.899114
@@ -68,7 +98,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet04"
+    "id": "pet04",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "스위트왈왈",
@@ -83,7 +115,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet05"
+    "id": "pet05",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "개구쟁이",
@@ -98,7 +132,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet06"
+    "id": "pet06",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "딸고라떼 신창점",
@@ -113,7 +149,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet07"
+    "id": "pet07",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페눈치",
@@ -128,7 +166,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet08"
+    "id": "pet08",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "꾸르베이크샵",
@@ -143,7 +183,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet09"
+    "id": "pet09",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "어반피크닉",
@@ -158,7 +200,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet10"
+    "id": "pet10",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "슬로우무드",
@@ -173,7 +217,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet11"
+    "id": "pet11",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "파인어스",
@@ -188,7 +234,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet12"
+    "id": "pet12",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "자모크",
@@ -203,7 +251,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet13"
+    "id": "pet13",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "앤드디",
@@ -218,7 +268,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet14"
+    "id": "pet14",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "데이오프나이트",
@@ -233,7 +285,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet15"
+    "id": "pet15",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페 아베크투와",
@@ -249,6 +303,8 @@
     "reviews": "",
     "price": "",
     "id": "pet16",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.170685,
     "geoSrc": "OpenStreetMap(이름)",
     "lng": 126.899114
@@ -266,7 +322,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet17"
+    "id": "pet17",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페오늘",
@@ -281,7 +339,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet18"
+    "id": "pet18",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페 콥프",
@@ -297,6 +357,8 @@
     "reviews": "",
     "price": "",
     "id": "pet19",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.170685,
     "geoSrc": "OpenStreetMap(이름)",
     "lng": 126.899114
@@ -314,7 +376,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet20"
+    "id": "pet20",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "카페던 & 던에드워드페인트",
@@ -329,7 +393,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet21"
+    "id": "pet21",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "룩스커피",
@@ -345,6 +411,8 @@
     "reviews": "",
     "price": "",
     "id": "pet22",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.122048,
     "geoSrc": "OpenStreetMap(이름)",
     "lng": 126.868745
@@ -363,6 +431,8 @@
     "reviews": "",
     "price": "",
     "id": "pet-jn01",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.272643,
     "geoSrc": "한국관광공사",
     "lng": 126.827725,
@@ -386,6 +456,8 @@
     "reviews": "",
     "price": "",
     "id": "pet-jn02",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 35.243429,
     "geoSrc": "한국관광공사",
     "lng": 126.676232,
@@ -409,6 +481,8 @@
     "reviews": "",
     "price": "",
     "id": "pet-ys01",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 34.713185,
     "geoSrc": "한국관광공사",
     "lng": 127.764114,
@@ -431,7 +505,9 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet-ys02"
+    "id": "pet-ys02",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   },
   {
     "name": "여수카페 종화동",
@@ -447,6 +523,8 @@
     "reviews": "",
     "price": "",
     "id": "pet-ys03",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록",
     "lat": 34.739093,
     "geoSrc": "OpenStreetMap(이름)",
     "lng": 127.747779
@@ -464,6 +542,8 @@
     "rating": "",
     "reviews": "",
     "price": "",
-    "id": "pet-mp01"
+    "id": "pet-mp01",
+    "publicListed": false,
+    "source": "운영자 확인 · 공공데이터 미등록"
   }
 ]
