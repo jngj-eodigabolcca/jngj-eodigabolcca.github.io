@@ -45,6 +45,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/collect_flags.py
 
+      - name: 반려견 동반 카페 공공데이터 수집 (관광공사 반려동물 동반여행)
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: python scripts/collect_pets.py
+
       - name: 장소 위치·영업정보 보강 (빈칸만 채움)
         continue-on-error: true
         timeout-minutes: 30
