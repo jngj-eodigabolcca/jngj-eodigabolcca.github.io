@@ -409,12 +409,38 @@ def apply(x: dict, found: dict) -> dict:
     return y
 
 
+def merge_pet_places(manual: list) -> list:
+    """멍카페 목록 = 관광공사 반려동물 동반여행 공공데이터(collect_pets.py) 우선.
+    기존에 직접 모은 곳은 이름이 같으면 공공데이터 쪽에 합치고(빈칸만 보충),
+    공공데이터에 아직 없는 곳은 '운영자 확인 · 공공데이터 미등록'으로 표시해 뒤에 붙인다."""
+    pub = (u.read_json(u.DATA_DIR / "pet_places.json", {}) or {}).get("items") or []
+    key = lambda x: core_name(x.get("name") or "")
+    by = {key(p): dict(p) for p in pub if key(p)}
+    rest = []
+    for m in manual:
+        hit = by.get(key(m))
+        if hit and (not hit.get("district") or not m.get("district") or hit["district"] == m["district"]):
+            for k, v in m.items():                      # 공공데이터 값이 우선, 빈칸만 기존 값으로
+                if k not in ("id", "source", "publicListed", "verified") and v not in ("", None) and not hit.get(k):
+                    hit[k] = v
+            by[key(m)] = hit
+        else:
+            y = dict(m)
+            y["publicListed"] = False
+            y["source"] = y.get("source") or "운영자 확인 · 공공데이터 미등록"
+            rest.append(y)
+    out = list(by.values()) + rest
+    print(f"  멍카페: 공공데이터 {len(by)}곳 + 운영자 확인 {len(rest)}곳", flush=True)
+    return out
+
+
 def main():
     data = u.embedded_data()
     if not data:
         print("  ⚠ 내장 자료가 비어 있어 이번엔 장소 파일을 덮어쓰지 않아요", flush=True)
         return
     data["restaurants"] = list(data.get("restaurants") or []) + discover_food(data.get("restaurants") or [])
+    data["cafes"] = merge_pet_places(data.get("cafes") or [])
     cache = u.read_json(CACHE_FILE, {})
     stats = {}
     stopped = False
