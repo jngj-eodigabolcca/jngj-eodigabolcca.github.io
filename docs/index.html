@@ -1884,8 +1884,8 @@ button{min-height:var(--tap)}
 
 <section class="trust"><span class="eyebrow">AUTOMATIC DATA PIPELINE</span><h2>사람이 매일 등록하지 않아도,<br>오늘 쓸 수 있는 정보가 자동으로 남습니다.</h2>
 <div class="flow"><span>공공데이터 API</span><i>→</i><span>자동 수집·정규화</span><i>→</i><span>중복·종료 일정 자동 제거</span><i>→</i><span>조건별 코스 추천</span></div>
-<p>전시·공연은 한국문화정보원·KOPIS, 관광지·축제·사진은 한국관광공사 등 공식·공공 원천을 우선합니다. 화면은 <b>오늘 날짜(한국시간) 기준으로 끝난 일정을 자동으로 빼고</b>, 카드마다 <b>언제 확인했는지와 어디에서 온 정보인지</b> 바로 보이게 했습니다. 최신성이 떨어진 정보는 숨기지 않고 재확인 권장으로 표시합니다. <b>‘새로 들어온 정보’는 최근 1일 안에 확인·갱신된 항목만</b> 집계해 과도한 알림을 줄입니다.</p>
-<div class="trustLegend"><span>🟢 오늘·어제 확인</span><span>🔵 2~3일 전</span><span>🟡 4~7일 전</span><span>🔴 8일 이상 · 재확인 권장</span><span>✓ 공식 출처</span><span>◆ 공공데이터</span></div>
+<p>전시·공연은 한국문화정보원·KOPIS, 관광지·축제·사진은 한국관광공사 등 공식·공공 원천을 우선합니다. 화면은 <b>오늘 날짜(한국시간) 기준으로 끝난 일정을 자동으로 빼고</b>, 카드마다 <b>언제 확인했는지와 어디에서 온 정보인지</b> 바로 보이게 했습니다. 마지막 행사 확인일과 단순 자료 갱신일을 구분하며, 오래된 행사 확인 기록은 공식 안내를 다시 보도록 표시합니다. <b>‘새로 들어온 정보’는 최근 1일 안에 확인·갱신된 항목만</b> 집계해 과도한 알림을 줄입니다.</p>
+<div class="trustLegend"><span>🟢 최근 확인 기록</span><span>🟡 지난 확인 기록</span><span>🔴 8일 이상 지난 확인 기록</span><span>※ 날짜는 실제 운영 보증 아님</span><span>✓ 공식 출처</span><span>◆ 공공데이터</span></div>
 <div id="sourceStatus" class="sourceStatus"></div></section>
 </main>
 
@@ -1918,11 +1918,21 @@ const safeUrl = u => /^https?:\/\//i.test(u || "") ? esc(u) : "#";
 const todayISO = () => { const d = new Date(Date.now() + 9 * 3600e3); return d.toISOString().slice(0, 10) }; // KST
 const mapLink = q => "https://map.naver.com/p/search/" + encodeURIComponent(q);
 
-const parseDataDate = x => {
-  const raw = x?.verified || x?.updated || x?.ticket?.checked || x?.checked || "";
-  const m = String(raw).match(/\d{4}-\d{2}-\d{2}/);
-  return m ? m[0] : "";
+// 확인일·단순 데이터 수정일·티켓 확인일을 서로 구분한다.
+const verificationStamp = x => {
+  const fields = [
+    [x?.verified, "verified"],
+    [x?.ticket?.checked, "ticket"],
+    [x?.checked, "checked"],
+    [x?.updated, "updated"]
+  ];
+  for (const [value, kind] of fields) {
+    const m = String(value || "").match(/\d{4}-\d{2}-\d{2}/);
+    if (m) return {iso:m[0],kind};
+  }
+  return {iso:"",kind:"unknown"};
 };
+const parseDataDate = x => verificationStamp(x).iso;
 function daysSinceKST(iso){
   if(!iso) return null;
   const a = new Date(iso + "T00:00:00+09:00");
@@ -1930,13 +1940,15 @@ function daysSinceKST(iso){
   return Math.floor((b-a)/864e5);
 }
 function freshnessMeta(x){
-  const iso = parseDataDate(x), d = daysSinceKST(iso);
-  if(!iso || d == null || Number.isNaN(d)) return {cls:"unknown",label:"확인일 없음",iso:""};
-  if(d <= 0) return {cls:"fresh",label:"오늘 확인",iso};
-  if(d === 1) return {cls:"fresh",label:"어제 확인",iso};
-  if(d <= 3) return {cls:"recent",label:`${d}일 전 확인`,iso};
-  if(d <= 7) return {cls:"warn",label:`${d}일 전 확인`,iso};
-  return {cls:"stale",label:`${d}일 전 · 재확인 권장`,iso};
+  const {iso,kind} = verificationStamp(x), d = daysSinceKST(iso);
+  if(!iso || d == null || Number.isNaN(d) || d < 0) return {cls:"unknown",label:"확인 날짜 미확인 · 공식 안내 확인",iso:""};
+  const dateLabel = iso.slice(5,7).replace(/^0/,"")+"월 "+iso.slice(8,10).replace(/^0/,"")+"일";
+  if (kind === "updated") return {cls:"unknown",label:`자료 갱신 기록 ${dateLabel} · 행사 확인 별도`,iso};
+  if (kind === "ticket") return {cls:"unknown",label:`예매정보 확인 ${dateLabel} · 행사 확인 별도`,iso};
+  if (kind === "checked") return {cls:"unknown",label:`자료 확인 기록 ${dateLabel} · 행사 확인 별도`,iso};
+  // 행사 확인 기록일은 정보가 현재도 정확하다는 보증이 아니다.
+  if (d >= 8) return {cls:"stale",label:`마지막 확인 ${dateLabel} · 공식 안내 재확인`,iso};
+  return {cls: d<=1?"fresh":d<=3?"recent":"warn",label:`마지막 확인 ${dateLabel}`,iso};
 }
 function sourceMeta(x){
   const text = String(x?.source || x?.infoSource || "");
@@ -2226,8 +2238,7 @@ function regionOfItem(x) {
   let d = x.district || "";
   const linked = x.venueId && (ALL.VENUES.find(v => v.id === x.venueId) || {});
   const placeText = [
-    x.address, x.venue, x.place, x.name, x.area,
-    Array.isArray(x.aliases) ? x.aliases.join(" ") : x.aliases,
+    x.address, x.venue, x.place, x.area,
     linked && linked.address, linked && linked.name
   ].filter(Boolean).join(" ");
 
@@ -2235,9 +2246,29 @@ function regionOfItem(x) {
   // 무안 일로 관련 자료는 반드시 무안목포권으로 보낸다.
   if (/무안군|일로읍|일로전통시장|일로정기시장|회산백련지|무안연꽃축제|몽탄면/.test(placeText)) return "mp";
 
-  // 이름에 시·군이 안 들어간 공연장·장소 (공연 자료에 주소가 빠졌을 때)
-  if (/한국트로트가요센터|남도소리울림터|목포시민문화체육센터|김대중컨벤션센터.*목포/.test(placeText)) return "mp";
-  if (/소록도|예울마루|포스코광양|백운아트홀|순천문화예술회관|여수시민회관/.test(placeText + " " + (x.title || ""))) return "ys";
+  // 행사 제목보다 실제 장소명·주소를 우선한다. '목포'만 쓰인 시설명도 포함한다.
+  // 광주 등 타 권역을 명시한 실제 주소가 있으면 시설명 단서보다 주소가 우선한다.
+  const addressOnly = [x.address, linked && linked.address].filter(Boolean).join(" ");
+  const addressDistrict = districtFromAddr(addressOnly);
+  if (addressDistrict) return (Object.entries(REGIONS).find(([,r]) => r.districts.includes(addressDistrict)) || [""])[0];
+  // 명시적인 공연장 이름도 행정구역 정보보다 우선한다. 서버의 district 값이
+  // 잘못돼도 실제 장소가 '목포문화예술회관'인 공연을 순천여수권으로 보내지 않는다.
+  // 단, 행사 제목/검색 별칭은 권역 판정에 사용하지 않는다.
+  const venueOnly = [x.venue, x.place, linked && linked.name].filter(Boolean).join(" ");
+  const venueRegionSignals = [
+    ["mp", /목포|무안|신안|해남|영암|진도|완도|강진|장흥|함평|영광|남도소리울림터/],
+    ["ys", /순천|여수|광양|고흥|보성|구례|곡성|예울마루/],
+    ["gj", /광주|담양|화순|나주|장성/]
+  ].filter(([,re]) => re.test(venueOnly));
+  if (venueRegionSignals.length === 1) return venueRegionSignals[0][0];
+  // 수집된 실제 행정구역/연결 공연장의 행정구역이 유효하면 행사명이나 검색 별칭보다 우선.
+  // 잘못된 광역 권역 값은 주소와 명확한 공연장 위치가 있을 때 위에서 교정한다.
+  const structuredDistrict = (REGIONS.gj.districts.concat(REGIONS.ys.districts,REGIONS.mp.districts).includes(d) ? d : "") ||
+    (linked && REGIONS.gj.districts.concat(REGIONS.ys.districts,REGIONS.mp.districts).includes(linked.district) ? linked.district : "");
+  if (structuredDistrict) return Object.entries(REGIONS).find(([,r]) => r.districts.includes(structuredDistrict))[0];
+  if (/목포|남도소리울림터|한국트로트가요센터|목포시민문화체육센터/.test(placeText)) return "mp";
+  if (/여수|순천|광양|보성|구례|곡성|고흥/.test(placeText)) return "ys";
+  if (/소록도|예울마루|포스코광양|백운아트홀|순천문화예술회관|여수시민회관/.test(placeText)) return "ys";
 
   // 순천여수권의 명확한 시·군명
   if (/순천시|여수시|광양시|보성군|구례군|곡성군|고흥군/.test(placeText)) return "ys";
@@ -2249,19 +2280,29 @@ function regionOfItem(x) {
   if (/담양군|화순군|나주시|장성군/.test(placeText)) return "gj";
 
   if (!REGIONS.gj.districts.includes(d) && !JN_D.includes(d)) {
-    d = (linked && linked.district) || districtFromAddr(placeText) || (!placeText && districtFromAddr(x.title || "")) || (d ? "?" : "");
+    d = (linked && linked.district) || districtFromAddr(placeText) || (d ? "?" : "");
   }
 
   // ── '시·군' 없이 도시 이름만 적힌 자료 (예: "여수 서커스", 장소 "여수 웅천") ──
-  // 광주 주소가 분명하지 않을 때만, 장소·제목에 다른 권역 도시 이름이 있으면 그 권역으로 보낸다.
+  // 광주 주소가 분명하지 않을 때만, 실제 장소에 다른 권역 도시 이름이 있으면 그 권역으로 보낸다.
+  // 행사 제목은 개최지가 아니므로 권역 판정에 절대 쓰지 않는다.
   // 진도(進度)·강진(地震)·영광(榮光)처럼 일반 낱말과 겹치는 이름은 '군'이 붙어야만 인정한다.
   if (!GJ_GU.includes(d) && !GJ_GU.includes(districtFromAddr(placeText))) {
-    const clueText = placeText + " " + (x.title || "");
+    const clueText = placeText;
     if (/(?:^|[^가-힣])(여수|순천|광양|고흥|구례)|(?:^|[^가-힣])(보성|곡성)군|여수엑스포|여수세계섬박람회|오동도|순천만/.test(clueText)) return "ys";
     if (/(?:^|[^가-힣])(목포|해남|완도|신안|영암|함평|무안)|(?:^|[^가-힣])(진도|강진|장흥|영광)군/.test(clueText)) return "mp";
   }
 
-  if (!d) return "gj"; // 지역 단서가 전혀 없는 기존 광주 자료만 광주권으로 유지
+  // 주소·구역이 비어 온 공연(KOPIS 등): ① 공연 제목 끝의 개최지 표시 [광주]·[여수] ② 이름만으로 위치가 분명한 광주 공연장
+  //   (제목 본문은 쓰지 않고, 공연 자료가 개최 도시를 적는 대괄호 표시만 인정)
+  if (!d) {
+    const tag = (String(x.title || "").match(/\[([^\]]{1,12})\]\s*$/) || [])[1] || "";
+    if (/여수|순천|광양|고흥|보성|구례|곡성/.test(tag)) return "ys";
+    if (/목포|무안|신안|해남|영암|진도|완도|강진|장흥|함평|영광/.test(tag)) return "mp";
+    if (/광주|담양|화순|나주|장성/.test(tag)) return "gj";
+    if (/국립아시아문화전당|^ACC|5\.18기념문화센터|빛고을시민문화관|광주디자인센터|상무지구|수완|동구문화센터|상무시민공원|공연일번지|보헤미안 소극장/.test(String(x.venue || x.place || ""))) return "gj";
+  }
+  if (!d) return x.category && (x.start || x.end) ? "" : "gj"; // 개최지 불명확한 행사는 임의로 광주권에 배정하지 않음
   return (Object.entries(REGIONS).find(([, r]) => r.districts.includes(d)) || [""])[0];
 }
 const inRegion = x => regionOfItem(x) === REGION;
@@ -2337,7 +2378,7 @@ async function load() {
   // (서버 항목에 확인일이 없으면 meta.updated_at 날짜를 그 자료의 날짜로 본다)
   const serverDay = String(META0?.updated_at || "").slice(0, 10);
   const serverById = new Map((E0 || []).map(e => [e.id, e]));
-  const usePinned = embeddedPinned.filter(p => { const s = serverById.get(p.id); return !s || (p.verified || "") > (s.verified || serverDay) });
+  const usePinned = embeddedPinned.filter(p => { const s = serverById.get(p.id); return !s || (p.verified && s.verified && p.verified > s.verified); });
   const pinnedUsed = new Set(usePinned.map(e => e.id));
   E0 = [...(E0 || []).filter(e => !pinnedUsed.has(e.id)), ...usePinned];
   // 광주시립미술관 누리집 '현재전시' (2026-10-15 확인) — 서버 자료에 같은 전시가 없을 때만 더함
@@ -2347,7 +2388,7 @@ async function load() {
     ["gma-gb16-mongol", "제16회 광주비엔날레 몽골 파빌리온 《오랜 기억과 아득한 미래: 공동의 기억과 현대적 도전》", "2026-09-05", "2026-11-15", "광주비엔날레 파빌리온"],
     ["gma-maze-2026", "실재와 환영의 미로", "2026-10-14", "2027-02-14", "기획전"],
     ["gmap-gb16-uccn", "제16회 광주비엔날레 유네스코 창의도시 네트워크(UCCN) 파빌리온 《몬디아컬트 스케이프: 도시의 그 어떤 것도 사라지지 않았다》", "2026-09-05", "2026-11-15", "광주비엔날레 파빌리온",
-      { venue: "광주미디어아트플랫폼 G.MAP (1·2·3·4전시실·미디어 파사드)", venueId: "gmap", district: "남구", address: "", url: "https://gmap.gwangju.go.kr/", source: "광주미디어아트플랫폼 누리집", verify: "G.MAP 누리집 '현재전시' 기준 · 유네스코 창의도시 10여 곳이 함께 여는 첫 파빌리온", time: "관람시간은 G.MAP 안내 확인" }],
+      { venue: "광주미디어아트플랫폼 G.MAP (1·2·3·4전시실·미디어 파사드)", venueId: "gmap", district: "남구", address: "", url: "https://gmap.gwangju.go.kr/", source: "광주미디어아트플랫폼 누리집", verify: "G.MAP 누리집 '현재전시' 기준 · 유네스코 창의도시 10여 곳이 함께 여는 첫 파빌리온", time: "관람시간은 G.MAP 공식 안내 확인" }],
     ["nmg-dogi-2026", "특별전 「도기陶器, 우리를 담은 질그릇」", "", "2026-10-25", "특별전",
       { venue: "국립광주박물관 본관 1층 특별전시실", venueId: "nmg", address: "", url: "https://gwangju.museum.go.kr/prog/specialDisplay/kor/sub02_02/s/new/list.do", source: "국립광주박물관 특별전 보도(비건뉴스, 2026.10.1)",
         verify: "고대~근대 도기 295건 306점 · 완도 청해진 주름무늬 병, 태안 마도 물항아리, 조선 태종 태항아리 등 · 10월 25일 끝나요", time: "관람시간은 박물관 안내 확인", price: "관람료는 박물관 안내 확인", date: "~ 10.25" }],
@@ -2355,7 +2396,7 @@ async function load() {
     date: !start ? `~ ${end.slice(5).replace("-", ".")}` : `${start.slice(5).replace("-", ".")} ~ ${end.slice(0, 4) !== start.slice(0, 4) ? end.slice(2).replace(/-/g, ".") : end.slice(5).replace("-", ".")}`,
     time: "10:00–18:00 · 월요일 휴관 · 정규 해설 화~일 11:00·14:00·15:30", price: "관람료는 미술관 안내 확인", status: !start || start <= todayISO() ? "진행중" : "예정",
     verified: "2026-10-15", verify: "광주시립미술관 누리집 '현재전시' 기준", source: "광주시립미술관 누리집", url: "https://artmuse.gwangju.go.kr/",
-    tags: ["전시", "실내"], origin: "manual", ticket: { status: "관람가능", note: "전시 기간 중 관람", checked: "2026-10-15" }, ...o }));
+    tags: ["전시", "실내"], origin: "manual", ticket: { status: "확인필요", note: "현재 관람 가능 여부는 공식 안내에서 확인", checked: "2026-10-15" }, ...o }));
   // 괄호·'특별전' 같은 꾸밈말은 빼고 비교 → 같은 전시가 자동 수집 쪽에 있으면 내장본은 안 더함 (중복 방지)
   const looseT = t => String(t || "").replace(/특별전|기획전|[^0-9a-z가-힣]/gi, "");
   const seenTitles = new Set((E0 || []).map(e => looseT(e.title)));
@@ -2377,7 +2418,9 @@ async function load() {
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
   const t = todayISO();
-  ALL.EVENTS = ALL.EVENTS.filter(e => !e.end || e.end >= t).map(e => ({ ...e, status: e.start ? (e.start <= t ? "진행중" : "예정") : e.status }));
+  ALL.EVENTS = ALL.EVENTS.filter(e => !e.end || e.end >= t).map(e => ({ ...e,
+    status: /취소|중단|매진|마감|휴관|연기/.test(String(e.status||"")) ? e.status : (e.start ? (e.start <= t ? "진행중" : "예정") : e.status)
+  }));
   applyRegion(); renderAll(); checkPopNotifications(); loadWeather();
 }
 
@@ -5918,22 +5961,44 @@ function calButtons(x) {
 function decodeEntities(v) { if (typeof v !== "string" || !/&(#\d+|#x[0-9a-f]+|[a-z]+);/i.test(v)) return v; const t = document.createElement("textarea"); for (let i = 0; i < 2 && /&(#\d+|#x[0-9a-f]+|[a-z]+);/i.test(v); i++) { t.innerHTML = v; v = t.value } return v }
 function fixEntities(e) { for (const k of ["title", "venue", "price", "time", "description", "program"]) if (e[k]) e[k] = decodeEntities(e[k]); return e }
 function titleCore(t) { return norm(String(t || "").replace(/\[[^\]]*\]/g, " ")).replace(/^(20\d{2}|제?\d+회)+/, "") }
+function comparableEventTitle(t) {
+  return titleCore(t).replace(/국립아시아문화전당|아시아문화전당|어린이문화원|어린이공연|ACC|특별공연|기획공연|공연|뮤지컬|연극/g, "");
+}
 function dedupeEvents(list) {
   const keep = [], rank = e => e.origin === "manual" ? 0 : 1;
   const sorted = list.map((e, i) => [e, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
   for (const [e] of sorted) {
+    // 같은 제공처 ID로 들어온 동일 행사도 하나만 표시한다. 단, 서로 다른 회차는 유지한다.
+    const sameId = e.id && keep.find(k => k.id === e.id && titleCore(k.title) === titleCore(e.title)
+      && (k.start || "") === (e.start || "") && (k.end || "") === (e.end || "")
+      && (k.time || "") === (e.time || ""));
+    if (sameId) continue;
     const a = titleCore(e.title);
     const dup = a.length >= 4 && keep.find(k => {
       const b = titleCore(k.title); if (b.length < 4) return false;
-      if (!(a === b || a.includes(b) || b.includes(a))) return false;
+      const ca = comparableEventTitle(e.title), cb = comparableEventTitle(k.title);
+      if (!(a === b || a.includes(b) || b.includes(a) || (ca.length >= 4 && cb.length >= 4 && (ca === cb || ca.includes(cb) || cb.includes(ca))))) return false;
       if (e.venueId && k.venueId && e.venueId !== k.venueId) return false;   // 다른 장소면 다른 행사
+      const va = norm([e.venue,e.place].filter(Boolean).join(" "));
+      const vb = norm([k.venue,k.place].filter(Boolean).join(" "));
+      // 장소가 하나도 없는 이름 유사 행사는 별도 행사일 수 있으므로 합치지 않는다.
+      if (!va && !vb && !e.venueId && !k.venueId) return false;
+      if (va && vb && va !== vb && !va.includes(vb) && !vb.includes(va)) return false;
+      // 서로 다른 도시에서 열린 동명 공연은 합치지 않는다.
+      const da = districtFromAddr(e.address) || e.district || "";
+      const db = districtFromAddr(k.address) || k.district || "";
+      if (da && db && da !== db) return false;
+      // 회차/개별 공연을 오인 삭제하지 않도록, 날짜가 명확하고 다르면 합치지 않는다.
+      if (e.start && k.start && e.end && k.end && (e.start !== k.start || e.end !== k.end)) return false;
+      // 날짜가 같은 별개 회차는 유지한다.
+      if (e.start && k.start && e.start === k.start && e.time && k.time && e.time !== k.time && /\d{1,2}[:시]\d{0,2}/.test(e.time) && /\d{1,2}[:시]\d{0,2}/.test(k.time)) return false;
       const s1 = e.start || "0000", e1 = e.end || "9999", s2 = k.start || "0000", e2 = k.end || "9999";
       return s1 <= e2 && s2 <= e1;              // 기간이 겹침
     });
     if (!dup) keep.push(e);
   }
-  const ids = new Set(keep.map(e => e.id));
-  return list.filter(e => ids.has(e.id));       // 원래 순서 유지
+  const retainedObjects = new Set(keep);
+  return list.filter(e => retainedObjects.has(e)); // ID가 중복돼도 실제 유지 대상만 남기고 원래 순서 유지
 }
 /* ───────── 🧸 아이와 함께 · 박물관 보강 (2026-10-14 확인) ─────────
    자동 수집 자료(venues.json)에 없거나 정보가 비어 있는 아이와 갈 박물관·과학관을 채운다.
@@ -6250,7 +6315,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.15 상설전시";
+const APP_VER = "10.18 자료정확성 보완";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6458,6 +6523,9 @@ initNav();
    <div class="manualItem"><strong>🔄 자동 자료 갱신·이상 안내</strong><p>행사·장소 자료는 하루 두 차례 자동 갱신을 시도해요. 최신 서버 자료를 확인할 수 없거나 마지막 수집 시각이 36시간 넘게 지났다면 상단에 안내가 나타나요. 이때도 기존 자료는 볼 수 있지만, 실제 방문 전 공식 정보를 확인해 주세요.</p></div>
    <div class="manualItem"><strong>✅ 방문 가능한 일정 우선 추천</strong><p>추천 코스를 구성할 때 일정 종료, 휴관일, 운영·입장시간, 매진·예매 종료 또는 예매 시작 전 상태 등 확인 가능한 조건을 고려해요. 확인되지 않은 운영·예약 정보는 실제 이용이 가능하다는 뜻이 아니므로 공식 기관·예매처에서 확인해 주세요.</p></div>
   </div>
+  <div class="manualNote"><b>정보 확인 날짜 안내</b> ‘마지막 확인’은 행사별로 기록된 확인일입니다. ‘자료 갱신 기록’은 데이터가 바뀐 날짜로 행사 내용을 직접 다시 확인했다는 뜻이 아닙니다. 오래된 확인 기록은 공식 주최기관에서 일정·장소·요금을 다시 확인하세요. 자동 수집이 매일 실행되어도 개별 행사의 확인 날짜가 자동 갱신되지는 않습니다.</div>
+  <p class="manualNote">권역 표시: 주소가 확인되면 주소를 우선하며, 주소가 없으면 행정구역·공연장 정보를 사용해요. 제목에 적힌 지역명만으로 공연 지역을 단정하지 않아요. 취소·매진 등 상태가 제공되면 진행중 표시로 덮어쓰지 않아요.</p>
+  <p class="manualNote">자료 점검: 외부 자동 수집 서버의 원본 데이터 오류까지 직접 수정하는 것은 아니며, 수집 프로그램도 별도 검증해야 합니다. 서비스 주소 끝에 <code>#check</code>를 붙이면 행사 중복 의심, 권역 불일치, 특별전시 정보의 누락 항목을 확인할 수 있어요. 자동 검사는 오류 가능성을 찾는 기능이며 실제 행사 정보의 공식 확인을 대신하지 않아요.</p>
   <h3>이용 순서 — 세 단계면 충분해요</h3>
   <ol class="manualSteps"><li><b>지역 선택</b> — 가고 싶은 권역을 누르세요.</li><li><b>검색 또는 추천</b> — 키워드를 입력하거나 ‘오늘 뭐하지?’ 조건을 고르세요.</li><li><b>상세정보 확인</b> — 결과를 눌러 일정·요금·위치를 확인하고 길찾기를 이용하세요.</li></ol>
   <h3>자료 갱신 안내가 뜰 때</h3>
@@ -6722,6 +6790,31 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
       else if(!v.address)add(1,"장소 위치",v.name,"좌표·주소 모두 없음 (지도에 안 나옴)");
     });
     Object.entries(byImg).forEach(([img,vs])=>{if(vs.length<2)return;const far=vs.some(a=>vs.some(b=>a.lat&&b.lat&&KM(a.lat,a.lng,b.lat,b.lng)>3));if(far)add(2,"장소 사진",vs.map(v=>v.name).join(" / "),"서로 멀리 떨어진 장소가 같은 사진을 씀")});
+    // 중복 의심 항목: 화면에 나타나는 연속 중복뿐 아니라 데이터 자체의 중복을 점검한다.
+    // 같은 제목·장소·일정만 검사하고, 서로 다른 날짜/회차는 무리하게 합치지 않는다.
+    const normalized = v => String(v||"").toLowerCase().replace(/국립아시아문화전당|아시아문화전당|acc|어린이문화원|특별전|기획전|공연/g,"").replace(/[^0-9a-z가-힣]/g,"");
+    const duplicateGroups = new Map();
+    E.forEach(e=>{
+      const key=[normalized(e.title),normalized(e.venue||e.place),e.start||"",e.end||"",String(e.time||"").trim()].join("|");
+      if(normalized(e.title).length<3)return;
+      if(!duplicateGroups.has(key))duplicateGroups.set(key,[]);
+      duplicateGroups.get(key).push(e);
+    });
+    duplicateGroups.forEach(g=>{if(g.length>1)add(2,"일정 중복 의심",g[0].title,`${g.length}건 · ${g.map(e=>e.id||"ID없음").join(" / ")}`)});
+    // 명시된 행정구역과 앱 권역이 다르면 수집/표시 오류 가능성 경고
+    E.forEach(e=>{
+      const addr=districtFromAddr(e.address||"");
+      const declared=addr||(REGIONS.gj.districts.concat(REGIONS.ys.districts,REGIONS.mp.districts).includes(e.district)?e.district:"");
+      const expected=Object.entries(REGIONS).find(([,r])=>r.districts.includes(declared))?.[0];
+      const actual=regionOfItem(e);
+      if(expected&&actual!==expected)add(2,"일정 권역 의심",e.title||e.id,`${declared}는 ${REGIONS[expected].name}인데 ${REGIONS[actual]?.name||"미분류"}로 표시될 수 있음`);
+      if(!declared && !e.address && !e.venueId)add(1,"일정 권역 근거",e.title||e.id,"확인 가능한 주소·행정구역·시설 식별자 없음: 자동 분류 검증 필요");
+    });
+    // 특별·기획 전시의 필수 일정/출처를 별도로 점검
+    E.filter(e=>e.category==="전시" && /특별전|기획전|특별전시/.test([e.title,e.subtype].join(" "))).forEach(e=>{
+      if(!e.start||!e.end)add(1,"특별전시 일정",e.title,"시작일 또는 종료일이 없어 전시 기간 수동 확인 필요");
+      if(!e.url)add(1,"특별전시 출처",e.title,"상세 공식 링크 없음");
+    });
     // 일정
     E.forEach(e=>{
       const n=e.title||e.id;
@@ -6730,6 +6823,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
       if(!e.source&&!e.url)add(2,"일정 출처",n,"출처·링크 없음");
       else if(PRIVATE.test(e.url||""))add(2,"일정 출처",n,"공식 출처가 아님 ("+(e.url||"").replace(/^https?:\/\//,"").split("/")[0]+")");
       else if(TICKET.test(e.url||""))add(0,"일정 출처",n,"예매처 기준 — 공연 측 공식 발표로도 확인 권장");
+      if(e.origin==="manual"&&!e.verified&&(!e.end||e.end>=t))add(1,"일정 확인일",n,"공식 행사 내용을 실제 대조한 날짜가 없음");
       if(e.origin==="manual"&&e.verified&&e.verified<old&&(!e.end||e.end>=t))add(1,"일정 확인일",n,"직접 입력 자료인데 "+e.verified+" 이후 다시 확인 안 함");
       if(/^공식 일정 미발표/.test(e.source||""))add(1,"일정 확정",n,"공식 일정 발표 전 — 예년 기준 예상 날짜");
       if(e.category==="스포츠"&&(e.tags||[]).includes("가족"))add(0,"아이와 분류",n,"스포츠에 '가족' 표시 — 아이와 탭에서는 자동 제외됨");
@@ -6739,11 +6833,20 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
     const cnt=[0,1,2].map(l=>out.filter(x=>x.lv===l).length);
     let el=document.getElementById("dataCheck");
     if(!el){el=document.createElement("div");el.id="dataCheck";document.body.appendChild(el)}
-    el.innerHTML=`<div class="dcBox"><div class="dcHead"><b>🔎 자료 점검</b><small>${esc(t)} · 장소 ${V.length} · 일정 ${E.length} (지난 일정 제외) · 앱 버전 ${typeof APP_VER!=="undefined"?APP_VER:""}</small><button onclick="location.hash='';document.getElementById('dataCheck').remove()">닫기 ✕</button></div>
+    el.innerHTML=`<div class="dcBox"><div class="dcHead"><b>🔎 자료 점검</b><small>${esc(t)} · 장소 ${V.length} · 일정 ${E.length} (수집·보유 자료 기준) · 앱 버전 ${typeof APP_VER!=="undefined"?APP_VER:""}</small><button onclick="location.hash='';document.getElementById('dataCheck').remove()">닫기 ✕</button></div>
       <div class="dcSum"><span style="color:${C[2]}">고칠 것 ${cnt[2]}</span><span style="color:${C[1]}">확인 ${cnt[1]}</span><span style="color:${C[0]}">참고 ${cnt[0]}</span></div>
       ${out.length?`<table><tr><th>등급</th><th>항목</th><th>대상</th><th>내용</th></tr>${out.map(x=>`<tr><td style="color:${C[x.lv]};font-weight:800">${LV[x.lv]}</td><td>${esc(x.what)}</td><td>${esc(x.name)}</td><td>${esc(x.why)}</td></tr>`).join("")}</table>`:"<p>걸리는 자료가 없어요 👍</p>"}</div>`;
   }
-  function maybe(){ if(location.hash!=="#check")return; const go=()=>{ if((ALL.VENUES||[]).length) run(); else setTimeout(go,500) }; go(); }
+  function maybe(){
+    if(location.hash!=="#check")return;
+    let tries=0;
+    const go=()=>{
+      if(location.hash!=="#check")return;
+      if((ALL.VENUES||[]).length || (ALL.EVENTS||[]).length || ++tries>=20) run();
+      else setTimeout(go,500);
+    };
+    go();
+  }
   window.addEventListener("hashchange",maybe); window.addEventListener("load",()=>setTimeout(maybe,800));
 })();
 </script>
