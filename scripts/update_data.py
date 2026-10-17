@@ -665,6 +665,9 @@ def culture_category(realm, tp):
     return "공연", r or "공연"
 
 
+CULTURE_MODE = ""
+
+
 def culture_events():
     if not DATA_KEY:
         raise RuntimeError("DATA_GO_KR_KEY가 없습니다.")
@@ -673,6 +676,7 @@ def culture_events():
     t0 = time.time()
     deadline = t0 + CULTURE_BUDGET
     use_area = [True]
+    global CULTURE_MODE
     raw_seen = set()                    # 지역 거르기 전 기준: 이번 쪽에 처음 보는 게 하나도 없으면 끝
 
     def listing(tp, page):
@@ -688,8 +692,10 @@ def culture_events():
                 log(f"  문화정보원 지역별 조회 안 됨 → 기간별 조회 사용 ({scrub(str(e))[:120]})")
         return culture_xml("period", **{"from": frm, "to": to, "cPage": str(page), "rows": "100", "serviceTp": tp})
 
+    pages_read = 0
     for tp, tp_name in CULTURE_TYPES.items():
         for page in range(1, 41):
+            pages_read += 1
             if time.time() > deadline:
                 log("  문화정보원: 시간 예산 도달 → 여기까지만"); break
             recs = listing(tp, page)
@@ -764,6 +770,7 @@ def culture_events():
             if not recs or new_on_page == 0:
                 break            # 더 받을 게 없음 (한 쪽에 몇 개씩 주든 상관없이)
         log(f"  문화정보원 {tp_name}: 지금까지 광주·전남 {len(out)}건")
+    CULTURE_MODE = f"{'지역별' if use_area[0] else '기간별'} 조회 · {pages_read}쪽 읽음"
     return out
 
 
@@ -949,7 +956,16 @@ def gma_exhibitions():
         pm = re.search(r"장소\s*[:：]?\s*([^\n]+)", ctx) or re.search(r"([^\n]*(?:전시실|미술관|갤러리|로비|광장)[^\n]*)", before)
         place = re.sub(r"\s*(전시)?기간.*$", "", pm.group(1)).strip(" :·") if pm else ""
         place = re.sub(r"^(광주|시립)미술관\s*", "", place)          # '광주미술관 본관 제1전시실' → '본관 제1전시실'
-        titles = [t for t in g["titles"] if len(t) >= 2 and not re.fullmatch(r"(자세히|더보기|상세보기|view|more)", t, re.I)]
+        if re.search(r"상설전|전시\s*$|≪|《|\.\.\.|…", place):
+            place = ""                                                    # 제목 조각을 장소로 잘못 잡은 경우
+        # 링크 글자에 '제목 · 기간 … · 장소 …'가 통째로 들어 있는 경우가 있어 나눠서 쓴다
+        for t in g["titles"]:
+            pm2 = re.search(r"장소\s*[:：]?\s*([^·\n]+)", t)
+            if pm2 and not place:
+                place = re.sub(r"^(광주|시립)미술관\s*", "", pm2.group(1).strip(" :·"))
+        cut = lambda t: re.split(r"\s*·?\s*(?:전시)?(?:기간|장소)\s*[:：]?\s", re.sub(r"^[>\s·]+", "", t))[0].strip(" ·")
+        titles = [cut(t) for t in g["titles"]]
+        titles = [t for t in titles if len(t) >= 2 and not re.fullmatch(r"(자세히|더보기|상세보기|view|more)", t, re.I)]
         full = [t for t in titles if not re.search(r"(\.\.\.|…)$", t)]
         title = max(full or titles or [""], key=len)
         title = re.sub(r"(\.\.\.|…)$", "", title).strip()
@@ -1161,7 +1177,8 @@ def main():
             rows = fn()
             log(f"✔ {source_name} {len(rows)}건 ({int(time.time() - t0)}초)")
             api_events.extend(rows)
-            statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(rows), "message": "정상 수집"})
+            statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(rows),
+                             "message": "정상 수집" + (f" ({CULTURE_MODE})" if source_id == "culture" and CULTURE_MODE else "")})
         except Exception as e:
             # 한 곳이 실패하면 그 출처의 지난번 자료를 그대로 유지
             kept = [p for p in previous if p.get("api") == source_id or p.get("origin") == source_id]
