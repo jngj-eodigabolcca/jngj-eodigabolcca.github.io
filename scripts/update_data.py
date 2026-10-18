@@ -402,10 +402,28 @@ def tourapi_festivals():
     if not DATA_KEY:
         raise RuntimeError("DATA_GO_KR_KEY가 없습니다.")
 
-    out = []
-    page_no = 1
+    out, seen_ids = [], set()
     num_rows = 100
     deadline = time.time() + SOURCE_BUDGET
+
+    # 전국을 받아 주소로 거르면 6분 안에 다 못 읽어 (가나다순 뒤쪽 축제가 빠짐)
+    # → 광주(29)·전남(46)만 지역 코드로 받는다. 지역 조회가 통째로 비면 예전 방식(전국)으로 한 번 더.
+    passes = [("광주", {"lDongRegnCd": "29"}), ("전남", {"lDongRegnCd": "46"}), ("전국", {})]
+    for pass_name, extra in passes:
+        if pass_name == "전국" and out:
+            break
+        page_no = 1
+        try:
+            _tourapi_pass(extra, pass_name, num_rows, deadline, out, seen_ids)
+        except Exception as ex:
+            log(f"  관광공사 {pass_name} 조회 실패: {ex}")
+            if pass_name == "전국" and not out:
+                raise
+    return out
+
+
+def _tourapi_pass(extra, pass_name, num_rows, deadline, out, seen_ids):
+    page_no = 1
 
     while time.time() < deadline:
         params = {
@@ -418,6 +436,7 @@ def tourapi_festivals():
             "arrange": "A",
             "eventStartDate": TOUR_FROM,
             "eventEndDate": TOUR_TO,
+            **extra,
         }
 
         url = (
@@ -466,6 +485,9 @@ def tourapi_festivals():
             )
 
             content_id = str(x.get("contentid") or "")
+            if content_id in seen_ids:
+                continue
+            seen_ids.add(content_id)
 
             # 지난번에 받은 상세정보가 아직 신선하면 재사용 (호출 한도 절약)
             cached = fresh_cache(f"tour-{content_id}")
@@ -550,14 +572,13 @@ def tourapi_festivals():
                 ],
             })
 
-        log(f"  관광공사 {page_no}쪽 · 전국 {total_count:,}건 중 광주·전남 {len(out)}건")
+        log(f"  관광공사 {pass_name} {page_no}쪽 · {total_count:,}건 조회 · 광주·전남 누적 {len(out)}건")
         # 현재 페이지까지 다 읽었으면 종료
         if page_no * num_rows >= total_count:
             break
 
         page_no += 1
 
-    return out
 
 # ───────── 한국문화정보원 「한눈에보는문화정보」: 전시·공연 / 행사·축제 / 교육·체험 ─────────
 # 공공데이터포털에서 '한국문화정보원_한눈에보는문화정보조회서비스' 활용신청 필요 (같은 인증키 사용)
@@ -1038,9 +1059,28 @@ def title_core(t):
     return re.sub(r"^(?:20\d{2}|제?\d+회)+", "", norm_title(t))
 
 
+_TOKEN_STOP = re.compile(r"^(acc|국립아시아문화전당|아시아문화전당|공연|특별공연|기획공연|광주|전남|20\d{2}|제?\d+회)$")
+
+
+def title_tokens(t):
+    t = re.sub(r"\[[^\]]*\]", " ", t or "").lower()
+    return {w for w in re.split(r"[^0-9a-z가-힣]+", t) if len(w) >= 2 and not _TOKEN_STOP.match(w)}
+
+
+def same_words_title(x, y):
+    """단어 순서만 바뀐 같은 제목: 'ACC 렛츠플레이, 저승할망' ↔ '[광주] 저승할망 - ACC 렛츠플레이'"""
+    a, b = title_tokens(x), title_tokens(y)
+    if not a or not b:
+        return False
+    s, l = (a, b) if len(a) <= len(b) else (b, a)
+    if len("".join(s)) < 4:
+        return False
+    return s <= l and (len(s) >= 2 or len(s) == len(l))
+
+
 def same_event(a, b):
     x, y = title_core(a.get("title")), title_core(b.get("title"))
-    if len(x) < 4 or len(y) < 4 or not (x == y or x in y or y in x):
+    if len(x) < 4 or len(y) < 4 or not (x == y or x in y or y in x or same_words_title(a.get("title"), b.get("title"))):
         return False
     if a.get("venueId") and b.get("venueId") and a["venueId"] != b["venueId"]:
         return False
@@ -1143,6 +1183,19 @@ def main():
     rec_ids = {e["id"] for e in rec}
     manual = [e for e in manual if e.get("id") not in rec_ids] + rec   # 정기 행사도 '직접 확인한 일정'으로 취급
     log(f"✔ 정기 프로그램 {len(rec)}건 ({', '.join(e['title'] for e in rec)})")
+
+    # 시·군 축제 보강 목록 (관광공사 API에 안 잡히는 광양·강진 등). 이 파일 하나만 고치면 됨.
+    extra_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "festivals_extra.json")
+    try:
+        extra = json.load(open(extra_path, encoding="utf-8")) if os.path.exists(extra_path) else []
+        extra = [dict(e, origin="manual") for e in (extra if isinstance(extra, list) else extra.get("events", []))
+                 if e.get("title") and e.get("start")]
+        have = {e.get("id") for e in manual}
+        extra = [e for e in extra if e.get("id") not in have and not any(same_event(e, m) for m in manual)]
+        manual += extra
+        log(f"✔ 시·군 축제 보강 {len(extra)}건")
+    except Exception as ex:
+        log(f"⚠ festivals_extra.json 읽기 실패 (무시하고 계속): {ex}")
 
     previous = read_json(OUT_EVENTS, [])
     for e in previous:
