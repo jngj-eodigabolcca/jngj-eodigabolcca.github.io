@@ -1,27 +1,27 @@
 {
-  "updated_at": "2026-10-18T09:42:22+09:00",
+  "updated_at": "2026-10-18T18:29:43+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 10건 유지 (<urlopen error timed out>)"
+      "ok": true,
+      "count": 24,
+      "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
       "count": 92,
-      "message": "하루 한 번만 받아요 · 2시간 전 자료 92건 사용"
+      "message": "하루 한 번만 받아요 · 11시간 전 자료 92건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 20건 유지 (문화정보원 period 호출 실패 → period2/PageNo: <urlopen error timed out> | period2/PageNo-tp: <urlopen error timed out> | period2/pageNo: <urlopen error timed out>)"
+      "ok": true,
+      "count": 34,
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -35,23 +35,23 @@
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 10건 유지 (<urlopen error timed out>)"
+      "ok": true,
+      "count": 24,
+      "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
       "count": 92,
-      "message": "하루 한 번만 받아요 · 2시간 전 자료 92건 사용"
+      "message": "하루 한 번만 받아요 · 11시간 전 자료 92건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 20건 유지 (문화정보원 period 호출 실패 → period2/PageNo: <urlopen error timed out> | period2/PageNo-tp: <urlopen error timed out> | period2/pageNo: <urlopen error timed out>)"
+      "ok": true,
+      "count": 34,
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -81,7 +81,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-18T09:51:21+09:00",
+      "fetched_at": "2026-10-18T18:30:57+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -117,7 +117,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 322,
-      "fetched_at": "2026-10-18T09:51:21+09:00",
+      "fetched_at": "2026-10-18T18:30:57+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -150,10 +150,10 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-18T09:51:44+09:00",
-    "tourapi_calls": 1,
+    "checked_at": "2026-10-18T18:30:59+09:00",
+    "tourapi_calls": 5,
     "osm_lookups": 0,
-    "wiki_lookups": 49,
+    "wiki_lookups": 0,
     "unfinished": false,
     "lists": {
       "venues": {
@@ -164,11 +164,11 @@
         "with_image": 200
       },
       "restaurants": {
-        "total": 75,
-        "with_coords": 33,
+        "total": 381,
+        "with_coords": 339,
         "coords_filled": 33,
-        "hours_filled": 16,
-        "with_image": 14
+        "hours_filled": 321,
+        "with_image": 251
       },
       "bakeries": {
         "total": 15,
@@ -195,9 +195,10 @@
   },
   "kopis_last_try": "2026-10-18T07:28:59+09:00",
   "pet_places": {
-    "ok": false,
-    "message": "<urlopen error timed out>",
-    "checked_at": "2026-10-18T09:51:23+09:00",
-    "count": 1
+    "ok": true,
+    "count": 1,
+    "api_calls": 1,
+    "scanned": 71,
+    "checked_at": "2026-10-18T18:30:58+09:00"
   }
 }
