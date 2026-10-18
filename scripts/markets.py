@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import update_data as u          # noqa: E402
 import collect_local as cl       # noqa: E402  (CSV 읽기 도우미 재사용)
 
+IN_AREA = re.compile(r"^\s*(광주|전라남도|전남)")   # 주소 맨 앞이 광주·전남인 것만 (본문에 '광주'가 들어간 타지역 제외)
 REGION_SIDO = ("광주광역시", "전라남도", "전남광주통합특별시", "전남광주특별시")
 SUFFIX = re.compile(r"(전통|재래|상설|정기|민속|5일|오일|공설|종합)*(시장|장터)$")
 
@@ -29,6 +30,27 @@ def core(name: str) -> str:
     n = re.sub(r"\([^)]*\)", "", name or "")
     n = u.norm_title(n)
     return SUFFIX.sub("", n) or n
+
+
+def short_district(d: str) -> str:
+    return re.sub(r"(시|군|구)$", "", d or "")
+
+
+def ckey(name: str, district: str) -> str:
+    """'광양 옥곡정기시장' · '옥곡5일시장' → '옥곡' (앞의 시·군 이름도 뗌)"""
+    c = re.sub(r"^광주(?=.{2})", "", core(name)).replace("예술", "")
+    sd = short_district(district)
+    if sd and c.startswith(sd) and len(c) > len(sd):
+        c = c[len(sd):]
+    return c
+
+
+def similar(a: str, b: str) -> bool:
+    if a == b:
+        return True
+    s, l = sorted((a, b), key=len)
+    # '남광주'↔'남광주해뜨는', '대인'↔'대인(예술)' 처럼 앞부분이 같으면 같은 시장(묶음)으로 본다
+    return len(s) >= 2 and (l.startswith(s) or (s in l and len(s) / len(l) >= 0.7))
 
 
 def parse_days(cycle: str):
@@ -58,7 +80,8 @@ def std_markets(existing: list[dict]) -> list[dict]:
     have = {}
     for v in existing:
         if re.search(r"시장|장터", v.get("name", "")) or v.get("market"):
-            have.setdefault(u.district_from_addr(v.get("address", "")) or v.get("district", ""), set()).add(core(v.get("name")))
+            d = u.district_from_addr(v.get("address", "")) or v.get("district", "")
+            have.setdefault(d, set()).add(ckey(v.get("name"), d))
 
     out, seen = [], set()
     for r in rows:
@@ -67,14 +90,13 @@ def std_markets(existing: list[dict]) -> list[dict]:
             continue
         if sido and sido not in REGION_SIDO:
             continue
-        if not sido and not u.in_region(addr):
+        if not sido and not IN_AREA.match(addr):
             continue
         district = u.district_from_addr(addr)
         if not district:
             continue
-        c = core(name)
-        cores = have.get(district, set())
-        if c in cores or any(len(c) >= 2 and len(k) >= 2 and (c in k or k in c) for k in cores):
+        c = ckey(name, district)
+        if any(similar(c, k) for k in have.get(district, set())):
             continue                                    # 이미 앱에 있는 시장
         key = district + c
         if key in seen:
@@ -83,10 +105,12 @@ def std_markets(existing: list[dict]) -> list[dict]:
 
         cycle = p("시장개설주기", "mrktEstblCycle", "개설주기")
         days = parse_days(cycle)
-        items = [x.strip() for x in re.split(r"[,·/]", p("취급품목", "trtmntPrdlst")) if x.strip()][:6]
+        items = [x.strip() for x in re.split(r"[,·/+]", p("취급품목", "trtmntPrdlst")) if x.strip()][:6]
         mtype = "5일장" if days else (p("시장유형", "mrktType") or "상설시장")
         parking = p("주차장보유여부", "prkplceYn")
         stores = p("점포수", "storNumber")
+        if not name.startswith(short_district(district)) and (len(core(name)) <= 2 or core(name) in ("중앙", "공설", "매일", "신", "동부", "서부", "남부", "북부", "종합")):
+            name = f"{re.sub(r'(시|군)$', '', district)} {name}"     # '중앙시장' → '여수 중앙시장'
         out.append({
             "id": "mk-" + hashlib.md5(key.encode()).hexdigest()[:10],
             "name": name,
@@ -102,7 +126,7 @@ def std_markets(existing: list[dict]) -> list[dict]:
             "url": p("홈페이지주소", "homepageUrl"),
             "inout": "야외",
             "desc": f"{district} {mtype}" + (f" · 점포 약 {stores}곳" if stores and stores != "0" else "") + (f" · {', '.join(items[:4])}" if items else ""),
-            "note": ("장날: " + "·".join(str(d if d else 10) for d in days) + "일") if days else ("매일 열어요" if not cycle or re.search(r"매일|상설", cycle) else cycle),
+            "note": ("장날: " + "·".join(str(d or 10) for d in sorted(days, key=lambda d: d or 10)) + "일") if days else ("매일 열어요" if not cycle or re.search(r"매일|상설", cycle) else cycle),
             "aliases": [],
             "lat": u.to_float(p("위도", "latitude")),
             "lng": u.to_float(p("경도", "longitude")),
@@ -141,7 +165,9 @@ def _won(v):
         return ""
     if re.fullmatch(r"0+|무료", v):
         return "무료"
-    return f"{int(v):,}원" if v.isdigit() else v
+    if v.isdigit():
+        return f"{int(v):,}원" if int(v) <= 50000 else ""     # 1000020 같은 입력 오류는 버림
+    return v
 
 
 def std_museums(existing: list[dict]) -> list[dict]:
@@ -159,7 +185,7 @@ def std_museums(existing: list[dict]) -> list[dict]:
         p = lambda *n: cl.pick(r, *n)
         name = p("시설명", "fcltyNm")
         addr = p("소재지도로명주소", "rdnmadr") or p("소재지지번주소", "lnmadr")
-        if not name or not addr or not u.in_region(addr):
+        if not name or not addr or not IN_AREA.match(addr):
             continue
         district = u.district_from_addr(addr)
         if not district:
@@ -173,9 +199,19 @@ def std_museums(existing: list[dict]) -> list[dict]:
             continue
         seen.add(key)
 
-        kind = "미술관" if "미술" in p("박물관미술관구분", "fcltyType") else "박물관"
+        closed = p("휴관정보", "rstdeInfo")
+        if re.search(r"휴관\s*중|폐관|리모델링", closed):
+            continue                                    # 지금 문 닫은 곳은 넣지 않음
+        owner = p("박물관미술관구분", "fcltyType")      # 공립·사립·국립·대학
+        kind = "미술관" if "미술" in name or "미술" in owner else "박물관"
+        if not re.search(r"(박물관|미술관|기념관|전시관|문학관|역사관|갤러리|관)$", re.sub(r"\([^)]*\)", "", name).strip()):
+            name = f"{name} ({owner or ''} 박물관·미술관)".replace("( ", "(")   # '미암' 처럼 이름만 있는 곳
         wk = (_hm(p("평일관람시작시각", "weekdayOperOpenHhmm")), _hm(p("평일관람종료시각", "weekdayOperColseHhmm", "weekdayOperCloseHhmm")))
         hd = (_hm(p("공휴일관람시작시각", "holidayOperOpenHhmm")), _hm(p("공휴일관람종료시각", "holidayCloseOpenHhmm", "holidayOperCloseHhmm")))
+        if wk[0] == "00:00":
+            wk = ("", "")
+        if hd[0] == "00:00":
+            hd = ("", "")
         hours = " · ".join(x for x in [
             f"평일 {wk[0]}–{wk[1]}" if all(wk) and wk[0] != wk[1] else "",
             f"휴일 {hd[0]}–{hd[1]}" if all(hd) and hd[0] != hd[1] and hd != wk else "",
@@ -186,6 +222,12 @@ def std_museums(existing: list[dict]) -> list[dict]:
         else:
             price = " · ".join(x for x in [f"어른 {adult}" if adult else "", f"청소년 {youth}" if youth else "", f"어린이 {child}" if child else ""] if x)
         extra = p("관람료기타정보", "etcChrgeInfo")
+        if re.fullmatch(r"0+|무료|-", extra) or (extra == "무료" and price == "무료"):
+            extra = ""
+        if len(extra) > 50:
+            extra = extra[:50] + "…"
+        if not price and extra:
+            price = "요금 공식 확인"
         price = (price + (" · " + extra if extra else "")).strip(" ·") or "공식 안내 확인"
         intro = p("박물관미술관소개", "fcltyIntrcn")
         out.append({
@@ -196,13 +238,13 @@ def std_museums(existing: list[dict]) -> list[dict]:
             "address": addr,
             "phone": p("운영기관전화번호", "operPhoneNumber"),
             "hours": hours,
-            "closed": p("휴관정보", "rstdeInfo") or "공식 안내 확인",
+            "closed": closed or "공식 안내 확인",
             "price": price,
             "parking": "",
             "kids": "",
             "url": p("운영홈페이지", "homepageUrl"),
             "inout": "실내",
-            "desc": (intro[:180] + ("…" if len(intro) > 180 else "")) if intro else f"{district}의 {kind}.",
+            "desc": (intro[:180] + ("…" if len(intro) > 180 else "")) if intro else f"{district}의 {owner + ' ' if owner else ''}{kind}.",
             "access": p("교통안내정보", "trnsportInfo")[:120],
             "note": "",
             "aliases": [],
