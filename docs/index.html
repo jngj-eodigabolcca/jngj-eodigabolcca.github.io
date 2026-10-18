@@ -5963,6 +5963,18 @@ function titleCore(t) { return norm(String(t || "").replace(/\[[^\]]*\]/g, " "))
 function comparableEventTitle(t) {
   return titleCore(t).replace(/국립아시아문화전당|아시아문화전당|어린이문화원|어린이공연|ACC|특별공연|기획공연|공연|뮤지컬|연극/g, "");
 }
+/* 단어 순서만 바뀐 같은 제목 잡기: 'ACC 렛츠플레이, 저승할망' ↔ '[광주] 저승할망 - ACC 렛츠플레이' */
+function titleTokens(t) {
+  const stop = /^(acc|국립아시아문화전당|아시아문화전당|공연|특별공연|기획공연|광주|전남|20\d{2}|제?\d+회)$/;
+  return [...new Set(String(t || "").replace(/\[[^\]]*\]/g, " ").toLowerCase().split(/[^0-9a-z가-힣]+/).filter(w => w.length >= 2 && !stop.test(w)))];
+}
+function sameWordsTitle(x, y) {
+  const a = titleTokens(x), b = titleTokens(y);
+  if (!a.length || !b.length) return false;
+  const [s, l] = a.length <= b.length ? [a, b] : [b, a];
+  if (s.join("").length < 4) return false;
+  return s.every(w => l.includes(w)) && (s.length >= 2 || s.length === l.length);
+}
 function dedupeEvents(list) {
   const keep = [], rank = e => e.origin === "manual" ? 0 : 1;
   const sorted = list.map((e, i) => [e, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
@@ -5976,7 +5988,7 @@ function dedupeEvents(list) {
     const dup = a.length >= 4 && keep.find(k => {
       const b = titleCore(k.title); if (b.length < 4) return false;
       const ca = comparableEventTitle(e.title), cb = comparableEventTitle(k.title);
-      if (!(a === b || a.includes(b) || b.includes(a) || (ca.length >= 4 && cb.length >= 4 && (ca === cb || ca.includes(cb) || cb.includes(ca))))) return false;
+      if (!(a === b || a.includes(b) || b.includes(a) || (ca.length >= 4 && cb.length >= 4 && (ca === cb || ca.includes(cb) || cb.includes(ca))) || sameWordsTitle(e.title, k.title))) return false;
       if (e.venueId && k.venueId && e.venueId !== k.venueId) return false;   // 다른 장소면 다른 행사
       const va = norm([e.venue,e.place].filter(Boolean).join(" "));
       const vb = norm([k.venue,k.place].filter(Boolean).join(" "));
