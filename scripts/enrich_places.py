@@ -409,28 +409,65 @@ def apply(x: dict, found: dict) -> dict:
     return y
 
 
+def kcisa_cafe(r: dict) -> dict:
+    """한국문화정보원 반려동물 동반 자료 한 줄 → 멍카페 카드"""
+    pet = ["동반 가능"]
+    if r.get("size"):
+        pet.append("크기: " + r["size"])
+    if r.get("limit"):
+        pet.append("조건: " + r["limit"])
+    if r.get("fee"):
+        pet.append("추가요금: " + r["fee"])
+    where = " · ".join(w for w, ok in (("실내", r.get("indoor")), ("실외", r.get("outdoor"))) if ok)
+    return {
+        "id": "pet-kcisa-" + u.norm_title(r["name"] + r.get("district", "")),
+        "name": r["name"], "district": r.get("district", ""), "address": r.get("address", ""),
+        "phone": r.get("phone", ""),
+        "hours": " · ".join(x for x in (r.get("hours"), r.get("closed") and "휴무 " + r["closed"]) if x),
+        "pet": " · ".join(pet), "note": " · ".join(x for x in (r.get("desc"), where and where + " 공간") if x),
+        "big": False, "outdoor": bool(r.get("outdoor")),
+        "bigDog": bool(r.get("size")) and ("모두" in r["size"] or "대형" in r["size"]),
+        "lat": r.get("lat"), "lng": r.get("lng"),
+        "source": "한국문화정보원 반려동물 동반 가능 문화시설 공공데이터",
+        "publicListed": True, "verified": r.get("written", ""), "written": r.get("written", ""),
+    }
+
+
 def merge_pet_places(manual: list) -> list:
-    """멍카페 목록 = 관광공사 반려동물 동반여행 공공데이터(collect_pets.py) 우선.
+    """멍카페 목록 = 공공데이터 우선.
+    ① 관광공사 반려동물 동반여행(collect_pets.py · 매일 갱신)
+    ② 한국문화정보원 반려동물 동반 가능 문화시설(build_pet_public.py · 1회성 자료)
     기존에 직접 모은 곳은 이름이 같으면 공공데이터 쪽에 합치고(빈칸만 보충),
     공공데이터에 아직 없는 곳은 '운영자 확인 · 공공데이터 미등록'으로 표시해 뒤에 붙인다."""
-    pub = (u.read_json(u.DATA_DIR / "pet_places.json", {}) or {}).get("items") or []
     key = lambda x: core_name(x.get("name") or "")
-    by = {key(p): dict(p) for p in pub if key(p)}
+    tour = (u.read_json(u.DATA_DIR / "pet_places.json", {}) or {}).get("items") or []
+    kc = (u.read_json(u.DATA_DIR / "pet_public.json", {}) or {}).get("items") or []
+    kc = [kcisa_cafe(r) for r in kc if r.get("cat") in ("카페", "식당") and r.get("allow") == "Y"]
+    by = {}
+    for p in tour + kc:                                  # 관광공사 먼저 → 같은 가게면 관광공사 기록 유지
+        k = key(p)
+        if not k:
+            continue
+        if k in by:
+            for f, v in p.items():
+                if v not in ("", None, False) and not by[k].get(f):
+                    by[k][f] = v
+        else:
+            by[k] = dict(p)
     rest = []
     for m in manual:
         hit = by.get(key(m))
         if hit and (not hit.get("district") or not m.get("district") or hit["district"] == m["district"]):
-            for k, v in m.items():                      # 공공데이터 값이 우선, 빈칸만 기존 값으로
-                if k not in ("id", "source", "publicListed", "verified") and v not in ("", None) and not hit.get(k):
-                    hit[k] = v
-            by[key(m)] = hit
+            for f, v in m.items():                       # 공공데이터 값이 우선, 빈칸만 기존 값으로
+                if f not in ("id", "source", "publicListed", "verified", "written") and v not in ("", None) and not hit.get(f):
+                    hit[f] = v
         else:
             y = dict(m)
             y["publicListed"] = False
             y["source"] = y.get("source") or "운영자 확인 · 공공데이터 미등록"
             rest.append(y)
     out = list(by.values()) + rest
-    print(f"  멍카페: 공공데이터 {len(by)}곳 + 운영자 확인 {len(rest)}곳", flush=True)
+    print(f"  멍카페: 공공데이터 {len(by)}곳(관광공사 {len(tour)} · 문화정보원 {len(kc)}) + 운영자 확인 {len(rest)}곳", flush=True)
     return out
 
 

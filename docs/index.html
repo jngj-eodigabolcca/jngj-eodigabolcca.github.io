@@ -2403,7 +2403,7 @@ async function load() {
   E0 = [...E0, ...GMA_NOW.filter(e => !E0.some(x => x.id === e.id) && !seenTitles.has(looseT(e.title)))];
   // 숙소: 메뉴엔 없음. 'KTX 1박 2일'·'숙소' 같은 요청에서만 코스에 들어감
   // 동네 강좌·도서관 (없으면 빈 목록 — 자동 수집이 처음 돈 뒤부터 채워짐)
-  const [P0, L0] = await Promise.all([getJSON("programs"), getJSON("libraries")]);
+  const [P0, L0, PET0] = await Promise.all([getJSON("programs"), getJSON("libraries"), getJSON("pet_public", null)]);
   ALL.PROGRAMS = Array.isArray(P0) ? P0 : []; ALL.LIBS = dedupeLibs(Array.isArray(L0) ? L0 : []);
   // '정보 수정' 제보가 열려 있는 항목 (자동 수집이 GitHub 이슈에서 읽어 옴)
   try { const F0 = await getJSON("flags", null); if (F0 && typeof F0 === "object" && !Array.isArray(F0)) FLAGS = F0 } catch { }
@@ -2414,7 +2414,7 @@ async function load() {
   const VENUE_FIX = { "citizen-forest": { address: "광주 북구 추암로 190", image: "https://tong.visitkorea.or.kr/cms/resource/03/3514703_image2_1.jpg", imageCredit: "한국관광공사" } };
   V0 = (V0 || []).map(v => VENUE_FIX[v.id] ? { ...v, ...VENUE_FIX[v.id] } : v)
     .map(v => /인근|대체|다른 장소/.test(v.imageCredit || "") ? { ...v, image: "", imageCredit: "" } : v);
-  V0 = applyKidsMuseumBoost(V0);
+  V0 = attachPetInfo(applyKidsMuseumBoost(V0), PET0);
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
   const t = todayISO();
@@ -3895,7 +3895,7 @@ function placeCard(v) {
   return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow">${flagTag(v)}${homeTag(v)}<span class="kind k-${esc(v.kind)}">${esc(v.kind)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : v.inout === "실내" ? "🏠 실내" : "🏠🌤 실내·야외"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${v.note || v.desc ? `<small class="note">${esc(v.note || v.desc)}</small>` : ""}${v.updated ? `<small class="upd">↻ ${esc(v.updated.slice(5).replace("-", "."))} 관광공사 정보로 갱신</small>` : ""}
   <dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
-  ${visitLine(v)}${parkLine(v)}${hereBox(v)}
+  ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   ${trustStrip(v)}
   <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
@@ -3930,6 +3930,7 @@ const PLACE_GROUPS = [
   ["무등산", "⛰", v => v.kind === "무등산 트레킹"],
   ["워터파크·물놀이", "🌊", v => v.kind === "워터파크"],
   ["스포츠", "⚾", v => v.kind === "스포츠"],
+  ["반려견 동반", "🐾", v => !!(v.petInfo && v.petInfo.allow === "Y")],   // 공공데이터로 확인된 곳
   ["멍카페", "🐶", v => false],      // 반려견 동반 카페(CAFES)
   ["빵지순례", "🥐", v => false],    // 빵집(BAKERIES)
   ["영화관", "🎬", v => false],      // 영화관(CINEMAS)
@@ -4468,10 +4469,10 @@ function renderStays() { if (regionEmpty("staysView", "🛏", "숙소", { staysV
 function renderCinemas() { if (regionEmpty("cinemasView", "🎬", "영화관", { staysView: STAYS, cinemasView: CINEMAS, cafesView: CAFES, marketsView: VENUES.filter(v => v.market) }["cinemasView"])) return; $("#cinemasView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MOVIE</span><h2>영화 한 편 볼랑가<small>극장별 실시간 상영표로 바로 연결</small></h2></div><span>${CINEMAS.length}곳</span></div><div class="grid">${CINEMAS.map(cinemaCard).join("")}</div><div class="verify" style="margin-top:12px">영화 상영시간은 매우 자주 바뀌므로 앱에 저장하지 않고 각 영화관 공식 예매처로 연결합니다.</div>` }
 function cinemaCard(c) { return `<div class="listCard"><div class="listMain"><b>${esc(c.name)}</b><small>${esc(c.district)} · ${esc(c.address)}<br>☎ ${esc(c.phone)}</small>${c.rating ? "" : `<div class="rating">🎞 독립·예술영화 · 손간판 극장</div>`}${parkLine(c)}<div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(c.url)}">${c.rating ? "실시간 상영시간" : "상영 시간표"} ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(c.name)}">지도 ↗</a></div></div></div>` }
 function petCard(c) {
-  return `<div class="listCard pet"><div class="petTop">${c.big ? "🐕" : "🐶"}<small>${c.big ? "넓은 마당·야외" : esc(c.near || c.district)}</small></div><div class="listMain"><div class="kindRow">${flagTag(c)}${homeTag(c)}<span class="kind">반려견 동반</span>${c.publicListed === false ? `<span class="menu" title="관광공사 반려동물 동반여행 공공데이터에 아직 없는 곳이에요">운영자 확인</span>` : c.publicListed ? `<span class="menu" title="한국관광공사 반려동물 동반여행 공공데이터">✓ 공공데이터</span>` : ""}${c.bigDog ? `<span class="io">🐕 대형견 가능</span>` : ""}<span class="gu">${esc(c.district)}${c.near ? " · " + esc(c.near) : ""}</span>${c.big ? `<span class="io out">🌳 야외 공간</span>` : ""}</div><b>${esc(c.name)}</b>
+  return `<div class="listCard pet"><div class="petTop">${c.big ? "🐕" : "🐶"}<small>${c.big ? "넓은 마당·야외" : esc(c.near || c.district)}</small></div><div class="listMain"><div class="kindRow">${flagTag(c)}${homeTag(c)}<span class="kind">반려견 동반</span>${c.publicListed === false ? `<span class="menu" title="관광공사 반려동물 동반여행 공공데이터에 아직 없는 곳이에요">운영자 확인</span>` : c.publicListed ? `<span class="menu" title="한국관광공사 반려동물 동반여행 공공데이터">✓ 공공데이터</span>` : ""}${c.bigDog ? `<span class="io">🐕 대형견 가능</span>` : ""}${c.outdoor && !c.big ? `<span class="io out">🌤 실외 공간</span>` : ""}<span class="gu">${esc(c.district)}${c.near ? " · " + esc(c.near) : ""}</span>${c.big ? `<span class="io out">🌳 야외 공간</span>` : ""}</div><b>${esc(c.name)}</b>
   <div class="petRule"><b>🐾 동반 규칙</b> ${esc(c.pet)}</div>${c.note ? `<small class="note">${esc(c.note)}</small>` : ""}
   <dl><dt>시간</dt><dd>${esc(c.hours || "매장에 확인")}</dd><dt>주소</dt><dd>${esc(c.address)}</dd>${c.phone ? `<dt>전화</dt><dd>${esc(c.phone)}</dd>` : ""}</dl>${parkLine(c)}
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('cafe','${jsq(c.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(c.name + " " + c.district)}">최신 정보 ↗</a>${favBtn("c:" + c.id)}${shareBtn("c", c.id)}${reportBtn("c", c.id)}</div><small class="source">출처 ${esc(c.source || "지역 반려동물 동반 장소 정보 모음")}${c.verified ? " · " + esc(c.verified) + " 확인" : ""}</small></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('cafe','${jsq(c.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(c.name + " " + c.district)}">최신 정보 ↗</a>${favBtn("c:" + c.id)}${shareBtn("c", c.id)}${reportBtn("c", c.id)}</div><small class="source">출처 ${esc(c.source || "지역 반려동물 동반 장소 정보 모음")}${c.written ? " · " + esc(c.written) + " 작성" : c.verified ? " · " + esc(c.verified) + " 확인" : ""}${c.written && c.written < "2024" ? " · 오래된 자료라 영업 여부를 꼭 확인하세요" : ""}</small></div></div>`;
 }
 let CAFE_GU = "전체";
 window.setCafeGu = g => { CAFE_GU = g; renderCafes() };
@@ -4481,7 +4482,7 @@ function renderCafes() { if (regionEmpty("cafesView", "🐶", "반려견 동반 
   <div class="petTips"><div><b>🦮 리드줄·하네스</b>대부분 필수예요. 매너벨트(기저귀)를 챙기면 실내 동반되는 곳이 많아요.</div><div><b>🐕 대형견이면</b>'넓은 마당·야외' 표시된 곳이 편해요. 크기 제한은 꼭 전화로 확인!</div><div><b>📞 가기 전에</b>동반 규칙·영업시간이 자주 바뀌어요. '최신 정보'로 한 번 더 확인하쇼.</div></div>
   <div class="subchips">${["전체", "야외", ...DIST_OPTS().slice(1).filter(g => CAFES.some(c => c.district === g))].map(g => `<button class="${g === CAFE_GU ? "active" : ""}" onclick="setCafeGu('${g}')">${g === "야외" ? "🌳 넓은 야외" : g}</button>`).join("")}</div>
   <div class="grid">${list.map(petCard).join("") || "<p class='empty'>이 동네엔 아직 등록된 곳이 없네잉.</p>"}</div>
-  <div class="verify" style="margin-top:14px"><b>이렇게 골랐어요</b> · 한국관광공사 「반려동물 동반여행」 공공데이터에 등록된 광주·전남 카페를 기본으로 보여드려요(✓ 공공데이터). 공공데이터에 아직 없지만 동반 가능으로 공개된 곳은 <b>운영자 확인</b> 표시를 달아 뒤에 따로 두었어요. 순위를 매기지 않고 ${HOME ? "내 동네에서 가까운 순" : "공공데이터 먼저, 목록 순"}으로 보여드려요. 동반 규칙은 매장 사정에 따라 바뀌니 방문 전 꼭 확인하세요.<br>목록에 없는 곳을 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.</div>`;
+  <div class="verify" style="margin-top:14px"><b>이렇게 골랐어요</b> · 한국관광공사 「반려동물 동반여행」과 한국문화정보원 「반려동물 동반 가능 문화시설」 공공데이터에 등록된 광주·전남 카페를 기본으로 보여드려요(✓ 공공데이터). 문화정보원 자료는 2022년에 조사된 것이라 카드마다 작성일을 적었어요. 공공데이터에 아직 없지만 동반 가능으로 공개된 곳은 <b>운영자 확인</b> 표시를 달아 뒤에 따로 두었어요. 순위를 매기지 않고 ${HOME ? "내 동네에서 가까운 순" : "공공데이터 먼저, 목록 순"}으로 보여드려요. 동반 규칙은 매장 사정에 따라 바뀌니 방문 전 꼭 확인하세요.<br>목록에 없는 곳을 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.</div>`;
 }
 
 /* ───────── 🏘 동네: 오늘 문 연 도서관 · 접수 중인 강좌 · 이번 주 체험 ─────────
@@ -5006,7 +5007,7 @@ function placeProfile(v) {
    ${v.desc || v.note ? `<p class="pfDesc">${esc(v.desc || v.note)}</p>` : ""}
    ${v.desc && v.note ? `<p class="pfNote">💡 ${esc(v.note)}</p>` : ""}
    ${v.highlights?.length ? `<div class="pfHighlights">${v.highlights.map(x => `<span>✓ ${esc(x)}</span>`).join("")}</div>` : ""}
-   ${visitLine(v)}${parkLine(v, true)}
+   ${visitLine(v)}${parkLine(v, true)}${petLine(v)}
    ${pmInfo && pmInfo.has ? `<h4>${pmInfo.has === true ? "🏛 상설·소장품 전시" : "🎨 작가·소장품 미술관"}${open === false ? " · 오늘은 휴관" : ""}</h4><p class="pfNone">${esc(pmInfo.text)}</p>` : ""}
    ${(ev.length || /공연장|전시·컨벤션|미술관|갤러리|박물관|기념관|전시관|복합문화공간|문학관|스포츠/.test(v.kind)) ? `<h4>${now.length || pmInfo ? `지금 하는 ${pmLabel}` : `지금 하는 ${word} 없음`}</h4>${now.length ? `<ul class="pfEv">${now.map(evRow).join("")}</ul>` : `<p class="pfNone">앱에 등록된 진행 중 ${pmLabel}${josa(pmLabel)} 없어요.${pmInfo && !pmInfo.has ? " " + esc(pmInfo.text) + "." : pmInfo && pmInfo.has === "collection" ? " 지금 걸린 전시는 누리집·전화로 확인하세요." : ""} 새로 잡히면 자동으로 떠요.</p>`}` : ""}
    ${next.length ? `<h4>다가오는 ${word}</h4><ul class="pfEv">${next.slice(0, 3).map(evRow).join("")}</ul>` : ""}
@@ -5572,7 +5573,7 @@ function decKidFoodOk(x){ return !/포차|주점|호프|술집|이자카야|양�
 function decStayCap(sel){ const d=TRIP_DUR[sel.time]||180; return d<=60?45:d<=180?60:d<=300?90:120 }
 function decCoordOk(x,sel){ return tripMoveKey(sel.move)!=="도보" || !!tripCoordExact(x) }   // 걸어서 갈 땐 위치가 확인된 곳만
 function decFreeOk(x){ return /무료/.test((x.price||"")+" "+(x.fee||"")) }
-function decPetVenueOk(v){ const t=[v.kind,v.name].join(" "); if(/5·18|사적지|기념/.test(t)) return false; return (v.inout||"").includes("야외") && !(v.inout||"").includes("실내") && /공원|정원|자연|산책|호수|숲|해변|해수욕장|경관|둘레길|섬/.test(t) && !/시장|케이블카|박물관|미술관|전시|과학관|사찰|사$|암$|묘원|묘지/.test(t) }
+function decPetVenueOk(v){ if(v.petInfo){ if(v.petInfo.allow!=="Y") return false; if(v.petInfo.cat==="여행지") return true } const t=[v.kind,v.name].join(" "); if(/5·18|사적지|기념/.test(t)) return false; return (v.inout||"").includes("야외") && !(v.inout||"").includes("실내") && /공원|정원|자연|산책|호수|숲|해변|해수욕장|경관|둘레길|섬/.test(t) && !/시장|케이블카|박물관|미술관|전시|과학관|사찰|사$|암$|묘원|묘지/.test(t) }
 /* 고른 장소들을 이동이 가장 짧은 순서로 (모두 시간 안에 들어가는 순서 중에서) */
 function decBestOrder(list,selected){
   const L=list.filter(Boolean); if(L.length<3) return tripPlanPicks(L,selected).picks;
@@ -6068,6 +6069,37 @@ function applyKidsMuseumBoost(list) {
   }
   return list;
 }
+/* 🐶 반려동물 동반 정보 (한국문화정보원 「전국 반려동물 동반 가능 문화시설」 공공데이터 · docs/data/pet_public.json)
+   박물관·미술관·문예회관·여행지(공원·관광지)만 장소에 붙인다. 이름이 맞고 가까울 때만 — 잘못 붙이느니 안 붙인다. */
+function attachPetInfo(list, pet) {
+  const rows = ((pet && pet.items) || []).filter(r => ["박물관", "미술관", "문예회관", "여행지"].includes(r.cat));
+  if (!rows.length) return list;
+  const core = n => norm(String(n || "").replace(/\([^)]*\)/g, "")).replace(/광주광역시|전라남도/g, "");
+  const dist = (a, b) => (a.lat && b.lat) ? km({ lat: +a.lat, lng: +a.lng }, { lat: +b.lat, lng: +b.lng }) : null;
+  return list.map(v => {
+    const a = core(v.name); if (a.length < 2) return v;
+    let best = null;
+    for (const r of rows) {
+      const b = core(r.name); if (b.length < 2) continue;
+      const same = a === b, part = (a.length >= 4 && b.length >= 4) && (a.includes(b) || b.includes(a));
+      if (!same && !part) continue;
+      if (!same && /동물원|수목원|워터파크/.test(v.name) && !/동물원|수목원|워터파크/.test(r.name)) continue;   // 공원은 되도 그 안 동물원은 다를 수 있음
+      const d = dist(v, r);
+      const ok = d != null ? d <= (same ? 2 : 0.8) : (same && (!v.district || !r.district || v.district === r.district));
+      if (ok && (!best || (d ?? 9) < (best.d ?? 9))) best = { r, d };
+    }
+    if (!best) return v;
+    const r = best.r;
+    return { ...v, petInfo: { allow: r.allow, size: r.size, limit: r.limit, indoor: r.indoor, outdoor: r.outdoor, fee: r.fee, cat: r.cat, written: r.written } };
+  });
+}
+function petLine(v) {
+  const p = v && v.petInfo; if (!p) return "";
+  const when = p.written ? ` · ${esc(p.written.slice(0, 7).replace("-", "."))} 작성` : "";
+  if (p.allow !== "Y") return `<small class="goLine petLine no">🚫 반려동물 동반 불가 <i>공공데이터${when}</i></small>`;
+  const bits = [p.limit, p.size && p.size !== "모두 가능" ? p.size : "", p.fee ? "추가요금 " + p.fee : ""].filter(Boolean);
+  return `<small class="goLine petLine ok">🐶 반려견 동반 가능${bits.length ? " · " + esc(bits.join(" · ")) : ""} <i>공공데이터${when} · 현장 안내 확인</i></small>`;
+}
 function addrCore(a) { return norm(String(a || "").replace(/^(전남광주통합특별시|전남광주특별시|광주광역시|전라남도|광주|전남)\s*/, "").replace(/\([^)]*\)/g, "")) }
 function dedupeLibs(list) {
   // 같은 도서관이 이름만 다르게 두 번 올라온 경우(예: '광주중앙도서관'·'광주광역시교육청중앙도서관',
@@ -6313,7 +6345,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.18 선정기준 공개";
+const APP_VER = "10.18 반려동물 공공데이터";
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7701,6 +7733,7 @@ html:where([data-theme="dark"]) body #aiBox #answer .creamingState small{color:r
 .ncPic>.ncBlur{position:absolute;inset:-16px;z-index:0;background-size:cover;background-position:center;filter:blur(12px) brightness(.85);font-style:normal}
 .ncCat,.ncHot{z-index:2}
 .ncBody small.ncVenue{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.petLine i{font-style:normal;font-size:11px;opacity:.7;margin-left:4px}.petLine.no{color:var(--muted)!important}
 .pkLine.pkNone{display:flex!important;background:none!important;padding:0!important;margin-top:2px;font-size:12px!important;color:var(--muted)!important;gap:4px}
 .pkLine.pkNone a{margin-left:0;font-weight:700;color:var(--muted)}
 .ncBtns{padding-top:6px}
