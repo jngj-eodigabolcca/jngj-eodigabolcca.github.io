@@ -478,6 +478,16 @@ def main():
         return
     data["restaurants"] = list(data.get("restaurants") or []) + discover_food(data.get("restaurants") or [])
     data["cafes"] = merge_pet_places(data.get("cafes") or [])
+    try:                                    # 전통시장 표준데이터 CSV 가 있으면 빠진 시장 보강
+        import markets
+        data["venues"] = list(data.get("venues") or []) + markets.std_markets(data.get("venues") or [])
+    except Exception as ex:
+        print(f"  ⚠ 전통시장 보강 실패 (무시하고 계속): {ex}", flush=True)
+    try:                                    # 박물관·미술관 표준데이터 CSV 가 있으면 빠진 곳 보강
+        import markets
+        data["venues"] = list(data.get("venues") or []) + markets.std_museums(data.get("venues") or [])
+    except Exception as ex:
+        print(f"  ⚠ 박물관·미술관 보강 실패 (무시하고 계속): {ex}", flush=True)
     cache = u.read_json(CACHE_FILE, {})
     stats = {}
     stopped = False
