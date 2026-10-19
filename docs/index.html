@@ -1289,6 +1289,25 @@ html body .planMeal span{grid-row:1/3;max-width:76px}
 html body .planMeal b,html body .planMeal small{grid-column:2;min-width:0}
 html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:4px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #f3c9bc}
 :root[data-theme="dark"] .planMeal a{background:var(--card);border-color:#5a3f37}
+.noticeBoard{margin:10px 0 14px;padding:12px 14px;border-radius:16px;background:var(--nb-bg,#fff7e6);border:1px solid var(--nb-bd,#f1d8a8);color:inherit}
+.noticeBoard[hidden]{display:none}
+.noticeBoard .nbHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.noticeBoard .nbHead em{font-style:normal;background:#e2553c;color:#fff;border-radius:10px;padding:0 7px;font-size:12px;margin-left:4px}
+.noticeBoard .nbX{background:none;border:0;color:inherit;opacity:.65;font-size:12px;cursor:pointer;padding:4px}
+.noticeBoard ul{list-style:none;margin:0;padding:0}
+.noticeBoard li button{display:flex;gap:8px;width:100%;text-align:left;background:none;border:0;border-top:1px dashed rgba(0,0,0,.12);padding:8px 2px;color:inherit;font:inherit;font-size:14px;cursor:pointer;line-height:1.4}
+.noticeBoard li:first-child button{border-top:0}
+.noticeBoard p{margin:0;font-size:14px;line-height:1.5}
+.noticeBoard .nbFoot{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.noticeBoard .nbFoot button{border:1px solid currentColor;background:none;color:inherit;border-radius:12px;padding:6px 10px;font:inherit;font-size:13px;cursor:pointer}
+.noticeBoard small{opacity:.7;font-size:12px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .noticeBoard{--nb-bg:#2c2618;--nb-bd:#5a4a24}}
+:root[data-theme="dark"] .noticeBoard{--nb-bg:#2c2618;--nb-bd:#5a4a24}
+#calAsk{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.25s;z-index:210;background:rgba(22,38,31,.96);color:#fff;border-radius:14px;padding:10px 12px;display:flex;gap:8px;align-items:center;max-width:92vw;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#calAsk.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#calAsk span{display:flex;flex-direction:column}#calAsk small{opacity:.75;font-size:12px}
+#calAsk button{border:0;border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;white-space:nowrap;cursor:pointer;background:rgba(255,255,255,.15);color:#fff}
+#calAsk .yes{background:#f2b33d;color:#1c1c1c;font-weight:700}
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -1742,6 +1761,7 @@ button{min-height:var(--tap)}
 </section>
 
 <main class="wrap">
+<section class="noticeBoard" id="noticeBoard" hidden aria-live="polite"></section>
 <section class="decideWrap mainDecision" id="decideNow">
   <div class="decide">
     <div class="decideTop">
@@ -2359,7 +2379,7 @@ function renderRegionBar() {
 function renderAll() {
   $("#eventNum").textContent = EVENTS.length; $("#placeNum").textContent = VENUES.length; $("#foodNum").textContent = FOOD.length; $("#cafeNum").textContent = CAFES.length;
   renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
-  renderMeta(); renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); renderFavs(); renderGallery();
+  renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); renderFavs(); renderGallery();
 }
 window.setRegion = r => {
   if (!REGIONS[r] || r === REGION) return;
@@ -3368,7 +3388,7 @@ function renderToday() {
 }
 
 /* ───────── 찜 (일정·장소·맛집 공통) ───────── */
-function fav(id) { FAVS = FAVS.includes(id) ? FAVS.filter(x => x !== id) : [...FAVS, id]; store.set("glm_final_favs", FAVS); document.querySelectorAll(`[data-fav="${CSS.escape(id)}"]`).forEach(b => { b.classList.toggle("on", FAVS.includes(id)); b.textContent = FAVS.includes(id) ? "♥" : "♡" }); renderFavs() }
+function fav(id) { FAVS = FAVS.includes(id) ? FAVS.filter(x => x !== id) : [...FAVS, id]; store.set("glm_final_favs", FAVS); document.querySelectorAll(`[data-fav="${CSS.escape(id)}"]`).forEach(b => { b.classList.toggle("on", FAVS.includes(id)); b.textContent = FAVS.includes(id) ? "♥" : "♡" }); renderFavs(); try { renderNoticeBoard(); favCalPrompt(id) } catch (e) {} }
 window.fav = fav;
 const visitBtn = id => { const on = VISITED.includes(id); return `<button class="visit ${on ? "on" : ""}" data-visit="${esc(id)}" onclick="event.stopPropagation();visit('${jsq(id)}')" title="가 본 곳으로 기록 (이 기기에만 저장)">${on ? "✓ 가봤어요" : "가봤어요"}</button>` };
 window.visit = id => {
@@ -4670,12 +4690,77 @@ function visitedHtml() {
   <p class="visitStats">${Object.entries(kinds).map(([k, n]) => `<span>${esc(k)} ${n}</span>`).join("")}</p>
   ${vs.length ? `<div class="grid">${vs.map(placeCard).join("")}</div>` : ""}${es.length ? `<div class="grid" style="margin-top:12px">${es.map(eventCard).join("")}</div>` : ""}`;
 }
+/* ── 나에게 온 소식 (맞춤형 알림마당) ──
+   서버·로그인 없이 이 기기에 저장된 ♡찜·🏠동네·🎤관심 가수만으로 계산해요. 오늘 하루 숨기기 가능 */
+const NB_SEEN_KEY = "glm_notice_seen_v1";
+function noticeItems() {
+  const t = todayISO(), out = [];
+  const go = id => `detail('${jsq(id)}')`;
+  // ① 찜한 행사
+  for (const e of ALL.EVENTS) {
+    if (!FAVS.includes(e.id)) continue;
+    const dl = daysLeft(e), st = ticketOf(e);
+    if (e.end && e.end < t) continue;
+    if (dl != null && dl >= 0 && dl <= 3 && (e.start || t) < e.end) out.push({ p: 1, ic: "⏰", txt: `${dl === 0 ? "오늘이 마지막 날" : `마지막 날까지 ${dl}일`} · ${e.title}`, on: go(e.id) });
+    else if (e.start === t) out.push({ p: 1, ic: "🎉", txt: `오늘 열려요 · ${e.title}`, on: go(e.id) });
+    else if (e.start && e.start > t && daysBetween(t, e.start) <= 3) out.push({ p: 2, ic: "📌", txt: `${daysBetween(t, e.start) === 1 ? "내일" : daysBetween(t, e.start) + "일 뒤"} 시작 · ${e.title}`, on: go(e.id) });
+    if (st.status === "예매예정") out.push({ p: 2, ic: "🎟", txt: `예매 오픈 예정 · ${e.title}${st.note ? " (" + st.note + ")" : ""}`, on: go(e.id) });
+  }
+  // ② 찜한 공간이 오늘 쉬는 날
+  for (const v of ALL.VENUES) {
+    if (!FAVS.includes("v:" + v.id)) continue;
+    if (openToday(v) === false) out.push({ p: 2, ic: "🚫", txt: `오늘 휴관 · ${v.name}`, on: `aiProfile('${jsq(v.id)}')` });
+  }
+  // ③ 내 동네(🏠) 이번 주 행사 · 오늘 장날
+  if (HOME && HOME.gu && HOME.gu !== "내 위치") {
+    const gu = HOME.gu, wk = addDaysISO(t, 7);
+    let seen = store.get(NB_SEEN_KEY, null); const first = !seen; seen = seen || {};
+    const mine = ALL.EVENTS.filter(e => e.district === gu && (e.start || "") <= wk && (e.end || e.start || "") >= t && !FAVS.includes(e.id));
+    const fresh = mine.filter(e => !first && (!seen[e.id] || seen[e.id] === t));
+    mine.forEach(e => { if (!seen[e.id]) seen[e.id] = t });
+    for (const k in seen) if (seen[k] < addDaysISO(t, -60)) delete seen[k];
+    store.set(NB_SEEN_KEY, seen);
+    if (fresh.length) out.push({ p: 2, ic: "🆕", txt: `${gu}에 새로 올라온 행사 ${fresh.length}건 · ${fresh.slice(0, 2).map(e => e.title).join(", ")}${fresh.length > 2 ? " 외" : ""}`, on: go(fresh[0].id) });
+    else if (mine.length) out.push({ p: 3, ic: "🏠", txt: `이번 주 ${gu} 행사 ${mine.length}건 · ${mine.slice(0, 2).map(e => e.title).join(", ")}${mine.length > 2 ? " 외" : ""}`, on: go(mine[0].id) });
+    const jang = ALL.VENUES.filter(v => v.market && v.district === gu && v.market.days && v.market.days.length && jangOn(v, t));
+    if (jang.length) out.push({ p: 2, ic: "🧺", txt: `오늘 장날 · ${jang.map(v => v.name).slice(0, 3).join(", ")}`, on: `aiProfile('${jsq(jang[0].id)}')` });
+  }
+  // ④ 관심 가수 새 공연
+  let au = []; try { au = JSON.parse(localStorage.getItem("glm_artist_updates_v1") || "[]") } catch {}
+  if (au.length) out.push({ p: 1, ic: "🎤", txt: `관심 가수 새 공연·예매 소식 ${au.length}건 · ${au.slice(0, 2).map(x => x.title).join(", ")}`, on: `showTab('popshows');document.getElementById('popshowsView').scrollIntoView()` });
+  return out.sort((a, b) => a.p - b.p);
+}
+function daysBetween(a, b) { return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 864e5) }
+function addDaysISO(iso, n) { const d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10) }
+function renderNoticeBoard() {
+  const box = document.getElementById("noticeBoard"); if (!box) return;
+  const items = noticeItems(), hidden = store.get("glm_notice_hide", "") === todayISO();
+  const setup = !(HOME && HOME.gu) && !FAVS.length && !savedArtists().length;
+  if (hidden || (!items.length && !setup)) { box.hidden = true; box.innerHTML = ""; return }
+  const cal = favCalList().length;
+  box.hidden = false;
+  box.innerHTML = `<div class="nbHead"><b>🔔 나에게 온 소식${items.length ? ` <em>${items.length}</em>` : ""}</b><button type="button" class="nbX" onclick="hideNoticeToday()" aria-label="오늘 하루 숨기기">오늘 그만 보기 ✕</button></div>
+  ${items.length ? `<ul>${items.slice(0, 6).map(x => `<li><button type="button" onclick="${x.on}"><span>${x.ic}</span>${esc(x.txt)}</button></li>`).join("")}</ul>${items.length > 6 ? `<small>외 ${items.length - 6}건은 ♡ 찜에서 확인하세요.</small>` : ""}`
+    : `<p>♡ 찜을 하거나 🏠 내 동네·🎤 관심 가수를 정해 두면, 마감 임박·휴관·장날·새 행사를 여기서 먼저 알려드려요. <small>(이 기기에만 저장 · 로그인 없음)</small></p>`}
+  ${cal ? `<div class="nbFoot"><button type="button" onclick="addFavsToCalendar()">📅 찜한 일정 ${cal}건 휴대폰 캘린더에 넣기</button><small>앱을 닫아 둬도 캘린더가 하루 전에 알려줘요</small></div>` : ""}`;
+}
+window.hideNoticeToday = () => { store.set("glm_notice_hide", todayISO()); renderNoticeBoard(); toast("오늘은 소식 상자를 숨겨요. 내일 다시 보여요.") };
+/* ♡ 누른 직후: 날짜 있는 행사면 '캘린더에도 넣을까요?' 한 번 묻기 */
+function favCalPrompt(id) {
+  if (!FAVS.includes(id)) return;
+  const x = ALL.EVENTS.find(e => e.id === id), pl = x && calPlan(x); if (!pl) return;
+  let t = document.getElementById("calAsk");
+  if (!t) { t = document.createElement("div"); t.id = "calAsk"; t.setAttribute("role", "dialog"); document.body.appendChild(t) }
+  const last = pl.title.startsWith("[마지막 날]");
+  t.innerHTML = `<span>♥ 찜했어요. 휴대폰 캘린더에도 넣을까요?<small>${last ? "마지막 날 전날 아침에" : pl.kind === "time" ? "하루 전에" : "전날 아침에"} 알려줘요</small></span><button type="button" class="yes" onclick="addToCalendar('${jsq(id)}');document.getElementById('calAsk').classList.remove('on')">📅 넣기</button><button type="button" onclick="document.getElementById('calAsk').classList.remove('on')">괜찮아요</button>`;
+  t.classList.add("on"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("on"), 7000);
+}
 function renderFavs() {
   const ev = ALL.EVENTS.filter(x => FAVS.includes(x.id)), pl = ALL.VENUES.filter(v => FAVS.includes("v:" + v.id)), fd = ALL.FOOD.filter(r => FAVS.includes("f:" + r.id)), st = ALL.STAYS.filter(h => FAVS.includes("s:" + h.id)), cf = ALL.CAFES.filter(c => FAVS.includes("c:" + c.id));
   const bk = ALL.BAKERIES.filter(b => FAVS.includes("b:" + b.id));
   const n = ev.length + pl.length + fd.length + bk.length + st.length + cf.length;
   $("#favoritesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">FAVORITES</span><h2>찜·가 본 곳<small>♡ 찜과 ✓ 가봤어요는 이 기기에만 저장돼요 · 모든 권역을 함께 보여줘요</small></h2></div><span>${n}개</span></div>
-  <div class="favTools">${FAVS.length ? `<button type="button" onclick="shareFavs()">📤 찜 목록 링크로 보내기</button>` : ""}<small>휴대폰을 바꿀 때 이 링크를 새 휴대폰에서 열면 찜이 그대로 옮겨져요.</small></div>
+  <div class="favTools">${FAVS.length ? `<button type="button" onclick="shareFavs()">📤 찜 목록 링크로 보내기</button>` : ""}${favCalList().length ? `<button type="button" onclick="addFavsToCalendar()">📅 찜한 일정 ${favCalList().length}건 캘린더에 넣기</button>` : ""}<small>휴대폰을 바꿀 때 이 링크를 새 휴대폰에서 열면 찜이 그대로 옮겨져요.</small></div>
   ${n ? "" : "<p class='empty'>아직 찜한 게 없네잉. 일정·장소·맛집 카드의 ♡를 눌러보쇼.</p>"}
   ${ev.length ? `<h3 class="sub">일정</h3><div class="grid">${ev.map(eventCard).join("")}</div>` : ""}
   ${pl.length ? `<h3 class="sub">공간</h3><div class="grid">${pl.map(placeCard).join("")}</div>` : ""}
@@ -6037,27 +6122,44 @@ function calText(x) {
   return [x.venue && `장소: ${x.venue}`, x.time && `시간: ${x.time}`, x.price && `가격: ${x.price}`, x.url && `공식 정보: ${x.url}`,
     `앱에서 보기: ${SITE_URL}#e=${encodeURIComponent(x.id)}`].filter(Boolean).join("\n");
 }
-window.addToCalendar = id => {
-  const x = ALL.EVENTS.find(e => e.id === id); const pl = x && calPlan(x);
-  if (!pl) { toast("날짜가 정해지지 않은 일정이라 캘린더에 넣을 수 없어요."); return }
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
+function icsVEvent(x, pl, stamp) {
   const when = pl.kind === "time"
     ? [`DTSTART;TZID=Asia/Seoul:${ymdC(pl.date)}T${pl.hh}${pl.mm}00`, `DURATION:PT2H`]
     : [`DTSTART;VALUE=DATE:${ymdC(pl.from)}`, `DTEND;VALUE=DATE:${ymdC(dayAfter(pl.to))}`];
   const alarm = pl.kind === "time" ? "-P1D" : "-PT15H";   // 시간 일정: 하루 전 / 종일: 전날 오전 9시
-  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//gwangju-eodi//KO", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-    "BEGIN:VTIMEZONE", "TZID:Asia/Seoul", "BEGIN:STANDARD", "DTSTART:19700101T000000", "TZOFFSETFROM:+0900", "TZOFFSETTO:+0900", "TZNAME:KST", "END:STANDARD", "END:VTIMEZONE",
-    "BEGIN:VEVENT", `UID:${x.id}-${ymdC(pl.date || pl.from)}@gwangju-eodi`, `DTSTAMP:${stamp}`, ...when,
+  return ["BEGIN:VEVENT", `UID:${x.id}-${ymdC(pl.date || pl.from)}@gwangju-eodi`, `DTSTAMP:${stamp}`, ...when,
     `SUMMARY:${icsEsc(pl.title)}`, `LOCATION:${icsEsc([x.venue, x.address].filter(Boolean).join(" · "))}`,
     `DESCRIPTION:${icsEsc(calText(x))}`, `URL:${SITE_URL}#e=${encodeURIComponent(x.id)}`,
-    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(pl.title)}`, `TRIGGER:${alarm}`, "END:VALARM",
-    "END:VEVENT", "END:VCALENDAR"];
+    "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(pl.title)}`, `TRIGGER:${alarm}`, "END:VALARM", "END:VEVENT"];
+}
+function icsDownload(vevents, fname) {
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//gwangju-eodi//KO", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    "BEGIN:VTIMEZONE", "TZID:Asia/Seoul", "BEGIN:STANDARD", "DTSTART:19700101T000000", "TZOFFSETFROM:+0900", "TZOFFSETTO:+0900", "TZNAME:KST", "END:STANDARD", "END:VTIMEZONE",
+    ...vevents.flat(), "END:VCALENDAR"];
   const blob = new Blob([lines.map(icsFold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
   // 한글 파일명은 일부 브라우저에서 무시돼 확장자가 사라짐 → 영문+날짜로
-  a.download = `gwangju-event-${ymdC(pl.date || pl.from)}.ics`;
+  a.download = fname;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 1500);
+}
+const icsStamp = () => new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
+window.addToCalendar = id => {
+  const x = ALL.EVENTS.find(e => e.id === id); const pl = x && calPlan(x);
+  if (!pl) { toast("날짜가 정해지지 않은 일정이라 캘린더에 넣을 수 없어요."); return }
+  icsDownload([icsVEvent(x, pl, icsStamp())], `gwangju-event-${ymdC(pl.date || pl.from)}.ics`);
   toast(pl.kind === "time" ? "캘린더 파일을 받았어요. 열면 일정이 들어가고, 하루 전에 알려줘요." : "캘린더 파일을 받았어요. 열면 일정이 들어가고, 전날 아침에 알려줘요.");
+};
+/* 찜한 행사를 한 파일로 — 휴대폰 캘린더가 알림을 대신 울려 줘요(앱을 닫아도) */
+function favCalList() {
+  const t = todayISO();
+  return ALL.EVENTS.filter(e => FAVS.includes(e.id) && (e.end || e.start || "") >= t).map(e => [e, calPlan(e)]).filter(([, pl]) => pl).slice(0, 40);
+}
+window.addFavsToCalendar = () => {
+  const list = favCalList();
+  if (!list.length) { toast("캘린더에 넣을 찜한 일정이 없어요. 날짜가 정해진 행사에 ♡를 눌러 주세요."); return }
+  const st = icsStamp();
+  icsDownload(list.map(([x, pl]) => icsVEvent(x, pl, st)), `gwangju-favs-${ymdC(todayISO())}.ics`);
+  toast(`📅 찜한 일정 ${list.length}건을 캘린더 파일로 받았어요. 열면 한꺼번에 들어가고, 하루 전·전날 아침에 알려줘요.`);
 };
 function googleCalUrl(x) {
   const pl = calPlan(x); if (!pl) return "";
@@ -6508,7 +6610,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.50 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.51 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
