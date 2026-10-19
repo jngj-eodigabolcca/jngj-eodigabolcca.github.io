@@ -4,7 +4,7 @@
    - 아이콘·글꼴·지도 라이브러리는 "저장본 먼저": 두 번째부터 빨리 뜸
    - 지도 라이브러리·글꼴은 설치할 때 미리 저장 → 첫 방문 뒤 인터넷이 끊겨도 지도가 뜸
    - 행사 사진 등 바깥 이미지는 저장하지 않음(용량 절약) */
-const VERSION = "v43-2026-10-19-entry-fee";
+const VERSION = "v44-2026-10-19-no-stale";
 const SHELL = `shell-${VERSION}`, DATA = `data-${VERSION}`, LIB = `lib-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./creaming.webp"];
 const LIB_FILES = [
@@ -33,7 +33,9 @@ self.addEventListener("activate", e => {
 async function networkFirst(req, cacheName, timeoutMs = 6000) {
   const cache = await caches.open(cacheName);
   // 늦게 도착한 응답도 저장해서, 다음번엔 최신본이 나오게 함
-  const net = fetch(req).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res });
+  // 브라우저 HTTP 캐시(GitHub Pages는 10분)를 건너뛰고 서버에 새 버전이 있는지 꼭 확인 → 올리자마자 바로 반영
+  const fresh = req.mode === "navigate" ? fetch(req.url, { cache: "no-cache", credentials: "same-origin" }) : fetch(new Request(req, { cache: "no-cache" }));
+  const net = fresh.then(res => { if (res && res.ok) cache.put(req, res.clone()); return res });
   try {
     return await Promise.race([net, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), timeoutMs))]);
   } catch (err) {
