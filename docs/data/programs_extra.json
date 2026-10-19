@@ -1,0 +1,53 @@
+{
+  "_설명": "공공데이터(평생학습강좌 표준데이터)에 안 올라온 시·군·구 강좌 모집 공고. 매주 월요일 갱신. 앱 '동네' 탭 강좌 목록에 함께 나와요. 필수: id, name, district, start, end(YYYY-MM-DD). 끝난 강좌는 앱이 알아서 숨겨요.",
+  "programs": [
+    {
+      "id": "px-gh-women-future-2026h2",
+      "name": "하반기 여성미래행복과정 (바리스타·베이킹·천연염색·레터링케이크·꽃꽂이 등 7개 강좌)",
+      "org": "고흥군 가족행복과",
+      "place": "고흥군 여성지원센터 등",
+      "address": "전남 고흥군 고흥읍",
+      "district": "고흥군",
+      "start": "2026-10-26",
+      "end": "2026-12-31",
+      "time": "강좌별 상이",
+      "days": "",
+      "target": "고흥군에 주소를 둔 여성",
+      "fee": "공식 안내 확인",
+      "free": false,
+      "applyStart": "2026-10-14",
+      "applyEnd": "2026-10-21",
+      "applyHow": "고흥군 평생학습 누리집 선착순",
+      "select": "선착순",
+      "phone": "",
+      "url": "https://www.koreaunionnews.com/2320361",
+      "desc": "취·창업, 여성미래행복, 일하는 엄마 역량강화 3개 분야",
+      "source": "고흥군 발표 · 한국연합신문 2026.10.13",
+      "verified": "2026-10-19"
+    },
+    {
+      "id": "px-gh-village-happy-2026",
+      "name": "찾아가는 행복강좌 (건강요가·노래교실·라탄공예)",
+      "org": "고흥군",
+      "place": "고흥군 12개 마을 (점암면 용두마을·고흥읍 신흥마을 등)",
+      "address": "전남 고흥군",
+      "district": "고흥군",
+      "start": "2026-09-30",
+      "end": "2026-11-30",
+      "time": "마을별 상이",
+      "days": "",
+      "target": "참여 마을 주민 누구나",
+      "fee": "무료",
+      "free": true,
+      "applyStart": "",
+      "applyEnd": "",
+      "applyHow": "별도 신청 없이 자유 참여",
+      "select": "",
+      "phone": "",
+      "url": "https://www.jntoday.co.kr/news/article.html?no=317503",
+      "desc": "수요조사로 고른 생활 강좌를 마을로 찾아가 운영",
+      "source": "고흥군 발표 · 전남투데이 2026.10.1",
+      "verified": "2026-10-19"
+    }
+  ]
+}

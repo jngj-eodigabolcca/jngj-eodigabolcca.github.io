@@ -2412,8 +2412,12 @@ async function load() {
   E0 = [...E0, ...GMA_NOW.filter(e => !E0.some(x => x.id === e.id) && !seenTitles.has(looseT(e.title)))];
   // 숙소: 메뉴엔 없음. 'KTX 1박 2일'·'숙소' 같은 요청에서만 코스에 들어감
   // 동네 강좌·도서관 (없으면 빈 목록 — 자동 수집이 처음 돈 뒤부터 채워짐)
-  const [P0, L0, PET0] = await Promise.all([getJSON("programs"), getJSON("libraries"), getJSON("pet_public", null)]);
-  ALL.PROGRAMS = Array.isArray(P0) ? P0 : []; ALL.LIBS = dedupeLibs(Array.isArray(L0) ? L0 : []);
+  const [P0, L0, PET0, PX0] = await Promise.all([getJSON("programs"), getJSON("libraries"), getJSON("pet_public", null), getJSON("programs_extra", null)]);
+  // 공공데이터에 없는 시·군 강좌 모집 공고(매주 보강) → 같은 강좌는 한 번만
+  const PX = (Array.isArray(PX0) ? PX0 : (PX0 && PX0.programs) || []).filter(p => p && p.name && p.district);
+  const pkey = p => norm((p.name || "") + (p.org || p.place || ""));
+  const pseen = new Set((Array.isArray(P0) ? P0 : []).map(pkey));
+  ALL.PROGRAMS = [...(Array.isArray(P0) ? P0 : []), ...PX.filter(p => !pseen.has(pkey(p)))]; ALL.LIBS = dedupeLibs(Array.isArray(L0) ? L0 : []);
   // '정보 수정' 제보가 열려 있는 항목 (자동 수집이 GitHub 이슈에서 읽어 옴)
   try { const F0 = await getJSON("flags", null); if (F0 && typeof F0 === "object" && !Array.isArray(F0)) FLAGS = F0 } catch { }
   // 공식 공휴일 목록(자동 수집)이 있으면 기본값에 더한다
@@ -4591,6 +4595,22 @@ function progCard(p) {
   ${p.applyHow ? `<small>신청: ${esc(p.applyHow)}${p.select ? ` · ${esc(p.select)}` : ""}</small>` : ""}
   <div class="btnRow">${p.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${esc(/^https?:/.test(p.url) ? p.url : "http://" + p.url)}">신청·자세히 ↗</a>` : ""}${p.phone ? `<a class="miniBtn" href="tel:${esc(p.phone)}">☎ 문의</a>` : ""}</div></div></div>`;
 }
+/* 공공데이터에 강좌가 안 올라온 동네: 빈칸 대신 그 동네 평생학습관·주민자치센터 강좌를 찾아보는 길 */
+const localSearchName = g => (/^(동구|서구|남구|북구|광산구)$/.test(g) ? "광주 " : "") + g;
+// 확인된 시·군 공식 강좌 누리집 (없는 곳은 검색으로 안내)
+const LOCAL_PORTALS = { "광산구": ["광산 평생학습포털 배우랑께", "https://edu.gwangsan.go.kr/index.cs"], "순천시": ["순천시 평생교육포털", "https://lms.schc.go.kr/"], "담양군": ["담양군 평생학습관", "https://www.dh.go.kr/lifelong/index.do"], "곡성군": ["곡성군미래교육재단", "https://www.gokmg.or.kr/"] };
+const localSearchUrl = (g, what) => "https://search.naver.com/search.naver?query=" + encodeURIComponent(`${localSearchName(g)} ${what}`);
+function localFindCard(g) {
+  return `<div class="listCard"><div class="listMain"><b>${esc(g)} 강좌는 아직 공공데이터에 안 올라왔어요</b>
+  <small>구·군청이 4분기 강좌를 올리면 자동으로 채워져요. 그 전에는 아래에서 바로 찾아보세요.</small>
+  <div class="btnRow">${LOCAL_PORTALS[g] ? `<a class="miniBtn" target="_blank" rel="noopener" href="${LOCAL_PORTALS[g][1]}">🏛 ${esc(LOCAL_PORTALS[g][0])} ↗</a>` : ""}<a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "평생학습관 강좌 수강생 모집")}">📚 평생학습관 강좌 ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "주민자치센터 프로그램 모집")}">🏘 주민자치센터 프로그램 ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "문화원 강좌 모집")}">🎨 문화원 강좌 ↗</a></div></div></div>`;
+}
+function localMissingRow(progs) {
+  const have = new Set(progs.map(p => p.district));
+  const miss = (REGIONS[REGION]?.districts || []).filter(g => !have.has(g));
+  if (!miss.length) return "";
+  return `<p class="emptyNote" style="margin-top:12px">📭 강좌가 아직 안 올라온 동네: ${miss.map(g => `<a href="#" onclick="event.preventDefault();setLocalGu('${jsq(g)}')">${esc(g)}</a>`).join(" · ")} — 누르면 그 동네 강좌 찾아보는 길을 알려드려요.</p>`;
+}
 function renderLocal() {
   const el = document.getElementById("localView"); if (!el) return;
   const t = todayISO(), wk = isoPlus(7);
@@ -4606,7 +4626,7 @@ function renderLocal() {
   if (LOCAL_F === "주말") progs = progs.filter(weekend);
   progs = sortHome(progs); progs.sort((a, b) => progState(a)[2] - progState(b)[2] || (a.free === b.free ? 0 : a.free ? -1 : 1));
   const exp = EVENTS.filter(e => (e.subtype === "교육·체험" || (e.tags || []).includes("체험")) && (!e.end || e.end >= t) && (!e.start || e.start <= wk)).filter(gu);
-  const dists = DIST_OPTS().slice(1).filter(g => LIBS.some(l => l.district === g) || PROGRAMS.some(p => p.district === g));
+  const dists = DIST_OPTS().slice(1).filter(g => LIBS.some(l => l.district === g) || PROGRAMS.some(p => p.district === g) || (REGIONS[REGION]?.districts || []).includes(g));
   const nothing = !LIBS.length && !PROGRAMS.length;
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MY NEIGHBORHOOD</span><h2>동네서 시간 보내기<small>${esc(RW())} 도서관·구청·주민센터·평생학습관 강좌와 체험 — 대부분 무료거나 싸요</small></h2></div><span>${progs.length + openLibs.length}</span></div>
   <div class="subchips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${g}')">${g === "전체" ? "모든 동네" : g}</button>`).join("")}</div>
@@ -4615,7 +4635,8 @@ function renderLocal() {
   ${LIBS.length ? `<h3 class="sub" style="margin-top:22px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 12).map(([l]) => libCard(l)).join("")}</div>${libs.length > 12 ? `<p class="emptyNote">그 밖에 ${libs.length - 12}곳 — 위에서 동네를 고르면 더 보여요.</p>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
   <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${f}')">${f}</button>`).join("")}</div>
-  <div class="grid">${progs.slice(0, 30).map(progCard).join("") || "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>"}</div>
+  <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
+  ${LOCAL_GU === "전체" ? localMissingRow(progs) : ""}
   <div class="verify" style="margin-top:14px">구청·교육청 등이 공공데이터로 올린 강좌예요(분기마다 갱신). 접수 기간·정원은 바뀔 수 있으니 신청 전에 운영기관에서 확인하세요.</div>` : ""}`;
 }
 
@@ -6428,7 +6449,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.45 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.47 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6643,6 +6664,13 @@ initNav();
   <ol class="manualSteps"><li><b>지역 선택</b> — 가고 싶은 권역을 누르세요.</li><li><b>검색 또는 추천</b> — 키워드를 입력하거나 ‘오늘 뭐하지?’ 조건을 고르세요.</li><li><b>상세정보 확인</b> — 결과를 눌러 일정·요금·위치를 확인하고 길찾기를 이용하세요.</li></ol>
   <h3>자료 갱신 안내가 뜰 때</h3>
   <ol class="manualSteps"><li><b>‘자료 갱신 확인 필요’가 표시되면</b> — 앱은 계속 사용할 수 있지만 일부 일정이 오래됐을 수 있어요.</li><li><b>방문하거나 예매하기 전</b> — 결과의 공식 안내 또는 예매처에서 오늘 운영 여부·잔여석·이용 요금을 확인하세요.</li><li><b>표시가 사라지면</b> — 최신 서버 수집 정보가 다시 확인된 상태예요. 개별 장소의 실시간 운영·예약까지 보장하는 것은 아니에요.</li></ol>
+  <h3>공식 사이트 모음 — 더 자세히 보고 싶을 때</h3>
+  <ol class="manualSteps officialLinks">
+   <li><b>여행·축제</b> — <a href="https://korean.visitkorea.or.kr/" target="_blank" rel="noopener">대한민국 구석구석(한국관광공사)</a> · <a href="https://tour.gwangju.go.kr/" target="_blank" rel="noopener">오매광주(광주 관광)</a> · <a href="https://korean.visitkorea.or.kr/kfes/list/wntyFstvlList.do" target="_blank" rel="noopener">전국 축제 일정</a></li>
+   <li><b>공연·전시</b> — <a href="https://www.kopis.or.kr/" target="_blank" rel="noopener">공연예술통합전산망(KOPIS)</a> · <a href="https://www.culture.go.kr/" target="_blank" rel="noopener">문화포털</a> · <a href="https://www.acc.go.kr/" target="_blank" rel="noopener">국립아시아문화전당</a></li>
+   <li><b>동네 강좌</b> — <a href="https://www.lifelongedu.go.kr/" target="_blank" rel="noopener">늘배움(국가평생학습포털)</a> · <a href="https://edu.gwangsan.go.kr/index.cs" target="_blank" rel="noopener">광산 배우랑께</a> · <a href="https://lms.schc.go.kr/" target="_blank" rel="noopener">순천 평생교육포털</a></li>
+   <li><b>공공데이터 원본</b> — <a href="https://www.data.go.kr/" target="_blank" rel="noopener">공공데이터포털</a> (전통시장·박물관미술관·도서관·평생학습강좌 표준데이터)</li>
+  </ol>
   <div class="manualNote">※ 행사 일정, 예매 상태, 입장료, 운영시간은 갑자기 변경될 수 있습니다. 앱은 공식 기관의 실시간 예약·휴관 정보를 모두 보장하지 않습니다. 방문이나 결제 전에 연결된 공식 기관·예매처에서 최종 확인해 주세요. 일부 기능은 인터넷 연결이 필요합니다.</div>
  </section>
 </div>
@@ -6881,6 +6909,47 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 </script>
 <script>(function(){try{const f=document.querySelector("footer.foot2 .wrap")||document.querySelector("footer.foot2");if(f&&typeof APP_VER!=="undefined"){const d=document.createElement("div");d.className="appVerFoot";d.textContent="앱 버전 "+APP_VER;f.appendChild(d)}}catch(e){}})();</script>
 <style>.exitBox .appVer{display:block;font-size:11px;color:#8a948f;margin:-6px 0 10px}.appVerFoot{text-align:center;font-size:11px;opacity:.6;margin-top:8px}</style>
+<script id="adminScript">
+/* ───────── 관리자 점검 (주소 끝에 #admin) ─────────
+   자동 운영이 잘 돌고 있는지 신호등으로 한눈에. 이용자 화면에는 안 나와요. */
+(function(){
+  const H=iso=>{const d=new Date(iso);return isNaN(d)?null:(Date.now()-d)/36e5};
+  const ago=h=>h==null?"기록 없음":h<1?Math.max(1,Math.round(h*60))+"분 전":h<48?Math.round(h)+"시간 전":Math.round(h/24)+"일 전";
+  const light=(h,warn,bad)=>h==null?"🔴":h<=warn?"🟢":h<=bad?"🟡":"🔴";
+  function run(){
+    const M=(typeof META!=="undefined"&&META)||{}, V=ALL.VENUES||[], E=ALL.EVENTS||[], P=ALL.PROGRAMS||[], t=todayISO();
+    const rows=[], row=(lt,name,val,note)=>rows.push(`<tr><td>${lt}</td><td><b>${esc(name)}</b></td><td>${esc(val)}</td><td>${esc(note||"")}</td></tr>`);
+    const upH=H(M.updated_at);
+    row(light(upH,14,26),"자동 일정 업데이트",ago(upH),"하루 두 번(9:10·18:10) 돌아야 정상");
+    (M.sources||[]).forEach(s=>row(s.ok?"🟢":"🔴","· "+s.name,(s.count??0)+"건",s.message||""));
+    Object.values(M.local||{}).forEach(l=>{const h=H(l.fetched_at);row(!l.ok?"🔴":light(h,24*8,24*15),"· "+l.name,(l.count??0)+"건 · "+ago(h),l.message||"주 1회 갱신")});
+    const pf=M.place_fill||{}, ph=H(pf.checked_at), vl=(pf.lists||{}).venues||{};
+    row(pf.unfinished?"🟡":light(ph,14,26),"장소 정보 보강",ago(ph),`장소 ${vl.total??V.length}곳 · 좌표 ${vl.with_coords??"?"} · 사진 ${vl.with_image??"?"}${pf.unfinished?" · 시간 부족으로 일부 다음 회차로":""}`);
+    const mk=V.filter(v=>String(v.id||"").startsWith("mk-")).length, mu=V.filter(v=>String(v.id||"").startsWith("mu-")).length;
+    row(mk?"🟢":"🟡","전통시장 표준데이터",mk+"곳 추가","0이면 CSV가 없거나 보강 단계 실패");
+    row(mu?"🟢":"🟡","박물관·미술관 표준데이터",mu+"곳 추가","0이면 CSV가 없거나 보강 단계 실패");
+    const ex=E.filter(e=>String(e.id||"").startsWith("extra-")), exLive=ex.filter(e=>!e.end||e.end>=t);
+    row(exLive.length?"🟢":"🟡","주간 보강 · 축제·체험",exLive.length+"건 진행/예정",`매주 월 7:47 · festivals_extra.json (전체 ${ex.length})`);
+    const px=P.filter(p=>String(p.id||"").startsWith("px-")), pxLive=px.filter(p=>!p.end||p.end>=t);
+    row(pxLive.length?"🟢":"🟡","주간 보강 · 동네 강좌",pxLive.length+"건",`programs_extra.json (전체 ${px.length})`);
+    const fl=Object.keys((typeof FLAGS!=="undefined"&&FLAGS)||{}).length;
+    row(fl?"🟡":"🟢","이용자 제보(틀린 정보)",fl+"건",fl?"앱에 ⚠ 표시 중 · GitHub 이슈에서 처리":"열린 제보 없음");
+    const noUrlV=V.filter(v=>!v.url).length, noUrlE=E.filter(e=>!e.url).length, noGeo=V.filter(v=>!(v.lat&&v.lng)).length;
+    const pastE=E.filter(e=>e.end&&e.end<t).length;
+    row(pastE?"🔴":"🟢","끝난 일정이 남아 있음",pastE+"건","0이어야 정상");
+    row("ℹ️","공식 링크 없는 곳",`장소 ${noUrlV} · 일정 ${noUrlE}`,"카드에는 네이버 지도 링크로 대신 보여요");
+    row(noGeo>V.length*.2?"🟡":"🟢","지도 좌표 없는 장소",noGeo+"곳","지도에 안 나와요");
+    const reds=rows.filter(r=>r.includes("🔴")).length, yel=rows.filter(r=>r.includes("🟡")).length;
+    let el=document.getElementById("adminCheck"); if(!el){el=document.createElement("div");el.id="adminCheck";document.body.appendChild(el)}
+    el.innerHTML=`<div class="dcBox"><div class="dcHead"><b>🛠 관리자 점검</b><small>${reds?`🔴 문제 ${reds}`:yel?`🟡 확인 필요 ${yel}`:"🟢 모두 정상"} · 앱 버전 ${typeof APP_VER!=="undefined"?esc(APP_VER):""} · 지금 ${new Date().toLocaleString("ko-KR",{timeZone:"Asia/Seoul",month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</small><button onclick="location.hash='';document.getElementById('adminCheck').remove()">닫기 ✕</button></div>
+    <table class="adminTbl"><thead><tr><th></th><th>항목</th><th>상태</th><th>설명</th></tr></thead><tbody>${rows.join("")}</tbody></table>
+    <p class="adminFoot">🔴 문제 · 🟡 확인 필요 · 🟢 정상 — 자료 하나하나의 오류는 <a href="#check" onclick="document.getElementById('adminCheck').remove()">#check 자료 점검</a>에서, 자동 업데이트 기록은 GitHub 저장소의 Actions 탭에서 볼 수 있어요.</p></div>`;
+  }
+  function boot(){ if(location.hash!=="#admin")return; let n=0; const w=setInterval(()=>{ if((ALL.VENUES||[]).length||++n>40){clearInterval(w);try{run()}catch(e){console.error(e)}} },250) }
+  window.addEventListener("hashchange",boot); window.addEventListener("load",boot); boot();
+})();
+</script>
+<style>#adminCheck{position:fixed;inset:0;z-index:9999;background:rgba(10,20,18,.55);overflow:auto;padding:16px}#adminCheck .dcBox{background:#fff;color:#1d2b26;max-width:760px;margin:0 auto;border-radius:18px;padding:16px}#adminCheck .dcHead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}#adminCheck .dcHead small{flex:1;color:#5b6a64}#adminCheck .dcHead button{border:0;background:#eef3f1;border-radius:10px;padding:8px 12px;font-weight:700}.adminTbl{width:100%;border-collapse:collapse;font-size:13px}.adminTbl th,.adminTbl td{padding:8px 6px;border-top:1px solid #e6ece9;text-align:left;vertical-align:top}.adminTbl th{font-size:11.5px;color:#7a8781;border-top:0}.adminTbl td:first-child{width:24px}.adminFoot{font-size:12px;color:#5b6a64;margin-top:10px}</style>
 <script id="dataCheckScript">
 /* ───────── 자료 점검 (주소 끝에 #check) ─────────
    배포 뒤 휴대폰·PC에서 주소창에 …/#check 를 붙여 열면, 틀리기 쉬운 자료를 한 화면에 모아 보여 줍니다.
