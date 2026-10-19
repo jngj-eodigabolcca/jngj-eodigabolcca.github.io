@@ -1753,7 +1753,7 @@ button{min-height:var(--tap)}
     <div class="decideGrid">
       <div class="choiceGroup"><b>누구와?</b><div class="choiceRow" data-choice="with"><button class="on">연인</button><button>혼자</button><button>친구</button><button>아이</button><button>부모님</button><button>🐶 반려견</button></div></div>
       <div class="choiceGroup"><b>얼마나?</b><div class="choiceRow" data-choice="time"><button>1시간</button><button class="on">3시간</button><button>반나절</button><button>하루</button></div></div>
-      <div class="choiceGroup"><b>예산</b><div class="choiceRow" data-choice="budget"><button>무료</button><button class="on">3만원 이하</button><button>5만원 이하</button><button>상관없음</button></div></div>
+      <div class="choiceGroup"><b>입장료 <small style="font-weight:500;opacity:.7">1인 · 식사 별도</small></b><div class="choiceRow" data-choice="budget"><button>무료만</button><button class="on">1만원 이하</button><button>3만원 이하</button><button>상관없음</button></div></div>
       <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button>대중교통</button><button class="on">자동차</button></div></div>
     </div>
     <div class="detailSearch" id="detailSearch" hidden style="display:none">
@@ -5609,7 +5609,7 @@ function decisionReasonSet(selected){
   if(WEATHER){const w=WMO(WEATHER.code); if(w[2]||WEATHER.pp>=60) r.push('비 예보 반영 · 실내 우선'); else r.push(`${w[1]} 날씨 반영`)}
   r.push(`${RNAME()} 우선`);
   r.push(`${selected.time} 안에 가능한 동선`);
-  r.push(`${selected.budget} 예산 기준`);
+  r.push(`입장료 ${selected.budget} 기준 (식사 별도)`);
   r.push(`${selected.move} 이동 기준`);
   if(/반려견/.test(selected.with)) r.push('🐶 반려견 동반 장소 우선');
   return r.slice(0,6);
@@ -5625,6 +5625,27 @@ function decKidFoodOk(x){ return !/포차|주점|호프|술집|이자카야|양�
 function decStayCap(sel){ const d=TRIP_DUR[sel.time]||180; return d<=60?45:d<=180?60:d<=300?90:120 }
 function decCoordOk(x,sel){ return tripMoveKey(sel.move)!=="도보" || !!tripCoordExact(x) }   // 걸어서 갈 땐 위치가 확인된 곳만
 function decFreeOk(x){ return /무료/.test((x.price||"")+" "+(x.fee||"")) }
+/* 예산 = 1인 입장료·체험비 (식사·교통비는 따로). 요금 글에서 어른 기준 금액을 읽는다. 모르면 null */
+function decFeeOf(x){
+  const t=[x.price,x.fee,x.ticket&&x.ticket.note].filter(Boolean).join(" ");
+  if(!t) return null;
+  if(/^\s*(입장\s*)?무료|기본\s*무료|일반\s*전시\s*무료|관람\s*무료|무료\s*(입장|관람)/.test(t)) return 0;
+  const won=s=>+s.replace(/,/g,"");
+  const adult=t.match(/(?:어른|성인|일반|대인)\s*[:·]?\s*(\d{1,3}(?:,\d{3})+|\d{3,6})\s*원/);
+  if(adult) return won(adult[1]);
+  const any=t.match(/(\d{1,3}(?:,\d{3})+|\d{3,6})\s*원/);
+  if(any) return won(any[1]);
+  if(/무료/.test(t)) return 0;
+  return null;
+}
+function decBudgetOk(x,b){
+  b=b||"";
+  if(/상관없음/.test(b)) return true;
+  if(/무료/.test(b)) return decFreeOk(x)||decFeeOf(x)===0;
+  const lim=/1만/.test(b)?10000:/3만/.test(b)?30000:/5만/.test(b)?50000:Infinity;
+  const fee=decFeeOf(x);
+  return fee==null || fee<=lim;      // 요금을 모르는 곳은 빼지 않고 '요금 확인'으로 남김
+}
 function decPetVenueOk(v){ if(v.petInfo){ if(v.petInfo.allow!=="Y") return false; if(v.petInfo.cat==="여행지") return true } const t=[v.kind,v.name].join(" "); if(/5·18|사적지|기념/.test(t)) return false; return (v.inout||"").includes("야외") && !(v.inout||"").includes("실내") && /공원|정원|자연|산책|호수|숲|해변|해수욕장|경관|둘레길|섬/.test(t) && !/시장|케이블카|박물관|미술관|전시|과학관|사찰|사$|암$|묘원|묘지/.test(t) }
 /* 고른 장소들을 이동이 가장 짧은 순서로 (모두 시간 안에 들어가는 순서 중에서) */
 function decBestOrder(list,selected){
@@ -5655,13 +5676,13 @@ function decisionRoutePicks(selected){
     const petPool=CAFES.filter(c=>c.pet&&petOk(c,'cafe'));
     let first=aiDiverse(petPool.length?petPool:CAFES.filter(c=>petOk(c,'cafe')),key+":pet",1,8)[0];
     if(!first && !petRain){
-      const pv=VENUES.filter(v=>openToday(v)!==false&&decPetVenueOk(v)&&(!/무료/.test(selected.budget)||decFreeOk(v))&&petOk(v,'venue'));
+      const pv=VENUES.filter(v=>openToday(v)!==false&&decPetVenueOk(v)&&decBudgetOk(v,selected.budget)&&petOk(v,'venue'));
       const v1=aiDiverse(pv,key+":petv1",1,8)[0]; if(!v1) return [];
       const v2=aiDiverse(aiNearestChoices(v1,pv.filter(x=>x!==v1&&!decSameSite(v1,x)),12,6),key+":petv2",1,6)[0];
       return tripPlanPicks([wrap('venue',v1),v2&&wrap('venue',v2)].filter(Boolean),selected).picks;
     }
     if(!first) return [];
-    const nearV=petRain?[]:aiNearestChoices(first,VENUES.filter(v=>openToday(v)!==false&&decPetVenueOk(v)&&(!/무료/.test(selected.budget)||decFreeOk(v))),8,6);
+    const nearV=petRain?[]:aiNearestChoices(first,VENUES.filter(v=>openToday(v)!==false&&decPetVenueOk(v)&&decBudgetOk(v,selected.budget)),8,6);
     const nearC=aiNearestChoices(first,CAFES.filter(x=>x!==first),8,6);
     const second=aiDiverse(nearV,key+":pet-v",1,6)[0];
     const third=aiDiverse(nearC,key+":pet-c",1,6)[0];
@@ -5678,10 +5699,8 @@ function decisionRoutePicks(selected){
   let openV=VENUES.filter(v=>openToday(v)!==false);
   const timeOkV=openV.filter(v=>fitFirst(v,'venue'));
 
-  if(/무료/.test(selected.budget)){
-    openV=openV.filter(v=>decFreeOk(v));
-  }
-  const activeB=/무료/.test(selected.budget)?active.filter(e=>decFreeOk(e)):active;
+  openV=openV.filter(v=>decBudgetOk(v,selected.budget));
+  const activeB=active.filter(e=>decBudgetOk(e,selected.budget));
   if(/아이/.test(selected.with)){
     openV=openV.filter(v=>v.kids || /동물원|테마파크|과학관|박물관|공원|정원/.test([v.kind,v.name].join(" ")));
   }
@@ -5844,7 +5863,7 @@ function initDecisionMiniMap(picks){
     const scope = wideOk
       ? `현재 선택 권역은 ${RNAME()}이며 광주권을 우선 추천하되, 하루 종일 자동차 이동이고 예산 제한이 없으므로 필요할 때만 순천여수권·무안목포권까지 확대 가능.`
       : `현재 선택 권역 ${RNAME()} 안에서만 추천. 다른 권역(순천여수권·무안목포권)으로 넘어가지 말 것.`;
-    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 예산 ${selected.budget}, ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·가볼 곳·맛집·카페 중 가까운 동선으로 3개 코스 추천`;
+    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·가볼 곳·맛집·카페 중 가까운 동선으로 3개 코스 추천`;
     const input=document.getElementById('aiq'); if(input) input.value=`${selected.with}와 ${selected.time} · ${selected.budget} · ${selected.move}`;
     // 아래 '더 자세히 보기'에도 위 동선과 똑같은 코스가 보이게 (예전엔 다른 엔진이 다른 곳을 골라 엇갈렸음)
     const ans=document.getElementById('answer'); if(ans) ans.innerHTML=routePreviewHtml(routePicks,selected.move).replace('<div id="decisionMiniMap" class="decisionMiniMap"></div>','')+decisionDetailHtml(routePicks,selected);
@@ -5857,7 +5876,7 @@ function initDecisionMiniMap(picks){
       mc.innerHTML=`<div class="decisionResult">
         <div class="drHead"><div class="appResultHint">오늘어디로가 방금 고른 코스</div><span class="eyebrow">TODAY PICK</span><h3>오늘은 이렇게 가보세요.</h3><p style="margin:0;color:var(--muted);font-size:14px">${wideOk ? `${esc(RNAME())}을 우선으로 보고, 조건상 먼 권역까지 갈 수 있는 경우에만 범위를 넓혀요.` : `${esc(RNAME())} 안에서만, 고른 조건과 오늘 이용 가능한 정보를 기준으로 추렸어요.`} 모바일에서는 이 화면이 앱 결과 페이지처럼 열립니다.</p></div>
         <div class="creamingGuide"><img class="creamingMascot" src="${CREAMING_SRC}" alt="크리밍"><div class="creamingBubble"><b>크리밍이 골라봤어요!</b>${esc(selected.time)} 동안 ${esc(selected.move)}로 이동하기 좋은 코스를 먼저 묶었어요. 아래에서 이동 순서도 같이 확인해보세요.</div></div>
-        <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>💰 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
+        <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>🎟 입장료 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
         <div class="decisionExplain"><b>왜 이 코스를 추천했어요?</b><div class="chipsWhy">${reasons.map(r=>`<span>✓ ${esc(r)}</span>`).join('')}</div></div>
         ${routePreviewHtml(routePicks,selected.move)}
         <div class="drBody">${decisionDetailHtml(routePicks,selected)}</div>
@@ -6409,7 +6428,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.42 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.43 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
