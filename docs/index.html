@@ -582,6 +582,14 @@ body:not([data-tab="events"]) .chips{display:none}
 .listMain dt{color:var(--muted);font-weight:700}.listMain dd{margin:0;color:var(--ink);line-height:1.5}
 .btnRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
 .btnRow .fav{margin-left:auto}
+.a2hs{position:fixed;left:12px;right:12px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:900;animation:a2hsUp .35s ease}
+.a2hsIn{display:flex;gap:10px;align-items:center;background:#1f3b34;color:#fff;border-radius:18px;padding:12px 12px 12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:560px;margin:0 auto}
+.a2hsIc{font-size:24px}.a2hsIn b{display:block;font-size:14px}.a2hsIn small{display:block;font-size:12px;color:#d2e6dd;margin-top:2px;line-height:1.5}.a2hsIn small b{display:inline;font-size:12px;color:#ffd88b}
+.a2hsBtns{display:flex;gap:6px;align-items:center;margin-left:auto}.a2hsGo{border:0;background:#ffd88b;color:#342000;font-weight:800;border-radius:10px;padding:8px 10px;white-space:nowrap}.a2hsX{border:0;background:rgba(255,255,255,.12);color:#fff;border-radius:10px;width:32px;height:32px}
+@keyframes a2hsUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.visit{border:1.5px solid var(--line);background:#fff;border-radius:11px;height:38px;padding:0 10px;font-size:12.5px;font-weight:750;color:#7a8781;white-space:nowrap}
+.visit.on{background:#e7f4ee;border-color:#9fd3bd;color:#0f766e}
+.visitStats{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.visitStats span{background:#eef5f1;color:#24564a;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700}
 .here{display:grid;gap:5px;background:var(--sky-l);border-radius:12px;padding:10px 12px;font-size:13.5px}
 .here b{color:#1d5674;font-size:13.5px}.here b.nx{margin-top:4px}
 .here button{all:unset;cursor:pointer;font-size:13.5px;color:var(--ink);line-height:1.5}
@@ -1915,6 +1923,9 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
 };
 let FAVS = store.get("glm_final_favs", []);
+/* ✓ 가봤어요: 이 기기에만 저장되는 나만의 방문 기록 (서버로 안 보냄) · 추천에서 가 본 곳은 뒤로 */
+let VISITED = store.get("glm_visited", []);
+const isVisited = (x, kind) => !!x && VISITED.includes(kind === "event" ? x.id : "v:" + x.id);
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 /* onclick="f('…')" 안에 넣는 글자용: 따옴표·역슬래시를 자바스크립트 방식으로 막은 뒤 HTML용으로도 막음 */
@@ -3018,7 +3029,7 @@ function nowRow(e, h, iso) {
    <div class="ncPic"${bg(img)}>${img ? `<i class="ncBlur"${bg(img)}></i><i class="ncFull"${bg(img)}></i>` : ""}<span class="ncIcon">${ic}</span><span class="ncCat">${cat}</span>${last ? `<span class="ncHot">${NOW_WHEN ? `${dd}일(${dayName}) 마지막 날` : "오늘 마지막 날!"}</span>` : dl != null && dl <= 14 ? `<span class="ncHot">D-${dl}</span>` : ""}</div>
    <div class="ncBody"><b>${esc(e.title)}</b><small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
     <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags"><em class="t-${tk[0]}">${esc(tk[1])}</em>${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')">밥·카페 코스 →</button>${favBtn(e.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')">밥·카페 코스 →</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
 }
 function nowMarket(v, iso, night) {
   const dayName = DAYC[isoDow(iso)];
@@ -3027,7 +3038,7 @@ function nowMarket(v, iso, night) {
    <div class="ncBody"><b>${esc(v.name)}</b><small class="ncVenue">📍 ${esc(v.district)}</small>
     <small class="ncTime">📅 ${Number(iso.slice(5, 7))}.${Number(iso.slice(8))}(${dayName}) ${night ? esc(night[1]) : "장 서요 · 오전이 활기차요"}</small>${parkLine(v)}
     <div class="ncTags"><em class="free">입장 무료</em>${(v.market.eats || []).slice(0, 2).map(x => `<em>😋 ${esc(x)}</em>`).join("")}</div>
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 탭에서 보기 →</button>${favBtn("v:" + v.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 탭에서 보기 →</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div></div></article>`;
 }
 /* 한 달 안에 열리는 축제: 날짜가 나온 축제 + 해마다 이맘때 열리는데 아직 날짜가 안 나온 축제(예상)
    자동 수집으로 날짜가 들어오면 '예상' 줄은 저절로 진짜 일정으로 바뀌고, 축제가 끝나면 저절로 사라져요. */
@@ -3246,6 +3257,7 @@ function renderToday() {
   const fresh = v => !used.has(v.id);
   // 고른 출발지(광주·순천·여수·목포)에서 1시간 안쪽을 먼저 — 후보가 3곳 이상일 때만 좁힌다
   const near = list => { try {
+    { const u = list.filter(v => !isVisited(v, v.title && !v.name ? "event" : "venue")); if (u.length >= 3) list = u }   // 안 가 본 곳이 충분하면 그중에서
     const L = list.map(v => [v, tripFirstLeg(v, { move: "대중교통" }).min ?? 999]).sort((a, b) => a[1] - b[1]);
     const k = Math.max(3, L.filter(x => x[1] <= 60).length); return L.slice(0, k).map(x => x[0]);
   } catch (e) { return list } };
@@ -3358,6 +3370,14 @@ function renderToday() {
 /* ───────── 찜 (일정·장소·맛집 공통) ───────── */
 function fav(id) { FAVS = FAVS.includes(id) ? FAVS.filter(x => x !== id) : [...FAVS, id]; store.set("glm_final_favs", FAVS); document.querySelectorAll(`[data-fav="${CSS.escape(id)}"]`).forEach(b => { b.classList.toggle("on", FAVS.includes(id)); b.textContent = FAVS.includes(id) ? "♥" : "♡" }); renderFavs() }
 window.fav = fav;
+const visitBtn = id => { const on = VISITED.includes(id); return `<button class="visit ${on ? "on" : ""}" data-visit="${esc(id)}" onclick="event.stopPropagation();visit('${jsq(id)}')" title="가 본 곳으로 기록 (이 기기에만 저장)">${on ? "✓ 가봤어요" : "가봤어요"}</button>` };
+window.visit = id => {
+  const on = !VISITED.includes(id);
+  VISITED = on ? [...VISITED, id] : VISITED.filter(x => x !== id); store.set("glm_visited", VISITED);
+  document.querySelectorAll(`[data-visit="${CSS.escape(id)}"]`).forEach(b => { b.classList.toggle("on", on); b.textContent = on ? "✓ 가봤어요" : "가봤어요" });
+  try { toast(on ? `✓ 가 본 곳에 기록했어요 (지금까지 ${VISITED.length}곳) · 다음 추천엔 안 가 본 곳을 먼저 보여드려요` : "기록을 지웠어요") } catch (e) {}
+  try { renderFavs() } catch (e) {}
+};
 const favBtn = id => `<button class="fav ${FAVS.includes(id) ? "on" : ""}" data-fav="${esc(id)}" onclick="fav('${jsq(id)}')">${FAVS.includes(id) ? "♥" : "♡"}</button>`;
 
 /* ───────── 예매·관람 상태 ───────── */
@@ -3747,7 +3767,7 @@ function renderNowStart(refresh=false) {
     .map(x=>({kind:'event',x,window:nowTimeWindow(x,true,n)})).filter(p=>p.window.ok);
   const vv=VENUES.filter(v=>openToday(v)!==false)
     .map(x=>({kind:'venue',x,window:nowTimeWindow(x,false,n)})).filter(p=>p.window.ok);
-  let candidates=[...ev,...vv].sort((a,b)=>(!!a.window.unsure-!!b.window.unsure) || a.window.rank-b.window.rank || (HOME?((homeKm(a.x)??99)-(homeKm(b.x)??99)):(Math.round((a.window.leg||0)/20)-Math.round((b.window.leg||0)/20))) || (a.kind===b.kind?0:a.kind==='venue'?-1:1));
+  let candidates=[...ev,...vv].sort((a,b)=>(isVisited(a.x,a.kind)-isVisited(b.x,b.kind)) || (!!a.window.unsure-!!b.window.unsure) || a.window.rank-b.window.rank || (HOME?((homeKm(a.x)??99)-(homeKm(b.x)??99)):(Math.round((a.window.leg||0)/20)-Math.round((b.window.leg||0)/20))) || (a.kind===b.kind?0:a.kind==='venue'?-1:1));
   // 내 동네가 정해져 있으면 12km 안 후보부터 (3개 이상일 때)
   if(HOME){const near=candidates.filter(p=>(homeKm(p.x)??99)<=12); if(near.length>=3) candidates=near}
   // 동일 항목 및 같은 장소 중복 추천 방지
@@ -3788,7 +3808,7 @@ function eventCard(x) {
   </ul>
   ${parkLine(x)}
   ${pills.length ? `<div class="icons">${pills.slice(0, 4).map(p => `<span class="iconpill">${p[0]} ${esc(p[1].split(" · ")[0])}</span>`).join("")}</div>` : ""}
-  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="source">정보 상태를 위 배지에서 바로 확인할 수 있어요</div><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}</div></div></div></article>`;
+  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="source">정보 상태를 위 배지에서 바로 확인할 수 있어요</div><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}${visitBtn(x.id)}</div></div></div></article>`;
 }
 function eventMatches(x, q) {
   const hay = [x.title, x.aliases, x.venue, x.district, x.category, x.subtype, x.price, x.discount, (x.tags || []).join(" ")].join(" ").toLowerCase();
@@ -3954,7 +3974,7 @@ function placeCard(v) {
   ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   ${trustStrip(v)}
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
 }
 // 아이와 안의 세부 분류 (큰 칸과 겹치지 않도록 '아이와' 안에서만 고름)
 function isKidsScience(v) { return /과학관|과학|천문|우주|체험|생태교육|어린이박물관/.test((v.kind || "") + " " + (v.name || "") + " " + (v.kids || "")) }
@@ -4441,7 +4461,7 @@ function marketCard(v) {
   ${parkLine(v)}
   ${near ? `<small class="goLine">🍲 근처 광주맛집: ${esc(near[0].name)} (${kmTxt(near[1])})</small>` : ""}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}${m.src ? ` · 출처 ${esc(m.src)}` : ""}</small>
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${favBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
 }
 const MK_GROUPS = [
   ["전체", "✦", () => true],
@@ -4640,11 +4660,21 @@ function renderLocal() {
   <div class="verify" style="margin-top:14px">구청·교육청 등이 공공데이터로 올린 강좌예요(분기마다 갱신). 접수 기간·정원은 바뀔 수 있으니 신청 전에 운영기관에서 확인하세요.</div>` : ""}`;
 }
 
+function visitedHtml() {
+  if (!VISITED.length) return `<h3 class="sub" style="margin-top:26px">✓ 가 본 곳</h3><p class="empty">장소·행사 카드의 '가봤어요'를 누르면 여기에 나만의 방문 기록이 쌓여요. 이 기기에만 저장돼요.</p>`;
+  const vs = ALL.VENUES.filter(v => VISITED.includes("v:" + v.id)), es = ALL.EVENTS.filter(e => VISITED.includes(e.id));
+  const kinds = {}; vs.forEach(v => { const k = /시장/.test(v.kind || "") ? "시장" : /미술관|갤러리/.test((v.kind || "") + v.name) ? "미술관" : /박물관|기념관|과학관/.test((v.kind || "") + v.name) ? "박물관" : /공원|정원|자연|산|숲|해변/.test(v.kind || "") ? "자연·공원" : "그 밖의 곳"; kinds[k] = (kinds[k] || 0) + 1 });
+  if (es.length) kinds["행사·공연"] = es.length;
+  const gus = new Set(vs.map(v => v.district).filter(Boolean));
+  return `<h3 class="sub" style="margin-top:26px">✓ 가 본 곳 <small style="font-weight:500;color:var(--muted)">${VISITED.length}곳 · ${gus.size}개 동네 · 이 기기에만 저장</small></h3>
+  <p class="visitStats">${Object.entries(kinds).map(([k, n]) => `<span>${esc(k)} ${n}</span>`).join("")}</p>
+  ${vs.length ? `<div class="grid">${vs.map(placeCard).join("")}</div>` : ""}${es.length ? `<div class="grid" style="margin-top:12px">${es.map(eventCard).join("")}</div>` : ""}`;
+}
 function renderFavs() {
   const ev = ALL.EVENTS.filter(x => FAVS.includes(x.id)), pl = ALL.VENUES.filter(v => FAVS.includes("v:" + v.id)), fd = ALL.FOOD.filter(r => FAVS.includes("f:" + r.id)), st = ALL.STAYS.filter(h => FAVS.includes("s:" + h.id)), cf = ALL.CAFES.filter(c => FAVS.includes("c:" + c.id));
   const bk = ALL.BAKERIES.filter(b => FAVS.includes("b:" + b.id));
   const n = ev.length + pl.length + fd.length + bk.length + st.length + cf.length;
-  $("#favoritesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">FAVORITES</span><h2>찜해둔 곳<small>♡ 누른 건 이 기기에 저장돼요 · 모든 권역을 함께 보여줘요</small></h2></div><span>${n}개</span></div>
+  $("#favoritesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">FAVORITES</span><h2>찜·가 본 곳<small>♡ 찜과 ✓ 가봤어요는 이 기기에만 저장돼요 · 모든 권역을 함께 보여줘요</small></h2></div><span>${n}개</span></div>
   <div class="favTools">${FAVS.length ? `<button type="button" onclick="shareFavs()">📤 찜 목록 링크로 보내기</button>` : ""}<small>휴대폰을 바꿀 때 이 링크를 새 휴대폰에서 열면 찜이 그대로 옮겨져요.</small></div>
   ${n ? "" : "<p class='empty'>아직 찜한 게 없네잉. 일정·장소·맛집 카드의 ♡를 눌러보쇼.</p>"}
   ${ev.length ? `<h3 class="sub">일정</h3><div class="grid">${ev.map(eventCard).join("")}</div>` : ""}
@@ -4652,7 +4682,8 @@ function renderFavs() {
   ${fd.length ? `<h3 class="sub">맛집</h3><div class="grid">${fd.map(foodCard).join("")}</div>` : ""}
   ${st.length ? `<h3 class="sub">숙소</h3><div class="grid">${st.map(stayCard).join("")}</div>` : ""}
   ${cf.length ? `<h3 class="sub">멍카페</h3><div class="grid">${cf.map(petCard).join("")}</div>` : ""}
-  ${bk.length ? `<h3 class="sub">빵집</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}`;
+  ${bk.length ? `<h3 class="sub">빵집</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
+  ${visitedHtml()}`;
 }
 /* 찜 옮기기: 로그인 없이 링크 하나로 (#fav=…) — 받는 쪽은 기존 찜에 '합쳐요'(지우지 않음) */
 window.shareFavs = async () => {
@@ -5092,7 +5123,7 @@ function placeProfile(v) {
      ${cfNear ? `<li><span>카페</span>${esc(cfNear[0].name)} <small>${kmTxt(cfNear[1])}</small></li>` : `<li><span>카페</span><a target="_blank" rel="noopener" href="${searchNear(v.name, "카페")}">${esc(v.name)} 근처 카페 지도에서 보기 ↗</a></li>`}
      ${stNear ? `<li><span>숙소</span>${esc(stNear[0].name)} <small>${kmTxt(stNear[1])} · ${esc(stNear[0].area)}</small></li>` : ""}
    </ul>
-   <div class="pfBtns"><button onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도</button><a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(v.name)}">길찾기 ↗</a>${v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${v.infoSource && v.infoSource !== v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.infoSource)}">정보 출처 ↗</a>` : ""}<button onclick="$('#aiq').value='${esc(v.name)} 보고 맛집 카페';recommend('${esc(v.name)} 보고 맛집 카페')">코스로 짜기</button>${favBtn("v:" + v.id)}</div>
+   <div class="pfBtns"><button onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도</button><a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(v.name)}">길찾기 ↗</a>${v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${v.infoSource && v.infoSource !== v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.infoSource)}">정보 출처 ↗</a>` : ""}<button onclick="$('#aiq').value='${esc(v.name)} 보고 맛집 카페';recommend('${esc(v.name)} 보고 맛집 카페')">코스로 짜기</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div>
   </div>`;
 }
 
@@ -6441,6 +6472,34 @@ let dp; window.addEventListener("beforeinstallprompt", e => { e.preventDefault()
 /* 아이폰은 설치 버튼이 없어서 안내로 대신 */
 (() => { const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = window.navigator.standalone || matchMedia("(display-mode: standalone)").matches;
   if (ios && !standalone && location.protocol.startsWith("http") && !window.__PC__) { const b = $("#install"); b.classList.remove("hidden"); b.textContent = "📲 홈 화면에 추가"; b.onclick = () => alert("아이폰에서 앱처럼 쓰기\n\n① 아래 공유 버튼(□↑)을 누르고\n② '홈 화면에 추가'를 누르면 끝!\n\n바탕화면에 '오늘어디로' 아이콘이 생겨요.") } })();
+
+/* 📲 홈 화면에 추가 안내 — 두 번째 방문부터 한 번, 닫으면 30일 동안 안 보임. 이미 설치했으면 안 보임.
+   카카오톡·네이버·인스타 안에서 열었으면 '브라우저로 열기'부터 안내 */
+(() => {
+  try {
+    const ua = navigator.userAgent, standalone = window.navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+    if (standalone || !location.protocol.startsWith("http") || window.__PC__) return;
+    if (!/android|iphone|ipad|ipod/i.test(ua)) return;                       // 휴대폰에서만
+    const visits = (store.get("glm_visits", 0) || 0) + 1; store.set("glm_visits", visits);
+    const until = store.get("glm_a2hs_hide", 0) || 0;
+    if (visits < 2 || Date.now() < until) return;
+    const ios = /iphone|ipad|ipod/i.test(ua), inApp = /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\//i.test(ua), samsung = /SamsungBrowser/i.test(ua);
+    const how = inApp
+      ? (ios ? "오른쪽 아래 <b>⋯</b> → <b>Safari로 열기</b> 한 다음, 공유 <b>□↑</b> → <b>홈 화면에 추가</b>" : "오른쪽 위 <b>⋮</b> → <b>다른 브라우저로 열기</b> 한 다음, 메뉴에서 <b>홈 화면에 추가</b>")
+      : ios ? "아래 공유 버튼 <b>□↑</b> → <b>홈 화면에 추가</b>"
+      : samsung ? "아래 <b>≡</b> 메뉴 → <b>현재 페이지 추가</b> → <b>홈 화면</b>"
+      : "오른쪽 위 <b>⋮</b> 메뉴 → <b>홈 화면에 추가</b> (또는 <b>앱 설치</b>)";
+    const box = document.createElement("div"); box.className = "a2hs";
+    box.innerHTML = `<div class="a2hsIn"><span class="a2hsIc">📲</span><div><b>홈 화면에 추가하면 앱처럼 바로 열려요</b><small>${how}</small></div><div class="a2hsBtns">${!ios && !inApp ? `<button class="a2hsGo" hidden>바로 추가</button>` : ""}<button class="a2hsX" aria-label="닫기">✕</button></div></div>`;
+    const hide = days => { box.remove(); store.set("glm_a2hs_hide", Date.now() + days * 864e5) };
+    box.querySelector(".a2hsX").onclick = () => hide(30);
+    const go = box.querySelector(".a2hsGo");
+    const showGo = () => { if (go && typeof dp !== "undefined" && dp) { go.hidden = false; go.onclick = async () => { dp.prompt(); await dp.userChoice; dp = null; hide(365) } } };
+    window.addEventListener("beforeinstallprompt", () => setTimeout(showGo, 0)); showGo();
+    window.addEventListener("appinstalled", () => hide(365));
+    setTimeout(() => document.body.appendChild(box), 2500);                  // 첫 화면이 다 뜬 뒤 살짝
+  } catch (e) {}
+})();
 if ("serviceWorker" in navigator && location.protocol.startsWith("http") && !window.__PC__) window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js"));
 load().then(() => setTimeout(() => { importFavsFromHash(); openSharedLink() }, 300)).catch(() => { });
 /* 앱을 켜 둔 채 날짜가 바뀌거나, 다시 화면으로 돌아오면 '오늘' 기준으로 새로 계산 (끝난 일정 빼기·오늘 열리는 공연 다시 고르기) */
@@ -6449,7 +6508,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.47 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.49 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6664,6 +6723,8 @@ initNav();
   <ol class="manualSteps"><li><b>지역 선택</b> — 가고 싶은 권역을 누르세요.</li><li><b>검색 또는 추천</b> — 키워드를 입력하거나 ‘오늘 뭐하지?’ 조건을 고르세요.</li><li><b>상세정보 확인</b> — 결과를 눌러 일정·요금·위치를 확인하고 길찾기를 이용하세요.</li></ol>
   <h3>자료 갱신 안내가 뜰 때</h3>
   <ol class="manualSteps"><li><b>‘자료 갱신 확인 필요’가 표시되면</b> — 앱은 계속 사용할 수 있지만 일부 일정이 오래됐을 수 있어요.</li><li><b>방문하거나 예매하기 전</b> — 결과의 공식 안내 또는 예매처에서 오늘 운영 여부·잔여석·이용 요금을 확인하세요.</li><li><b>표시가 사라지면</b> — 최신 서버 수집 정보가 다시 확인된 상태예요. 개별 장소의 실시간 운영·예약까지 보장하는 것은 아니에요.</li></ol>
+  <h3>앱처럼 쓰기 — 홈 화면에 추가</h3>
+  <ol class="manualSteps"><li><b>갤럭시(삼성 인터넷)</b> — 아래 ≡ 메뉴 → 현재 페이지 추가 → 홈 화면</li><li><b>갤럭시(크롬)</b> — 오른쪽 위 ⋮ → 홈 화면에 추가 (또는 앱 설치)</li><li><b>아이폰(사파리)</b> — 아래 공유 □↑ → 홈 화면에 추가</li><li><b>카카오톡·네이버 앱 안에서 열었다면</b> — 먼저 '다른 브라우저로 열기'(아이폰은 'Safari로 열기')를 누른 다음 위 방법대로</li></ol>
   <h3>공식 사이트 모음 — 더 자세히 보고 싶을 때</h3>
   <ol class="manualSteps officialLinks">
    <li><b>여행·축제</b> — <a href="https://korean.visitkorea.or.kr/" target="_blank" rel="noopener">대한민국 구석구석(한국관광공사)</a> · <a href="https://tour.gwangju.go.kr/" target="_blank" rel="noopener">오매광주(광주 관광)</a> · <a href="https://korean.visitkorea.or.kr/kfes/list/wntyFstvlList.do" target="_blank" rel="noopener">전국 축제 일정</a></li>
