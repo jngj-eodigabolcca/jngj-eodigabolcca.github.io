@@ -19,8 +19,326 @@
       "verify": "보도 기준 · 관람시간·요금은 광양시 공지 확인",
       "source": "광양시 발표 · 한국소통투데이 보도",
       "url": "https://www.kbcs.kr/news/article.html?no=432342",
-      "tags": ["축제", "미디어아트", "야간", "전남"],
-      "ticket": {"status": "확인필요", "note": "공식 안내 확인", "checked": "2026-10-19"}
+      "tags": [
+        "축제",
+        "미디어아트",
+        "야간",
+        "전남"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      }
+    },
+    {
+      "category": "축제",
+      "subtype": "가족축제",
+      "address": "광주 남구 노대동 물빛근린공원",
+      "time": "09:30–15:00 (개막 10:30)",
+      "price": "공식 안내 확인",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "축제",
+        "체험",
+        "아이",
+        "가족",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-ng-family-fest-2026",
+      "title": "남구 가족 축제",
+      "venue": "물빛근린공원",
+      "district": "남구",
+      "date": "10.24(토)",
+      "start": "2026-10-24",
+      "end": "2026-10-24",
+      "reservation": "사전 신청 없이 현장 접수(09:30부터)",
+      "verify": "보도 기준 · 에어바운스·만들기·세계 전통놀이·아기용품 벼룩시장",
+      "source": "남구 발표 · 정안뉴스 2026.10.14",
+      "url": "https://www.jungannews.com/news/article.html?no=867512"
+    },
+    {
+      "category": "축제",
+      "subtype": "골목축제",
+      "address": "광주 광산구 선운공원",
+      "time": "16:00~",
+      "price": "무료 입장",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "축제",
+        "체험",
+        "가족",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-gs-ryongryong-2026",
+      "title": "룡룡페스타 (어룡동 골목상권 축제)",
+      "venue": "선운공원 일원",
+      "district": "광산구",
+      "date": "10.31(토)",
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "verify": "보도 기준 · 플리마켓·체험존·푸드트럭·스탬프투어",
+      "source": "광산구 골목상권 가을축제 보도(중앙이코노미뉴스 2026.9.27)",
+      "url": "https://www.joongangenews.com/news/articleView.html?idxno=550648"
+    },
+    {
+      "category": "축제",
+      "subtype": "골목축제",
+      "address": "광주 광산구 수완동",
+      "time": "토요일 저녁 (10.17 첫날 19:00 시작)",
+      "price": "무료 입장",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "축제",
+        "야간",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-gs-suwan-bomb-2026",
+      "title": "수완 '즐거운 토요일 밤' 골목축제",
+      "venue": "수완동 한신포차 수완점 앞·신돈지마을 일원",
+      "district": "광산구",
+      "date": "10.24(토) · 10.31(토)",
+      "start": "2026-10-24",
+      "end": "2026-10-31",
+      "verify": "보도 기준 · 거리공연·길거리 노래방·플리마켓 · 토요일에만 열림",
+      "source": "광산구 골목상권 가을축제 보도(중앙이코노미뉴스 2026.9.27)",
+      "url": "https://www.joongangenews.com/news/articleView.html?idxno=550648"
+    },
+    {
+      "category": "축제",
+      "subtype": "골목축제",
+      "address": "광주 광산구 비아동 비아중앙로",
+      "time": "11:00~",
+      "price": "무료 입장",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "축제",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-gs-biajungang-2026",
+      "title": "비아 중앙로 골목활력페스티벌",
+      "venue": "비아중앙로 일원",
+      "district": "광산구",
+      "date": "10.31(토)",
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "verify": "보도 기준 · 세부 프로그램은 상가번영회 안내 확인",
+      "source": "광산구 골목상권 가을축제 보도(중앙이코노미뉴스 2026.9.27)",
+      "url": "https://www.joongangenews.com/news/articleView.html?idxno=550648"
+    },
+    {
+      "category": "축제",
+      "subtype": "먹거리축제",
+      "address": "광주 광산구 월곡2동",
+      "time": "13:00~",
+      "price": "무료 입장 · 음식은 유료",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "축제",
+        "먹거리",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-gs-multicultural-food-2026",
+      "title": "월곡 다문화음식축제",
+      "venue": "월곡2동 일원",
+      "district": "광산구",
+      "date": "10.31(토)",
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "verify": "보도 기준 · 고려인마을 인근 다문화 음식",
+      "source": "광산구 골목상권 가을축제 보도(중앙이코노미뉴스 2026.9.27)",
+      "url": "https://www.joongangenews.com/news/articleView.html?idxno=550648"
+    },
+    {
+      "category": "행사",
+      "subtype": "교육·체험",
+      "address": "전남 진도군 의신면",
+      "time": "기간 중 · 시간은 공식 채널 확인",
+      "price": "공식 안내 확인",
+      "status": "진행중",
+      "verified": "2026-10-19",
+      "tags": [
+        "체험",
+        "숲",
+        "아이",
+        "가족",
+        "야외"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-jd-unrim-forest-2026",
+      "title": "운림산림욕장 가을 숲체험 (새집·이끼정원·향기 롤온 만들기)",
+      "venue": "운림산림욕장",
+      "district": "진도군",
+      "date": "10.15 ~ 11.30",
+      "start": "2026-10-15",
+      "end": "2026-11-30",
+      "reservation": "회차당 20명 · 신청 방법은 진도군 산림부서 문의",
+      "verify": "보도 기준 · 관광객·군민 모두 참여 가능",
+      "source": "진도군 발표 · MTN뉴스 2026.10.15",
+      "url": "https://news.mtn.co.kr/article/2026101509485093266"
+    },
+    {
+      "category": "행사",
+      "subtype": "교육·체험",
+      "address": "전남 강진군 강진읍 동성로 70",
+      "time": "10:00–17:00",
+      "price": "무료",
+      "status": "진행중",
+      "verified": "2026-10-19",
+      "tags": [
+        "체험",
+        "무료",
+        "가족",
+        "야외"
+      ],
+      "ticket": {
+        "status": "무료",
+        "note": "현장 접수",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-gj-scout-escape-2026",
+      "title": "더 스카우트 로컬 in 강진 (원도심 야외 방탈출)",
+      "venue": "강진 시간여행자의 집 출발 (사의재·영랑생가 일원)",
+      "district": "강진군",
+      "date": "10.19 ~ 11.1",
+      "start": "2026-10-19",
+      "end": "2026-11-01",
+      "reservation": "예약 없이 현장 접수 (강진 시간여행자의 집)",
+      "verify": "보도 기준 · 지도·스마트폰으로 단서 찾기, 완료 시 기념품",
+      "source": "강진군 발표 · 매일일보 2026.10.16",
+      "url": "https://www.m-i.kr/news/articleView.html?idxno=2006733"
+    },
+    {
+      "category": "행사",
+      "subtype": "교육·체험",
+      "address": "전남 영암군 삼호읍",
+      "time": "13:00–15:00",
+      "price": "공식 안내 확인",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "체험",
+        "청년"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-ya-youth-cooking-2026",
+      "title": "영암 찾아가는 청춘클래스 (요리 체험)",
+      "venue": "삼호읍 외국인주민지원센터",
+      "district": "영암군",
+      "date": "10.30(금)",
+      "start": "2026-10-30",
+      "end": "2026-10-30",
+      "reservation": "10.17~10.27 달빛청춘마루 누리집·방문 신청 · 20명 · 10.28 개별 안내",
+      "verify": "보도 기준 · 영암 거주 19~49세 청년 대상",
+      "source": "영암군청년센터 발표 · 내외일보 2026.10.16",
+      "url": "https://www.naewoeilbo.com/news/articleView.html?idxno=2433249"
+    },
+    {
+      "category": "행사",
+      "subtype": "교육·체험",
+      "address": "전남 순천시 승주읍 선암사길",
+      "time": "회차별 1박 2일",
+      "price": "1인 5만 원",
+      "status": "예정",
+      "verified": "2026-10-19",
+      "tags": [
+        "체험",
+        "힐링"
+      ],
+      "ticket": {
+        "status": "확인필요",
+        "note": "공식 안내 확인",
+        "checked": "2026-10-19"
+      },
+      "id": "extra-sc-sagye-2026",
+      "title": "순천사계공감 '다시, 비움' (1박2일 템플스테이·차 체험)",
+      "venue": "선암사 · 순천 전통야생차체험관",
+      "district": "순천시",
+      "date": "10.24~25 · 11.7~8",
+      "start": "2026-10-24",
+      "end": "2026-11-08",
+      "reservation": "회차당 25명 선착순 · 포스터 QR 온라인 신청",
+      "verify": "보도 기준 · 싱잉볼 명상·별빛 산책·다도",
+      "source": "순천시 발표 · 파이낸셜뉴스 2026.10.15",
+      "url": "https://www.fnnews.com/news/202610151226257031"
+    },
+    {
+      "id": "extra-ys-dolsan-island-exhibit-2026",
+      "category": "전시",
+      "subtype": "책·독서",
+      "title": "돌산도서관 전시 「세상 모든 섬 이야기」",
+      "venue": "돌산도서관",
+      "libKey": "돌산도서관",
+      "district": "여수시",
+      "address": "전남 여수시 돌산읍",
+      "date": "9.5 ~ 11.4",
+      "start": "2026-09-05",
+      "end": "2026-11-04",
+      "time": "도서관 운영시간",
+      "price": "무료",
+      "status": "진행중",
+      "verified": "2026-10-19",
+      "verify": "보도 기준 · 여수시립도서관 독서행사",
+      "source": "여수시립도서관 가을 독서행사 보도(뉴스탑전남)",
+      "url": "https://www.dbltv.com/news/articleView.html?idxno=44660",
+      "tags": [
+        "전시",
+        "무료",
+        "책",
+        "실내"
+      ],
+      "aliases": [
+        "도서전",
+        "북페어",
+        "책 축제",
+        "책축제",
+        "독서",
+        "책 전시",
+        "도서 전시"
+      ],
+      "ticket": {
+        "status": "무료",
+        "note": "도서관 전시",
+        "checked": "2026-10-19"
+      }
     }
   ]
 }
