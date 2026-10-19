@@ -1757,7 +1757,7 @@ button{min-height:var(--tap)}
       <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button>대중교통</button><button class="on">자동차</button></div></div>
     </div>
     <div class="detailSearch" id="detailSearch" hidden style="display:none">
-      <button type="button" id="detailToggle" class="detailToggle" aria-expanded="false">📍 원하는 지역·일정을 직접 말하기 <span>자세히 요청하기 ＋</span></button>
+      <button type="button" id="detailToggle" class="detailToggle" aria-expanded="false">📍 원하는 지역·일정을 직접 적기 <span>자세히 요청하기 ＋</span></button>
       <div id="detailPanel" class="detailPanel" hidden>
         <p class="detailLead">예: “퇴근하고 저녁에 북구에서 무료로 2시간 놀 거” 또는 “토요일 오전 남구에서 아이랑 갈 데”</p>
         <label for="detailRequest">무엇을 하고 싶으세요?</label>
@@ -1847,7 +1847,7 @@ button{min-height:var(--tap)}
 <section class="block">
 <div class="ai" id="aiBox">
   <div class="aiLeft">
-    <div class="aiHead"><span>✨</span><div><b id="aiName">💬 말로 물어보기</b><small id="aiSub">위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요.</small></div></div>
+    <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
         <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
@@ -3230,7 +3230,7 @@ function renderToday() {
   const mh = $("#moreHome");   // '추천 더 보기' 상자가 있으면 하루 플랜은 그 안으로
   if (mh) { [ns, mh, wt].forEach(el => { if (el) main.insertBefore(el, up) }); const mb = mh.querySelector(".moreHomeBody"); [cs].forEach(el => { if (el) mb.insertBefore(el, mb.firstChild) }); if (td) mb.appendChild(td) }
   else [ns, cs, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
-  // '말로 물어보기'(옛 토박이 길잡이)는 '오늘 뭐하지?' 바로 아래에 붙여 한 기능처럼 — 조건 고르기 결과도 여기 답변 칸에 나와요
+  // '글로 물어보기'(옛 토박이 길잡이)는 '오늘 뭐하지?' 바로 아래에 붙여 한 기능처럼 — 조건 고르기 결과도 여기 답변 칸에 나와요
   { const dn = document.getElementById("decideNow"); if (ai && dn && dn.nextElementSibling !== ai) dn.after(ai) }
   if (ns) ns.classList.add("first"); [cs, ai, td, wt].forEach(el => el && el.classList.remove("first"));
   renderCultureSpot();
@@ -3463,7 +3463,7 @@ let ORIGIN = (() => { try { const v = JSON.parse(localStorage.getItem("glm_origi
 function originKey() { return (ORIGIN && ORIGIN_REGION[ORIGIN] === REGION ? ORIGIN : null) || REGION_ORIGIN[REGION] || "gj" }
 /* 길잡이 이름은 출발지 도시를 따라가요: 광주·순천·여수·목포 토박이 길잡이 */
 function guideTitle() {
-  try { return `💬 말로 물어보기 · ${ORIGINS[originKey()][0].replace("시청", "")} 출발` } catch (e) { return "" }
+  try { return `✏️ 글로 물어보기 · ${ORIGINS[originKey()][0].replace("시청", "")} 출발` } catch (e) { return "" }
 }
 function renderOriginBars() {
   const an = document.getElementById("aiName"); if (an && guideTitle()) an.textContent = guideTitle();
@@ -6428,7 +6428,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.44 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.45 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
