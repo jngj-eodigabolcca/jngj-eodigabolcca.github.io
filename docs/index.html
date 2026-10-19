@@ -6508,7 +6508,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.49 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.50 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6925,13 +6925,13 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  if(!rail||!toggle)return;
  let timeout, tabTimer;
  // 탭 보이기/숨기기: 터치하면 4초 동안 보였다가 다시 숨음 (메뉴가 펼쳐져 있으면 숨지 않음)
- function hideTab(){clearTimeout(tabTimer);if(rail.classList.contains('isCollapsed'))rail.classList.add('rqHidden')}
- function showTab(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideTab,ms||4000)}
- function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);showTab(2500)}
+ function hideRail(){clearTimeout(tabTimer);if(rail.classList.contains('isCollapsed'))rail.classList.add('rqHidden')}
+ function showRail(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideRail,ms||4000)}
+ function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);showRail(2500)}
  function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,8000)}
- showTab(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
- let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed'))showTab()},true);
- let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showTab();else if(d>6&&Date.now()-touchAt>800)hideTab();lastY=scrollY},{passive:true});
+ showRail(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
+ let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed'))showRail()},true);
+ let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showRail();else if(d>6&&Date.now()-touchAt>800)hideRail();lastY=scrollY},{passive:true});
  rail.addEventListener('scroll',()=>{if(!rail.classList.contains('isCollapsed')){clearTimeout(timeout);timeout=setTimeout(close,8000)}},true);
  toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -6941,7 +6941,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
    }else if(target==='indoor'){
      // 비·더위 대비: 가볼 곳 전체 중 실내 + 오늘 문 연 곳만
      PLACE_GROUP='전체';PLACE_IO='실내';PLACE_OPEN=true;
-     showTab('places');renderPlaces();
+     window.showTab('places');renderPlaces();
      // 다시 그린 뒤 목록 맨 위(필터 칩이 보이는 곳)로 이동
      // 화면 밖 카드 높이가 그려지면서 위치가 밀리므로, 부드럽게 굴리지 않고 바로 옮긴 뒤 한 번 더 맞춘다
      const toTop=()=>{const t=document.getElementById('placesView');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-12),behavior:'instant'})};
@@ -6962,7 +6962,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
    }else if(target==='dayplan'){
      document.querySelector('nav.bottom [data-jump="decide"]')?.click();
      setTimeout(()=>document.getElementById('today')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
-   }else if(typeof showTab==='function')showTab(target);
+   }else if(typeof window.showTab==='function'){window.showTab(target);const go=()=>{const t=document.getElementById(target+'View');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-10),behavior:'instant'})};[80,400,900].forEach(ms=>setTimeout(go,ms))}
    close();
  }));
  document.addEventListener('pointerdown',e=>{if(!rail.contains(e.target))close()});
