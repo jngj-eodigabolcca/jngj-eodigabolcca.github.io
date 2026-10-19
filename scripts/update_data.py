@@ -977,7 +977,7 @@ def gma_exhibitions():
         pm = re.search(r"장소\s*[:：]?\s*([^\n]+)", ctx) or re.search(r"([^\n]*(?:전시실|미술관|갤러리|로비|광장)[^\n]*)", before)
         place = re.sub(r"\s*(전시)?기간.*$", "", pm.group(1)).strip(" :·") if pm else ""
         place = re.sub(r"^(광주|시립)미술관\s*", "", place)          # '광주미술관 본관 제1전시실' → '본관 제1전시실'
-        if re.search(r"상설전|전시\s*$|≪|《|\.\.\.|…", place):
+        if re.search(r"상설전|전시\s*$|≪|《|\.\.\.|…|체크|['\"]", place):
             place = ""                                                    # 제목 조각을 장소로 잘못 잡은 경우
         # 링크 글자에 '제목 · 기간 … · 장소 …'가 통째로 들어 있는 경우가 있어 나눠서 쓴다
         for t in g["titles"]:
@@ -990,6 +990,7 @@ def gma_exhibitions():
         full = [t for t in titles if not re.search(r"(\.\.\.|…)$", t)]
         title = max(full or titles or [""], key=len)
         title = re.sub(r"(\.\.\.|…)$", "", title).strip()
+        title = re.sub(r"\s*(상세\s*페이지\s*이동|자세히\s*보기|상세\s*보기)\s*$", "", title).strip()   # 링크 안내 글자가 제목에 붙는 경우
         if not title or GMA_SKIP.search(place + title):
             continue
         detail_url = urllib.parse.urljoin(GMA_BASE + "/pj/", g["href"]) if g["href"] else f"{GMA_BASE}/pj/pjExhibit.php?action=view&eSeq={seq}"
@@ -1008,12 +1009,17 @@ def gma_exhibitions():
         except Exception as e:
             log(f"  · 시립미술관 상세 실패 {seq}: {scrub(str(e))[:80]}")
         photo = "사진전시관" in place
+        # 분관(하정웅미술관)에서 하는 전시는 그 장소로 — 본관 주소·지하철 안내가 붙으면 엉뚱한 곳으로 가요
+        hjw = "하정웅미술관" in place
+        if hjw:
+            room = re.search(r"\(([^()]*전시실[^()]*)\)", place)
+            place = room.group(1) if room else ""
         out.append({
             "id": f"gma-{seq}", "apiId": seq, "category": "전시", "subtype": "미술",
             "title": title,
-            "venue": "광주시립미술관" + (f" · {place}" if place and "시립미술관" not in place else (f" ({place})" if place else "")),
-            "venueId": "gmoa-photo-gallery" if photo else "gma",
-            "district": "북구", "address": "" if photo else "광주 북구 하서로 52",
+            "venue": ("하정웅미술관" + (f" {place}" if place else "")) if hjw else "광주시립미술관" + (f" · {place}" if place and "시립미술관" not in place else (f" ({place})" if place else "")),
+            "venueId": "hajungwoong" if hjw else ("gmoa-photo-gallery" if photo else "gma"),
+            "district": "서구" if hjw else "북구", "address": "광주 서구 상무대로 1165" if hjw else ("" if photo else "광주 북구 하서로 52"),
             "date": f"{m1:02d}.{d1:02d} — {m2:02d}.{d2:02d}", "start": start, "end": end,
             "time": "운영시간·휴관일은 누리집 확인", "price": price,
             "status": "진행중" if start <= TODAY_ISO else "예정",
