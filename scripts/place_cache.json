@@ -6523,7 +6523,9 @@
     "lat": 34.956145,
     "lng": 127.587824,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|광양 광영상설시장|전라남도 광양시 광영시장길 19|wiki": {
     "v": 1,
@@ -6574,7 +6576,9 @@
     "lat": 34.768166,
     "lng": 127.080627,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|보성매일시장|전라남도 보성군 보성읍 신흥길 9|wiki": {
     "v": 1,
@@ -6602,7 +6606,9 @@
     "lat": 34.785007,
     "lng": 126.385869,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|목포 항동시장|전라남도 목포시 수강로12번길 2|wiki": {
     "v": 1,
@@ -6644,7 +6650,9 @@
     "lat": 34.314528,
     "lng": 126.755222,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|완도중앙시장|전라남도 완도군 완도읍 장보고대로 282-1|wiki": {
     "v": 1,
@@ -6679,7 +6687,9 @@
     "lat": 34.763276,
     "lng": 127.656553,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|도깨비시장|전라남도 여수시 학동서5길 18|wiki": {
     "v": 1,
@@ -6730,7 +6740,9 @@
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|화순 이양전통시장|전라남도 화순군 이양면 이양로 29-19|wiki": {
     "v": 1,
@@ -6740,7 +6752,9 @@
     "lat": 35.051314,
     "lng": 126.963164,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|화순 사평전통시장|전라남도 화순군 사평면 사평길 26|wiki": {
     "v": 1,
@@ -6778,7 +6792,9 @@
     "lat": 34.801528,
     "lng": 126.701015,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|영암5일시장|전라남도 영암군 영암읍 오일시장길 28|wiki": {
     "v": 1,
@@ -6788,7 +6804,9 @@
     "lat": 35.129165,
     "lng": 126.910063,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|남구 봉선시장|광주광역시 남구 봉선중앙로91번길 7|wiki": {
     "v": 1,
@@ -6807,7 +6825,9 @@
     "lat": 35.16153,
     "lng": 126.910979,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|북구 중흥시장|광주광역시 북구 중흥로 154|wiki": {
     "v": 1,
@@ -6817,7 +6837,9 @@
     "lat": 35.172754,
     "lng": 126.91775,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|북구 동부시장|광주광역시 북구 중문로9번길 39|wiki": {
     "v": 1,
@@ -6828,7 +6850,9 @@
     "lng": 126.882004,
     "geoSrc": "한국관광공사",
     "tourId": "2783840",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|북구 운암시장|광주광역시 북구 대자로 87|wiki": {
     "v": 1,
@@ -6845,7 +6869,9 @@
     "lat": 35.154282,
     "lng": 126.931509,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|동구 산수시장|광주광역시 동구 필문대로192번길 17-1|wiki": {
     "v": 1,
@@ -6862,7 +6888,9 @@
     "lat": 35.153493,
     "lng": 126.879818,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|화정동서부시장|광주광역시 서구 화운로156번길 24-1|wiki": {
     "v": 1,
@@ -7026,7 +7054,9 @@
     "lat": 35.023003,
     "lng": 127.126175,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|다산미술관|전남광주통합특별시 화순군 사평면 다공길 25|wiki": {
     "v": 1,
@@ -7053,7 +7083,9 @@
     "lng": 126.250103,
     "geoSrc": "한국관광공사",
     "tourId": "3076980",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|시에그린한국시화박물관|전남광주통합특별시 진도군 임회면 죽림길 97|wiki": {
     "v": 1,
@@ -7080,7 +7112,9 @@
     "lng": 126.218499,
     "geoSrc": "한국관광공사",
     "tourId": "589639",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|나절로미술관|전남광주통합특별시 진도군 임회면 진도대로 3886|wiki": {
     "v": 1,
@@ -7090,7 +7124,9 @@
     "lat": 34.513261,
     "lng": 126.291728,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|진도솔마루미술관|전남광주통합특별시 진도군 군내면 가흥로 641|wiki": {
     "v": 1,
@@ -7128,7 +7164,9 @@
     "lat": 35.309989,
     "lng": 126.751124,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|필암서원 유물전시관|전남광주통합특별시 장성군 황룡면 필암서원로 187|wiki": {
     "v": 1,
@@ -7163,7 +7201,9 @@
     "lat": 34.510964,
     "lng": 127.12023,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|국립소록도병원 한센병박물관|전라남도 고흥군 도양읍 소록해안길 82|wiki": {
     "v": 1,
@@ -7173,7 +7213,9 @@
     "lat": 35.147274,
     "lng": 126.920808,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|아시아문화박물관|광주광역시 동구 문화전당로 38|wiki": {
     "v": 1,
@@ -7192,7 +7234,9 @@
     "lat": 34.776576,
     "lng": 126.459074,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|전라남도농업박물관|전라남도 영암군 삼호읍 녹색로 653-11|wiki": {
     "v": 1,
@@ -7271,7 +7315,9 @@
     "lat": 34.753226,
     "lng": 126.662214,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|도갑사 성보박물관|전라남도 영암군 군서면 도갑사로 306|wiki": {
     "v": 1,
@@ -7281,7 +7327,9 @@
     "lat": 34.75653,
     "lng": 126.629121,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|왕인박사기념관|전라남도 영암군 군서면 왕인로 440|wiki": {
     "v": 1,
@@ -7291,7 +7339,9 @@
     "lat": 34.739519,
     "lng": 126.488698,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|영산미술관|전라남도 영암군 삼호읍 녹색로1126-171|wiki": {
     "v": 1,
@@ -7301,7 +7351,9 @@
     "lat": 34.889383,
     "lng": 126.70472,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|아천미술관|전라남도 영암군 신북면 하정길12-7|wiki": {
     "v": 1,
@@ -7327,7 +7379,9 @@
     "lat": 35.109081,
     "lng": 126.866555,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-10-19"
+    "checked": "2026-10-19",
+    "imgTried": "2026-10-19",
+    "imgTriedV": 2
   },
   "venues|광주김치박물관|광주광역시 남구 김치로 60|wiki": {
     "v": 1,
