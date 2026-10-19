@@ -4,7 +4,7 @@
    - 아이콘·글꼴·지도 라이브러리는 "저장본 먼저": 두 번째부터 빨리 뜸
    - 지도 라이브러리·글꼴은 설치할 때 미리 저장 → 첫 방문 뒤 인터넷이 끊겨도 지도가 뜸
    - 행사 사진 등 바깥 이미지는 저장하지 않음(용량 절약) */
-const VERSION = "v52-2026-10-19-cardfoot";
+const VERSION = "v53-2026-10-20-subway700";
 const SHELL = `shell-${VERSION}`, DATA = `data-${VERSION}`, LIB = `lib-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./creaming.webp"];
 const LIB_FILES = [

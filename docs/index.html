@@ -2145,13 +2145,15 @@ function nearStation(x) {
   const best = STATIONS.map(st => [st, km(v, st)]).sort((a, b) => a[1] - b[1])[0];
   return best ? { st: best[0], d: best[1], v } : null;
 }
+/* 전남광주는 어디든 차가 기본 → 늘 '🚗 차로 가요'. 지하철(광주만)은 역에서 700m(걸어서 10분 안팎) 안쪽일 때만 덧붙여요.
+   그보다 멀면 지하철 얘기는 꺼내지 않아요 (3km 떨어진 역은 도움이 안 돼요) */
+const SUBWAY_WALK_KM = 0.7;
 function trLine(x) {
   const n = nearStation(x); if (!n) return "";
-  if (n.d > 8) { const nm = (n.v.name || n.v.venue || n.v.title || "").split(" (")[0]; return `<small class="goLine">🚌 버스·자가용으로 가요 · <a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(nm)}" onclick="event.stopPropagation()">길찾기 ↗</a></small>` }
   const name = (n.v.name || n.v.venue || n.v.title || "").split(" (")[0];
   const dir = `https://map.naver.com/p/search/${encodeURIComponent(name)}`;
-  if (n.d <= 1.3) { const min = Math.max(1, Math.round(n.d * 1.3 / 4.2 * 60)); return `<small class="goLine ok">🚇 ${esc(n.st.name)}역에서 약 ${kmTxt(n.d).replace("약 ", "")} · 걸어서 ${min}분쯤</small>` }
-  return `<small class="goLine">🚌 지하철역과 멀어요 (가장 가까운 ${esc(n.st.name)}역 ${kmTxt(n.d)}) · 버스·택시나 차로 · <a target="_blank" rel="noopener" href="${dir}" onclick="event.stopPropagation()">대중교통 길찾기 ↗</a></small>`;
+  if (n.d <= SUBWAY_WALK_KM) { const min = Math.max(1, Math.round(n.d * 1.3 / 4.2 * 60)); return `<small class="goLine ok">🚗 차로 가요 · 🚇 ${esc(n.st.name)}역에서 걸어서 ${min}분도 돼요 · <a target="_blank" rel="noopener" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>` }
+  return `<small class="goLine">🚗 차로 가요 · <a target="_blank" rel="noopener" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>`;
 }
 /* ⏳ 머무는 시간(종류별 보통 시간 · 앱 추정)과 오늘 마감까지 남은 시간(앱에 있는 운영시간으로 계산) */
 const STAY_KIND = { "미술관": "1~1.5시간", "박물관": "1.5~2시간", "과학관": "2~3시간", "동물원·테마파크": "2~3시간", "공원·정원": "1시간 안팎", "5·18 사적지": "30분~1시간", "근대문화유산": "20~30분", "골목·시장": "1~2시간", "역사유적": "30분~1시간", "복합문화공간": "2시간 이상", "전시관": "1~1.5시간", "갤러리": "30분~1시간", "기념관": "1시간", "문학관": "1시간", "양림 카페": "1시간", "워터파크": "3~4시간", "자연·경관": "1~2시간", "체험": "1~2시간", "레포츠": "2시간 안팎" };
@@ -4490,7 +4492,7 @@ const MK_GROUPS = [
   ["5일장", "📅", v => !!v.market.days],
   ["상설·관광", "🏮", v => !v.market.days],
   ["야시장", "🌙", v => !!(v.market.nights || []).length || /야시장/.test(v.note || "")],
-  ["지하철로", "🚇", v => { const n = nearStation(v); return !!(n && n.d <= 1.3) }],
+  ["지하철로", "🚇", v => { const n = nearStation(v); return !!(n && n.d <= SUBWAY_WALK_KM) }],
 ];
 let MK = { group: "전체", gu: "전체" };
 function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { staysView: STAYS, cinemasView: CINEMAS, cafesView: CAFES, marketsView: VENUES.filter(v => v.market) }["marketsView"])) return;
@@ -6610,7 +6612,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.52 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.53 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
