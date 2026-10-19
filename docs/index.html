@@ -3611,10 +3611,33 @@ function tripHours(x, kind, date) {
   if (shows.length) return { shows: [...new Set(shows)].sort((a, b) => a - b), unsure };
   return { unknown: true };
 }
+/* 헛걸음(공탕) 위험: 가 봤는데 볼 전시가 없거나 문이 닫혀 있을 수 있는 곳은 추천하지 않는다
+   · 기획·대관 전시만 여는 갤러리·미술관 → 오늘 날짜에 걸린 전시가 확인될 때만
+   · 대학 박물관·미술관 → 방학·학사일정·내부 행사로 자주 닫혀서, 걸린 전시가 확인될 때만
+   · 표준데이터로 들어온 사립 시설, '방문 전 전화 확인'·'휴관 중일 수' 안내가 붙은 곳 → 제외 */
+function nowExhibit(v, day) {
+  day = day || todayISO();
+  return (typeof eventsAt === "function" ? eventsAt(v) : []).some(e => /전시|미술|사진|체험/.test((e.category || "") + (e.subtype || "")) && (!e.start || e.start <= day) && (!e.end || e.end >= day));
+}
+function emptyTripRisk(v, day) {
+  if (!v) return null;
+  const nm = v.name || "", txt = [v.note, v.closed, v.hours, v.desc].join(" ");
+  if (/휴관\s*중(?!일)|리모델링|폐관/.test(txt)) return "휴관 중일 수 있음";
+  if (/방문\s*전\s*(꼭\s*)?전화|미리\s*확인|휴관\s*중일\s*수/.test(txt)) return nowExhibit(v, day) ? null : "운영 여부를 미리 확인해야 하는 곳";
+  const exhibitKind = /미술관|갤러리|전시관/.test((v.kind || "") + " " + nm) && !/박물관|기념관|문학관|과학관/.test(nm)
+    && !/국립|시립|도립|군립|구립/.test(nm) && !/야외/.test(v.inout || "");   // 공립 미술관·야외 작품은 늘 볼 거리가 있음
+  const pi = typeof permanentInfo === "function" ? permanentInfo(v) : null;
+  if (/대학교|대학\s|대학$/.test(nm) && !nowExhibit(v, day)) return "대학 시설이라 방학·학사일정에 따라 닫힘";
+  if (String(v.id || "").startsWith("mu-") && /사립/.test(v.desc || "") && !nowExhibit(v, day)) return "사립 시설 · 운영 여부 확인 안 됨";
+  if (exhibitKind && !(pi && (pi.has === true || pi.has === "collection")) && !nowExhibit(v, day)) return "지금 열리는 전시 확인 안 됨";
+  return null;
+}
+window.emptyTripRisk = emptyTripRisk;
 /* 도착 시각(arrive, 분)에 가서 제대로 즐길 수 있는지 */
 function tripCheck(x, kind, arrive, opt = {}) {
   if (!x) return { ok: false, why: "정보 없음" };
   if (kind === "venue" && openToday(x) === false) return { ok: false, why: "오늘 휴관" };
+  if (kind === "venue") { const risk = emptyTripRisk(x, opt.date ? opt.date.toISOString().slice(0, 10) : undefined); if (risk) return { ok: false, why: risk } }
   if (kind === "event") {
     const day = (opt.date || kstNow()).toISOString().slice(0, 10);
     if ((x.start && x.start > day) || (x.end && x.end < day)) return { ok: false, why: "해당 날짜에 열리지 않음" };
@@ -6357,7 +6380,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "10.18 반려동물 공공데이터";
+const APP_VER = "0.36 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
