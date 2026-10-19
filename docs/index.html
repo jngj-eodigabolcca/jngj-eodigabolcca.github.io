@@ -540,9 +540,9 @@ body:not([data-tab="events"]) .chips{display:none}
 .icons{display:flex;flex-wrap:wrap;gap:6px}
 .iconpill{font-size:12.5px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:#fff;color:var(--ink2)}
 .card .verify{margin-top:0;font-size:13px}
-.foot{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line2)}
-.source{font-size:12px;color:var(--muted);line-height:1.5;padding-top:8px}
-.actions{display:flex;gap:6px;align-items:center;padding-top:8px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line2)}
+.source{font-size:12px;color:var(--muted);line-height:1.5;padding-top:8px;flex:1 1 140px;min-width:140px}
+.actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-top:8px;margin-left:auto}
 .btn,.miniBtn{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line);background:#fff;color:var(--green);border-radius:11px;padding:8px 12px;font-size:13.5px;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .2s}
 .btn:hover,.miniBtn:hover{border-color:var(--green);background:var(--green-l)}
 .fav{border:1.5px solid var(--line);background:#fff;border-radius:11px;min-width:40px;height:38px;font-size:18px;color:#b3aa9b;line-height:1}
@@ -3828,7 +3828,7 @@ function eventCard(x) {
   </ul>
   ${parkLine(x)}
   ${pills.length ? `<div class="icons">${pills.slice(0, 4).map(p => `<span class="iconpill">${p[0]} ${esc(p[1].split(" · ")[0])}</span>`).join("")}</div>` : ""}
-  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="source">정보 상태를 위 배지에서 바로 확인할 수 있어요</div><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}${visitBtn(x.id)}</div></div></div></article>`;
+  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}${visitBtn(x.id)}</div></div></div></article>`;
 }
 function eventMatches(x, q) {
   const hay = [x.title, x.aliases, x.venue, x.district, x.category, x.subtype, x.price, x.discount, (x.tags || []).join(" ")].join(" ").toLowerCase();
@@ -6610,7 +6610,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.51 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.52 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
