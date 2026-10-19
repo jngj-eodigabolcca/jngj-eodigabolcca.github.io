@@ -389,6 +389,7 @@ h3.sub:before{content:"";width:6px;height:20px;border-radius:3px;background:var(
 .quick button{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#f1f6f2;border-radius:999px;padding:9px 14px;font-size:14px;transition:background .2s}
 .quick button:hover{background:rgba(255,255,255,.18)}
 .quick button.ktx{background:var(--sky);border-color:var(--sky)}
+#answer .drLinks a.btn{color:#0f766e!important;background:#fff}
 .answer{position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:16px;font-size:15px;line-height:1.7;color:#e9f1ec;min-height:120px}
 .answer b{color:#fff}.answer>b{font-size:17px;color:#fff}
 .answer small{color:#cfdcd3}
@@ -1749,7 +1750,7 @@ button{min-height:var(--tap)}
       <div class="choiceGroup"><b>예산</b><div class="choiceRow" data-choice="budget"><button>무료</button><button class="on">3만원 이하</button><button>5만원 이하</button><button>상관없음</button></div></div>
       <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button>대중교통</button><button class="on">자동차</button></div></div>
     </div>
-    <div class="detailSearch" id="detailSearch">
+    <div class="detailSearch" id="detailSearch" hidden style="display:none">
       <button type="button" id="detailToggle" class="detailToggle" aria-expanded="false">📍 원하는 지역·일정을 직접 말하기 <span>자세히 요청하기 ＋</span></button>
       <div id="detailPanel" class="detailPanel" hidden>
         <p class="detailLead">예: “퇴근하고 저녁에 북구에서 무료로 2시간 놀 거” 또는 “토요일 오전 남구에서 아이랑 갈 데”</p>
@@ -1793,7 +1794,7 @@ button{min-height:var(--tap)}
 
 <section class="nowStart" id="nowStart">
   <div class="nowStartBox">
-    <div class="nowStartHead"><div><span class="eyebrow" style="color:#ffd88b">RIGHT NOW</span><h2>🚀 지금 출발하면</h2><p>고민 없이 <b>지금 바로</b> 나서면 제대로 볼 수 있는 3곳이에요.</p></div><span class="nowClock" id="nowClock">현재 시간 확인 중</span></div>
+    <div class="nowStartHead"><div><span class="eyebrow" style="color:#ffd88b">RIGHT NOW</span><h2>🚀 지금 바로 갈 곳</h2><p>고민 없이 <b>지금 바로</b> 나서면 제대로 볼 수 있는 3곳이에요.</p></div><span class="nowClock" id="nowClock">현재 시간 확인 중</span></div>
     <div class="nowStartGrid" id="nowStartGrid"><div class="nowPick"><b>추천을 준비하고 있어요.</b><small>오늘 이용 가능한 정보를 확인 중입니다.</small></div></div>
     <div class="nowStartFoot"><span id="nowStartNote">운영·행사 기간을 우선 확인합니다.</span><button class="nowRefresh" type="button" onclick="renderNowStart(true)">↻ 다시 추천</button></div>
   </div>
@@ -1840,10 +1841,9 @@ button{min-height:var(--tap)}
 <section class="block">
 <div class="ai" id="aiBox">
   <div class="aiLeft">
-    <div class="aiHead"><span>✨</span><div><b id="aiName">오늘어디로 길잡이</b><small id="aiSub">누구랑·몇 시간·비 와도 같은 조건을 말해보쇼. 딱 맞춰서 코스 짜드릴랑께요.</small></div></div>
+    <div class="aiHead"><span>✨</span><div><b id="aiName">💬 말로 물어보기</b><small id="aiSub">위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-    <div class="originBar dark"></div>
-    <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
+        <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
 </div>
@@ -2328,9 +2328,9 @@ function renderRegionBar() {
     ys: ["순천·여수·광양 · 남해안 오늘의 순천여수권", "<b>정원과 바다, 전시·공연·축제를 한 번에.</b> 순천의 정원·원도심부터 여수의 바다·야경, 광양·보성·구례까지 오늘 움직이기 좋은 코스로 골라드려요."],
     mp: ["목포·무안·신안 · 서남해 오늘의 무안목포권", "<b>목포 원도심과 서남해 바다, 오늘 즐길 곳을 한눈에.</b> 목포·무안·신안부터 해남·진도·완도까지 시간과 이동 조건에 맞춰 무리 없는 코스로 골라드려요."]
   };
-  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "누구랑·몇 시간·비 와도 같은 조건을 말해보쇼. 딱 맞춰서 코스 짜드릴랑께요."],
-    ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "누구랑·몇 시간·비 와도 같은 조건을 말해보쇼. 순천·여수·광양·보성까지 맞춰 짜드릴랑께요."],
-    mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "누구랑·몇 시간·비 와도 같은 조건을 말해보쇼. 목포·무안·해남·진도까지 맞춰 짜드릴랑께요."] }[REGION];
+  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."],
+    ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."],
+    mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."] }[REGION];
   const an = document.getElementById("aiName"), as = document.getElementById("aiSub"), aq = document.getElementById("aiq");
   if (an) an.textContent = guideTitle() || CUR[0]; if (as) as.textContent = CUR[2]; if (aq) aq.placeholder = CUR[1];
   const mt = document.getElementById("mapTitle"); if (mt && mt.firstChild) mt.firstChild.textContent = `${RW()} 지도`;
@@ -3057,7 +3057,7 @@ function renderNowShow() {
   const label = ["오늘", "내일", "이번 주말"][NOW_WHEN];
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
-  el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 뭐 하고 놀까?<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
+  el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
     <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
@@ -3213,7 +3213,7 @@ window.dateCourse = id => {
 const NIGHT_IDS = ["sajik", "yangnim-walk", "daein-market", "dongmyeong", "gwangju-theater", "jeonil245", "geumnamro", "pungam", "ssangam", "songjeong-market"];
 function renderToday() {
   const el = document.getElementById("today"); if (!el) return;
-  if (!VENUES.length) { el.innerHTML = `<div class="todayBox"><div class="todayTitle"><div><span class="eyebrow">TODAY · ${esc(RNAME())}</span><h2>오늘은 뭐할까?<small>${esc(RNAME())}은 아직 받아온 장소 자료가 없어요</small></h2></div></div><div class="nowEmpty">🧭 자동 업데이트가 돌면 관광공사 자료로 ${esc(RNAME())}의 박물관·미술관·축제가 채워지고, 여기에 하루 플랜이 떠요. ${REGION === "gj" ? `인터넷 연결을 확인한 뒤 <button class="btn" onclick="location.reload()">↻ 다시 불러오기</button>` : `지금 바로 둘러보려면 <button class="btn" onclick="setRegion('gj')">🟢 광주권 보기</button>`}</div></div>`; return }
+  if (!VENUES.length) { el.innerHTML = `<div class="todayBox"><div class="todayTitle"><div><span class="eyebrow">TODAY · ${esc(RNAME())}</span><h2>오늘 하루 코스<small>${esc(RNAME())}은 아직 받아온 장소 자료가 없어요</small></h2></div></div><div class="nowEmpty">🧭 자동 업데이트가 돌면 관광공사 자료로 ${esc(RNAME())}의 박물관·미술관·축제가 채워지고, 여기에 하루 플랜이 떠요. ${REGION === "gj" ? `인터넷 연결을 확인한 뒤 <button class="btn" onclick="location.reload()">↻ 다시 불러오기</button>` : `지금 바로 둘러보려면 <button class="btn" onclick="setRegion('gj')">🟢 광주권 보기</button>`}</div></div>`; return }
   const now = kstNow(), h = now.getUTCHours(), d = DAY_KO[now.getUTCDay()];
   const t = todayISO(), r = rnd(Number(t.replace(/-/g, "")) + TODAY_SEED * 7919);
   const HOLI = HOLIDAYS[t] || "", OFF = isOff(t), weekend = OFF;
@@ -3223,8 +3223,10 @@ function renderToday() {
   const ai = $("#aiBox") && $("#aiBox").closest("section"), wt = $("#wxTips"), cs = $("#cultureSpot"), up = $("#updated");
   // 순서를 한 곳에서만 제어: 오늘 볼거리 → 문화가 있는 날 → AI 길잡이 → 날씨 → 하루 플랜
   const mh = $("#moreHome");   // '추천 더 보기' 상자가 있으면 하루 플랜은 그 안으로
-  if (mh) { [ns, mh, wt].forEach(el => { if (el) main.insertBefore(el, up) }); const mb = mh.querySelector(".moreHomeBody"); [cs, ai].forEach(el => { if (el) mb.insertBefore(el, mb.firstChild) }); if (td) mb.appendChild(td) }
-  else [ns, cs, ai, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
+  if (mh) { [ns, mh, wt].forEach(el => { if (el) main.insertBefore(el, up) }); const mb = mh.querySelector(".moreHomeBody"); [cs].forEach(el => { if (el) mb.insertBefore(el, mb.firstChild) }); if (td) mb.appendChild(td) }
+  else [ns, cs, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
+  // '말로 물어보기'(옛 토박이 길잡이)는 '오늘 뭐하지?' 바로 아래에 붙여 한 기능처럼 — 조건 고르기 결과도 여기 답변 칸에 나와요
+  { const dn = document.getElementById("decideNow"); if (ai && dn && dn.nextElementSibling !== ai) dn.after(ai) }
   if (ns) ns.classList.add("first"); [cs, ai, td, wt].forEach(el => el && el.classList.remove("first"));
   renderCultureSpot();
   const w = WEATHER ? WMO(WEATHER.code) : null, rainy = WEATHER ? (w[2] || WEATHER.pp >= 60) : false, hot = WEATHER && WEATHER.max >= 31, cold = WEATHER && WEATHER.max <= 3;
@@ -3337,7 +3339,7 @@ function renderToday() {
   while (dates.length < Math.min(3, dpool.length)) { const c = pickR(dpool, dr); if (!dates.includes(c)) dates.push(c) }
   const closed = VENUES.filter(v => openToday(v) === false).length;
   el.innerHTML = `<div class="todayBox">
-   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)}, 오늘 하루 뭐할까?` : "쉬는 날, 오늘 하루 뭐할까?") : "오늘은 뭐할까?"}<small>${esc(ORIGINS[originKey()][0].replace("시청", ""))} 출발 · 알아서 짜둔 <b>오전·오후·저녁 하루 플랜</b> · ${OFF ? "아침부터 저녁까지 이렇게 놀아보쇼 · " : "평일엔 퇴근하고 저녁 칸부터 보쇼 · "}${d}요일 · ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·오늘 행사"} 맞춰 골랐어요${closed ? ` · 오늘 휴관 ${closed}곳은 뺐어요` : ""}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
+   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)} 하루 코스` : "쉬는 날 하루 코스") : "오늘 하루 코스"}<small>${esc(ORIGINS[originKey()][0].replace("시청", ""))} 출발 · 알아서 짜둔 <b>오전·오후·저녁 하루 플랜</b> · ${OFF ? "아침부터 저녁까지 이렇게 놀아보쇼 · " : "평일엔 퇴근하고 저녁 칸부터 보쇼 · "}${d}요일 · ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·오늘 행사"} 맞춰 골랐어요${closed ? ` · 오늘 휴관 ${closed}곳은 뺐어요` : ""}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
    <div class="plans">${PLANS.map(planCard).join("") || `<div class="nowEmpty">${esc(RNAME())}은 아직 추천할 장소 자료가 적어요. 자동 수집으로 박물관·축제가 채워지면 여기에 하루 플랜이 떠요.</div>`}</div>
    ${dates.length ? `<div class="dateHead"><div><span class="eyebrow" style="color:var(--red)">TODAY'S DATE COURSE</span><h3>💑 오늘 데이트는 어떻게 할랑가?</h3></div><button class="shuffle" onclick="dateCourse('${dates[0]?.id}')">전체 코스 보기 →</button></div>
    <div class="dates">${dates.map(c => `<button class="dateCard" onclick="dateCourse('${c.id}')"><span class="dcPic"><span class="ph"${bg(c.img)}></span><em>${c.emoji}</em></span><span class="dcBody"><b>${esc(c.name)}</b><small>${esc(c.area)} · ${esc(c.mood)}</small><i>${c.steps.length}곳 · 코스 보기 →</i></span></button>`).join("")}</div>` : ""}
@@ -3456,7 +3458,7 @@ let ORIGIN = (() => { try { const v = JSON.parse(localStorage.getItem("glm_origi
 function originKey() { return (ORIGIN && ORIGIN_REGION[ORIGIN] === REGION ? ORIGIN : null) || REGION_ORIGIN[REGION] || "gj" }
 /* 길잡이 이름은 출발지 도시를 따라가요: 광주·순천·여수·목포 토박이 길잡이 */
 function guideTitle() {
-  try { return `${ORIGINS[originKey()][0].replace("시청", "")} 토박이 길잡이` } catch (e) { return "" }
+  try { return `💬 말로 물어보기 · ${ORIGINS[originKey()][0].replace("시청", "")} 출발` } catch (e) { return "" }
 }
 function renderOriginBars() {
   const an = document.getElementById("aiName"); if (an && guideTitle()) an.textContent = guideTitle();
@@ -6297,7 +6299,7 @@ function renderWeekend() {
   const lab = d => `${d.slice(5).replace("-", ".")}(${DAYC[isoDow(d)]})`;
   const range = days.map(lab).join("~");
   const isEv = x => !!x.title;
-  el.innerHTML = `<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">THIS WEEKEND</span><h2>🗓 이번 주말 뭐 하지?</h2><small>${range} · ${HOME ? esc(HOME.gu) + "에서 가까운 곳 위주로" : esc(RNAME()) + " 기준"} · 무료·마감 임박을 먼저 골랐어요</small></div>
+  el.innerHTML = `<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">THIS WEEKEND</span><h2>🗓 이번 주말 추천</h2><small>${range} · ${HOME ? esc(HOME.gu) + "에서 가까운 곳 위주로" : esc(RNAME()) + " 기준"} · 무료·마감 임박을 먼저 골랐어요</small></div>
     <button class="miniBtn" type="button" onclick="shareWeekend()">📤 주말 5선 보내기</button></div>
     <div class="weekendList">${picks.map(([label, x], i) => {
       const when = isEv(x) ? (x.start && x.end && x.start !== x.end ? `~${x.end.slice(5).replace("-", ".")}` : x.time || "") : (x.hours || "");
@@ -6310,7 +6312,7 @@ window.shareWeekend = async () => {
   const lab = d => `${+d.slice(5, 7)}/${+d.slice(8)}(${DAYC[isoDow(d)]})`;
   const text = `🗓 이번 주말 뭐 하지? ${days.map(lab).join("~")}\n` + picks.map(([l, x], i) => `${i + 1}. ${x.title || x.name}${x.venue ? " · " + x.venue : x.district ? " · " + x.district : ""}`).join("\n");
   const url = SITE_URL + "#weekend";
-  try { if (navigator.share) { await navigator.share({ title: "이번 주말 뭐 하지?", text, url }); return } } catch (e) { if (e && e.name === "AbortError") return }
+  try { if (navigator.share) { await navigator.share({ title: "이번 주말 추천", text, url }); return } } catch (e) { if (e && e.name === "AbortError") return }
   try { await navigator.clipboard.writeText(text + "\n" + url); toast("주말 5선을 복사했어요. 카톡에 붙여넣기 하세요.") } catch { prompt("아래 내용을 복사해서 보내세요", text + "\n" + url) }
 };
 
@@ -6402,7 +6404,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.40 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.41 (10.19)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6797,8 +6799,8 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 <aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-rightjump="today">📅 오늘 뭐할까</button>
-  <button type="button" data-rightjump="weekend">🗓 주말엔 뭐할까</button>
+  <button type="button" data-rightjump="today">📅 오늘 열리는 것</button>
+  <button type="button" data-rightjump="weekend">🗓 주말에 열리는 것</button>
   <button type="button" data-rightjump="weather">🌤 오늘 날씨</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="favorites">♡ 찜</button>
