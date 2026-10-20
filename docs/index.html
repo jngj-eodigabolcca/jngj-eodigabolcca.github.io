@@ -1217,6 +1217,11 @@ small,.gu,.kind,.tag{letter-spacing:0}
 .concertQuickAccess .kidsQuickHome .kqChips i{font-style:normal;font-weight:750;background:rgba(255,255,255,.28);color:#fff;border-radius:999px;padding:2px 9px}
 .concertQuickAccess .kidsQuickHome .kqChips em{font-style:normal;font-weight:900;color:#fff}
 @media(max-width:370px){.concertQuickAccess .kidsQuickHome{gap:9px;padding:11px 11px}.concertQuickAccess .kidsQuickHome .kqTitle{font-size:16.5px}.concertQuickAccess .kidsQuickHome .kqChips{flex-wrap:nowrap;font-size:11.5px}.concertQuickAccess .kidsQuickHome .kqChips i{padding:2px 7px}.concertQuickAccess .kidsQuickHome .kqIcon{width:40px;height:40px;font-size:22px}.concertQuickAccess .kidsQuickHome .kqGo{padding:6px 10px;font-size:12.5px}}
+.concertQuickAccess .kidsQuickHome .kqIcon{width:62px;height:52px;border-radius:16px;padding:3px 3px 1px}
+.concertQuickAccess .kidsQuickHome .kqIcon{background:#fff1e2}.concertQuickAccess .kidsQuickHome .kqIcon svg.kidsDuo{width:100%;height:100%;display:block}
+.kidsDuo .kidsCreaming{filter:drop-shadow(0 0 .7px rgba(120,70,30,.55)) drop-shadow(0 1px 1px rgba(120,70,30,.18))}
+.kidsHeadTitle .creamingHead{width:2.1em;height:1.85em;vertical-align:-.45em;margin-right:6px}
+@media(max-width:370px){.concertQuickAccess .kidsQuickHome .kqIcon{width:54px;height:46px}}
 .concertQuickAccess .kidsQuickHome .kqGo{display:inline-block;margin:0;background:#fff;color:#e2652a;border-radius:999px;padding:7px 12px;font-size:13.5px;font-weight:900;white-space:nowrap;box-shadow:0 2px 6px rgba(150,60,0,.18);opacity:1}
 /* 아래 두 버튼도 가운데 정렬 */
 .concertQuickAccess .concertQuickPrimary,.concertQuickAccess .concertQuickFollow{text-align:center;font-size:15px}
@@ -1723,6 +1728,7 @@ button{min-height:var(--tap)}
 :where(:root[data-theme="dark"]) .routeStop .tripWhen,:where(:root[data-theme="dark"]) .detailResultCard .tripWhen{color:#8fd4c1}</style>
 </head>
 <body data-tab="home" data-screen="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="kidsAdult" viewBox="0 0 64 56"><ellipse cx="33" cy="53.5" rx="26" ry="2.4" fill="#000" opacity=".12"/><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></symbol></svg>
 <header class="top"><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
     <div class="logo"><img src="favicon-64.png?v=2" alt="" aria-hidden="true"></div>
@@ -1755,7 +1761,7 @@ button{min-height:var(--tap)}
       <h1 id="greet">오늘 광주에서<br><em>어디 갈까?</em></h1>
       <p id="heroLead"><b>오늘 광주에서 바로 즐길 수 있는 전시·공연·축제와 가볼 곳을 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
-        <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true">🧸</span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
+        <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo" viewBox="0 0 64 56" aria-hidden="true" focusable="false"><use href="#kidsAdult"/><image class="kidsCreaming" href="creaming.webp" x="33" y="16" width="31" height="39" preserveAspectRatio="xMidYMax meet"/><path d="M24 25q9 8 16.5 19" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="41" cy="44.6" r="2.3" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
       </div>
       <div class="heroStats">
         <button class="heroNow" id="heroNow" onclick="document.querySelector('#nowShow').scrollIntoView({behavior:'smooth'})"><strong>—</strong><span>오늘 전시</span></button><button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span></button>
@@ -4180,7 +4186,7 @@ function renderKids() {
   const t = todayISO();
   const evs = EVENTS.filter(isKidsEvent).sort((a, b) => ((a.start && a.start > t) - (b.start && b.start > t)) || String(a.start || "").localeCompare(String(b.start || "")));
   const d = DAY_KO[kstNow().getUTCDay()];
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH KIDS · ${esc(RNAME())}</span><h2>🧸 아이랑 어디 갈까?<small>아이와 볼 행사와 갈 곳을 한곳에 모았어요</small></h2></div><span>${base.length}곳</span></div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH KIDS · ${esc(RNAME())}</span><h2 class="kidsHeadTitle"><svg class="kidsDuo creamingHead" viewBox="0 0 64 56" aria-hidden="true" focusable="false"><use href="#kidsAdult"/><image class="kidsCreaming" href="${CREAMING_SRC}" x="33" y="16" width="31" height="39" preserveAspectRatio="xMidYMax meet"/><path d="M24 25q9 8 16.5 19" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="41" cy="44.6" r="2.3" fill="#f4cba3"/></svg>아이랑 어디 갈까?<small>크리밍이랑 손잡고 · 아이와 볼 행사와 갈 곳을 모았어요</small></h2></div><span>${base.length}곳</span></div>
   <div class="kidsScienceNav kidsTop" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">🧸 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === KIDS_SUB ? "selected" : ""}" onclick="setKids('sub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}</div>
   ${evs.length ? `<h3 class="sub" id="kidsEvents">📅 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.map(kidsEvRow).join("")}</div>` : ""}
   <h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
