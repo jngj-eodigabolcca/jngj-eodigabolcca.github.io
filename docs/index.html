@@ -1223,6 +1223,10 @@ svg.kidsDuo--mirror{transform:scaleX(-1)}
 .concertQuickAccess .kidsQuickHome .kqIcon:has(.kidsDuo--family){width:76px}@media(max-width:430px){.concertQuickAccess .kidsQuickHome .kqIcon:has(.kidsDuo--family){width:68px;height:46px}.concertQuickAccess .kidsQuickHome:has(.kidsDuo--family){gap:10px}.concertQuickAccess .kidsQuickHome:has(.kidsDuo--family) .kqChips{flex-wrap:nowrap}}.kidsHeadTitle .creamingHead.kidsDuo--family{width:2.6em}
 @media(max-width:370px){.concertQuickAccess .kidsQuickHome .kqIcon:has(.kidsDuo--family){width:60px;height:41px}.concertQuickAccess .kidsQuickHome:has(.kidsDuo--family) .kqTitle{font-size:16px}}
 img.crIc{width:1.45em;height:1.45em;object-fit:contain;vertical-align:-.36em;margin:-.1em 0;filter:drop-shadow(0 0 .5px rgba(110,60,20,.9)) drop-shadow(0 .5px .8px rgba(110,60,20,.35))}
+#aiBox .aiCard .t-off{color:#d5d9e6;background:rgba(255,255,255,.16)}
+#aiBox .aiCard .goLine{color:#d8ebe0!important}#aiBox .aiCard .goLine.warn{color:#ffb4a3!important}#aiBox .aiCard .goLine.ok{color:#9fe0bc!important}#aiBox .aiCard .goLine a,#aiBox .aiCard .pkLine a{color:inherit!important}
+#aiBox .aiCard .pkLine{color:#c3cce0!important}
+#aiBox .aiCard .acTags .t-unk{color:#ffd28a;background:rgba(255,200,120,.16)}#aiBox .aiCard .acTags .t-ok{color:#a8e6c0;background:rgba(120,220,160,.16)}
 .kidsDuo .kidsCreaming{filter:drop-shadow(0 0 .7px rgba(120,70,30,.55)) drop-shadow(0 1px 1px rgba(120,70,30,.18))}
 .kidsHeadTitle .creamingHead{width:2.1em;height:1.85em;vertical-align:-.45em;margin-right:6px}
 @media(max-width:370px){.concertQuickAccess .kidsQuickHome .kqIcon{width:54px;height:46px}}
@@ -1886,7 +1890,7 @@ button{min-height:var(--tap)}
 </section>
 <section class="deadlineRush" id="deadlineRush">
   <div class="deadlineBox">
-    <div class="deadlineHead"><b>🔥 놓치면 끝나요</b><small>오늘·이번 주 마감만 모았어요</small></div>
+    <div class="deadlineHead"><b>🔥 놓치면 끝나요</b><small>오늘·일주일 안에 끝나는 것 · 눌러서 모두 보기</small></div>
     <div class="deadlineGrid" id="deadlineGrid"></div>
   </div>
 </section>
@@ -2123,15 +2127,33 @@ function renderDecisionWeather(){
   const label=rain?'☔ 실내 전시·박물관':hot?'🥵 시원한 실내·저녁':cold?'🧣 따뜻한 실내 공연':'🌿 야외·꽃·산책';
   el.innerHTML=`<span>${w[0]} <b>${esc(w[1])} · ${WEATHER.now}℃</b></span><small>강수 ${WEATHER.pp}% · ${esc(tip)} · ${esc(weatherFreshLabel(WEATHER))}</small><div class="weatherReco"><span class="weatherReason">오늘 날씨 맞춤</span><button type="button" onclick="weatherQuickRecommend('${mode}')">${label} 추천받기 ↗</button><button type="button" onclick="weatherQuickRecommend('rain')">실내 코스</button><button type="button" onclick="weatherQuickRecommend('clear')">야외 코스</button></div>`;
 }
+function deadlineLists(){
+  const t=todayISO(), live=EVENTS.filter(e=>(!e.end||e.end>=t)&&!isCancelled(e));
+  return {
+    today: live.filter(e=>eventDaysLeft(e)===0),
+    week: live.filter(e=>{const d=eventDaysLeft(e);return d!=null&&d>=1&&d<=7}).sort((a,b)=>eventDaysLeft(a)-eventDaysLeft(b)),
+    tickets: live.filter(ticketOpenSoon).sort(popSort)
+  };
+}
+const DEADLINE_TITLE={today:'오늘이 마지막인 행사',week:'일주일 안에 끝나는 행사',tickets:'곧 예매가 열리는 공연'};
+window.deadlineList=kind=>{   // 🔥 놓치면 끝나요 카드 → 해당 행사 전체 목록
+  const L=deadlineLists(), evs=L[kind]||[]; if(!evs.length) return;
+  if(evs.length===1) return detail(evs[0].id);
+  const ans=document.getElementById('answer'); if(!ans) return detail(evs[0].id);
+  const groups=kind==='week'?[...new Set(evs.map(eventDaysLeft))].map(d=>[d,evs.filter(e=>eventDaysLeft(e)===d)]):[[null,evs]];
+  const dLabel=d=>d===1?'내일까지':`${d}일 뒤 끝나요 (D-${d})`;
+  ans.innerHTML=`<div class="aiList"><div class="alHead"><b>${esc(DEADLINE_TITLE[kind])}</b><span>${evs.length}개</span></div>
+   ${groups.map(([d,g])=>`${d!=null?`<h4>${esc(dLabel(d))} ${g.length}</h4>`:''}<div class="acGrid">${g.map(aiEventCard).join('')}</div>`).join('')}
+   <p class="pfNote">${kind==='tickets'?'예매 오픈 시각은 예매처에서 한 번 더 확인하세요.':`${esc(RNAME())} 행사 기준 · 마감일이 가까운 순서예요.`}</p></div>`;
+  scrollAI();
+  setTimeout(()=>{ const el=ans.querySelector('.aiList'), box=document.getElementById('aiBox'); if(!el||!box) return; const top=parseFloat(getComputedStyle(box).scrollMarginTop)||120; window.scrollBy({top:el.getBoundingClientRect().top-top-8,behavior:'smooth'}) },900);   // 질문 칸이 아니라 목록 머리가 바로 보이게
+};
 function renderDeadlineRush(){
   const box=document.getElementById('deadlineGrid'); if(!box) return;
-  const t=todayISO(), live=EVENTS.filter(e=>(!e.end||e.end>=t)&&!isCancelled(e));
-  const today=live.filter(e=>eventDaysLeft(e)===0);
-  const week=live.filter(e=>{const d=eventDaysLeft(e);return d!=null&&d>=1&&d<=7}).sort((a,b)=>eventDaysLeft(a)-eventDaysLeft(b));
-  const tickets=live.filter(ticketOpenSoon).sort(popSort);
-  const card=(cls,n,label,item,empty)=>`<button class="deadlineCard ${cls}" type="button" ${item?`onclick="detail('${jsq(item.id)}')"`:''}><strong>${n}</strong><span>${label}</span><small>${item?esc(item.title):empty}</small></button>`;
+  const {today,week,tickets}=deadlineLists();
+  const card=(kind,cls,n,label,item,empty)=>`<button class="deadlineCard ${cls}" type="button" ${n?`onclick="deadlineList('${kind}')" aria-label="${esc(label)} ${n}개 모두 보기"`:''}><strong>${n}</strong><span>${label}</span><small>${item?esc(item.title)+(n>1?` 외 ${n-1}개`:''):empty}</small></button>`;
   const sec=document.getElementById('deadlineRush'); if(sec) sec.classList.toggle('hidden', !today.length && !week.length && !tickets.length);
-  box.innerHTML=card('hot',today.length,'오늘 마지막',today[0],'오늘 마감 없음')+card('',week.length,'이번 주 종료',week[0],'7일 내 마감 없음')+card('',tickets.length,'예매 임박',tickets[0],'예매 오픈 예정 없음');
+  box.innerHTML=card('today','hot',today.length,'오늘 마지막',today[0],'오늘 마감 없음')+card('week','',week.length,'일주일 안에 종료',week[0],'7일 내 마감 없음')+card('tickets','',tickets.length,'예매 임박',tickets[0],'예매 오픈 예정 없음');
 }
 function runTheme(kind){
   if(kind==='pet'){ showTab('cafes'); setTimeout(()=>document.getElementById('cafesView')?.scrollIntoView({behavior:'smooth',block:'start'}),80); return; }
