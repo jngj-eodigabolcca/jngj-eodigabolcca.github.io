@@ -1,20 +1,20 @@
 {
-  "updated_at": "2026-10-20T09:44:19+09:00",
+  "updated_at": "2026-10-20T18:34:48+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 9,
+      "count": 21,
       "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 105,
-      "message": "정상 수집"
+      "count": 95,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 95건 사용"
     },
     {
       "id": "culture",
@@ -36,15 +36,15 @@
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 9,
+      "count": 21,
       "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 105,
-      "message": "정상 수집"
+      "count": 95,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 95건 사용"
     },
     {
       "id": "culture",
@@ -62,12 +62,12 @@
     }
   ],
   "counts": {
-    "total": 200,
-    "auto": 124,
+    "total": 203,
+    "auto": 127,
     "manual": 76
   },
   "manual_count": 98,
-  "events_count": 200,
+  "events_count": 203,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "local": {
     "holidays": {
@@ -81,7 +81,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-20T09:47:12+09:00",
+      "fetched_at": "2026-10-20T18:36:21+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -117,7 +117,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 320,
-      "fetched_at": "2026-10-20T09:47:12+09:00",
+      "fetched_at": "2026-10-20T18:36:21+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -150,7 +150,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-20T09:47:14+09:00",
+    "checked_at": "2026-10-20T18:36:23+09:00",
     "tourapi_calls": 5,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -199,6 +199,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-10-20T09:47:13+09:00"
+    "checked_at": "2026-10-20T18:36:22+09:00"
   }
 }
