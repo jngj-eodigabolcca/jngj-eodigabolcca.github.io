@@ -8256,6 +8256,11 @@ window.openPipeline = function(){
 .drBody .drLinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.drBody .drLinks .btn{padding:6px 10px;font-size:12.5px}.drBody .course li small{display:block;margin-top:2px}
 </style>
 <style id="screenSplitStyle">
+/* 홈 순서가 바뀐 뒤 남아 있던 '위 칸에 겹쳐 올리기'(음수 여백) 정리:
+   '오늘 뭐하지?' 카드는 더 이상 사진 바로 아래가 아니라서 위 칸(지금 바로 갈 곳)을 덮었음 */
+html body main .decideWrap.mainDecision{margin-top:16px!important}
+/* '나에게 온 소식'이 보일 때는 그 아래 '오늘 열리는 것'이 소식 상자를 덮지 않게 */
+html body main .noticeBoard:not([hidden]) ~ .nowShow{margin-top:16px!important}
 /* 화면 나누기: 다른 탭에서는 홈 칸을 숨겨 그 탭이 맨 위부터 바로 보이게 */
 body[data-screen="tab"] .homeOnly{display:none!important}
 #foodQuick{display:none!important}   /* 먹을 곳은 아래 탭에 있으니 홈에서는 뺌 */
