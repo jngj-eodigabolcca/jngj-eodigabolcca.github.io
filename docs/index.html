@@ -2061,7 +2061,7 @@ function renderDailyBrief(){
   const cards=document.getElementById("briefCards"), detailBox=document.getElementById("briefDetail");
   if(!cards||!detailBox) return;
   const t=todayISO();
-  const live=EVENTS.filter(e=>(!e.start||e.start<=t)&&(!e.end||e.end>=t));
+  const live=EVENTS.filter(e=>(!e.start||e.start<=t)&&(!e.end||e.end>=t)&&!isCancelled(e));
   const endingToday=live.filter(e=>eventDaysLeft(e)===0);
   const fresh=live.filter(eventIsNew).sort((a,b)=>(parseDataDate(b)||"").localeCompare(parseDataDate(a)||""));
   const ticket=EVENTS.filter(e=>(!e.end||e.end>=t)&&ticketOpenSoon(e)).sort(popSort);
@@ -2114,7 +2114,7 @@ function renderDecisionWeather(){
 }
 function renderDeadlineRush(){
   const box=document.getElementById('deadlineGrid'); if(!box) return;
-  const t=todayISO(), live=EVENTS.filter(e=>!e.end||e.end>=t);
+  const t=todayISO(), live=EVENTS.filter(e=>(!e.end||e.end>=t)&&!isCancelled(e));
   const today=live.filter(e=>eventDaysLeft(e)===0);
   const week=live.filter(e=>{const d=eventDaysLeft(e);return d!=null&&d>=1&&d<=7}).sort((a,b)=>eventDaysLeft(a)-eventDaysLeft(b));
   const tickets=live.filter(ticketOpenSoon).sort(popSort);
@@ -3024,8 +3024,10 @@ function isOff(iso) { const w = isoDow(iso); return w === 0 || w === 6 || !!HOLI
 const DAYC = "일월화수목금토";
 function isoDow(iso) { return new Date(iso + "T12:00:00+09:00").getUTCDay() }
 /* 그날 실제로 열리는지 + 그날의 시간 */
+const isCancelled = e => /취소|중단|연기|무산/.test(String(e && e.status || ""));
 function happensOn(e, iso) {
   if ((e.start && e.start > iso) || (e.end && e.end < iso)) return null;
+  if (isCancelled(e)) return null;   // 취소·연기된 행사는 '열리는 것'에서 뺀다
   const di = isoDow(iso), dc = DAYC[di], tm = e.time || "";
   const v = VENUES.find(x => x.id === e.venueId);
   if (/(^|[^\d])([일월화수목금토])요일\s*휴관/.test(tm) && new RegExp(dc + "요일\\s*휴관").test(tm)) return null;
@@ -3369,7 +3371,7 @@ function renderToday() {
   const weeklyOk = e => { const wk = (e.time || "").match(/매주\s*([일월화수목금토])요일/); return !wk || wk[1] === d };
   // 저녁: 오늘 실제로 열리는 음악회·공연(시간 확인된 것) → 경기 → 없으면 야경
   const evening = EVENTS.filter(e => /음악|공연/.test(e.category) && e !== pmEv).map(e => [e, happensOn(e, t)]).filter(([, h]) => h && h.sure)[0]?.[0] || EVENTS.find(e => e.category === "스포츠" && e.start === t && e.end === t);
-  const nightPool = NIGHT_IDS.map(id => VENUES.find(v => v.id === id)).filter(v => v && fresh(v) && (!indoorDay || (v.inout || "").includes("실내") || v.id === "sajik"));
+  const nightPool = NIGHT_IDS.map(id => VENUES.find(v => v.id === id)).filter(v => v && fresh(v) && openNow(v) && (!indoorDay || (v.inout || "").includes("실내") || v.id === "sajik"));
   // 광주 밖 권역: 이름·설명에 야경·야시장·밤 산책이 있는 곳 (순천 국가정원 야간, 여수 낭만포차·해상케이블카, 목포 해상W쇼 등)
   const nightAny = nightPool.length ? nightPool : VENUES.filter(v => fresh(v) && openNow(v) && /야경|야시장|야간|밤바다|낭만포차|케이블카|분수|조명|해상\s*W|불빛/.test([v.name, v.desc, v.note, v.hours, (v.tags || []).join(" ")].join(" ")) && (!indoorDay || (v.inout || "").includes("실내")));
   const nightV = !evening && take(pickR(near(nightAny), r));
@@ -3798,7 +3800,7 @@ function tripCheck(x, kind, arrive, opt = {}) {
   const usable = H.close - a, need = (kind === "food" || kind === "cafe") ? Math.min(stay, 50) : stayLo;
   if (usable < need) return { ok: false, why: `도착 뒤 ${usable}분뿐 (짧게 봐도 ${need}분 필요)` };
   const cut = H.lastIn != null ? `입장마감 ${tripHM(H.lastIn)} · ` : "";
-  const view = (kind === "food" || kind === "cafe") ? stay : Math.min(stay, usable), short = view < stay;
+  const view = Math.min(stay, usable), short = kind !== "food" && kind !== "cafe" && view < stay;   // 식당·카페도 마감 시각을 넘겨 머무르지 않게
   return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${kind === "food" ? `${view}분 식사` : kind === "cafe" ? `${view}분 쉬기` : short ? `${view}분 짧게 보기` : `${view}분 관람 가능`}` };
 }
 /* 출발 시각 기준 한 곳 판정 (첫 장소용) */
@@ -4048,7 +4050,7 @@ function hereBox(v) {
 }
 function placeCard(v) {
   const trail = v.kind === "무등산 트레킹";
-  const rows = (trail ? [["코스", v.hours], ["출발", v.parking.replace("출발: ", "")], ["확인", v.closed], ["요금", v.price]] : [["시간", v.hours], ["휴관", v.closed], ["요금", v.price], ["아이", v.kids]]).filter(r => r[1]);
+  const rows = (trail ? [["코스", v.hours], ["출발", (v.parking || "").replace("출발: ", "")], ["확인", v.closed], ["요금", v.price]] : [["시간", v.hours], ["휴관", v.closed], ["요금", v.price], ["아이", v.kids]]).filter(r => r[1]);
   return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow">${flagTag(v)}${homeTag(v)}<span class="kind k-${esc(v.kind)}">${esc(v.kind)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : v.inout === "실내" ? "🏠 실내" : "🏠🌤 실내·야외"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${v.note || v.desc ? `<small class="note">${esc(v.note || v.desc)}</small>` : ""}${v.updated ? `<small class="upd">↻ ${esc(v.updated.slice(5).replace("-", "."))} 관광공사 정보로 갱신</small>` : ""}
   <dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
@@ -5053,7 +5055,7 @@ function showTab(tab, fromHistory = false) {
   const root = document.documentElement, sb = root.style.scrollBehavior;
   root.style.scrollBehavior = "auto"; window.scrollTo(0, 0); root.scrollTop = 0;
   const t0 = (window.__scrollReq = (window.__scrollReq || 0) + 1);   // 이후에 다른 곳으로 스크롤을 요청하면 이 보정은 하지 않음
-  requestAnimationFrame(() => { root.style.scrollBehavior = sb; if (window.__scrollReq === t0 && window.scrollY > 0) window.scrollTo({ top: 0, behavior: "instant" }) });
+  requestAnimationFrame(() => { root.style.scrollBehavior = sb; if (window.__scrollReq === t0 && window.scrollY > 0) { root.style.scrollBehavior = "auto"; root.scrollTop = 0; root.style.scrollBehavior = sb } });
 }
 /* 홈에 있는 칸(오늘 열리는 것·날씨 등)으로 가야 할 때: 다른 탭에 있으면 먼저 홈으로 */
 window.ensureHome = () => { if (CUR_TAB !== "home") showTab("home") };
@@ -5366,7 +5368,7 @@ window.aiCourse = id => { const e = EVENTS.find(x => x.id === id); if (e) recomm
 function listMode(s) {
   const w = whenOf(s), free = /무료/.test(s), kid = /아이|유아|가족|어린이/.test(s);
   let title = "", evs = [], pls = [];
-  const evFilter = f => EVENTS.filter(e => activeIn(e, w) && f(e) && ticketOf(e).status !== "판매종료");
+  const evFilter = f => EVENTS.filter(e => activeIn(e, w) && f(e) && ticketOf(e).status !== "판매종료" && !isCancelled(e));
   if (/미술|전시|그림|아트|작품/.test(s)) {
     title = `${w.label} 볼 수 있는 전시`;
     evs = evFilter(e => e.category === "전시" && (!/미술|그림|아트/.test(s) || e.subtype !== "박람회"));
@@ -7178,7 +7180,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);showRail(2500)}
  function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,8000)}
  showRail(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
- let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed'))showRail()},true);
+ let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed')&&e.clientX>innerWidth-70)showRail()},true);   // 화면 오른쪽 끝을 만질 때만 손잡이를 꺼냄 (아무 데나 누를 때마다 나와서 카드를 덮지 않게)
  let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showRail();else if(d>6&&Date.now()-touchAt>800)hideRail();lastY=scrollY},{passive:true});
  rail.addEventListener('scroll',()=>{if(!rail.classList.contains('isCollapsed')){clearTimeout(timeout);timeout=setTimeout(close,8000)}},true);
  toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
@@ -8256,6 +8258,16 @@ window.openPipeline = function(){
 .drBody .drLinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.drBody .drLinks .btn{padding:6px 10px;font-size:12.5px}.drBody .course li small{display:block;margin-top:2px}
 </style>
 <style id="screenSplitStyle">
+/* 글자 대비·결과 창 너비 보정 (자동 화면 검사에서 찾은 것) */
+html body .drBody .drLinks a.btn{color:#0f766e!important;background:#fff!important}   /* 결과 창 '길찾기'가 흰 바탕에 흰 글자였음 */
+html body .decisionResult{grid-template-columns:minmax(0,1fr)}html body .decisionResult>*{min-width:0}   /* 좁은 폰에서 결과 창이 옆으로 넘치던 것 */
+html body .here em.off{background:#6f6a63!important}
+html body .wk div i{color:#857d70!important}
+:root[data-theme="dark"] body .wk div i{color:#a59d90!important}
+html body .planMeal span{color:#b8361c!important}
+:root[data-theme="dark"] body .planMeal span{color:#ff9c86!important}
+:root[data-theme="dark"] body .routeStop .tripWhen.unsure{color:#f0c27a!important}
+:root[data-theme="dark"] body .nowSeg button.on b,:root[data-theme="dark"] body .nowChips button.on b{color:#fff!important}
 /* 홈 순서가 바뀐 뒤 남아 있던 '위 칸에 겹쳐 올리기'(음수 여백) 정리:
    '오늘 뭐하지?' 카드는 더 이상 사진 바로 아래가 아니라서 위 칸(지금 바로 갈 곳)을 덮었음 */
 html body main .decideWrap.mainDecision{margin-top:16px!important}
@@ -8281,6 +8293,8 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
 (function(){
   try { arrangeHome() } catch (e) {}
   window.addEventListener("load", () => { try { arrangeHome() } catch (e) {} });
+  const origTo = window.scrollTo.bind(window);   // 다른 곳에서 스크롤을 요청하면 탭 전환의 '맨 위로' 보정은 하지 않게 표시
+  window.scrollTo = function (...a) { window.__scrollReq = (window.__scrollReq || 0) + 1; return origTo(...a) };
   const orig = Element.prototype.scrollIntoView;
   Element.prototype.scrollIntoView = function (...a) {
     window.__scrollReq = (window.__scrollReq || 0) + 1;
