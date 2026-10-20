@@ -1206,6 +1206,21 @@ small,.gu,.kind,.tag{letter-spacing:0}
 .concertQuickFollow{border:1px solid #ebd7ad;background:#fff9e9;color:#765018}
 .concertQuickAccess .kidsQuickHome{grid-column:1/-1;border:1px solid #f0c98a;background:linear-gradient(120deg,#fff3dc,#ffe6c2);color:#6a3f08;font-size:16px}
 .concertQuickAccess .kidsQuickHome span{color:#8a5a14}
+/* 🧸 아이랑 — 입력칸처럼 보이지 않게: 가운데 정렬 카드 + 숫자 칩 + '보러 가기' 버튼 모양 */
+.concertQuickAccess .kidsQuickHome{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 14px 14px;border-radius:20px;border:0;background:linear-gradient(135deg,#ffe9c7 0%,#ffd9a3 55%,#ffc98a 100%);box-shadow:0 8px 20px rgba(214,140,40,.22);position:relative;overflow:hidden;cursor:pointer;transition:transform .12s}
+.concertQuickAccess .kidsQuickHome:active{transform:scale(.98)}
+.concertQuickAccess .kidsQuickHome::before,.concertQuickAccess .kidsQuickHome::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.35);pointer-events:none}
+.concertQuickAccess .kidsQuickHome::before{width:90px;height:90px;left:-28px;top:-34px}
+.concertQuickAccess .kidsQuickHome::after{width:60px;height:60px;right:-14px;bottom:-22px}
+.concertQuickAccess .kidsQuickHome .kqIcon{display:grid;place-items:center;width:52px;height:52px;margin:0;border-radius:50%;background:#fff;font-size:30px;box-shadow:0 3px 8px rgba(160,90,10,.18);opacity:1}
+.concertQuickAccess .kidsQuickHome .kqTitle{font-size:20px;font-weight:900;color:#5a3204;letter-spacing:-.3px}
+.concertQuickAccess .kidsQuickHome .kqChips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:0;font-size:13px;opacity:1}
+.concertQuickAccess .kidsQuickHome .kqChips i{font-style:normal;font-weight:750;background:rgba(255,255,255,.75);color:#7a4a0c;border-radius:999px;padding:4px 11px}
+.concertQuickAccess .kidsQuickHome .kqChips em{font-style:normal;font-weight:900;color:#c25e00}
+.concertQuickAccess .kidsQuickHome .kqGo{display:inline-block;margin:2px 0 0;background:#6a3f08;color:#fff;border-radius:999px;padding:7px 18px;font-size:14px;font-weight:850;opacity:1}
+/* 아래 두 버튼도 가운데 정렬 */
+.concertQuickAccess .concertQuickPrimary,.concertQuickAccess .concertQuickFollow{text-align:center;font-size:15px}
+.concertQuickAccess .concertQuickPrimary span,.concertQuickAccess .concertQuickFollow span{font-size:12.5px}
 .concertQuickAccess button:focus-visible{outline:3px solid #f5a524;outline-offset:3px}
 @media(max-width:759px){.concertQuickAccess{gap:8px;margin-top:10px}.concertQuickAccess button{padding:12px 10px;font-size:13px}.concertQuickAccess button span{font-size:11px}}
 
@@ -1291,6 +1306,9 @@ html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:
 :root[data-theme="dark"] .planMeal a{background:var(--card);border-color:#5a3f37}
 .noticeBoard{margin:10px 0 14px;padding:12px 14px;border-radius:16px;background:var(--nb-bg,#fff7e6);border:1px solid var(--nb-bd,#f1d8a8);color:inherit}
 .noticeBoard[hidden]{display:none}
+/* 소식 상자가 보일 땐 상자가 히어로 위로 살짝 올라가고, '오늘 뭐하지?' 카드는 그 아래로 (겹침 방지) */
+.noticeBoard{position:relative;z-index:12;margin-top:-22px;box-shadow:0 10px 28px rgba(73,54,42,.12)}
+.noticeBoard:not([hidden]) + .decideWrap.mainDecision{margin-top:0!important}
 .noticeBoard .nbHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
 .noticeBoard .nbHead em{font-style:normal;background:#e2553c;color:#fff;border-radius:10px;padding:0 7px;font-size:12px;margin-left:4px}
 .noticeBoard .nbX{background:none;border:0;color:inherit;opacity:.65;font-size:12px;cursor:pointer;padding:4px}
@@ -1737,7 +1755,7 @@ button{min-height:var(--tap)}
       <h1 id="greet">오늘 광주에서<br><em>어디 갈까?</em></h1>
       <p id="heroLead"><b>오늘 광주에서 바로 즐길 수 있는 전시·공연·축제와 가볼 곳을 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
-        <button type="button" class="kidsQuickHome" onclick="showKids('전체')">🧸 아이랑 어디 갈까? <span id="kidsQuickSub">아이와 볼 행사·갈 곳 한눈에 ›</span></button>
+        <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true">🧸</span><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 아이와 볼 행사</i><i>📍 갈 곳</i></span><span class="kqGo">보러 가기 →</span></button>
         <button type="button" class="concertQuickPrimary" onclick="showTab('popshows')">🎤 대중가수 공연 <span>공연·예매 보기 ›</span></button>
         <button type="button" class="concertQuickFollow" onclick="openArtistFollowQuick()">⭐ 관심 가수 등록 <span>새 공연 모아보기 ›</span></button>
       </div>
@@ -4086,7 +4104,7 @@ function kidsEvRow(x) {
 function renderKidsQuick() {
   const el = document.getElementById("kidsQuickSub"); if (!el) return;
   const ev = EVENTS.filter(isKidsEvent).length, pl = VENUES.filter(isKidsPlace).length;
-  el.textContent = `아이와 볼 행사 ${ev} · 갈 곳 ${pl}곳 ›`;
+  el.innerHTML = `<i>🎈 볼 행사 <em>${ev}</em>개</i><i>📍 갈 곳 <em>${pl}</em>곳</i>`;
 }
 function renderKids() {
   renderKidsQuick();
@@ -6628,7 +6646,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.55 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.57 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7937,6 +7955,13 @@ window.openPrivacy = function(){
 :where(:root[data-theme="dark"]) .concertQuickFollow{border:1px solid #4f4530;background:#1a1812;color:#d8ae78}
 :where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome{border:1px solid #574528;background:linear-gradient(120deg,#1d1910,#251b0c);color:#e4b281}
 :where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome span{color:#d9a565}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome{background:linear-gradient(135deg,#3a2a12,#4a3214);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome::before,:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome::after{background:rgba(255,255,255,.06)}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome .kqIcon{background:#2a2014}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome .kqTitle{color:#ffd9a3}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome .kqChips i{background:rgba(0,0,0,.25);color:#f0c98a}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome .kqChips em{color:#ffb15c}
+:where(:root[data-theme="dark"]) .concertQuickAccess .kidsQuickHome .kqGo{background:#ffc98a;color:#3a2a12}
 :where(:root[data-theme="dark"]) .concertQuickAccess button:focus-visible{outline:3px solid #604a2f}
 :where(:root[data-theme="dark"]) .logo{background:transparent !important;box-shadow:none !important}
 :where(:root[data-theme="dark"]) .homeBar .homeAsk{background:#1a1812;border:1px solid #4c4330;color:#cdb996}
