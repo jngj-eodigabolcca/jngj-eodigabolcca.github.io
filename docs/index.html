@@ -2410,7 +2410,7 @@ window.setRegion = r => {
   if (MAP_READY) { Object.keys(MAP_LAYERS).forEach(drawLayer); updateMapCount(); MAP.setView(REGIONS[r].center, REGIONS[r].zoom) }
   if (MAP_READY) setTimeout(geocodeMissing, 1500);
   try { renderOriginBars(); renderNowStart() } catch (e) {}
-  const fromNm = ORIGINS[originKey()][0].replace("시청", "");
+  const fromNm = originName(originKey());
   $("#answer").innerHTML = `${REGIONS[r].emoji} <b>${REGIONS[r].name}</b>으로 바꿨어요. 이제 <b>${esc(fromNm)}</b>에서 출발해 ${esc(REGIONS[r].name)} 안에서 골라드려요. 하고 싶은 걸 적거나 위 버튼을 눌러보쇼잉.<br><br><small>${esc(REGIONS[r].districts.join(" · "))}</small>`;
 };
 /* 길잡이 빠른 버튼: 광주권은 원래 버튼(KTX·5·18·무등산…), 다른 권역은 어디서나 통하는 버튼 */
@@ -3404,7 +3404,7 @@ function renderToday() {
   while (dates.length < Math.min(3, dpool.length)) { const c = pickR(dpool, dr); if (!dates.includes(c)) dates.push(c) }
   const closed = VENUES.filter(v => openToday(v) === false).length;
   el.innerHTML = `<div class="todayBox">
-   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)} 하루 코스` : "쉬는 날 하루 코스") : "오늘 하루 코스"}<small>${esc(ORIGINS[originKey()][0].replace("시청", ""))} 출발 · 알아서 짜둔 <b>오전·오후·저녁 하루 플랜</b> · ${OFF ? "아침부터 저녁까지 이렇게 놀아보쇼 · " : "평일엔 퇴근하고 저녁 칸부터 보쇼 · "}${d}요일 · ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·오늘 행사"} 맞춰 골랐어요${closed ? ` · 오늘 휴관 ${closed}곳은 뺐어요` : ""}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
+   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)} 하루 코스` : "쉬는 날 하루 코스") : "오늘 하루 코스"}<small>${esc(originName(originKey()))} 출발 · 알아서 짜둔 <b>오전·오후·저녁 하루 플랜</b> · ${OFF ? "아침부터 저녁까지 이렇게 놀아보쇼 · " : "평일엔 퇴근하고 저녁 칸부터 보쇼 · "}${d}요일 · ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·오늘 행사"} 맞춰 골랐어요${closed ? ` · 오늘 휴관 ${closed}곳은 뺐어요` : ""}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
    <div class="plans">${PLANS.map(planCard).join("") || `<div class="nowEmpty">${esc(RNAME())}은 아직 추천할 장소 자료가 적어요. 자동 수집으로 박물관·축제가 채워지면 여기에 하루 플랜이 떠요.</div>`}</div>
    ${dates.length ? `<div class="dateHead"><div><span class="eyebrow" style="color:var(--red)">TODAY'S DATE COURSE</span><h3>💑 오늘 데이트는 어떻게 할랑가?</h3></div><button class="shuffle" onclick="dateCourse('${dates[0]?.id}')">전체 코스 보기 →</button></div>
    <div class="dates">${dates.map(c => `<button class="dateCard" onclick="dateCourse('${c.id}')"><span class="dcPic"><span class="ph"${bg(c.img)}></span><em>${c.emoji}</em></span><span class="dcBody"><b>${esc(c.name)}</b><small>${esc(c.area)} · ${esc(c.mood)}</small><i>${c.steps.length}곳 · 코스 보기 →</i></span></button>`).join("")}</div>` : ""}
@@ -3522,32 +3522,49 @@ function tripLegMin(a, b, move) {
 }
 /* 출발지: ① 문장에 적은 출발지 ② 🏠 내 동네(또는 지금 위치) ③ 고른 권역의 중심 도시 */
 /* 🚩 출발지: 시청 기준으로 고름 (광주·목포·순천·여수). 안 고르면 권역의 대표 시청 */
-const ORIGINS = { gj: ["광주시청", 35.1601, 126.8514], mp: ["목포시청", 34.8118, 126.3922], sc: ["순천시청", 34.9507, 127.4872], ys: ["여수시청", 34.7604, 127.6622] };
-const REGION_ORIGIN = { gj: "gj", mp: "mp", ys: "sc" };
-const ORIGIN_REGION = { gj: "gj", mp: "mp", sc: "ys", ys: "ys" };   // 출발지를 고르면 그 동네 권역 장소를 추천
+/* 🚩 출발지: 권역마다 실제로 사람들이 많이 출발하는 곳을 나눠 둠
+   [이름, 위도, 경도, 버튼에 쓸 짧은 이름, 권역]  · 'gj'(광주시청)는 구를 안 골랐을 때 쓰는 기본값 */
+const ORIGINS = {
+  gj: ["광주시청", 35.1601, 126.8514, "광주시청", "gj"],
+  "gj-dong": ["동구청", 35.1460, 126.9234, "동구", "gj"],
+  "gj-seo": ["서구청", 35.1521, 126.8901, "서구", "gj"],
+  "gj-nam": ["남구청", 35.1331, 126.9024, "남구", "gj"],
+  "gj-buk": ["북구청", 35.1742, 126.9120, "북구", "gj"],
+  "gj-gwangsan": ["광산구청", 35.1396, 126.7935, "광산구", "gj"],
+  "mp-mokpo": ["목포시청", 34.8118, 126.3922, "목포시청", "mp"],
+  "mp-namak": ["전남도청 (무안 남악)", 34.8162, 126.4630, "무안 남악", "mp"],
+  "ys-suncheon": ["순천시청 (원도심)", 34.9507, 127.4872, "순천 원도심", "ys"],
+  "ys-yeonhyang": ["순천 연향동 (신도심)", 34.9600, 127.5240, "순천 연향", "ys"],
+  "ys-yeosu": ["여수시청 (학동)", 34.7604, 127.6622, "여수 학동", "ys"],
+  "ys-yeosu-old": ["이순신광장 (여수 원도심)", 34.7393, 127.7359, "여수 원도심", "ys"],
+};
+const REGION_ORIGIN = { gj: "gj", mp: "mp-mokpo", ys: "ys-suncheon" };
+const ORIGIN_REGION = Object.fromEntries(Object.entries(ORIGINS).map(([k, o]) => [k, o[4]]));   // 출발지를 고르면 그 동네 권역 장소를 추천
+const originName = k => String((ORIGINS[k] || ORIGINS.gj)[0]).replace(/\s*\(.*\)$/, "");   // '순천시청 (원도심)' → '순천시청'
 /* 걸어서 다닐 땐 시청 대신 걷기 좋은 원도심을 출발 기준으로 (집·현재 위치를 정했으면 그걸 먼저 씀) */
-const WALK_ORIGINS = { gj: ["ACC·충장로 (도심)", 35.1460, 126.9193], mp: ["목포역 (원도심)", 34.7913, 126.3866], sc: ["순천시청 (원도심)", 34.9507, 127.4872], ys: ["이순신광장 (원도심)", 34.7393, 127.7359] };
+const WALK_ORIGINS = { gj: ["ACC·충장로 (도심)", 35.1460, 126.9193], "mp-mokpo": ["목포역 (원도심)", 34.7913, 126.3866] };
 let ORIGIN = (() => { try { const v = JSON.parse(localStorage.getItem("glm_origin")); return ORIGINS[v] ? v : null } catch (e) { return null } })();
 function originKey() { return (ORIGIN && ORIGIN_REGION[ORIGIN] === REGION ? ORIGIN : null) || REGION_ORIGIN[REGION] || "gj" }
-/* 길잡이 이름은 출발지 도시를 따라가요: 광주·순천·여수·목포 토박이 길잡이 */
 function guideTitle() {
-  try { return `✏️ 글로 물어보기 · ${ORIGINS[originKey()][0].replace("시청", "")} 출발` } catch (e) { return "" }
+  try { return `✏️ 글로 물어보기 · ${originName(originKey())} 출발` } catch (e) { return "" }
 }
 function renderOriginBars() {
   const an = document.getElementById("aiName"); if (an && guideTitle()) an.textContent = guideTitle();
   document.querySelectorAll(".originBar").forEach(el => {
-    const k = originKey();
-    el.innerHTML = `<b>🚩 어디서 출발해요?</b>` + Object.entries(ORIGINS).map(([key, o]) => `<button type="button" class="${key === k ? "on" : ""}" onclick="setOrigin('${key}')">${o[0].replace("시청", "")}</button>`).join("") + `<small>${ORIGINS[k][0]}에서 출발 · <b>${esc(REGIONS[REGION].name)}</b> 안에서 골라요</small>`;
+    const k = originKey(), list = Object.entries(ORIGINS).filter(([key, o]) => o[4] === REGION && key !== "gj");
+    el.classList.toggle("five", list.length >= 5);
+    el.innerHTML = `<b>🚩 어디서 출발해요?</b>` + list.map(([key, o]) => `<button type="button" class="${key === k ? "on" : ""}" onclick="setOrigin('${key}')">${esc(o[3])}</button>`).join("")
+      + `<small>${esc(ORIGINS[k][0])}에서 출발 · <b>${esc(REGIONS[REGION].name)}</b> 안에서 골라요${k === "gj" ? " · 구를 고르면 이동 시간이 더 정확해요" : ""}</small>`;
   });
 }
 window.setOrigin = k => {
   ORIGIN = ORIGINS[k] ? k : null; try { localStorage.setItem("glm_origin", JSON.stringify(ORIGIN)) } catch (e) {}
-  // 순천에서 출발하는데 광주권 장소만 추천하면 안 맞으니, 출발지의 권역으로 같이 바꾼다
+  // 다른 권역 출발지를 고르면 그 권역 장소를 추천하도록 권역도 같이 바꾼다
   if (ORIGIN && ORIGIN_REGION[ORIGIN] && ORIGIN_REGION[ORIGIN] !== REGION) { setRegion(ORIGIN_REGION[ORIGIN]); return }
   renderOriginBars(); try { renderNowStart(); renderToday() } catch (e) {}
   const q = document.getElementById("aiq")?.value; if (q && document.querySelector("#answer .course")) recommend(q);
-  else if (/으로 바꿨어요/.test($("#answer")?.textContent || "")) $("#answer").innerHTML = `${REGIONS[REGION].emoji} 이제 <b>${esc(ORIGINS[originKey()][0].replace("시청", ""))}</b>에서 출발해 <b>${esc(REGIONS[REGION].name)}</b> 안에서 골라드려요. 하고 싶은 걸 적거나 위 버튼을 눌러보쇼잉.`;
-  toast(`🚩 ${ORIGINS[k][0]}에서 출발하는 것으로 계산할게요`);
+  else if (/으로 바꿨어요/.test($("#answer")?.textContent || "")) $("#answer").innerHTML = `${REGIONS[REGION].emoji} 이제 <b>${esc(originName(originKey()))}</b>에서 출발해 <b>${esc(REGIONS[REGION].name)}</b> 안에서 골라드려요. 하고 싶은 걸 적거나 위 버튼을 눌러보쇼잉.`;
+  toast(`🚩 ${ORIGINS[k] ? ORIGINS[k][0] : "기본 출발지"}에서 출발하는 것으로 계산할게요`);
 };
 function tripOriginInfo(opt = {}) {
   if (opt.from) return { from: opt.from, label: opt.fromLabel || "입력한 출발지", how: "input" };
@@ -8258,6 +8275,10 @@ window.openPipeline = function(){
 .drBody .drLinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.drBody .drLinks .btn{padding:6px 10px;font-size:12.5px}.drBody .course li small{display:block;margin-top:2px}
 </style>
 <style id="screenSplitStyle">
+/* 출발지 버튼: 광주는 5개 구, 다른 권역은 2~4곳 — 한 줄에 다 들어가게 */
+html body .originBar{gap:6px}
+html body .originBar button{flex:1 1 0;min-width:0;padding:6px 4px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:420px){html body .originBar button{font-size:12px;padding:6px 2px}}
 /* 글자 대비·결과 창 너비 보정 (자동 화면 검사에서 찾은 것) */
 html body .drBody .drLinks a.btn{color:#0f766e!important;background:#fff!important}   /* 결과 창 '길찾기'가 흰 바탕에 흰 글자였음 */
 html body .decisionResult{grid-template-columns:minmax(0,1fr)}html body .decisionResult>*{min-width:0}   /* 좁은 폰에서 결과 창이 옆으로 넘치던 것 */
@@ -8539,7 +8560,8 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     p.date = p.dayOff ? new Date(kstNow().getTime() + p.dayOff * 86400e3) : null;
     let originPt = null, originLabel = "";
     if (p.origin) { originPt = tripOriginCoord(p.origin.label) || (p.origin.dist ? areaCenter(p.origin.dist) : null); originLabel = p.origin.label }
-    if (!originPt) { const o = tripOriginInfo({ move: p.move }); originPt = o.from; originLabel = (p.origin ? `${p.origin.label}(위치를 몰라 ` : "") + (o.label || "출발지 미정") + (p.origin ? " 기준)" : "") }
+    let originHow = p.origin ? "input" : "";
+    if (!originPt) { const o = tripOriginInfo({ move: p.move }); originHow = o.how; originPt = o.from; originLabel = (p.origin ? `${p.origin.label}(위치를 몰라 ` : "") + (o.label || "출발지 미정") + (p.origin ? " 기준)" : "") }
     let t = p.startMin, prev = originPt, prevName = originLabel;
     const used = new Set(), steps = [];
     p.stops.forEach((st, idx) => {
@@ -8621,7 +8643,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
       }
       steps.push(step);
     });
-    return { p, steps, originLabel, endMin: t };
+    return { p, steps, originLabel, originHow, endMin: t };
   }
 
   /* 4) 화면에 그리기 */
@@ -8629,7 +8651,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     const { p, steps } = res;
     const read = [`🚩 ${esc(p.origin ? p.origin.label : res.originLabel)} 출발`, `🕓 ${esc(p.dayLabel)} ${esc(tripHM(p.startMin))}`, `${p.move === "도보" ? "🚶" : p.move === "대중교통" ? "🚌" : "🚗"} ${esc(p.move)}${p.moveSaid ? "" : " (말이 없어 기본값)"}`]
       .concat(steps.map((s, i) => `${i + 1}. ${esc(s.st.areaLabel ? s.st.areaLabel + " · " : "")}${esc(s.st.cat === "food" && s.st.dish ? "🍲 " + s.st.dish : CAT_NAME[s.st.cat])}`));
-    let h = `<div class="gp"><div class="gpSec"><b>🧭 요청을 이렇게 이해했어요</b><ul class="gpRead">${read.map(x => `<li>${x}</li>`).join("")}</ul><p class="gpNote" style="margin-top:8px">${esc(p.startNote)}${p.origin ? "" : " · 출발지를 말하지 않아 기본 출발지로 잡았어요"}</p></div>`;
+    let h = `<div class="gp"><div class="gpSec"><b>🧭 요청을 이렇게 이해했어요</b><ul class="gpRead">${read.map(x => `<li>${x}</li>`).join("")}</ul><p class="gpNote" style="margin-top:8px">${esc(p.startNote)}${p.origin ? "" : res.originHow === "origin" ? " · 위 '어디서 출발해요?'에서 고른 곳에서 출발" : res.originHow === "home" ? " · 내 동네 기준으로 출발" : " · 출발지를 말하지 않아 기본 출발지로 잡았어요"}</p></div>`;
     h += `<div class="gpSec"><b>🗺 차례대로 확인한 코스</b><ol class="gpStops"><li class="gpStop start"><span class="gpNo">🚩</span><div><b>${esc(res.originLabel)}</b><small>${esc(tripHM(p.startMin))} 출발</small></div></li>`;
     let n = 0;
     steps.forEach(s => {
@@ -8654,7 +8676,8 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     h += `</ol><p class="gpNote" style="margin-top:8px">🏁 일정 끝 ${esc(tripHM(res.endMin))}쯤</p></div>`;
     // 조건 점검
     const chk = [];
-    chk.push(`${p.origin ? "✅" : "⚠"} 출발지: ${esc(p.origin ? p.origin.label : res.originLabel + " (기본값)")}`);
+    const picked = p.origin || res.originHow === "origin" || res.originHow === "home";
+    chk.push(`${picked ? "✅" : "⚠"} 출발지: ${esc(p.origin ? p.origin.label : res.originLabel + (picked ? "" : " (기본값)"))}`);
     chk.push(`✅ 출발 시각: ${esc(p.dayLabel)} ${esc(tripHM(p.startMin))}`);
     steps.forEach((s, i) => {
       const what = `${s.st.areaLabel ? s.st.areaLabel + " " : ""}${s.st.cat === "food" && s.st.dish ? s.st.dish : CAT_NAME[s.st.cat].replace(/^\S+\s/, "")}`;
