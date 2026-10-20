@@ -1723,7 +1723,7 @@ button{min-height:var(--tap)}
 :where(:root[data-theme="dark"]) .tripClock{background:#3a2e1c;color:#f3cf8f}
 :where(:root[data-theme="dark"]) .routeStop .tripWhen,:where(:root[data-theme="dark"]) .detailResultCard .tripWhen{color:#8fd4c1}</style>
 </head>
-<body data-tab="events">
+<body data-tab="home" data-screen="home">
 <header class="top"><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
     <div class="logo"><img src="favicon-64.png?v=2" alt="" aria-hidden="true"></div>
@@ -1757,8 +1757,6 @@ button{min-height:var(--tap)}
       <p id="heroLead"><b>오늘 광주에서 바로 즐길 수 있는 전시·공연·축제와 가볼 곳을 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
         <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true">🧸</span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
-        <button type="button" class="concertQuickPrimary" onclick="showTab('popshows')">🎤 대중가수 공연 <span>공연·예매 보기 ›</span></button>
-        <button type="button" class="concertQuickFollow" onclick="openArtistFollowQuick()">⭐ 관심 가수 등록 <span>새 공연 모아보기 ›</span></button>
       </div>
       <div class="heroStats">
         <button class="heroNow" id="heroNow" onclick="document.querySelector('#nowShow').scrollIntoView({behavior:'smooth'})"><strong>—</strong><span>오늘 전시</span></button><button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span></button>
@@ -1905,7 +1903,7 @@ button{min-height:var(--tap)}
 
 
 <section id="searchView" class="view hidden"></section>
-<section id="eventsView" class="view"></section>
+<section id="eventsView" class="view hidden"></section>
 <section id="placesView" class="view hidden"></section>
 <section id="kidsView" class="view hidden"></section>
 <section id="stagesView" class="view hidden"></section>
@@ -2070,13 +2068,13 @@ function renderDailyBrief(){
   const fresh=live.filter(eventIsNew).sort((a,b)=>(parseDataDate(b)||"").localeCompare(parseDataDate(a)||""));
   const ticket=EVENTS.filter(e=>(!e.end||e.end>=t)&&ticketOpenSoon(e)).sort(popSort);
   cards.innerHTML=`
-    <button class="briefCard" onclick="openBrief()"><strong>${live.length}</strong><span>오늘 가능한 일정</span><small>${live.length?"현재 진행·오늘 이용 가능":"등록 일정 없음"}</small></button>
+    <button class="briefCard" onclick="openBrief()"><strong>${live.length}</strong><span>기간 중인 일정</span><small>${live.length?"오늘이 행사 기간에 든 일정":"등록 일정 없음"}</small></button>
     <button class="briefCard hot" onclick="openBrief()"><strong>${endingToday.length}</strong><span>오늘 종료</span><small>${endingToday.length?esc(endingToday[0].title):"오늘 종료 일정 없음"}</small></button>
     <button class="briefCard fresh" onclick="openBrief()"><strong>${fresh.length}</strong><span>새로 등록·확인</span><small>${fresh.length?esc(fresh[0].title):"새 항목 없음"}</small></button>
     <button class="briefCard bTicket" onclick="openBrief()"><strong>${ticket.length}</strong><span>예매 오픈 예정</span><small>${ticket.length?esc(ticket[0].title):"예정 없음"}</small></button>`;
   const list=(title,arr,empty)=>`<div class="briefList"><b>${title}</b>${arr.length?arr.slice(0,5).map(e=>`<button onclick="briefOpenItem('${jsq(e.id)}')">${esc(e.title)}${e.venue?` · ${esc(e.venue)}`:""}</button>`).join(""):`<small>${empty}</small>`}</div>`;
   detailBox.innerHTML=
-    list("오늘 가능한 일정",live,"오늘 이용 가능한 등록 일정이 없어요.")+
+    list("기간 중인 일정",live,"오늘이 기간에 든 등록 일정이 없어요.")+
     list("오늘 종료",endingToday,"오늘 끝나는 일정이 없어요.")+
     list("새로 등록·확인",fresh,"새 항목이 없어요.")+
     list("예매 오픈 예정",ticket,"현재 등록된 오픈 예정 공연이 없어요.");
@@ -3111,7 +3109,7 @@ function renderNowShow() {
   const sorted = items.slice().sort((a, b) => (lastDay(b) - lastDay(a)) || (a.iso < b.iso ? -1 : a.iso > b.iso ? 1 : 0) || (order[a.k] - order[b.k]) || (a.k === "mk" ? (!!b.v.market.main - !!a.v.market.main) : 0) || (tmin(a.h) - tmin(b.h)) || ((a.e ? daysLeft(a.e) ?? 999 : 999) - (b.e ? daysLeft(b.e) ?? 999 : 999)));
   const cat = NOW_CATS.find(c => c[0] === NOW_CAT) || NOW_CATS[0];
   const shown = sorted.filter(x => !cat[1] || x.k === cat[1] || (cat[1] === "fe" && x.k === "sp"));
-  const MAXN = 24, list = shown.slice(0, MAXN);
+  const MAXN = window.NOW_MORE ? 24 : 8, list = shown.slice(0, MAXN);   // 홈에서는 8건만 먼저, 더 보기로 24건
   const wk = weekendDates(), md = s => `${Number(s.slice(5, 7))}.${Number(s.slice(8))}`;
   const labels = [`오늘 ${md(t0)}(${DAYC[isoDow(t0)]})`, `내일${HOLIDAYS[isoPlus(1)] ? "(휴일)" : ""}`, `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`];
   const counts = [0, 1, 2].map(n => n === NOW_WHEN ? items.length : nowItems(nowDates(n)).length);
@@ -3122,7 +3120,8 @@ function renderNowShow() {
     <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
-   ${shown.length > MAXN ? `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>` : ""}
+   ${shown.length > MAXN ? (MAXN < 24 ? `<button type="button" class="nowMoreBtn" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${Math.min(shown.length, 24) - MAXN}건 더 보기 ▾</button>` : `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>`) : ""}
+   <button type="button" class="nowAllBtn" onclick="showTab('events')">📅 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
    ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${jsq(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
    ${upcomingFestHtml(dates)}
@@ -3284,10 +3283,7 @@ function renderToday() {
   const ai = $("#aiBox") && $("#aiBox").closest("section"), wt = $("#wxTips"), cs = $("#cultureSpot"), up = $("#updated");
   // 순서를 한 곳에서만 제어: 오늘 볼거리 → 문화가 있는 날 → AI 길잡이 → 날씨 → 하루 플랜
   const mh = $("#moreHome");   // '추천 더 보기' 상자가 있으면 하루 플랜은 그 안으로
-  if (mh) { [ns, mh, wt].forEach(el => { if (el) main.insertBefore(el, up) }); const mb = mh.querySelector(".moreHomeBody"); [cs].forEach(el => { if (el) mb.insertBefore(el, mb.firstChild) }); if (td) mb.appendChild(td) }
-  else [ns, cs, wt, td].forEach(el => { if (el) main.insertBefore(el, up) });
-  // '글로 물어보기'(옛 토박이 길잡이)는 '오늘 뭐하지?' 바로 아래에 붙여 한 기능처럼 — 조건 고르기 결과도 여기 답변 칸에 나와요
-  { const dn = document.getElementById("decideNow"); if (ai && dn && dn.nextElementSibling !== ai) dn.after(ai) }
+  arrangeHome();   // 첫 화면 순서는 arrangeHome() 한 곳에서만 정해요
   if (ns) ns.classList.add("first"); [cs, ai, td, wt].forEach(el => el && el.classList.remove("first"));
   renderCultureSpot();
   const w = WEATHER ? WMO(WEATHER.code) : null, rainy = WEATHER ? (w[2] || WEATHER.pp >= 60) : false, hot = WEATHER && WEATHER.max >= 31, cold = WEATHER && WEATHER.max <= 3;
@@ -4760,6 +4756,9 @@ function renderNoticeBoard() {
   if (hidden || (!items.length && !setup)) { box.hidden = true; box.innerHTML = ""; return }
   const cal = favCalList().length;
   box.hidden = false;
+  box.classList.toggle("nbSetup", !items.length);
+  // 아직 받을 소식이 없으면 큰 상자 대신 한 줄 안내만 (관심 가수 등록 길도 여기서 이어 줌)
+  if (!items.length && !cal) { box.innerHTML = `<div class="nbLine"><span>🔔 ♡ 찜·🏠 동네·🎤 관심 가수를 정해 두면 새 소식을 여기서 먼저 알려드려요.</span><button type="button" onclick="openArtistFollowQuick()">🎤 관심 가수 등록 ›</button><button type="button" class="nbX" onclick="hideNoticeToday()" aria-label="오늘 하루 숨기기">✕</button></div>`; return }
   box.innerHTML = `<div class="nbHead"><b>🔔 나에게 온 소식${items.length ? ` <em>${items.length}</em>` : ""}</b><button type="button" class="nbX" onclick="hideNoticeToday()" aria-label="오늘 하루 숨기기">오늘 그만 보기 ✕</button></div>
   ${items.length ? `<ul>${items.slice(0, 6).map(x => `<li><button type="button" onclick="${x.on}"><span>${x.ic}</span>${esc(x.txt)}</button></li>`).join("")}</ul>${items.length > 6 ? `<small>외 ${items.length - 6}건은 ♡ 찜에서 확인하세요.</small>` : ""}`
     : `<p>♡ 찜을 하거나 🏠 내 동네·🎤 관심 가수를 정해 두면, 마감 임박·휴관·장날·새 행사를 여기서 먼저 알려드려요. <small>(이 기기에만 저장 · 로그인 없음)</small></p>`}
@@ -4943,44 +4942,62 @@ window.showOnMap = (layer, id) => {
 };
 
 /* ───────── 탭·필터 ───────── */
-let CUR_TAB = "events";
+let CUR_TAB = "home";   // home = 첫 화면(결정), 나머지는 각 탭 화면
+/* 첫 화면 순서 (행사·일정 앱이니 '오늘 열리는 것'이 먼저)
+   ① 나에게 온 소식 → ② 오늘 열리는 것 → ③ 놓치면 끝나요 → ④ 이번 주말 추천 → ⑤ 지금 바로 갈 곳
+   → ⑥ 오늘 뭐하지?(조건 추천) → ⑦ 글로 물어보기 → ⑧ 오늘 브리핑 → ⑨ 테마 → ⑩ 문화가 있는 날 → ⑪ 날씨 → ⑫ 하루 코스
+   홈에만 있는 칸에는 homeOnly 표시를 붙여, 다른 탭 화면에서는 숨긴다. */
+function arrangeHome() {
+  const main = document.querySelector("main"), stop = document.getElementById("searchView");
+  if (!main || !stop || stop.parentNode !== main) return;
+  const ai = document.getElementById("aiBox")?.closest("section");
+  const ids = ["noticeBoard", "nowShow", "deadlineRush", "weekendPick", "nowStart", "decideNow", "AI", "dailyBrief", "themeStrip", "cultureSpot", "wxTips", "today", "regionNote", "noRun", "foodQuick", "updated"];
+  const q = main.querySelector(":scope > .quickNavIntro");
+  if (q && main.firstElementChild !== q) main.insertBefore(q, main.firstElementChild);   // PC 위쪽 탭·일정 필터는 늘 맨 위
+  ids.forEach(id => { const el = id === "AI" ? ai : document.getElementById(id); if (el && el.parentNode === main) main.insertBefore(el, stop) });
+  [...main.children].forEach(el => { if (el !== q && !el.classList.contains("view") && el.tagName !== "SCRIPT") el.classList.add("homeOnly") });
+  document.getElementById("hero")?.classList.add("homeOnly");
+  document.getElementById("homeBar")?.parentElement?.classList.add("homeOnly");
+}
+/* 화면 나누기: 'home'(첫 화면)일 땐 홈 칸만, 다른 탭일 땐 그 탭 화면만 맨 위부터 보여준다 */
 function showTab(tab, fromHistory = false) {
+  if (tab === "decide") tab = "home";
+  const isHome = tab === "home";
+  const target = isHome ? null : $(`#${tab}View`);
+  if (!isHome && !target) return;
   if (!fromHistory && tab !== CUR_TAB) navPush({ tab });
   CUR_TAB = tab;
 
-  const target = $(`#${tab}View`);
-  if (!target) return;
-
   document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-  target.classList.remove("hidden");
+  if (target) target.classList.remove("hidden");
+  document.body.dataset.screen = isHome ? "home" : "tab";
 
   if (tab !== "search" && $("#search").value) {
     $("#search").value = "";
     if ($("#search2")) $("#search2").value = "";
   }
 
-  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
-  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.jump === tab));
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", isHome ? b.dataset.jump === "decide" : b.dataset.tab === tab));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.jump === (isHome ? "decide" : tab)));
   document.body.dataset.tab = tab;
 
   if (tab === "map") initMap();
 
-  // 빠른 메뉴를 눌렀을 때 메뉴 위치가 아니라 실제 선택한 정보 영역으로 이동
-  requestAnimationFrame(() => {
-    const hh = document.querySelector("header.top")?.offsetHeight || 0;
-    const gap = 18;
-    const y = target.getBoundingClientRect().top + window.scrollY - hh - gap;
-    window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
-  });
+  // 새 화면은 맨 위에서 시작 (홈 칸이 숨겨져서 탭 화면이 바로 위에 온다)
+  window.scrollTo({ top: 0, behavior: "instant" });
 }
+/* 홈에 있는 칸(오늘 열리는 것·날씨 등)으로 가야 할 때: 다른 탭에 있으면 먼저 홈으로 */
+window.ensureHome = () => { if (CUR_TAB !== "home") showTab("home") };
 function goDecision(){
-  document.querySelectorAll("#tabs button").forEach(x=>x.classList.remove("on"));
+  ensureHome();
+  document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x.dataset.jump==="decide"));
   document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.jump==="decide"));
   const el=document.getElementById("decideNow"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
 }
 document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => {
   if (b.dataset.jump === "decide") return goDecision();
   if (b.dataset.jump === "weather") {
+    ensureHome();
     const el = document.getElementById("wxTips");
     if (el) el.classList.remove("hidden");
     if (!WEATHER) loadWeather(true);
@@ -4991,7 +5008,7 @@ document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => {
 });
 window.goHome = () => {   // 홈: 어느 화면에 있든 첫 화면 맨 위로
   if (typeof clearSearch === "function" && !$("#searchView").classList.contains("hidden")) clearSearch();
-  if (CUR_TAB !== "events") showTab("events");
+  if (CUR_TAB !== "home") showTab("home");
   setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 60);
   document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x.dataset.jump === "decide"));
 };
@@ -6647,7 +6664,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.59 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.60 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -6670,7 +6687,7 @@ function stayAtRoot() {
   if (idx > 0) history.go(-idx);
   setTimeout(() => {
     LEAVING = false;
-    if (CUR_TAB !== "events") showTab("events", true);
+    if (CUR_TAB !== "home") showTab("home", true);
     toast("한 번 더 뒤로가기를 누르면 앱이 닫혀요");
   }, 400);
 }
@@ -6700,9 +6717,9 @@ function initNav() {
     if (!$("#searchView").classList.contains("hidden")) { clearSearch(); if (st.root) history.pushState({ glm: 1, guard: true, idx: 1 }, ""); return }
     // 3) 다른 탭에 있으면 이전 탭으로
     if (st.tab && st.tab !== CUR_TAB) { showTab(st.tab, true); return }
-    if (!st.root && CUR_TAB !== "events") { showTab("events", true); return }
+    if (!st.root && CUR_TAB !== "home") { showTab("home", true); return }
     // 4) 첫 화면에서 뒤로가기 → 나갈지 물어보기 (가드를 다시 쌓아 앱을 유지)
-    if (st.root) { history.pushState({ glm: 1, guard: true, idx: 1 }, ""); if (CUR_TAB !== "events") { showTab("events", true); return } exitDialog() }
+    if (st.root) { history.pushState({ glm: 1, guard: true, idx: 1 }, ""); if (CUR_TAB !== "home") { showTab("home", true); return } exitDialog() }
   });
 }
 initNav();
@@ -7008,7 +7025,7 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
   collapseQuick();
 
   // 자주 안 쓰는 첫 화면 칸들을 '더 보기' 안으로
-  { const ns = document.getElementById("nowStart"), dn = document.getElementById("decideNow"); if (ns && dn) dn.after(ns) }
+  if (typeof arrangeHome === "function") arrangeHome();
   // 처음 쓰는 사람도 다 볼 수 있게 '추천 더 보기' 상자로 접지 않는다
   const MOVE = ["themeStrip", "dailyBrief", "today", "foodQuick"];
   const anchor = null;
@@ -7075,6 +7092,8 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=btn.dataset.rightjump;
+   // 방문 통계: 빠른 메뉴에서 무엇을 눌렀는지 (GoatCounter 이벤트 '빠른메뉴-…')
+   try{const nm={today:'오늘',weekend:'주말',weather:'날씨',popshows:'대중공연',favorites:'찜',kids:'아이와',indoor:'실내',dayplan:'하루코스'}[target]||target;window.goatcounter?.count?.({path:'빠른메뉴-'+nm,title:'빠른 메뉴 · '+btn.textContent.trim(),event:true})}catch(e){}
    if(target==='kids'||target==='science'){
      showKids(target==='kids'?'전체':'과학·체험');
    }else if(target==='indoor'){
@@ -7086,7 +7105,8 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
      const toTop=()=>{const t=document.getElementById('placesView');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-12),behavior:'instant'})};
      [60,350,800].forEach(ms=>setTimeout(toTop,ms));
    }else if(target==='weather'){
-     // 오늘 날씨 세부정보(기온·비·옷차림·챙길 것)를 펼치고 그 자리로 이동
+     // 오늘 날씨 세부정보(기온·비·옷차림·챙길 것)를 펼치고 그 자리로 이동 (날씨 칸은 홈에 있으니 홈으로 먼저)
+     if(typeof ensureHome==='function')ensureHome();
      const el=document.getElementById('wxTips');
      if(el)el.classList.remove('hidden');
      if(typeof WEATHER==='undefined'||!WEATHER)loadWeather(true);else if(typeof renderWxTips==='function')renderWxTips();
@@ -8143,4 +8163,31 @@ window.openPipeline = function(){
 .pipelineDoc .pipeFoot{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--green-l);font-size:13px}
 .drBody .drLinks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.drBody .drLinks .btn{padding:6px 10px;font-size:12.5px}.drBody .course li small{display:block;margin-top:2px}
 </style>
+<style id="screenSplitStyle">
+/* 화면 나누기: 다른 탭에서는 홈 칸을 숨겨 그 탭이 맨 위부터 바로 보이게 */
+body[data-screen="tab"] .homeOnly{display:none!important}
+#foodQuick{display:none!important}   /* 먹을 곳은 아래 탭에 있으니 홈에서는 뺌 */
+body[data-screen="tab"] main.wrap{padding-top:10px}
+@media(min-width:760px){.quickNavIntro + .noticeBoard{margin-top:10px}}
+.nowMoreBtn,.nowAllBtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:12px 0 0;padding:12px 14px;border-radius:14px;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer}
+.nowMoreBtn{background:var(--card,#fff);border:1px solid var(--line,#e2dccf);color:inherit}
+.nowAllBtn{background:#185c50;border:0;color:#fff}
+.nowAllBtn span{font-size:12px;font-weight:600;opacity:.85}
+.noticeBoard.nbSetup{padding:9px 12px}
+.noticeBoard .nbLine{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:13px;line-height:1.45}
+.noticeBoard .nbLine span{flex:1 1 210px}
+.noticeBoard .nbLine button:not(.nbX){border:1px solid currentColor;background:none;color:inherit;border-radius:12px;padding:5px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+</style>
+<script id="screenSplitScript">
+/* 화면 나누기 마무리: 홈 순서 맞추기 + 홈 칸으로 이동하는 버튼은 다른 탭에서도 홈으로 데려가기 */
+(function(){
+  try { arrangeHome() } catch (e) {}
+  window.addEventListener("load", () => { try { arrangeHome() } catch (e) {} });
+  const orig = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function (...a) {
+    try { if (document.body.dataset.screen === "tab" && this.closest && this.closest(".homeOnly")) ensureHome() } catch (e) {}
+    return orig.apply(this, a);
+  };
+})();
+</script>
 </body></html>
