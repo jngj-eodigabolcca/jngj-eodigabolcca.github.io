@@ -3762,7 +3762,7 @@ function tripCheck(x, kind, arrive, opt = {}) {
   if (usable < need) return { ok: false, why: `도착 뒤 ${usable}분뿐 (짧게 봐도 ${need}분 필요)` };
   const cut = H.lastIn != null ? `입장마감 ${tripHM(H.lastIn)} · ` : "";
   const view = (kind === "food" || kind === "cafe") ? stay : Math.min(stay, usable), short = view < stay;
-  return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${short ? `${view}분 짧게 보기` : `${view}분 관람 가능`}` };
+  return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${kind === "food" ? `${view}분 식사` : kind === "cafe" ? `${view}분 쉬기` : short ? `${view}분 짧게 보기` : `${view}분 관람 가능`}` };
 }
 /* 출발 시각 기준 한 곳 판정 (첫 장소용) */
 function tripFitsFrom(x, kind, opt = {}) {
@@ -6664,7 +6664,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.60 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.61 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -8168,7 +8168,8 @@ window.openPipeline = function(){
 body[data-screen="tab"] .homeOnly{display:none!important}
 #foodQuick{display:none!important}   /* 먹을 곳은 아래 탭에 있으니 홈에서는 뺌 */
 body[data-screen="tab"] main.wrap{padding-top:10px}
-@media(min-width:760px){.quickNavIntro + .noticeBoard{margin-top:10px}}
+/* 나에게 온 소식: 사진 카드 아래로 겹치지 않게 (예전엔 -22px 끌어올려 사진 설명·점과 겹쳤음) */
+.noticeBoard{margin-top:12px!important;z-index:1}
 .nowMoreBtn,.nowAllBtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:12px 0 0;padding:12px 14px;border-radius:14px;font:inherit;font-size:14.5px;font-weight:800;cursor:pointer}
 .nowMoreBtn{background:var(--card,#fff);border:1px solid var(--line,#e2dccf);color:inherit}
 .nowAllBtn{background:#185c50;border:0;color:#fff}
@@ -8188,6 +8189,349 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     try { if (document.body.dataset.screen === "tab" && this.closest && this.closest(".homeOnly")) ensureHome() } catch (e) {}
     return orig.apply(this, a);
   };
+})();
+</script>
+<style id="guidePlanStyle">
+/* 길잡이: 여러 곳을 잇는 요청(출발 → 경유 → 도착) 결과 */
+.gp{display:grid;gap:12px}
+.gpSec{border-radius:16px;padding:12px 14px;background:#fffdf8;border:1px solid #e6e0d4;color:#1f2a26;text-align:left}
+.gpSec a{color:#185c50}
+.gpSec b,.gpSec strong{color:inherit!important}
+.gp>.gpNote{color:rgba(255,255,255,.82)}
+.gpStop small,.gpNote{color:#5d6b66}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gpSec{background:#1e2422;border-color:#38423e;color:#e6ece9}:root:not([data-theme="light"]) .gpSec a{color:#8fd3bf}:root:not([data-theme="light"]) .gpStop small,:root:not([data-theme="light"]) .gpSec .gpNote{color:#a9b6b1}}
+:root[data-theme="dark"] .gpSec{background:#1e2422;border-color:#38423e;color:#e6ece9}:root[data-theme="dark"] .gpSec a{color:#8fd3bf}:root[data-theme="dark"] .gpStop small,:root[data-theme="dark"] .gpSec .gpNote{color:#a9b6b1}
+.gpSec>b{display:block;font-size:15px;margin-bottom:8px}
+.gpRead{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.gpRead li{font-size:13px;font-weight:700;border-radius:999px;padding:5px 10px;background:#eef5f2;color:#1d4b40}
+.gpRead li.arrow{background:none;padding:5px 0;color:#8a948f}
+.gpStops{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.gpStop{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}
+.gpNo{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;background:#185c50;color:#fff}
+.gpStop.fail .gpNo{background:#c4472f}
+.gpStop.warn .gpNo{background:#c98a1b}
+.gpStop.start .gpNo{background:#4a5a55}
+.gpStop small{display:block;font-size:12.5px;line-height:1.5;margin-top:2px}
+.gpStop .gpWhy{margin-top:6px;padding:8px 10px;border-radius:10px;background:#fdeee9;color:#7a2a18;font-size:13px;line-height:1.55}
+.gpStop.warn .gpWhy{background:#fff4dc;color:#6b4a08}
+.gpStop .gpTip{margin-top:5px;font-size:12.5px;color:#1d4b40;font-weight:700}
+.gpStop a{font-size:12.5px}
+.gpLeg{font-size:12px;color:#8a948f;margin:-4px 0 0 40px}
+.gpCheck{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:13.5px;line-height:1.5}
+.gpNote{font-size:12px;line-height:1.5;margin:0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gpRead li{background:#1f3530;color:#bfe3d8}:root:not([data-theme="light"]) .gpStop .gpWhy{background:#3a221b;color:#f3c4b6}:root:not([data-theme="light"]) .gpStop.warn .gpWhy{background:#3a3018;color:#f0d9a4}:root:not([data-theme="light"]) .gpStop .gpTip{color:#9fd8c6}}
+:root[data-theme="dark"] .gpRead li{background:#1f3530;color:#bfe3d8}:root[data-theme="dark"] .gpStop .gpWhy{background:#3a221b;color:#f3c4b6}:root[data-theme="dark"] .gpStop.warn .gpWhy{background:#3a3018;color:#f0d9a4}:root[data-theme="dark"] .gpStop .gpTip{color:#9fd8c6}
+</style>
+<script id="guidePlanScript">
+/* ───────── 길잡이 여러 곳 코스 (0.61) ─────────
+   "동구에서 출발해 오후에 서구 전시를 보고 무안으로 이동" 같은 문장을
+   🚩출발지 → ①서구·전시 → ②무안(도착) 처럼 순서 있는 구간으로 나누고,
+   앞 구간을 마친 시각·위치에서 다음 구간을 차례로 확인한다.
+   안 되는 구간은 지우지 않고 ❌와 함께 '왜 안 되는지'와 '어떻게 하면 되는지'를 알려 준다. */
+(function () {
+  const GU = ["동구", "서구", "남구", "북구", "광산구"];
+  const GJ_CENTER = { lat: 35.155, lng: 126.885 };
+  // 지역 이름표: [문장에 나오는 말, 실제 시·군·구, 보여줄 이름]
+  const AREA_TOKENS = [];
+  GU.forEach(g => AREA_TOKENS.push([g, g, g]));
+  Object.keys(DISTRICT_CENTER).filter(d => /[시군]$/.test(d)).forEach(d => { AREA_TOKENS.push([d, d, d]); AREA_TOKENS.push([d.slice(0, -1), d, d.slice(0, -1)]) });
+  try { Object.entries(AREAS).forEach(([k, g]) => { if (k.length >= 2 && /^[가-힣]+$/.test(k) && GU.includes(g)) AREA_TOKENS.push([k, g, k]) }) } catch (e) { }
+  AREA_TOKENS.push(["광주", "광주", "광주"]);
+  AREA_TOKENS.sort((a, b) => b[0].length - a[0].length);
+
+  const CATS = [
+    ["food", /맛집|음식|식사|밥|먹|떡갈비|한정식|보리밥|국밥|육전|오리탕|초밥|낙지|게장|칼국수|횟집|짜장|중깐|꼬막/, "🍲 맛집"],
+    ["cafe", /카페|커피|디저트|빵집|베이커리/, "☕ 카페"],
+    ["museum", /박물관|역사관|기념관|과학관|문학관/, "🏺 박물관"],
+    ["exhibition", /전시|갤러리|미술관|미술|그림|사진전/, "🖼 전시"],
+    ["performance", /공연|콘서트|연극|음악회|뮤지컬|클래식|국악/, "🎭 공연"],
+    ["festival", /축제|행사/, "🎪 축제·행사"],
+    ["sports", /야구|축구|배구|농구|경기\s*보/, "⚾ 경기"],
+    ["cinema", /영화/, "🎬 영화"],
+    ["park", /산책|공원|정원|숲|수목원|걷기|걸으/, "🌳 산책"],
+  ];
+  const CAT_NAME = Object.fromEntries(CATS.map(c => [c[0], c[2]]));
+  CAT_NAME.arrive = "📍 도착";
+  const DISHES = ["떡갈비", "한정식", "보리밥", "국밥", "육전", "오리탕", "초밥", "낙지", "게장", "칼국수", "짜장", "중깐", "꼬막", "횟집"];
+  const SPLIT = /보고\s*나서|보고|본\s*(?:다음|뒤|후)에?|먹고\s*나서|먹고|먹은\s*(?:다음|뒤|후)에?|마시고|가서|간\s*(?:다음|뒤|후)에?|들러서|들렀다가?|구경하고|하고\s*나서|하고|한\s*(?:다음|뒤|후)에?|그리고|그\s*다음에?|다음에|이후에?|후에|뒤에|이동해서|이동하고|으로\s*이동|로\s*이동|으로\s*가|로\s*가|→|->|,|\+/;
+
+  const areaOfItem = x => x.district || tripDistrictOf(x) || "";
+  const inArea = (x, area) => { if (!area) return true; const d = areaOfItem(x); return area === "광주" ? GU.includes(d) : d === area };
+  const areaCenter = area => area === "광주" ? GJ_CENTER : DISTRICT_CENTER[area] ? { lat: DISTRICT_CENTER[area][0], lng: DISTRICT_CENTER[area][1], approx: true } : null;
+  const nameOf = x => x.title || x.name || "장소";
+  const placeKey = x => String(x.venueId || x.venue || x.name || x.title || "").replace(/\s+/g, "");
+
+  function findAreas(text) {
+    const used = new Array(text.length).fill(false), out = [];
+    for (const [tok, dist, label] of AREA_TOKENS) {
+      let i = text.indexOf(tok);
+      while (i >= 0) {
+        if (!used.slice(i, i + tok.length).some(Boolean)) { for (let k = i; k < i + tok.length; k++) used[k] = true; out.push({ i, end: i + tok.length, tok, dist, label }) }
+        i = text.indexOf(tok, i + 1);
+      }
+    }
+    return out.sort((a, b) => a.i - b.i);
+  }
+  function catsIn(seg) {
+    const hits = [];
+    for (const [k, re] of CATS) { const m = seg.match(re); if (m) hits.push({ k, i: m.index }) }
+    // '미술관'은 전시, '박물관'은 박물관: 같은 말에서 둘 다 잡히면 앞에 나온 것 하나만
+    return hits.sort((a, b) => a.i - b.i).filter((h, j, a) => !(h.k === "exhibition" && a.some(o => o.k === "museum" && Math.abs(o.i - h.i) < 2)));
+  }
+
+  /* 1) 문장 읽기 */
+  function parse(q) {
+    const text = String(q || "").replace(/\s+/g, " ").trim();
+    const r = { text, origin: null, stops: [], startMin: null, startNote: "", dayOff: 0, dayLabel: "오늘", move: tripMoveKey(text), moveSaid: /도보|걸어|자동차|자차|차로|운전|드라이브|대중교통|버스|지하철|택시|기차/.test(text) };
+    // 날짜
+    const dow = kstNow().getUTCDay();
+    if (/모레/.test(text)) { r.dayOff = 2; r.dayLabel = "모레" }
+    else if (/내일/.test(text)) { r.dayOff = 1; r.dayLabel = "내일" }
+    else if (/토요일|이번\s*주말|주말/.test(text)) { r.dayOff = (6 - dow + 7) % 7; r.dayLabel = r.dayOff ? "이번 토요일" : "오늘(토)" }
+    else if (/일요일/.test(text)) { r.dayOff = (7 - dow) % 7; r.dayLabel = r.dayOff ? "이번 일요일" : "오늘(일)" }
+    // 출발지: "X에서 출발/떠나…" 또는 "X에서 (다른 지역)…"
+    const areas = findAreas(text);
+    for (const a of areas) {
+      const rest = text.slice(a.end);
+      const m = rest.match(/^\s*에서\s*/); if (!m) continue;
+      const after = rest.slice(m[0].length);
+      const nextArea = areas.find(b => b.i === a.end + m[0].length);
+      if (/^(출발|떠나|나와|나가|있는데|사는데|살아|있어)/.test(after) || (nextArea && nextArea.dist !== a.dist)) { r.origin = { label: a.label, dist: a.dist, cut: [a.i, a.end + m[0].length + ((after.match(/^(출발해서|출발해|출발하면|출발|떠나서|떠나|나와서|있는데|사는데)\s*/) || [""])[0].length)] }; break }
+    }
+    if (!r.origin) { const m = text.match(/([가-힣A-Za-z0-9]{2,12})에서\s*(출발해서|출발해|출발하면|출발|떠나서|떠나)\s*/); if (m) r.origin = { label: m[1], dist: "", cut: [m.index, m.index + m[0].length] } }
+    // 시각
+    const now = tripNowMin(), exact = tripStartFromText(text);
+    const tw = text.replace(/(아침|점심|저녁)\s*(?:식사|밥|먹|메뉴)/g, " ");   // '점심 먹고'는 출발 시각이 아니라 식사 구간
+    let base = exact;
+    if (base == null) base = /새벽|아침|오전/.test(tw) ? 600 : /점심/.test(tw) ? 720 : /오후/.test(tw) ? 840 : /저녁/.test(tw) ? 1080 : /밤|야간/.test(tw) ? 1140 : null;
+    if (r.dayOff === 0) {
+      if (base == null) { r.startMin = now; r.startNote = "지금 출발" }
+      else if (base < now - 5) { r.startMin = now; r.startNote = `${tripHM(base)}은 이미 지나서 지금(${tripHM(now)}) 출발 기준` }
+      else { r.startMin = base; r.startNote = exact != null ? `${tripHM(base)} 출발` : `${/오전|아침|새벽/.test(text) ? "오전" : /점심/.test(text) ? "점심" : /오후/.test(text) ? "오후" : /저녁/.test(text) ? "저녁" : "밤"} → ${tripHM(base)} 출발로 잡음` }
+    } else { r.startMin = base ?? 600; r.startNote = base != null ? `${tripHM(base)} 출발` : "시각을 말하지 않아 10:00 출발로 잡음" }
+    // 구간 나누기
+    let body = r.origin ? text.slice(0, r.origin.cut[0]) + " " + text.slice(r.origin.cut[1]) : text;
+    // '먹고·먹은 뒤'에서 끊으면 '먹다'가 사라지므로 '식사'를 남겨 둔다 ("점심 먹고" → "점심 식사 | …")
+    body = body.replace(/(먹고|먹은\s*(?:다음|뒤|후)|먹을래|먹을|먹자)/g, " 식사 $1").replace(/(^|\s)회(?=\s|$)/g, "$1횟집 ");
+    const segs = body.split(SPLIT).map(s => s.trim()).filter(Boolean);
+    const raw = [];
+    for (const seg of segs) {
+      const as = findAreas(seg), cs = catsIn(seg);
+      const area = as.length ? as[as.length - 1] : null;
+      const dish = DISHES.find(d => seg.includes(d)) || "";
+      if (!cs.length && !area) continue;
+      if (!cs.length) raw.push({ area, cat: null, dish, seg });
+      else cs.forEach(c => raw.push({ area, cat: c.k, dish: c.k === "food" ? dish : "", meal: c.k === "food" ? (/점심/.test(seg) ? "점심" : /저녁/.test(seg) ? "저녁" : "") : "", seg }));
+    }
+    // 지역만 있는 구간 + 바로 뒤 '종류만 있는' 구간 → 하나로 ("무안 가서 / 박물관 보고")
+    for (let i = 0; i < raw.length; i++) {
+      const a = raw[i], b = raw[i + 1];
+      if (a.area && !a.cat && b && b.cat && !b.area) { b.area = a.area; raw.splice(i, 1); i-- }
+    }
+    let lastArea = null;
+    raw.forEach(s => {
+      const area = s.area ? s.area : lastArea;
+      r.stops.push({ cat: s.cat || "arrive", area: area ? area.dist : "", areaLabel: area ? area.label : "", areaSaid: !!s.area, dish: s.dish, meal: s.meal || "", seg: s.seg });
+      if (s.area) lastArea = s.area;
+    });
+    // 같은 지역·같은 종류가 연달아 나오면 하나로
+    r.stops = r.stops.filter((s, i, a) => !(i && a[i - 1].cat === s.cat && a[i - 1].area === s.area && s.cat !== "food"));
+    return r;
+  }
+
+  /* 2) 후보 고르기 */
+  function candidates(stop) {
+    const E = ALL.EVENTS || [], V = ALL.VENUES || [];
+    const ev = (re) => E.filter(e => re.test((e.category || "") + " " + (e.subtype || ""))).map(x => ({ x, k: "event" }));
+    const ve = (fn) => V.filter(fn).map(x => ({ x, k: "venue" }));
+    let c = [];
+    switch (stop.cat) {
+      case "exhibition": c = [...ev(/전시/), ...ve(v => /미술관|갤러리|전시관/.test((v.kind || "") + " " + v.name) && !/박물관/.test(v.kind || ""))]; break;
+      case "museum": c = ve(v => /박물관|기념관|과학관|문학관|역사관/.test((v.kind || "") + " " + v.name)); break;
+      case "performance": c = E.filter(e => /음악|공연/.test(e.category || "") || (typeof isPopShow === "function" && isPopShow(e))).map(x => ({ x, k: "event" })); break;
+      case "festival": c = ev(/축제|행사/); break;
+      case "sports": c = ev(/스포츠/); break;
+      case "park": c = ve(v => /공원|정원|자연|트레킹|수목원|숲/.test(v.kind || "") || !!v.walk); break;
+      case "food": c = (ALL.FOOD || []).filter(f => !stop.dish || [f.name, f.menu, f.note, f.badge].join(" ").includes(stop.dish === "횟집" ? "회" : stop.dish)).map(x => ({ x, k: "food" })); break;
+      case "cafe": c = [...(ALL.CAFES || []), ...(ALL.BAKERIES || [])].map(x => ({ x, k: "cafe" })); break;
+      case "cinema": c = (ALL.CINEMAS || []).map(x => ({ x, k: "cinema" })); break;
+      default: c = [...ev(/전시|축제|행사/), ...ve(v => /미술관|박물관|기념관|공원|정원|역사유적|전시관|자연|시장/.test(v.kind || ""))];
+    }
+    return c;
+  }
+  function check(o, t, plan) {
+    const opt = plan.date ? { date: plan.date } : {};
+    let r = tripCheck(o.x, o.k, t, opt);
+    // 오늘이 아닌 날: '오늘 휴관' 판정은 그날 요일로 다시 본다
+    if (plan.date && !r.ok && /오늘 휴관/.test(r.why || "") && o.k === "venue") {
+      const day = plan.date.getUTCDay();
+      if (openOn(o.x, day) === false) r = { ok: false, why: "그날 휴관" };
+      else r = tripCheck({ ...o.x, closed: "" }, o.k, t, opt);
+    }
+    if (o.k === "food" && r.ok && !((r.arrive >= 690 && r.arrive <= 870) || (r.arrive >= 1020 && r.arrive <= 1230))) r = { ...r, offMeal: true };
+    return r;
+  }
+  function earliestShift(o, legArrive, plan) {   // 몇 분 일찍 도착하면 되는지 (최대 6시간)
+    for (let s = 15; s <= 360; s += 15) { const r = check(o, legArrive - s, plan); if (r.ok && !r.short) return s }
+    return null;
+  }
+  function explain(stop, tried, catLabel, plan, arriveGuess) {
+    const where = stop.areaLabel || "근처";
+    if (!tried.length) {
+      if (stop.cat === "food" && stop.dish) return `${where}에 앱에 등록된 ${stop.dish}집이 없어요. 다른 동네 식당으로 바꿔 넣지 않았어요.`;
+      return `${where}에 앱에 등록된 ${catLabel.replace(/^\S+\s/, "")} 자료가 없어요.`;
+    }
+    const by = {};
+    tried.forEach(o => { const w = (o.r.why || "").replace(/\d{1,2}:\d{2}/g, "시각").replace(/\d+분/g, "N분"); (by[w] = by[w] || []).push(o) });
+    const groups = Object.values(by).sort((a, b) => b.length - a.length).slice(0, 2);
+    const parts = groups.map(g => { const o = g[0]; return `${g.length > 1 ? `${nameOf(o.x)} 등 ${g.length}곳` : nameOf(o.x)}: ${o.r.why}` });
+    return `${arriveGuess != null ? `${tripHM(arriveGuess)}쯤 도착하는데, ` : ""}${where}의 ${catLabel.replace(/^\S+\s/, "")} ${tried.length}곳 모두 지금 조건으로는 어려워요. ${parts.join(" · ")}.`;
+  }
+
+  /* 3) 차례대로 계획 */
+  function plan(q) {
+    const p = parse(q);
+    p.date = p.dayOff ? new Date(kstNow().getTime() + p.dayOff * 86400e3) : null;
+    let originPt = null, originLabel = "";
+    if (p.origin) { originPt = tripOriginCoord(p.origin.label) || (p.origin.dist ? areaCenter(p.origin.dist) : null); originLabel = p.origin.label }
+    if (!originPt) { const o = tripOriginInfo({ move: p.move }); originPt = o.from; originLabel = (p.origin ? `${p.origin.label}(위치를 몰라 ` : "") + (o.label || "출발지 미정") + (p.origin ? " 기준)" : "") }
+    let t = p.startMin, prev = originPt, prevName = originLabel;
+    const used = new Set(), steps = [];
+    p.stops.forEach((st, idx) => {
+      const label = CAT_NAME[st.cat];
+      const all = candidates(st).filter(o => !used.has(placeKey(o.x)));
+      const inA = all.filter(o => inArea(o.x, st.area));
+      const pool = st.area ? inA : all;
+      const tried = [];
+      let best = null;
+      for (const o of pool) {
+        const leg = prev ? tripLegMin(prev, o.x, p.move) : null;
+        if (leg == null) continue;
+        if (!st.area && leg > (p.move === "도보" ? 30 : 60)) continue;   // 지역을 말하지 않았으면 가까운 곳만
+        let r = check(o, t + leg, p);
+        if (r.ok && o.k === "food" && st.meal) r = { ...r, offMeal: st.meal === "점심" ? !(r.arrive >= 660 && r.arrive <= 870) : !(r.arrive >= 1020 && r.arrive <= 1230), mealWant: st.meal };
+        tried.push({ ...o, leg, r });
+        if (!r.ok) continue;
+        const score = r.arrive + (r.short ? 40 : 0) + (r.unsure ? 25 : 0) + (r.offMeal ? 30 : 0) + (o.k === "event" ? -15 : 0) + (r.wait || 0);
+        if (!best || score < best.score) best = { ...o, leg, r, score };
+      }
+      const step = { st, label, idx, fromName: prevName };
+      if (best) {
+        step.ok = true; step.o = best;
+        step.warn = best.r.short || best.r.unsure || best.r.offMeal;
+        if (st.cat === "arrive") step.arriveOnly = false;
+        used.add(placeKey(best.x));
+        t = best.r.leave; prev = best.x; prevName = nameOf(best.x);
+      } else {
+        // 지역 중심까지 이동 시간으로 도착 시각 어림
+        const center = st.area ? areaCenter(st.area) : null;
+        const legC = center && prev ? tripLegMin(prev, center, p.move) : null;
+        const arriveGuess = legC != null ? t + legC : null;
+        step.ok = false; step.legC = legC; step.arriveGuess = arriveGuess;
+        if (st.cat === "arrive") {
+          // 목적지로 '이동'만 한 경우: 이동은 성립, 그곳에서 볼 것만 없음
+          step.arriveOnly = true; step.ok = true; step.warn = pool.length > 0;
+          step.why = pool.length ? explain(st, tried.filter(o => !o.r.ok), "볼거리", p, null) : "";
+          if (center) { t = arriveGuess ?? t; prev = center; prevName = st.areaLabel }
+        } else {
+          step.why = explain(st, tried.filter(o => !o.r.ok), label, p, arriveGuess);
+          // 고치는 방법 1: 더 일찍 출발
+          let tip = "";
+          const timeFails = tried.filter(o => /마감|도착 뒤|빠듯|회차|해가 진|시작이 너무/.test(o.r.why || ""));
+          if (timeFails.length) {
+            const shifts = timeFails.map(o => ({ o, s: earliestShift(o, t + o.leg, p) })).filter(z => z.s != null).sort((a, b) => a.s - b.s);
+            if (shifts.length) {
+              const z = shifts[0], newStart = p.startMin - z.s;
+              tip = (p.dayOff === 0 && newStart < tripNowMin() - 5)
+                ? `💡 오늘은 시간이 모자라요. 내일 ${tripHM(Math.max(600, newStart))}쯤 출발하면 ${nameOf(z.o.x)}에 갈 수 있어요.`
+                : `💡 출발을 ${z.s}분 앞당겨 ${tripHM(newStart)}에 나서면 ${nameOf(z.o.x)}에 갈 수 있어요.`;
+            }
+          }
+          // 고치는 방법 2: 음식 종류가 그 지역에 없으면 가장 가까운 곳
+          if (!tip && st.cat === "food" && st.dish && !inA.length) {
+            const base = (st.area && areaCenter(st.area)) || prev, baseName = st.area ? st.areaLabel : prevName;
+            const near = candidates(st).map(o => ({ o, leg: base ? tripLegMin(base, o.x, p.move) : null })).filter(z => z.leg != null).sort((a, b) => a.leg - b.leg)[0];
+            if (near) tip = `💡 가장 가까운 ${st.dish}집은 ${nameOf(near.o.x)}(${areaOfItem(near.o.x)}, ${baseName}에서 약 ${near.leg}분)이에요.`;
+          }
+          // 고치는 방법 3: 같은 지역에 비슷한 종류(박물관↔전시, 공연↔축제)가 있으면 대신 갈 곳으로 알려 줌 (몰래 바꾸지는 않음)
+          const REL = { museum: "exhibition", exhibition: "museum", performance: "festival", festival: "performance" };
+          if (!tip && st.area && REL[st.cat] && legC != null) {
+            const alt = candidates({ ...st, cat: REL[st.cat] }).filter(o => inArea(o.x, st.area) && !used.has(placeKey(o.x)))
+              .map(o => { const lg = tripLegMin(prev, o.x, p.move); return lg == null ? null : { o, lg, r: check(o, t + lg, p) } }).filter(z => z && z.r.ok).sort((a, b) => a.r.arrive - b.r.arrive)[0];
+            if (alt) tip = `💡 대신 ${st.areaLabel}의 ${nameOf(alt.o.x)}(${CAT_NAME[REL[st.cat]].replace(/^\S+\s/, "")})은 ${tripHM(alt.r.arrive)} 도착으로 갈 수 있어요.`;
+          }
+          // 고치는 방법 4: 같은 종류가 다른 지역엔 있음
+          if (!tip && st.area && !inA.length && all.length) tip = `💡 ${st.areaLabel}엔 없지만 다른 지역엔 ${all.length}곳이 있어요. 지역을 빼고 다시 물어보세요.`;
+          if (!tip && st.cat === "food" && st.dish) tip = "";
+          step.tip = tip;
+          // 지역을 말한 구간은 그 지역까지는 간다고 보고 다음 구간을 이어서 계산
+          if (st.area && center && legC != null) { step.movedTo = st.areaLabel; t = arriveGuess; prev = center; prevName = st.areaLabel }
+          step.searchLink = st.cat === "food" ? (typeof searchNear === "function" ? searchNear(st.areaLabel || "광주", st.dish || "맛집") : "") : "";
+        }
+      }
+      steps.push(step);
+    });
+    return { p, steps, originLabel, endMin: t };
+  }
+
+  /* 4) 화면에 그리기 */
+  function render(res) {
+    const { p, steps } = res;
+    const read = [`🚩 ${esc(p.origin ? p.origin.label : res.originLabel)} 출발`, `🕓 ${esc(p.dayLabel)} ${esc(tripHM(p.startMin))}`, `${p.move === "도보" ? "🚶" : p.move === "대중교통" ? "🚌" : "🚗"} ${esc(p.move)}${p.moveSaid ? "" : " (말이 없어 기본값)"}`]
+      .concat(steps.map((s, i) => `${i + 1}. ${esc(s.st.areaLabel ? s.st.areaLabel + " · " : "")}${esc(s.st.cat === "food" && s.st.dish ? "🍲 " + s.st.dish : CAT_NAME[s.st.cat])}`));
+    let h = `<div class="gp"><div class="gpSec"><b>🧭 요청을 이렇게 이해했어요</b><ul class="gpRead">${read.map(x => `<li>${x}</li>`).join("")}</ul><p class="gpNote" style="margin-top:8px">${esc(p.startNote)}${p.origin ? "" : " · 출발지를 말하지 않아 기본 출발지로 잡았어요"}</p></div>`;
+    h += `<div class="gpSec"><b>🗺 차례대로 확인한 코스</b><ol class="gpStops"><li class="gpStop start"><span class="gpNo">🚩</span><div><b>${esc(res.originLabel)}</b><small>${esc(tripHM(p.startMin))} 출발</small></div></li>`;
+    let n = 0;
+    steps.forEach(s => {
+      n++;
+      if (s.ok && !s.arriveOnly) {
+        const o = s.o, cls = s.warn ? "warn" : "ok";
+        h += `<li class="gpLeg">↓ ${esc(s.fromName)}에서 약 ${o.leg}분</li>`;
+        h += `<li class="gpStop ${cls}"><span class="gpNo">${n}</span><div><b>${esc(nameOf(o.x))}</b><small>${esc(s.label)} · ${esc(areaOfItem(o.x))}${o.x.venue && o.x.title ? " · " + esc(o.x.venue) : ""}</small><small>⏰ ${esc(o.r.note)}${o.r.unsure ? " · 가기 전 확인" : ""}</small>`;
+        if (o.r.offMeal) h += o.r.mealWant ? `<div class="gpWhy">⚠ ${esc(tripHM(o.r.arrive))} 도착이라 ${esc(o.r.mealWant)} 시간대(${o.r.mealWant === "점심" ? "11:00~14:30" : "17:00~20:30"})와 안 맞아요. 앞 일정을 줄이거나 출발을 당기세요.</div>` : `<div class="gpWhy">⚠ ${esc(tripHM(o.r.arrive))}은 식사 시간대(11:30~14:30, 17:00~20:30)가 아니라 브레이크타임일 수 있어요. 가기 전 전화로 확인하세요.</div>`;
+        else if (o.r.short) h += `<div class="gpWhy">⚠ 마감이 가까워 짧게만 볼 수 있어요.</div>`;
+        h += `<a href="${typeof mapLink === "function" ? mapLink(nameOf(o.x)) : "#"}" target="_blank" rel="noopener">🗺 지도 ↗</a>${o.k === "event" || o.k === "venue" ? ` · <a href="#" onclick="${o.k === "event" ? `detail('${jsq(o.x.id)}')` : `briefOpenItem('${jsq(o.x.id)}')`};return false">자세히</a>` : ""}</div></li>`;
+      } else if (s.arriveOnly) {
+        h += `<li class="gpLeg">↓ ${esc(s.fromName)}에서 약 ${s.legC ?? "?"}분</li>`;
+        h += `<li class="gpStop ${s.warn ? "warn" : "ok"}"><span class="gpNo">${n}</span><div><b>${esc(s.st.areaLabel)} 도착</b><small>📍 ${s.arriveGuess != null ? esc(tripHM(s.arriveGuess)) + "쯤 도착 (시·군 중심 기준 어림)" : "도착 시각 계산 불가"}</small>${s.why ? `<div class="gpWhy">ℹ 이동은 가능해요. 다만 도착 뒤 들를 볼거리는 추천할 수 없어요 — ${esc(s.why)}</div>` : ""}</div></li>`;
+      } else {
+        h += `<li class="gpStop fail"><span class="gpNo">${n}</span><div><b>${esc(s.st.areaLabel ? s.st.areaLabel + " " : "")}${esc(s.st.cat === "food" && s.st.dish ? s.st.dish : s.label.replace(/^\S+\s/, ""))} — 추천할 수 없어요</b><div class="gpWhy">❌ ${esc(s.why)}</div>${s.tip ? `<div class="gpTip">${esc(s.tip)}</div>` : ""}${s.searchLink ? `<a href="${safeUrl(s.searchLink)}" target="_blank" rel="noopener">지도에서 직접 찾아보기 ↗</a>` : ""}${steps.length > n ? `<small>${s.movedTo ? `이 구간은 빼고, ${esc(s.movedTo)}에 ${esc(tripHM(s.arriveGuess))}쯤 도착한 것으로 보고 다음 구간을 계산했어요.` : "이 구간은 빼고, 앞 장소에서 다음 구간을 이어서 계산했어요."}</small>` : ""}</div></li>`;
+      }
+    });
+    h += `</ol><p class="gpNote" style="margin-top:8px">🏁 일정 끝 ${esc(tripHM(res.endMin))}쯤</p></div>`;
+    // 조건 점검
+    const chk = [];
+    chk.push(`${p.origin ? "✅" : "⚠"} 출발지: ${esc(p.origin ? p.origin.label : res.originLabel + " (기본값)")}`);
+    chk.push(`✅ 출발 시각: ${esc(p.dayLabel)} ${esc(tripHM(p.startMin))}`);
+    steps.forEach((s, i) => {
+      const what = `${s.st.areaLabel ? s.st.areaLabel + " " : ""}${s.st.cat === "food" && s.st.dish ? s.st.dish : CAT_NAME[s.st.cat].replace(/^\S+\s/, "")}`;
+      if (s.arriveOnly) chk.push(`${s.warn ? "⚠" : "✅"} ${i + 1}. ${esc(what)} — 이동 가능${s.warn ? ", 도착 뒤 볼거리는 없음" : ""}`);
+      else if (s.ok) chk.push(`${s.warn ? "⚠" : "✅"} ${i + 1}. ${esc(what)} — ${esc(nameOf(s.o.x))}${s.warn ? " (확인 필요)" : ""}`);
+      else chk.push(`❌ ${i + 1}. ${esc(what)} — 추천할 수 없음`);
+    });
+    if (steps.length > 1) chk.push(`✅ 순서: 앞 장소를 다 보고 나온 시각·위치에서 다음 장소를 확인했어요`);
+    h += `<div class="gpSec"><b>☑ 조건 점검</b><ul class="gpCheck">${chk.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
+    h += `<p class="gpNote">이동시간은 직선거리로 어림한 값이에요. 앱에 등록된 장소·일정 안에서만 고르고, 없는 곳을 지어내지 않아요. 운영시간·예매는 가기 전 공식 안내로 확인하세요.</p></div>`;
+    $("#answer").innerHTML = h;
+  }
+
+  /* 5) 언제 이 방식으로 처리할지: 구간이 2개 이상이거나, 출발지 + 구간 1개 이상 */
+  window.guidePlan = function (q) {
+    try {
+      const p = parse(q);
+      const multi = p.stops.length >= 2 || (p.origin && p.stops.length >= 1 && p.stops.some(s => s.cat !== "arrive" || s.area));
+      if (!multi) return false;
+      const res = plan(q);
+      render(res);
+      try { window.goatcounter?.count?.({ path: "길잡이-여러곳코스", title: `구간 ${res.steps.length} · 실패 ${res.steps.filter(s => !s.ok).length}`, event: true }) } catch (e) { }
+      const ans = document.getElementById("answer");
+      if (ans) { const hh = document.querySelector("header.top")?.offsetHeight || 0; window.scrollTo({ top: Math.max(0, ans.getBoundingClientRect().top + window.scrollY - hh - 12), behavior: "smooth" }) }
+      return true;
+    } catch (e) { console.error("guidePlan", e); return false }
+  };
+  window.guidePlanParse = parse;   // 점검용
+  // 예전 '자세히 찾기'(화면에 안 보이는 칸에 결과를 쓰던 것) 대신 이 방식으로
+  window.runDetailedNaturalQuery = q => window.guidePlan(q);
 })();
 </script>
 </body></html>
