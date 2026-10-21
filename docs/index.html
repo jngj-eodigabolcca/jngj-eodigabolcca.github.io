@@ -1778,6 +1778,62 @@ button{min-height:var(--tap)}
 .detailResultCard .tripWhen{display:block;margin-top:2px;font-size:12px;color:#245d50;font-weight:700}
 :where(:root[data-theme="dark"]) .tripClock{background:#3a2e1c;color:#f3cf8f}
 :where(:root[data-theme="dark"]) .routeStop .tripWhen,:where(:root[data-theme="dark"]) .detailResultCard .tripWhen{color:#8fd4c1}</style>
+<style>
+
+/* 2026-10-22 모바일 정돈: 앱 공통 그린 활성색, 아이보리 배경, 균일한 알약형 필터 */
+.nowShow .nowHead{display:block;margin-bottom:12px}
+.nowShow .nowSeg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:5px;margin-top:12px;background:var(--bg);border:1px solid var(--line);border-radius:16px;width:100%}
+.nowShow .nowSeg button{min-width:0;min-height:46px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;border:1px solid transparent;border-radius:12px;padding:6px 4px;font-size:13px;line-height:1.2;background:transparent;color:var(--ink2);white-space:normal;text-align:center}
+.nowShow .nowSeg button.on{background:var(--green);border-color:var(--green);color:#fff}
+.nowShow .nowSeg button b{margin:0;font-size:13px;color:var(--red)}
+.nowShow .nowSeg button.on b{color:#fff}
+.nowShow .nowChips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:14px}
+.nowShow .nowChips button{min-width:0;min-height:39px;padding:7px 4px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:12.5px;font-weight:750;line-height:1.2;white-space:nowrap;color:var(--ink2);text-align:center}
+.nowShow .nowChips button.on{background:var(--green);border-color:var(--green);color:#fff}
+.nowShow .nowChips button b{margin-left:2px;font-size:12.5px;color:var(--red)}
+.nowShow .nowChips button.on b{color:#fff}
+/* 날씨: 핵심정보를 먼저, 4칸 예보 + 상세 접기 */
+.wxTips .sectionHead{margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.wxTips .sectionHead h2{font-size:clamp(21px,5vw,27px);margin-top:2px}
+.wxTips .sectionHead h2 small{font-size:11px;line-height:1.45;margin-top:4px}
+.wxTips .sectionHead>span{font-size:11px;padding:4px 7px}
+.wxTips .wtHead{gap:10px;flex-wrap:nowrap;margin:8px 0}
+.wxTips .wtBig{font-size:37px}
+.wxTips .wtNow b{font-size:24px;font-weight:800}
+.wxTips .wtNow span{font-size:12px;line-height:1.4;display:block}
+.wxTips .wtTime{margin:10px 0 6px;padding:10px;border-radius:16px;background:var(--bg)}
+.wxTips .wtTimeHead{margin-bottom:7px;gap:3px}
+.wxTips .wtSlots{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.wxTips .wtSlot{border-radius:11px;padding:7px 1px;gap:3px}
+.wxTips .wtSlot small{font-size:11px}.wxTips .wtSlot small em{font-size:9px}
+.wxTips .wtSlot i{font-size:19px}.wxTips .wtSlot b{font-size:13px}.wxTips .wtSlot span{font-size:10px}
+.wxTips .wtUmb{font-size:12px;margin:7px 0 0}
+.wxTips .wtStats{gap:5px;margin:9px 0 0}
+.wxTips .wtStats span{padding:4px 8px;font-size:11px;border-width:1px}
+.wxTips .wtDetails{margin-top:10px;border:1px solid var(--line);border-radius:15px;background:var(--card);overflow:hidden}
+.wxTips .wtDetails summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px;font-weight:800;font-size:13px;color:var(--green-d);list-style:none}
+.wxTips .wtDetails summary::-webkit-details-marker{display:none}
+.wxTips .wtDetails summary::after{content:'⌄';flex:0 0 auto;font-size:18px}
+.wxTips .wtDetails[open] summary::after{content:'⌃'}
+.wxTips .wtDetails .wtGrid{padding:0 10px 10px;margin:0}
+.wxTips .wtWear{padding:11px 12px;border-radius:12px}
+.wxTips .wtWear b{font-size:16px}.wxTips .wtWear p{font-size:12px}
+.wxTips .wtItem{padding:8px 10px;border-radius:12px}
+@media(max-width:600px){
+ .wxTips{padding:14px 12px;border-radius:20px}
+ .wxTips .sectionHead{align-items:start}
+ .wxTips .sectionHead>span{flex:0 0 auto;max-width:96px;text-align:center;white-space:normal}
+ .wxTips .wtTimeHead small{font-size:10px}
+ .nowShow{padding:15px 12px;border-radius:20px}
+ .nowShow .nowHead h2{font-size:24px}
+ .nowShow .nowHead h2 small{font-size:12px;line-height:1.4}
+ .nowShow .nowSeg button{font-size:12px;min-height:43px}
+ .nowShow .nowChips button{font-size:11.5px}
+}
+:root[data-theme="dark"] .wxTips .wtDetails{background:var(--card)}
+:root[data-theme="dark"] .nowShow .nowChips button.on,:root[data-theme="dark"] .nowShow .nowSeg button.on{background:var(--green);border-color:var(--green);color:#fff}
+
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
@@ -3166,10 +3222,10 @@ function renderWxTips() {
    <div class="wtSlots">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
    <p class="wtUmb ${rainDay ? "wet" : R.maybe ? "maybe" : ""}">${esc(wxUmbrellaLine(W))}</p></div>` : ""}
   <div class="wtStats">${stats.map(([t, k]) => `<span class="${k || ""}">${t}</span>`).join("")}</div>
-  <div class="wtGrid">
+  <details class="wtDetails"><summary>👕 ${esc(wear.split("·")[0].trim())} · 챙길 것 ${mustN ? mustN + "개 필수" : "확인"} <span style="font-size:11px;font-weight:600;color:var(--muted)">자세히 보기</span></summary><div class="wtGrid">
    <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 ${R && !R.late && R.slots.some(x => x.night) ? "저녁엔" : "아침저녁은"} ${lo}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
-  </div>`;
+  </div></details>`;
   WX_SHORT = [wear.split("·")[0], ...tips.filter(t => t.must).map(t => t.i)].join(" ");
 }
 
@@ -3366,7 +3422,7 @@ function renderNowShow() {
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
   el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
-    <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
+    <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" title="${esc(x)}" onclick="setNowWhen(${i})"><span>${i === 0 ? "오늘" : i === 1 ? "내일" : "이번 주말"}</span><b>${counts[i]}</b></button>`).join("")}</div></div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > MAXN ? (MAXN < 24 ? `<button type="button" class="nowMoreBtn" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${Math.min(shown.length, 24) - MAXN}건 더 보기 ▾</button>` : `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>`) : ""}
