@@ -10,6 +10,11 @@ permissions:
   contents: write
   issues: read
 
+# 같은 시간에 두 번 돌지 않게 (손으로 '실행'을 누른 것과 예약 실행이 겹칠 때)
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -70,5 +75,12 @@ jobs:
             echo "변경된 데이터가 없습니다."
           else
             git commit -m "자동 일정 업데이트"
-            git push
+            # 수집하는 동안 웹에서 파일을 올렸으면(Add files via upload) 그대로 push 하면 거절된다 → 최신을 받아 위에 얹고 다시 시도
+            for i in 1 2 3; do
+              if git push; then break; fi
+              echo "push 거절 → 최신 내용을 받아 다시 시도 ($i)"
+              git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" || { git rebase --abort; git pull --no-rebase -X ours origin "${GITHUB_REF_NAME}"; }
+              sleep 5
+            done
+            git push   # 세 번 다 실패했으면 여기서 실패로 표시돼 Actions 화면에서 알 수 있음
           fi
