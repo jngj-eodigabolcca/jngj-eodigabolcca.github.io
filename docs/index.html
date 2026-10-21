@@ -3725,22 +3725,61 @@ function tripHours(x, kind, date) {
     return { unknown: true };
   }
   if (/24시간/.test(src)) return { always: true, unsure };
-  // 브레이크타임: "브레이크타임 15:00~17:00" (괄호 안·밖 모두) 또는 맛집 자료의 brk 칸
-  const BRK_RE = /(?:브레이크|break)\s*(?:타임|time)?\s*:?\s*(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})/i;
-  const brkM = (src.match(BRK_RE) || (x.brk ? String(x.brk).match(/(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})/) : null));
-  const brk = brkM ? [+brkM[1] * 60 + +brkM[2], +brkM[3] * 60 + +brkM[4]] : null;
-  src = src.replace(new RegExp(BRK_RE.source, "gi"), " ");
-  const segs = src.split(/\s+[·\/]\s+|\s\/\s|;\s*/).map(s => s.trim()).filter(Boolean);
-  let best = null, shows = [], lastIn = null, closedToday = false, glLast = null, glBefore = null, rangeSeen = false, all = [];
-  for (const seg of segs) {
+  // 브레이크타임: "브레이크타임 15:00~17:00" · 관광공사 자료의 "준비시간 15:00~17:00"·"휴게시간" (괄호 안·밖 모두) 또는 맛집 자료의 brk 칸
+  // ※ 예전엔 '준비시간'을 영업시간으로 읽어서, 식당이 쉬는 시간에만 문 여는 것처럼 계산됐다
+  const BRK_RE = /(?:브레이크\s*타임|브레이크|break\s*time|준비\s*시간|휴게(?:\s*시간)?)\s*:?\s*(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})/i;
+  const brkX = x.brk ? String(x.brk).match(/(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})/) : null;
+  let brk = brkX ? [+brkX[1] * 60 + +brkX[2], +brkX[3] * 60 + +brkX[4]] : null;
+  // 괄호 안의 계절별 시간 "빛의 숲(4–10월 19:30–23:00 / 11–3월 18:30–22:30)"은 따로 펼친 뒤,
+  // 괄호 밖의 ' · ' ' / ' ';' 에서만 나눈다 (괄호 안에서 나누면 앞뒤가 어긋나 엉뚱한 시간이 됨)
+  src = src.replace(/([^·\/();]*?)\(([^()]*\d{1,2}:\d{2}[^()]*\/[^()]*)\)/g, (m, label, inner) => inner.split(/\s*\/\s*/).map(part => `${label.trim()} ${part}`).join(" · "));
+  const segs = []; { let depth = 0, cur = ""; const t = src;
+    for (let i = 0; i < t.length; i++) { const ch = t[i];
+      if (ch === "(") depth++; else if (ch === ")") depth = Math.max(0, depth - 1);
+      const prevCh = (t.slice(0, i).match(/\S(?=\s*$)/) || [""])[0];   // 앞쪽의 공백 아닌 글자
+      const sep = depth === 0 && (ch === ";" || ((ch === "·" || ch === "/") && /\s/.test(t[i - 1] || "") && /\s/.test(t[i + 1] || ""))
+        || (ch === "-" && !/\d/.test(prevCh) && /\s/.test(t[i + 1] || ""))     // 관광공사 자료의 '- ' 줄머리표 (괄호 안 제외)
+        || (ch === "," && /^\s*(?:[일월화수목금토](?:요일)?\s*[~–·-]|평일|주말|매일)/.test(t.slice(i + 1))));   // '월~금 11:00~19:00, 토~일 11:00~20:30'
+      if (depth === 0 && ch === "[") { segs.push(cur); cur = "" }   // [월요일~토요일] 같은 요일 머리표는 새 칸으로
+      if (sep) { segs.push(cur); cur = "" } else cur += ch }
+    segs.push(cur) }
+  for (let i = segs.length - 1; i >= 0; i--) { segs[i] = segs[i].trim(); if (!segs[i]) segs.splice(i, 1) }
+  // "[월요일~토요일] / 10:40~20:40 / [일요일] / 10:40~15:00" → 아래 칸들에 요일 머리표를 붙여, 그 요일에만 적용되게
+  { let head = "";
+    for (let i = 0; i < segs.length; i++) {
+      const hm = segs[i].match(/^\[([^\]]{1,20})\]\s*(.*)$/);
+      if (hm) { head = hm[1]; segs[i] = hm[2] ? `${head} ${hm[2]}` : ""; continue }
+      if (head) segs[i] = `${head} ${segs[i]}`;
+    }
+    for (let i = segs.length - 1; i >= 0; i--) if (!segs[i]) segs.splice(i, 1) }
+  // '공원 상시 · 전망타워 09:00–22:00' → 공원은 언제든 갈 수 있으니 상시 개방으로 본다
+  // (행사는 그 행사 시간이 따로 있으니 장소가 상시 개방이어도 상시로 보지 않음 · '상시개방 여부는 현장 확인'도 아님)
+  const alwaysPart = kind !== "event" && segs.some(sg => /상시|연중\s*개방|24시간/.test(sg) && !/\d{1,2}:\d{2}/.test(sg) && !/휴관|휴무|확인|여부/.test(sg));
+  // '실내 10:00–18:00 · 야외 06:00–22:00' 처럼 실내·야외가 따로 적힌 곳: 전시·실내 시설 관람은 실내 시간으로 본다
+  if (segs.some(sg => /^(?:실내|전시|관람)/.test(sg)) && segs.some(sg => /^(?:야외|공원|산책로|외부)/.test(sg)) && !/^야외$/.test(x.inout || ""))
+    for (let i = segs.length - 1; i >= 0; i--) if (/^(?:야외|공원|산책로|외부)/.test(segs[i])) segs.splice(i, 1);
+  let best = null, shows = [], lastIn = null, closedToday = false, glLast = null, glBefore = null, rangeSeen = false, all = [], lasts = [];
+  for (let seg of segs) {
+    const bk = seg.match(BRK_RE);
+    if (bk) {   // 쉬는 시간은 따로 떼어 두고(그 요일에 해당할 때만), 나머지 글만 읽는다
+      // '11:30~22:00 (평일 준비시간 15:00~17:00)' → 괄호 속 '평일'은 쉬는 시간에만 붙는 말이라 괄호째 떼어 낸다
+      const pm = seg.match(/\(([^()]*)\)/g)?.find(p => BRK_RE.test(p));
+      const brkCtx = pm ? pm.replace(BRK_RE, " ").replace(/[()]/g, " ") : seg.replace(BRK_RE, " ");
+      const pmRest = pm ? pm.replace(BRK_RE, " ").replace(/평일|주말|매일|[일월화수목금토]요일/g, " ") : "";   // '(입장마감 21:00 · 휴게 …)'의 입장마감은 남김
+      seg = (pm ? seg.replace(pm, /\d{1,2}:\d{2}/.test(pmRest) ? pmRest.replace(/\(\s*[·,]\s*/, "(").replace(/\s*[·,]\s*\)/, ")") : " ") : seg.replace(BRK_RE, " ")).replace(/\(\s*[·,]?\s*\)/g, " ").trim();
+      if (!brk && tripSegApplies(brkCtx.replace(/\([^)]*\)/g, " ").replace(/\d{1,2}:\d{2}\s*[–~-]\s*\d{1,2}:\d{2}/g, " "), d)) brk = [+bk[1] * 60 + +bk[2], +bk[3] * 60 + +bk[4]];
+      if (!seg || !/\d{1,2}:\d{2}/.test(seg)) continue;
+    }
     const paren = (seg.match(/\(([^)]*)\)/g) || []).join(" ");
     const main = seg.replace(/\([^)]*\)/g, " ");
     if (/휴무|휴관/.test(main) && !/\d{1,2}:\d{2}/.test(main)) { const ds = tripDaysOf(main); if (ds.size && ds.has(d.getUTCDay())) closedToday = true; continue }
-    const lm = (main + " " + paren).match(/(?:입장|매표|발권)\s*마감\s*(\d{1,2}:\d{2})|(?:매표|입장|주문|마지막\s*주문)\s*(\d{1,2}:\d{2})\s*까지|마지막\s*주문\s*(\d{1,2}:\d{2})/);
+    const LM_RE = /(?:입장|매표|발권)\s*마감\s*(\d{1,2}:\d{2})|(?:매표|입장|주문|마지막\s*주문)\s*(\d{1,2}:\d{2})\s*까지|(?:마지막\s*주문|라스트\s*오더|L\.?\s*O\.?)\s*:?\s*(\d{1,2}:\d{2})/gi;
+    const lmAll = [...(main + " " + paren).matchAll(LM_RE)].map(m => clockMinutes(m[1] || m[2] || m[3]));   // '점심 마지막 주문 14:00 - 저녁 마지막 주문 20:30' 둘 다
+    const lm = lmAll.length ? [null, null, null, tripHM(lmAll[0])] : null;
     const before = (main + " " + paren).match(/입장은\s*마감\s*(\d+)\s*분\s*전/);
     const ranges = [...main.matchAll(/(\d{1,2}):(\d{2})\s*[–~-]\s*(\d{1,2}):(\d{2})/g)];
     if (!ranges.length) {
-      if (lm && !/\d{1,2}:\d{2}\s*[–~-]/.test(main)) { glLast = clockMinutes(lm[1] || lm[2] || lm[3]); continue }
+      if (lm && !/\d{1,2}:\d{2}\s*[–~-]/.test(main)) { if (tripSegApplies(main.replace(/\d{1,2}:\d{2}/g, " "), d)) { glLast = lmAll[lmAll.length - 1]; lasts.push(...lmAll) } continue }
       if (!tripSegApplies(main, d)) continue;
       if (/까지|연장|부터|신청|접수|예매|오픈/.test(main)) continue; // "마지막 날 17:00까지" 같은 보충 설명
       for (const m of main.matchAll(/(\d{1,2}):(\d{2})/g)) shows.push(+m[1] * 60 + +m[2]);
@@ -3761,23 +3800,27 @@ function tripHours(x, kind, date) {
       if (!best || c < best.close) best = { open: o, close: c };
       all.push({ open: o, close: c });
     }
-    if (lm) lastIn = clockMinutes(lm[1] || lm[2] || lm[3]);
+    if (lm) { lastIn = lmAll[0]; lasts.push(...lmAll) }
     if (before) glBefore = +before[1];
   }
   if (closedToday) return { closed: true };
+  if (alwaysPart) return { always: true, partial: true, unsure };   // 일부(공원 등)만 상시 → 밤엔 따로 따짐
   if (best) {
     let li = lastIn ?? glLast;
     if (li == null && glBefore != null) li = best.close - glBefore;
     // 겹치는 시간대는 좁게(보수적으로), 떨어진 시간대(점심·저녁 영업, 야간 개장)는 따로 둔다
     all.sort((a, b) => a.open - b.open);
     let groups = [];
-    for (const r of all) { const g = groups[groups.length - 1]; if (g && r.open < g.close) { g.open = Math.max(g.open, r.open); g.close = Math.min(g.close, r.close) } else groups.push({ ...r }) }
+    // 겹치는 시간대는 합친다 (예: 전망타워 09:00–22:00 · 빛의 숲 19:30–23:00 → 09:00–23:00). 떨어진 시간대(점심·저녁 영업)는 따로 둔다
+    for (const r of all) { const g = groups[groups.length - 1]; if (g && r.open <= g.close) { g.close = Math.max(g.close, r.close) } else groups.push({ ...r }) }
     if (brk) groups = groups.flatMap(g => brk[0] > g.open && brk[1] < g.close ? [{ open: g.open, close: brk[0] }, { open: brk[1], close: g.close }] : [g]);
     groups = groups.filter(g => g.close > g.open);
     if (!groups.length) groups = [best];
+    // 마지막 주문·입장마감이 여러 개면(점심·저녁) 각 시간대 안의 것을 그 시간대에 붙인다
+    groups.forEach(g => { const inG = lasts.filter(t => t >= g.open && t <= g.close); g.lastIn = inG.length ? Math.max(...inG) : (li != null && li >= g.open && li <= g.close ? li : null) });
     const g0 = groups[0];
     if (li != null && !groups.some(g => li <= g.close && li >= g.open)) li = null;
-    return { open: g0.open, close: g0.close, lastIn: li, unsure, ranges: groups };
+    return { open: g0.open, close: g0.close, lastIn: g0.lastIn ?? null, unsure, ranges: groups };
   }
   if (shows.length) return { shows: [...new Set(shows)].sort((a, b) => a - b), unsure };
   // 운영시간은 적혀 있는데 오늘(요일·계절)에 해당하는 칸이 하나도 없으면 그날은 안 여는 것
@@ -3832,11 +3875,18 @@ function tripCheck(x, kind, arrive, opt = {}) {
     const need0 = (kind === "food" || kind === "cafe") ? Math.min(stay, 50) : stayLo;
     const g = H.ranges.find(r => r.close - Math.max(arrive, r.open) >= need0) || H.ranges.find(r => r.close > arrive) || H.ranges[H.ranges.length - 1];
     H.open = g.open; H.close = g.close;
-    if (H.lastIn != null && (H.lastIn > g.close || H.lastIn < g.open)) H.lastIn = null;
+    H.lastIn = g.lastIn !== undefined ? g.lastIn : (H.lastIn != null && (H.lastIn > g.close || H.lastIn < g.open) ? null : H.lastIn);
   }
   if (tripNightBlocked(x, kind, arrive, stay, opt.date)) return { ok: false, why: arrive < tripSunrise(opt.date) ? `해 뜨기 전 도착 (일출 ${tripHM(tripSunrise(opt.date))}쯤)` : `해가 진 뒤 도착 (일몰 ${tripHM(tripSunset(opt.date))}쯤)` };
   if (H.always && /외관|근대문화유산/.test((x.hours || "") + " " + (x.kind || "")) && !/야경|야간|조명/.test((x.hours || "") + (x.tags || []).join(" ")) && arrive + stay > tripSunset(opt.date) + 30) return { ok: false, why: "해가 진 뒤라 건물 외관 보기 어려움" };
-  if (H.always) return { ok: true, arrive, leave: arrive + stay, stay, always: true, unsure: H.unsure, note: `${tripHM(arrive)}쯤 도착 · 상시 개방 · ${stay}분쯤` };
+  if (H.always) {
+    const am = ((arrive % 1440) + 1440) % 1440, hrsTxt = [x.hours, x.time, x.name, (x.tags || []).join(" ")].join(" ");
+    // 늦은 밤(23시~새벽 5시)엔 '상시 개방'이어도 추천하지 않는다 (24시간 운영이라고 적힌 곳만 예외)
+    if ((am >= 23 * 60 || am < 5 * 60) && !/24시간/.test(hrsTxt)) return { ok: false, why: "늦은 밤이라 추천하지 않음" };
+    // '공원 상시 · 전시관 09:00–18:00' 처럼 일부만 상시면, 해 진 뒤엔 야경·야간 명소일 때만
+    if (H.partial && arrive + Math.min(stay, 60) > tripSunset(opt.date) + 30 && !/야경|야간|조명|빛|야시장|드론/.test(hrsTxt)) return { ok: false, why: `해가 진 뒤라 실내 시설은 닫았고 야외만 열려 있음` };
+    return { ok: true, arrive, leave: arrive + stay, stay, always: true, unsure: H.unsure, note: `${tripHM(arrive)}쯤 도착 · 상시 개방 · ${stay}분쯤` };
+  }
   if (H.unknown) {
     if (kind === "food" || kind === "cafe") return { ok: true, arrive, leave: arrive + stay, stay, unsure: true, note: `${tripHM(arrive)}쯤 도착 · 영업시간은 가기 전 확인` };
     if (kind === "cinema" && arrive >= 540 && arrive <= 1380) return { ok: true, arrive, leave: arrive + stay, stay, unsure: true, note: `${tripHM(arrive)}쯤 도착 · 상영 시간은 예매처에서 확인` };
@@ -6030,7 +6080,10 @@ function decisionRoutePicks(selected){
     openV = indoor.length>=2 ? indoor : [...indoor,...market];
   }
 
-  const firstPool=openV.filter(v=>timeOkV.includes(v));
+  // 첫 장소에서 오래 기다리지 않게: 도착하자마자(30분 안에) 들어갈 수 있는 곳이 있으면 그중에서 고른다
+  const waitOf=(x,kind)=>{ const lg=firstLegOf(x); const r=tripCheck(x,kind,start+lg,{stay:stayCap}); return r.ok?(r.wait||0)+(r.start!=null?Math.max(0,r.start-(start+lg)):0):999 };
+  let firstPool=openV.filter(v=>timeOkV.includes(v));
+  { const quick=firstPool.filter(v=>waitOf(v,'venue')<=30); if(quick.length) firstPool=quick; }
   const firstV=aiDiverse(firstPool,key+":first",1,10)[0];
   const firstE=aiDiverse(activeB,key+":event",1,7)[0];
   let first=firstV ? wrap('venue',firstV) : firstE ? wrap('event',firstE) : null;
@@ -6814,7 +6867,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.61 (10.20)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.62 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7346,9 +7399,13 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
       if(v.image){(byImg[v.image]=byImg[v.image]||[]).push(v)}
       if(/인근|대체|다른 장소/.test(v.imageCredit||""))add(2,"장소 사진",v.name,"다른 장소의 사진을 대신 씀 ("+v.imageCredit+")");
       if(!v.address)add(1,"장소 주소",v.name,"주소 없음");
-      if(v.lat&&v.lng){const R=REGIONS[regionOfItem(v)];if(R){const km=KM(v.lat,v.lng,R.center[0],R.center[1]);if(km>90)add(2,"장소 위치",v.name,"권역 중심에서 "+Math.round(km)+"km — 좌표나 권역이 틀렸을 수 있음")}}
+      // 좌표가 그 장소의 시·군·구 근처인지 (섬이 흩어진 신안·완도·여수·진도·고흥은 넉넉히)
+      if(v.lat&&v.lng){const dd=v.district||districtFromAddr(v.address),C=DISTRICT_CENTER[dd];if(C){const km=KM(+v.lat,+v.lng,C[0],C[1]),lim={"신안군":140,"완도군":60,"여수시":50,"진도군":50,"고흥군":45}[dd]||(GJ_GU.includes(dd)?12:35);if(km>lim)add(2,"장소 위치",v.name,dd+" 중심에서 "+Math.round(km)+"km — 다른 시·군 좌표가 들어갔을 수 있음")}}
       else if(!v.address)add(1,"장소 위치",v.name,"좌표·주소 모두 없음 (지도에 안 나옴)");
     });
+    // 주소가 다른 여러 곳이 똑같은 좌표 → 시·군 중심으로 대충 찍힌 좌표일 수 있음 (지도 핀이 한 점에 겹침)
+    { const byXY={}; V.forEach(v=>{ if(v.lat&&v.lng&&!v.approx){ const k=(+v.lat).toFixed(4)+","+(+v.lng).toFixed(4); (byXY[k]=byXY[k]||[]).push(v) } });
+      Object.values(byXY).forEach(vs=>{ const addrs=new Set(vs.map(v=>String(v.address||"").replace(/\s+/g,""))); if(vs.length>=3&&addrs.size>=3) add(1,"장소 위치",vs.slice(0,4).map(v=>v.name).join(" / ")+(vs.length>4?` 외 ${vs.length-4}`:""),`${vs.length}곳이 같은 좌표 — 대략 위치일 수 있음`) }) }
     Object.entries(byImg).forEach(([img,vs])=>{if(vs.length<2)return;const far=vs.some(a=>vs.some(b=>a.lat&&b.lat&&KM(a.lat,a.lng,b.lat,b.lng)>3));if(far)add(2,"장소 사진",vs.map(v=>v.name).join(" / "),"서로 멀리 떨어진 장소가 같은 사진을 씀")});
     // 중복 의심 항목: 화면에 나타나는 연속 중복뿐 아니라 데이터 자체의 중복을 점검한다.
     // 같은 제목·장소·일정만 검사하고, 서로 다른 날짜/회차는 무리하게 합치지 않는다.
@@ -7381,7 +7438,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
       if(e.start&&e.end&&e.end<e.start)add(2,"일정 날짜",n,"끝나는 날이 시작일보다 빠름");
       if(!e.start&&!e.date)add(2,"일정 날짜",n,"날짜 없음");
       if(!e.source&&!e.url)add(2,"일정 출처",n,"출처·링크 없음");
-      else if(PRIVATE.test(e.url||""))add(2,"일정 출처",n,"공식 출처가 아님 ("+(e.url||"").replace(/^https?:\/\//,"").split("/")[0]+")");
+      else if(PRIVATE.test(e.url||"")&&e.origin!=="auto")add(2,"일정 출처",n,"공식 출처가 아님 ("+(e.url||"").replace(/^https?:\/\//,"").split("/")[0]+")");
       else if(TICKET.test(e.url||""))add(0,"일정 출처",n,"예매처 기준 — 공연 측 공식 발표로도 확인 권장");
       if(e.origin==="manual"&&!e.verified&&(!e.end||e.end>=t))add(1,"일정 확인일",n,"공식 행사 내용을 실제 대조한 날짜가 없음");
       if(e.origin==="manual"&&e.verified&&e.verified<old&&(!e.end||e.end>=t))add(1,"일정 확인일",n,"직접 입력 자료인데 "+e.verified+" 이후 다시 확인 안 함");

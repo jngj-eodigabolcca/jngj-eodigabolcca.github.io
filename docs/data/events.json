@@ -8,7 +8,7 @@
     "title": "여수월드, 여수서커스",
     "venue": "여수월드서커스",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2023-03-18 ~ 2026-10-31",
     "time": "시간은 KOPIS에서 확인",
@@ -172,7 +172,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "광주"
@@ -206,7 +206,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "id": "gma-939",
@@ -236,10 +236,10 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-368045",
     "apiId": "368045",
     "category": "행사",
@@ -247,7 +247,7 @@
     "title": "2026년 어린이 단체 교육 프로그램 '학교 밖 아시아 여행'",
     "venue": "",
     "venueId": null,
-    "district": "",
+    "district": "동구",
     "address": "",
     "date": "2026-04-01 ~ 2026-11-27",
     "time": "시간은 공식 원문에서 확인",
@@ -261,10 +261,10 @@
     "lat": null,
     "lng": null,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.acc.go.kr/main/education.do?PID=0402&amp;action=Read&amp;bnkey=EM_0000009255",
+    "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "행사",
       "교육·체험",
@@ -281,7 +281,7 @@
     "title": "제4기 소록도박물관 서포터즈 활동",
     "venue": "",
     "venueId": null,
-    "district": "",
+    "district": "고흥군",
     "address": "",
     "date": "2026-04-01 ~ 2026-11-30",
     "time": "시간은 공식 원문에서 확인",
@@ -295,10 +295,10 @@
     "lat": null,
     "lng": null,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&amp;board_id=033&amp;menu_cd=04_01&amp;bn=newsView&amp;depth=nn",
+    "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "행사",
       "교육·체험",
@@ -338,7 +338,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "jeonil245",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "광주"
@@ -376,7 +376,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "광주"
@@ -454,14 +454,14 @@
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-398683",
     "apiId": "398683",
     "category": "전시",
     "subtype": "전시",
     "title": "해동문화예술촌 기획전시 《우리는 연결될 수밖에 없다》",
     "venue": "해동문화예술촌",
-    "venueId": "jn-haedong-culture-village",
+    "venueId": null,
     "district": "담양군",
     "address": "전남광주통합특별시 담양군 담양읍 지침1길 6 해동문화예술촌",
     "date": "2026-07-25 ~ 2026-11-15",
@@ -479,9 +479,8 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
@@ -519,14 +518,14 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "nmg",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "광주"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-391842",
     "apiId": "391842",
     "category": "전시",
@@ -551,15 +550,14 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-394110",
     "apiId": "394110",
     "category": "전시",
@@ -581,26 +579,25 @@
     "lat": 34.8525750169448,
     "lng": 126.415283310838,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15203110&amp;category_1=%EC%A0%84%EC%8B%9C&amp;mode=view",
+    "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15203110&category_1=%EC%A0%84%EC%8B%9C&mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-395533",
     "apiId": "395533",
     "category": "전시",
     "subtype": "전시",
     "title": "디자인 특별전 아트놀이터 [상상 가구 공작소]",
     "venue": "영암군립 하정웅미술관",
-    "venueId": "hajungwoong",
+    "venueId": null,
     "district": "영암군",
     "address": "전남광주통합특별시 영암군 군서면 구림로 96 영암군립 하정웅미술관",
     "date": "2026-08-25 ~ 2026-11-01",
@@ -618,23 +615,22 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-395530",
     "apiId": "395530",
     "category": "전시",
     "subtype": "전시",
     "title": "생활 속 디자인",
     "venue": "영암군립 하정웅미술관",
-    "venueId": "hajungwoong",
+    "venueId": null,
     "district": "영암군",
     "address": "전남광주통합특별시 영암군 군서면 구림로 96 영암군립 하정웅미술관",
     "date": "2026-08-25 ~ 2026-11-01",
@@ -652,16 +648,15 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-396417",
     "apiId": "396417",
     "category": "전시",
@@ -683,12 +678,11 @@
     "lat": 35.05484530551809,
     "lng": 126.5196189742353,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&amp;boardId=ART_001&amp;seq=1966136&amp;movePage=1&amp;recordCnt=12",
+    "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&boardId=ART_001&seq=1966136&movePage=1&recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
@@ -757,7 +751,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "id": "ys-island-expo-2026",
@@ -832,23 +826,22 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주",
       "무료"
     ]
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-396666",
     "apiId": "396666",
     "category": "전시",
     "subtype": "전시",
     "title": "너는 네 삶을 바꿔야 한다 《You Must Change Your Life》",
     "venue": "광주비엔날레 전시관",
-    "venueId": "biennale",
+    "venueId": null,
     "district": "북구",
     "address": "전남광주통합특별시 북구 비엔날레로 111 광주비엔날레 전시관",
     "date": "2026-09-05 ~ 2026-11-15",
@@ -866,9 +859,8 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주"
     ]
@@ -981,12 +973,11 @@
     "lat": 35.14704938925195,
     "lng": 126.92005723156174,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009929",
+    "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주",
       "무료"
@@ -1020,7 +1011,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "id": "gma-953",
@@ -1050,17 +1041,17 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-394038",
     "apiId": "394038",
     "category": "전시",
     "subtype": "전시",
     "title": "2026 ACC-지역 예비예술가 발굴전Ⅱ(대학)",
     "venue": "국립아시아문화전당 문화정보원",
-    "venueId": "acc",
+    "venueId": null,
     "district": "동구",
     "address": "전남광주통합특별시 동구 문화전당로 38 국립아시아문화전당",
     "date": "2026-09-10 ~ 2026-11-22",
@@ -1075,12 +1066,11 @@
     "lat": 35.14704938925195,
     "lng": 126.92005723156174,
     "source": "한국문화정보원 문화정보",
-    "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&amp;action=Read&amp;bnkey=EM_0000009930",
+    "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주",
       "무료"
@@ -1163,14 +1153,14 @@
     }
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "culture-399222",
     "apiId": "399222",
     "category": "전시",
     "subtype": "전시",
     "title": "[남도향토음식박물관] 특별기획 김도형 목조각展 [원: ONE]",
     "venue": "남도향토음식박물관",
-    "venueId": "namdo-food-museum",
+    "venueId": null,
     "district": "북구",
     "address": "전남광주통합특별시 북구 설죽로 477 남도향토음식박물관",
     "date": "2026-09-18 ~ 2026-10-31",
@@ -1185,12 +1175,11 @@
     "lat": 35.20195078113481,
     "lng": 126.89862275042032,
     "source": "한국문화정보원 문화정보",
-    "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&amp;bid=0315&amp;act=view&amp;list_no=1234&amp;mid=a70501000000&amp;bid=0315&amp;nPage=1&amp;b_list=10&amp;orderby=&amp;dept_code=&amp;tag=&amp;step_yn=&amp;list_no=1234&amp;act=view&amp;_csrf=751522b5-510b-4051-aefe-38319efb4426&amp;cg_code=C01&amp;keyField=&amp;keyWord=",
+    "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&bid=0315&act=view&list_no=1234&mid=a70501000000&bid=0315&nPage=1&b_list=10&orderby=&dept_code=&tag=&step_yn=&list_no=1234&act=view&_csrf=751522b5-510b-4051-aefe-38319efb4426&cg_code=C01&keyField=&keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주",
       "무료"
@@ -1697,9 +1686,8 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "광주",
       "무료"
@@ -1771,9 +1759,8 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
@@ -1832,7 +1819,7 @@
     "title": "별을 갖고 튀어라 [광주]",
     "venue": "기분좋은극장 [상무지구]",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-10-08 ~ 2026-11-15",
     "time": "시간은 KOPIS에서 확인",
@@ -1963,7 +1950,7 @@
     ]
   },
   {
-    "time": "일정은 정규시즌 종료(10/12) 뒤 KBO 공지",
+    "time": "PO 3차전 10.28(수) 18:30 · 4차전 10.29(목) 18:30 (4차전은 시리즈가 안 끝났을 때만)",
     "price": "예매처에서 좌석별 확인",
     "discount": "",
     "group": "",
@@ -1976,7 +1963,7 @@
     "reservation": "KBO 포스트시즌 예매 공지 확인",
     "contact": "",
     "status": "예정",
-    "verified": "2026-10-04",
+    "verified": "2026-10-21",
     "origin": "manual",
     "tags": [
       "스포츠",
@@ -1988,18 +1975,20 @@
     "id": "kia-postseason-2026",
     "category": "스포츠",
     "subtype": "프로야구",
-    "title": "KIA 타이거즈 가을야구 (KBO 포스트시즌)",
+    "title": "KIA 타이거즈 플레이오프 광주 홈경기 (vs 삼성)",
     "venue": "광주-기아 챔피언스필드",
-    "date": "10.14 —",
-    "start": "2026-10-14",
-    "end": "2026-10-31",
-    "verify": "선수 클로즈업 대신 경기장 중심 카드 이미지로 교체",
-    "source": "이투데이 (가을야구 진출팀 확정)",
-    "url": "https://www.etoday.co.kr/news/view/2631173",
+    "date": "10.28 — 10.29",
+    "start": "2026-10-28",
+    "end": "2026-10-29",
+    "verify": "KIA가 준플레이오프에서 LG를 3승으로 꺾고 플레이오프 진출 · 1·2·5차전은 대구, 3·4차전이 광주",
+    "source": "이투데이 (플레이오프 대진·예매 일정)",
+    "url": "https://www.etoday.co.kr/news/view/2638080",
     "ticket": {
       "status": "예매예정",
-      "note": "KBO 포스트시즌 예매 오픈은 대진 확정 후",
-      "checked": "2026-10-04"
+      "note": "3·4차전 예매 10.22(목) 14:00·15:00 NOL 티켓 오픈 · 1인 4매",
+      "checked": "2026-10-21",
+      "link": "https://nol.yanolja.com/ticket",
+      "linkName": "NOL 티켓"
     },
     "venueId": "champions",
     "image": ""
@@ -2031,7 +2020,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "category": "행사",
@@ -2163,9 +2152,8 @@
     "url": "https://blog.naver.com/kr_gallery/224442490830",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
-      "전시",
       "전시",
       "전남",
       "무료"
@@ -2202,6 +2190,70 @@
     "source": "강진군 발표 · 매일일보 2026.10.16",
     "url": "https://www.m-i.kr/news/articleView.html?idxno=2006733",
     "origin": "manual"
+  },
+  {
+    "detailAt": "2026-10-13",
+    "id": "kopis-PF301291",
+    "apiId": "PF301291",
+    "category": "음악",
+    "subtype": "서양음악(클래식)",
+    "title": "GAC 기획공연, 11시 음악산책 단편선 시리즈 Ⅵ. 더블린 사람들 中 에블린",
+    "venue": "전남광주통합특별시 예술의전당 (구. 광주예술의전당)",
+    "venueId": null,
+    "district": "북구",
+    "address": "전남광주통합특별시 북구 북문대로 60 (운암동)",
+    "date": "2026-10-20 ~ 2026-10-20",
+    "time": "화요일(11:00)",
+    "price": "R석 20,000원, S석 10,000원",
+    "age": "만 7세 이상",
+    "cast": "안인모, 김도연, 김지윤, 박건우, 김태형",
+    "runtime": "1시간 30분",
+    "status": "공연중",
+    "start": "2026-10-20",
+    "end": "2026-10-20",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF301291_260918_131008.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://ticket.yes24.com/Perf/60143",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-10-20",
+    "tags": [
+      "공연",
+      "서양음악(클래식)",
+      "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-10-13",
+    "id": "kopis-PF302356",
+    "apiId": "PF302356",
+    "category": "공연",
+    "subtype": "연극",
+    "title": "비욘드 아리랑 [보성]",
+    "venue": "보성군문화예술회관",
+    "venueId": null,
+    "district": "보성군",
+    "address": "전남광주통합특별시 보성군 보성읍 송재로 281-9",
+    "date": "2026-10-20 ~ 2026-10-20",
+    "time": "화요일(19:00)",
+    "price": "전석 10,000원",
+    "age": "만 7세 이상",
+    "cast": "최재섭, 이건영, 정수한, 김화영, 양현석, 김기남, 황인욱 등",
+    "runtime": "1시간 10분",
+    "status": "공연중",
+    "start": "2026-10-20",
+    "end": "2026-10-20",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302356_261002_133926.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "http://www.ticketlink.co.kr/product/65987",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-10-20",
+    "tags": [
+      "공연",
+      "연극",
+      "전남"
+    ]
   },
   {
     "detailAt": "2026-10-13",
@@ -2276,7 +2328,7 @@
     "title": "시대악기로 듣는 모차르트 가족의 음악 이야기 [여수]",
     "venue": "GS칼텍스 예울마루",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-10-22 ~ 2026-10-22",
     "time": "시간은 KOPIS에서 확인",
@@ -2405,7 +2457,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "전남"
@@ -2452,7 +2504,7 @@
     "title": "김시라의 품바: Original [광양]",
     "venue": "포스코광양백운아트홀",
     "venueId": null,
-    "district": "",
+    "district": "광양시",
     "address": "",
     "date": "2026-10-23 ~ 2026-10-23",
     "time": "시간은 KOPIS에서 확인",
@@ -2847,10 +2899,10 @@
     "lat": 35.3020201417386,
     "lng": 126.76656804977097,
     "source": "한국문화정보원 문화정보",
-    "url": "https://jsac.moonhwain.net:451/rsvc/rsv_pm.html?b_id=jsac&amp;p_idx=194",
+    "url": "https://jsac.moonhwain.net:451/rsvc/rsv_pm.html?b_id=jsac&p_idx=194",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "공연",
       "뮤지컬/오페라",
@@ -2970,7 +3022,7 @@
     "title": "김수희 전국투어 콘서트: 우리 다시, 김수희 [광양]",
     "venue": "포스코광양백운아트홀",
     "venueId": null,
-    "district": "",
+    "district": "광양시",
     "address": "",
     "date": "2026-10-24 ~ 2026-10-24",
     "time": "시간은 KOPIS에서 확인",
@@ -3002,7 +3054,7 @@
     "title": "김시라의 품바: Original [담양]",
     "venue": "담양문화회관",
     "venueId": null,
-    "district": "",
+    "district": "담양군",
     "address": "",
     "date": "2026-10-24 ~ 2026-10-24",
     "time": "시간은 KOPIS에서 확인",
@@ -3067,7 +3119,7 @@
     "title": "데뷔 60주년 기념공연, 남진 전국투어 콘서트 [담양]",
     "venue": "담양문화회관",
     "venueId": null,
-    "district": "",
+    "district": "담양군",
     "address": "",
     "date": "2026-10-24 ~ 2026-10-24",
     "time": "시간은 KOPIS에서 확인",
@@ -3216,7 +3268,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "ys-nagan",
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "전남"
@@ -3293,7 +3345,7 @@
     "title": "엄마를 찾아 떠나는 아리의 모험 [광주]",
     "venue": "광주서구문화센터",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-10-24 ~ 2026-10-24",
     "time": "시간은 KOPIS에서 확인",
@@ -3325,7 +3377,7 @@
     "title": "인싸가족 [광주]",
     "venue": "5.18기념문화센터",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-10-24 ~ 2026-10-25",
     "time": "시간은 KOPIS에서 확인",
@@ -3441,7 +3493,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-21"
+      "checked": "2026-10-20"
     },
     "id": "gtcc-saturday-2026-10-24",
     "date": "10.24 — 10.24",
@@ -3450,7 +3502,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "detailAt": "2026-10-13",
@@ -3493,7 +3545,7 @@
     "title": "김장훈 전국투어 콘서트: 원맨쇼 [광양]",
     "venue": "포스코광양백운아트홀",
     "venueId": null,
-    "district": "",
+    "district": "광양시",
     "address": "",
     "date": "2026-10-25 ~ 2026-10-25",
     "time": "시간은 KOPIS에서 확인",
@@ -3589,7 +3641,7 @@
     "title": "지브리 & 디즈니 영화음악 FESTA [순천]",
     "venue": "순천문화예술회관",
     "venueId": null,
-    "district": "",
+    "district": "순천시",
     "address": "",
     "date": "2026-10-25 ~ 2026-10-25",
     "time": "시간은 KOPIS에서 확인",
@@ -3621,7 +3673,7 @@
     "title": "다비드 바뱅 & 아드리앙 몽도: 피아노 피아노 (Piano Piano) [여수]",
     "venue": "GS칼텍스 예울마루",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-10-27 ~ 2026-10-27",
     "time": "시간은 KOPIS에서 확인",
@@ -3653,7 +3705,7 @@
     "title": "ACC 브런치콘서트 플러스, 포르테나 콘서트: 기적의 하모니 (10월)",
     "venue": "국립아시아문화전당",
     "venueId": null,
-    "district": "",
+    "district": "동구",
     "address": "",
     "date": "2026-10-28 ~ 2026-10-28",
     "time": "시간은 KOPIS에서 확인",
@@ -3911,7 +3963,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "전남"
@@ -3980,7 +4032,7 @@
     "origin": "manual"
   },
   {
-    "detailAt": "2026-10-21",
+    "detailAt": "2026-10-13",
     "id": "tour-2039752",
     "apiId": "2039752",
     "category": "축제",
@@ -4011,7 +4063,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-21",
+    "verified": "2026-10-20",
     "tags": [
       "축제",
       "전남"
@@ -4140,7 +4192,7 @@
     "title": "로보카폴리: 브룸스타운의 에너지를 지켜라! [광주]",
     "venue": "빛고을시민문화관",
     "venueId": null,
-    "district": "",
+    "district": "동구",
     "address": "",
     "date": "2026-10-31 ~ 2026-11-01",
     "time": "시간은 KOPIS에서 확인",
@@ -4328,7 +4380,7 @@
     "title": "신비한 샌드매직쇼: 사라진 모래상자 [광주]",
     "venue": "5.18기념문화센터",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-10-31 ~ 2026-11-01",
     "time": "시간은 KOPIS에서 확인",
@@ -4409,7 +4461,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-21"
+      "checked": "2026-10-20"
     },
     "id": "gtcc-saturday-2026-10-31",
     "date": "10.31 — 10.31",
@@ -4418,7 +4470,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "detailAt": "2026-10-13",
@@ -4461,7 +4513,7 @@
     "title": "겨울왕국 [목포]",
     "venue": "목포시민문화체육센터",
     "venueId": null,
-    "district": "",
+    "district": "목포시",
     "address": "",
     "date": "2026-11-01 ~ 2026-11-01",
     "time": "시간은 KOPIS에서 확인",
@@ -4745,7 +4797,7 @@
     "title": "그때도 오늘 [여수]",
     "venue": "GS칼텍스 예울마루",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-11-06 ~ 2026-11-07",
     "time": "시간은 KOPIS에서 확인",
@@ -5009,7 +5061,7 @@
     "title": "노자와 베토벤 [무안]",
     "venue": "남도소리울림터",
     "venueId": null,
-    "district": "",
+    "district": "무안군",
     "address": "",
     "date": "2026-11-07 ~ 2026-11-07",
     "time": "시간은 KOPIS에서 확인",
@@ -5041,7 +5093,7 @@
     "title": "미녀와 야수 [광주]",
     "venue": "광주디자인센터",
     "venueId": null,
-    "district": "",
+    "district": "동구",
     "address": "",
     "date": "2026-11-07 ~ 2026-11-07",
     "time": "시간은 KOPIS에서 확인",
@@ -5124,7 +5176,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-21"
+      "checked": "2026-10-20"
     },
     "id": "gtcc-saturday-2026-11-07",
     "date": "11.07 — 11.07",
@@ -5133,7 +5185,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "detailAt": "2026-10-13",
@@ -5208,7 +5260,7 @@
     "title": "퓨전국악밴드 날다, 심청날다 [전남 광주]",
     "venue": "한국트로트가요센터",
     "venueId": null,
-    "district": "",
+    "district": "영암군",
     "address": "",
     "date": "2026-11-07 ~ 2026-11-07",
     "time": "시간은 KOPIS에서 확인",
@@ -5278,7 +5330,7 @@
     "title": "로봇 특공대 [전남광주]",
     "venue": "5.18기념문화센터",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-11-08 ~ 2026-11-08",
     "time": "시간은 KOPIS에서 확인",
@@ -5415,7 +5467,7 @@
     "title": "김장훈 전국투어 콘서트: 원맨쇼 [여수]",
     "venue": "여수시민회관",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-11-14 ~ 2026-11-14",
     "time": "시간은 KOPIS에서 확인",
@@ -5566,7 +5618,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-21"
+      "checked": "2026-10-20"
     },
     "id": "gtcc-saturday-2026-11-14",
     "date": "11.14 — 11.14",
@@ -5575,7 +5627,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "detailAt": "2026-10-13",
@@ -5650,7 +5702,7 @@
     "title": "변진섭 전국투어 콘서트: 변천사 시즌 2.5: 시간여행 [여수]",
     "venue": "여수시민회관",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-11-15 ~ 2026-11-15",
     "time": "시간은 KOPIS에서 확인",
@@ -5767,44 +5819,6 @@
       "공연",
       "한국음악(국악)",
       "광주"
-    ]
-  },
-  {
-    "detailAt": "2026-10-21",
-    "id": "tour-3301415",
-    "apiId": "3301415",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "무안 YD 페스티벌",
-    "venue": "남악중앙공원",
-    "district": "무안군",
-    "address": "전남광주통합특별시 무안군 삼향읍 대죽서로16번길 16",
-    "date": "2026-11-20 ~ 2026-11-22",
-    "time": "09:00~22:00",
-    "price": "무료(일부 프로그램 유료)",
-    "age": "",
-    "program": "1. 메인프로그램 : 개막퍼레이드, 축하콘서트, 길거리 농구대회 등 2. 부대프로그램 : 국화 전시, 농수특산물 판매, 청년 참여 프로그램 등 3. 소비자 참여 프로그램 : 드론조종, 뷰티, AI게임 등 체험 프로그램 4. 기타 내용 : 거리퍼레이드, 버스킹 등 공연 행사 및 각종 홍보",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "무안군",
-    "status": "예정",
-    "start": "2026-11-20",
-    "end": "2026-11-22",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/08/4131308_image2_1.JPG",
-    "lat": 34.8111428583,
-    "lng": 126.4628109019,
-    "contact": "061-450-5474",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-10-21",
-    "tags": [
-      "축제",
-      "전남"
     ]
   },
   {
@@ -5984,7 +5998,7 @@
     "title": "바다탐험대 옥토넛 시즌4: 숨겨진 보물을 찾아라! [광주]",
     "venue": "5.18기념문화센터",
     "venueId": null,
-    "district": "",
+    "district": "서구",
     "address": "",
     "date": "2026-11-21 ~ 2026-11-22",
     "time": "시간은 KOPIS에서 확인",
@@ -6099,7 +6113,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-21"
+      "checked": "2026-10-20"
     },
     "id": "gtcc-saturday-2026-11-21",
     "date": "11.21 — 11.21",
@@ -6108,7 +6122,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "id": "perf-7dda3f72",
@@ -6295,7 +6309,7 @@
     "title": "러커스 더 스쿨 [여수]",
     "venue": "GS칼텍스 예울마루",
     "venueId": null,
-    "district": "",
+    "district": "여수시",
     "address": "",
     "date": "2026-11-26 ~ 2026-11-28",
     "time": "시간은 KOPIS에서 확인",
@@ -6779,7 +6793,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-21"
+    "verified": "2026-10-20"
   },
   {
     "id": "perf-236c9991",

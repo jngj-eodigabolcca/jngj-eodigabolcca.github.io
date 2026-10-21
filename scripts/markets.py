@@ -255,3 +255,44 @@ def std_museums(existing: list[dict]) -> list[dict]:
         })
     print(f"  박물관·미술관 표준데이터({fname}): 앱에 없던 곳 {len(out)}곳 추가", flush=True)
     return out
+
+
+# ───────── 이미 앱에 있는 시장의 좌표 바로잡기 ─────────
+# 예전에 손으로 넣은 5일장(m5-…)은 좌표를 시·군 중심 한 점으로 찍어 둔 곳이 많고(나주 시장 7곳이 한 점),
+# 고흥 시장 4곳은 엉뚱하게 목포 좌표가 들어가 있었다. 표준데이터 CSV 에 정확한 좌표가 있으면 그걸로 바꾼다.
+def _km(a_lat, a_lng, b_lat, b_lng):
+    import math
+    r = math.radians
+    h = math.sin(r(b_lat - a_lat) / 2) ** 2 + math.cos(r(a_lat)) * math.cos(r(b_lat)) * math.sin(r(b_lng - a_lng) / 2) ** 2
+    return 2 * 6371 * math.asin(math.sqrt(h))
+
+
+def fix_market_coords(venues: list[dict]) -> list[dict]:
+    rows, fname = cl.read_csv_rows("시장명", {})
+    if rows is None:
+        return venues
+    idx = {}
+    for r in rows:
+        name, addr, sido, p = _std_row(r)
+        lat, lng = u.to_float(p("위도", "latitude")), u.to_float(p("경도", "longitude"))
+        district = u.district_from_addr(addr or "")
+        if name and district and lat and lng and 33.9 < lat < 35.6 and 125.0 < lng < 127.95:
+            idx.setdefault(district, []).append((ckey(name, district), lat, lng))
+    fixed = 0
+    out = []
+    for v in venues:
+        y = v
+        if v.get("market") or re.search(r"시장|장터", v.get("name", "")):
+            d = u.district_from_addr(v.get("address", "")) or v.get("district", "")
+            c = ckey(v.get("name"), d)
+            hit = next(((la, ln) for k, la, ln in idx.get(d, []) if similar(c, k)), None)
+            if hit:
+                cur = (v.get("lat"), v.get("lng"))
+                far = not cur[0] or _km(float(cur[0]), float(cur[1]), hit[0], hit[1]) > 0.8
+                if far:
+                    y = {**v, "lat": round(hit[0], 6), "lng": round(hit[1], 6), "geoSrc": "전국전통시장표준데이터"}
+                    y.pop("approx", None)
+                    fixed += 1
+        out.append(y)
+    print(f"  시장 좌표 바로잡기({fname}): {fixed}곳", flush=True)
+    return out

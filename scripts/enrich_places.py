@@ -56,6 +56,32 @@ def in_area(lat, lng):
     return lat is not None and lng is not None and 33.9 < lat < 35.6 and 125.0 < lng < 127.95
 
 
+# 시·군·구 대략 중심(시청·군청 근처) — 찾은 좌표가 엉뚱한 시·군이면 버리려고 씀
+# (예: '고흥 녹동시장'을 이름으로 찾다가 '고흥'이라는 이름만 같은 목포 지점을 받아 온 일이 있었음)
+DISTRICT_CENTER = {
+    "동구": (35.146, 126.923), "서구": (35.152, 126.890), "남구": (35.133, 126.902), "북구": (35.174, 126.912), "광산구": (35.140, 126.794),
+    "담양군": (35.321, 126.988), "화순군": (35.064, 126.987), "나주시": (35.016, 126.711), "장성군": (35.302, 126.785),
+    "순천시": (34.951, 127.487), "여수시": (34.760, 127.662), "광양시": (34.941, 127.696), "보성군": (34.771, 127.080), "구례군": (35.202, 127.463),
+    "곡성군": (35.282, 127.292), "고흥군": (34.611, 127.285), "목포시": (34.812, 126.392), "무안군": (34.990, 126.482), "신안군": (34.833, 126.351),
+    "영암군": (34.800, 126.697), "해남군": (34.573, 126.599), "진도군": (34.487, 126.263), "완도군": (34.311, 126.755), "강진군": (34.642, 126.767),
+    "장흥군": (34.682, 126.907), "함평군": (35.066, 126.517), "영광군": (35.277, 126.512),
+}
+FAR_OK = {"신안군": 140, "완도군": 60, "여수시": 50, "진도군": 50, "고흥군": 45}   # 섬이 멀리 흩어진 곳
+
+
+def near_district(lat, lng, district) -> bool:
+    """찾은 좌표가 그 장소의 시·군·구 안(근처)인지. 시·군을 모르면 통과."""
+    c = DISTRICT_CENTER.get(district or "")
+    if not c or lat is None or lng is None:
+        return True
+    import math
+    r = math.radians
+    h = math.sin(r(lat - c[0]) / 2) ** 2 + math.cos(r(c[0])) * math.cos(r(lat)) * math.sin(r(lng - c[1]) / 2) ** 2
+    km = 2 * 6371 * math.asin(math.sqrt(h))
+    lim = FAR_OK.get(district, 12 if district in u.GJ_GU else 35)
+    return km <= lim
+
+
 def core_name(name: str) -> str:
     """'말바우시장 (2·4·7·9일장)' → '말바우시장'"""
     n = re.split(r"[(\[·|/]", name or "")[0]
@@ -221,7 +247,9 @@ def osm_find(x: dict):
         for f in j.get("features", []):
             lng, lat = f["geometry"]["coordinates"]
             pn = u.norm_title((f.get("properties") or {}).get("name", ""))
-            if in_area(lat, lng) and len(core) >= 3 and pn and (core in pn or pn in core):
+            # 이름 일부만 같은 엉뚱한 곳('고흥' ⊂ '고흥녹동시장')을 받지 않게: 짧은 쪽이 3글자 이상·70% 이상 겹치고, 같은 시·군 근처일 때만
+            short_ok = len(pn) >= 3 and len(pn) / max(1, len(core)) >= 0.7
+            if in_area(lat, lng) and near_district(lat, lng, district) and len(core) >= 3 and pn and (core in pn or (pn in core and short_ok)):
                 return {"lat": round(lat, 6), "lng": round(lng, 6), "geoSrc": "OpenStreetMap(이름)"}
     except Temporary:
         raise
@@ -236,7 +264,7 @@ def osm_find(x: dict):
                 lat, lng = float(r["lat"]), float(r["lon"])
                 hn = (r.get("address") or {}).get("house_number", "")
                 rd = (r.get("address") or {}).get("road", "")
-                if in_area(lat, lng) and hn == no and street in rd:
+                if in_area(lat, lng) and near_district(lat, lng, district) and hn == no and street in rd:
                     return {"lat": round(lat, 6), "lng": round(lng, 6), "geoSrc": "OpenStreetMap(주소)"}
         except Temporary:
             raise
@@ -395,7 +423,11 @@ def apply(x: dict, found: dict) -> dict:
     y = dict(x)
     if found.get("menu") and y.get("menu") in CAT3.values():
         y["menu"] = ""                      # '한식' 같은 분류 대신 실제 대표메뉴로
+    bad_geo = found.get("lat") and not near_district(found.get("lat"), found.get("lng"),
+                                                    y.get("district") or u.district_from_addr(y.get("address", "")))
     for k in ("lat", "lng", "phone", "hours", "closed", "menu"):
+        if k in ("lat", "lng") and bad_geo:
+            continue                        # 예전에 엉뚱한 시·군으로 찾아 둔 좌표(캐시)는 버림
         if found.get(k) and not y.get(k):
             y[k] = found[k]
             if k == "lat":
@@ -478,6 +510,11 @@ def main():
         return
     data["restaurants"] = list(data.get("restaurants") or []) + discover_food(data.get("restaurants") or [])
     data["cafes"] = merge_pet_places(data.get("cafes") or [])
+    try:                                    # 이미 있는 시장의 엉뚱한·대략 좌표를 표준데이터 좌표로
+        import markets
+        data["venues"] = markets.fix_market_coords(data.get("venues") or [])
+    except Exception as ex:
+        print(f"  ⚠ 시장 좌표 바로잡기 실패 (무시하고 계속): {ex}", flush=True)
     try:                                    # 전통시장 표준데이터 CSV 가 있으면 빠진 시장 보강
         import markets
         data["venues"] = list(data.get("venues") or []) + markets.std_markets(data.get("venues") or [])

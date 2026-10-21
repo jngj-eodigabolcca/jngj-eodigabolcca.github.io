@@ -144,6 +144,10 @@ def fresh_cache(event_id):
         return None
     e = dict(e)
     e["verified"] = TODAY_ISO
+    if e.get("url"):
+        e["url"] = html.unescape(e["url"])          # 예전 저장본의 '&amp;' 깨진 링크도 바로잡음
+    if not e.get("district"):
+        e["district"] = district_hint(e.get("title", ""), e.get("venue", "")) or url_district(e.get("url", ""))
     return e
 
 def match_venue(name, addr=""):
@@ -249,6 +253,21 @@ CITY_DISTRICT = {"여수": "여수시", "순천": "순천시", "광양": "광양
                  "함평": "함평군", "영광": "영광군", "진도": "진도군", "신안": "신안군"}
 
 
+# 장소·주소가 비어 온 행사: 원문 링크의 누리집으로 시·군을 알아낸다
+URL_DISTRICT = [
+    (r"acc\.go\.kr", "동구"), (r"sorokdo\.go\.kr", "고흥군"), (r"artmuse\.gwangju\.go\.kr|gmap\.gwangju", "북구"),
+    (r"gwangju\.museum\.go\.kr", "북구"), (r"yeosu\.go\.kr", "여수시"), (r"suncheon\.go\.kr", "순천시"),
+    (r"mokpo\.go\.kr", "목포시"), (r"muan\.go\.kr", "무안군"), (r"goheung\.go\.kr", "고흥군"),
+]
+
+
+def url_district(url: str) -> str:
+    for pat, d in URL_DISTRICT:
+        if re.search(pat, url or "", flags=re.IGNORECASE):
+            return d
+    return ""
+
+
 def district_hint(title: str, venue: str) -> str:
     """주소가 없을 때: ① 공연장 이름 ② 제목 끝 [여수]·[광양] 같은 지역 표시 순서로 시·군을 찾는다."""
     for pat, d in VENUE_DISTRICT:
@@ -302,9 +321,9 @@ def extract_api_url(value):
 
     match = re.search(r'href=["\']([^"\']+)["\']', text, flags=re.IGNORECASE)
     if match:
-        return match.group(1).strip()
-
-    return text
+        text = match.group(1).strip()
+    # API가 주소를 HTML 그대로 줘서 '&amp;'가 남으면 링크가 깨진다 (예: ACC·소록도박물관 게시판 링크)
+    return html.unescape(text).strip()
 
 def tourapi_detail_intro(content_id, content_type_id="15"):
     params = {
@@ -755,7 +774,9 @@ def culture_events():
                 except Exception:
                     pass
                 addr = d.get("placeAddr", "")
-                district = district_from_addr(addr) or district_from_addr(" ".join([r.get("area", ""), r.get("sigungu", "")]))
+                link = extract_api_url(d.get("url") or d.get("placeUrl") or "")
+                district = (district_from_addr(addr) or district_from_addr(" ".join([r.get("area", ""), r.get("sigungu", "")]))
+                            or district_hint(title, r.get("place", "")) or url_district(link))
                 price = clean_api_text(d.get("price"))
                 out.append({
                     "detailAt": TODAY_ISO,
@@ -780,13 +801,13 @@ def culture_events():
                     "lat": to_float(r.get("gpsY")),
                     "lng": to_float(r.get("gpsX")),
                     "source": "한국문화정보원 문화정보",
-                    "url": extract_api_url(d.get("url") or d.get("placeUrl") or ""),
+                    "url": link,
                     "origin": "auto",
                     "api": "culture",
                     "verified": TODAY_ISO,
-                    "tags": [t for t in [cat, sub, region_tag(district),
+                    "tags": [t for t in dict.fromkeys([cat, sub, region_tag(district),
                                          "무료" if re.search(r"무료", price or "") else "",
-                                         "체험" if tp == "C" else ""] if t],
+                                         "체험" if tp == "C" else ""]) if t],
                 })
             if not recs or new_on_page == 0:
                 break            # 더 받을 게 없음 (한 쪽에 몇 개씩 주든 상관없이)
