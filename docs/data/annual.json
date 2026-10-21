@@ -878,16 +878,6 @@
   }
  },
  {
-  "id": "an-damyang-santa",
-  "name": "담양 산타축제",
-  "district": "담양군",
-  "month": 12,
-  "when": "해마다 12월 중순",
-  "place": "담양 메타프로방스 일대",
-  "desc": "산타 퍼레이드와 겨울 체험이 있는 가족 축제.",
-  "src": "지자체 누리집 · 해마다 열림"
- },
- {
   "id": "an-gwangyang-jeoneo",
   "name": "광양 전어축제",
   "district": "광양시",
