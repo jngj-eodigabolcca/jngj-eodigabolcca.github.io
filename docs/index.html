@@ -6955,7 +6955,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.64 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.65 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7222,8 +7222,14 @@ html body .mi7Head .mi7Han{font-style:normal;font-size:.8em;margin-left:2px;colo
 html body nav.bottom{transition:transform .28s ease,opacity .28s ease}
 html body nav.bottom.navAway{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
 html body.modal-open nav.bottom,html body:has(#modal.show) nav.bottom,html body:has(.exitAsk.show) nav.bottom{display:none!important}
-.navPeek{position:fixed;z-index:49;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:54px;height:6px;border-radius:99px;background:rgba(24,42,36,.35);opacity:0;transition:opacity .28s;pointer-events:none}
-body.navHidden .navPeek{opacity:1}
+/* 숨었을 때 아래 가운데에 작은 손잡이 탭이 남음 → 누르면 메뉴가 다시 올라옴 (오른쪽 '빠른 메뉴'와 같은 색) */
+.navPeek{position:fixed;z-index:101;left:50%;bottom:0;transform:translate(-50%,100%);display:flex;align-items:center;justify-content:center;gap:5px;min-height:0!important;height:calc(30px + env(safe-area-inset-bottom,0px));padding:0 18px env(safe-area-inset-bottom,0px);border:0;border-radius:14px 14px 0 0;background:rgba(19,124,116,.94);color:#fff;font:inherit;font-size:12.5px;font-weight:800;letter-spacing:.02em;box-shadow:0 -4px 14px rgba(18,33,28,.22);opacity:0;pointer-events:none;cursor:pointer;touch-action:manipulation;transition:transform .28s ease,opacity .28s ease}
+.navPeek .npArrow{font-size:13px;line-height:1;animation:npBob 1.6s ease-in-out infinite}
+@keyframes npBob{50%{transform:translateY(-2px)}}
+body.navHidden .navPeek{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+.navPeek:focus-visible{outline:3px solid #f5a524;outline-offset:2px}
+@media(min-width:900px){.navPeek{display:none}}
+@media(prefers-reduced-motion:reduce){.navPeek .npArrow{animation:none}}
 body:has(#modal.show) .navPeek,body:has(.exitAsk.show) .navPeek{display:none}
 /* 나가기 확인창: 작고 가운데에 */
 html body .exitAsk{align-items:center;padding:24px}
@@ -7233,7 +7239,7 @@ html body .exitBox p{font-size:12.5px;margin:6px 0 12px}
 html body .exitBox div{gap:6px}
 html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 </style>
-<div class="navPeek" aria-hidden="true"></div>
+<button type="button" class="navPeek" aria-label="아래 메뉴 다시 보기"><span class="npArrow" aria-hidden="true">︿</span>메뉴</button>
 <style id="sysNavContrast">
 /* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
    어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
@@ -7258,8 +7264,11 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
     lastY = y;
   }, { passive: true });
   // 화면을 톡 치면(버튼·링크 말고 빈 곳) 다시 나타남
+  const peek = document.querySelector(".navPeek");
+  if (peek) peek.addEventListener("click", e => { e.stopPropagation(); show() });
   addEventListener("click", e => {
     if (nav.contains(e.target)) { show(); return }
+    if (peek && peek.contains(e.target)) return;
     if (document.body.classList.contains("navHidden") && !e.target.closest("a,button,input,select,textarea,label,[onclick],.leaflet-container")) show();
   }, true);
 })();
@@ -8335,7 +8344,7 @@ html:where([data-theme="dark"]),:where(:root[data-theme="dark"]) body{background
 :where(:root[data-theme="dark"]) .manualItem p{color:#a2b1aa}
 :where(:root[data-theme="dark"]) .manualNote{color:#a2aca6;border-top:1px solid #414341}
 html:where([data-theme="dark"]) body .mi7Head .mi7Han{color:#f2937d}
-:where(:root[data-theme="dark"]) .navPeek{background:rgba(24,42,36,.35)}
+:where(:root[data-theme="dark"]) .navPeek{background:#2f6b5e;box-shadow:0 -4px 14px rgba(0,0,0,.5)}
 html:where([data-theme="dark"]) body .exitBox{box-shadow:0 12px 32px rgba(0,0,0,0.484)}
 :where(:root[data-theme="dark"]) #moreHome>.moreHomeBtn{border:1.5px dashed rgba(29,75,57,.28);background:rgba(32,32,32,0.7);color:var(--green-d,#94cdc7)}
 :where(:root[data-theme="dark"]) #moreHome>.moreHomeBtn small{color:var(--muted)}
