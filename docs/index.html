@@ -992,8 +992,11 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .wtBig{font-size:46px;line-height:1}
 .wtNow b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:#1d2a3a;line-height:1.15}
 .wtNow span{font-size:14px;color:var(--muted)}
-.wtStats{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
-.wtStats span{font-size:13px;font-weight:700;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--ink2)}
+.wtStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:14px 0 4px}
+.wtStats span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;text-align:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 4px;color:var(--ink2)}
+.wtStats span small{font-size:11.5px;font-weight:600;color:var(--muted);line-height:1.2}
+.wtStats span b{font-size:15px;font-weight:800;line-height:1.25;white-space:nowrap}
+.wtStats span.bad small,.wtStats span.good small{color:inherit;opacity:.8}
 .wtStats span.bad{border-color:#f0b4a6;background:#fff1ec;color:#b2391f}
 .wtStats span.good{border-color:#bfe0cf;background:#effaf3;color:#1d6b49}
 .wtGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px;margin-top:14px}
@@ -2942,12 +2945,15 @@ function renderWxTips() {
   else if (rainNow || W.pp >= 60) add(true, "☂️", "우산 필수!", `비 올 확률 ${W.pp}% — 큰 우산 챙기고, 신발은 젖어도 되는 걸로`);
   else if (W.pp >= 30) add(false, "🌂", "접이식 우산 하나", `비 올 확률 ${W.pp}% — 가방에 쏙 넣어두쇼`);
   // 🕶 선글라스 · 🧢 모자 · 🧴 선크림
-  if (uv >= 6) add(true, "🕶", "선글라스 챙기쇼", `자외선 ${UV_TXT(uv)}(${Math.round(uv)}) — 눈도 탑니다`);
-  else if (uv >= 4 && clear) add(false, "🕶", "선글라스 있으면 좋아요", "햇빛 쨍한 날이에요");
-  if (uv >= 6 || W.max >= 30) add(true, "🧢", "모자도 꼭 쓰세요", W.max >= 30 ? `최고 ${W.max}° — 챙 넓은 모자로 머리 열 식히기` : "한낮 햇볕이 강해요");
-  else if (uv >= 3 && clear) add(false, "🧢", "모자 쓰면 딱", "야외 오래 걸을 거면 챙기쇼");
-  if (uv >= 6) add(true, "🧴", "선크림 SPF50", "2~3시간마다 덧바르기");
-  else if (uv >= 3) add(false, "🧴", "선크림 바르고 나가기", `자외선 ${UV_TXT(uv)}`);
+  // 비·눈 오는 날에도 구름 사이로 자외선은 들어와요 (uv_index_max는 구름을 반영한 값).
+  // 그래서 빼지 않고 강도만 낮춰요: 꼭 챙길 것 → 있으면 좋은 것, 선글라스·모자는 자외선 6 이상일 때만
+  const wetDay = rainDay || snow;
+  if (uv >= 6) add(!wetDay, "🕶", "선글라스 챙기쇼", `자외선 ${UV_TXT(uv)}(${Math.round(uv)})${wetDay ? " — 비 그치고 해 나면 강해요" : " — 눈도 탑니다"}`);
+  else if (!wetDay && uv >= 4 && clear) add(false, "🕶", "선글라스 있으면 좋아요", "햇빛 쨍한 날이에요");
+  if ((!wetDay && uv >= 6) || W.max >= 30) add(true, "🧢", "모자도 꼭 쓰세요", W.max >= 30 ? `최고 ${W.max}° — 챙 넓은 모자로 머리 열 식히기` : "한낮 햇볕이 강해요");
+  else if (!wetDay && uv >= 3 && clear) add(false, "🧢", "모자 쓰면 딱", "야외 오래 걸을 거면 챙기쇼");
+  if (uv >= 6) add(!wetDay, "🧴", "선크림 SPF50", wetDay ? "비 와도 구름 사이로 자외선이 강해요" : "2~3시간마다 덧바르기");
+  else if (uv >= 3) add(false, "🧴", wetDay ? "선크림 가볍게" : "선크림 바르고 나가기", wetDay ? `비 사이로 해 나면 자외선 ${UV_TXT(uv)}` : `자외선 ${UV_TXT(uv)}`);
   // 🥵 더위 · 🥶 추위
   if (W.max >= 31) add(true, "💧", "물 자주 마시기", "12~16시 한낮엔 그늘·실내로 피하쇼");
   else if (W.max >= 28) add(false, "💧", "물병 하나", "걷다 보면 금방 목말라요");
@@ -2961,19 +2967,19 @@ function renderWxTips() {
   if (!tips.length) add(false, "😎", "딱히 챙길 게 없는 날", "가볍게 나가서 실컷 노쇼잉!");
   tips.sort((a, b) => b.must - a.must);
   const stats = [
-    [`체감 ${W.feel ?? W.now}°`],
-    [`최고 ${W.max}° / 최저 ${W.min}°`],
-    [`☔ 비 ${W.pp}%`, W.pp >= 60 ? "bad" : W.pp < 20 ? "good" : ""],
-    uv != null ? [`🔆 자외선 ${UV_TXT(uv)}`, uv >= 6 ? "bad" : uv < 3 ? "good" : ""] : null,
-    W.wind != null ? [`🌬 바람 ${Math.round(W.wind)}m/s`, W.wind >= 9 ? "bad" : ""] : null,
-    dust ? [`😷 미세먼지 ${dust[1]}`, dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""] : null
+    ["체감", `${W.feel ?? W.now}°`],
+    ["최고 / 최저", `${W.max}° / ${W.min}°`],
+    ["비 올 확률", `${W.pp}%`, W.pp >= 60 ? "bad" : W.pp < 20 ? "good" : ""],
+    uv != null ? ["자외선", UV_TXT(uv), uv >= 6 ? "bad" : uv < 3 ? "good" : ""] : null,
+    W.wind != null ? ["바람", `${Math.round(W.wind)}m/s`, W.wind >= 9 ? "bad" : ""] : null,
+    dust ? ["미세먼지", dust[1], dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""] : null
   ].filter(Boolean);
   const mustN = tips.filter(t => t.must).length;
   const head = snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? "날 좋네잉, 나들이 가기 딱이여" : "무난한 날씨, 편하게 나가쇼";
   el.classList.remove("hidden");
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
-  <div class="wtStats">${stats.map(([t, k]) => `<span class="${k || ""}">${t}</span>`).join("")}</div>
+  <div class="wtStats">${stats.map(([l, v, k]) => `<span class="${k || ""}"><small>${l}</small><b>${v}</b></span>`).join("")}</div>
   <div class="wtGrid">
    <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 아침저녁은 ${W.min}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
