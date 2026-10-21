@@ -2335,8 +2335,8 @@ function regionOfItem(x) {
 
   // 행사 제목보다 실제 장소명·주소를 우선한다. '목포'만 쓰인 시설명도 포함한다.
   // 광주 등 타 권역을 명시한 실제 주소가 있으면 시설명 단서보다 주소가 우선한다.
-  const addressOnly = [x.address, linked && linked.address].filter(Boolean).join(" ");
-  const addressDistrict = districtFromAddr(addressOnly);
+  // 행사 자체 주소가 먼저. 연결된 장소 주소는 행사 주소가 없을 때만 (잘못 연결된 장소가 권역을 바꾸지 않게)
+  const addressDistrict = districtFromAddr(x.address || "") || districtFromAddr((linked && linked.address) || "");
   if (addressDistrict) return (Object.entries(REGIONS).find(([,r]) => r.districts.includes(addressDistrict)) || [""])[0];
   // 명시적인 공연장 이름도 행정구역 정보보다 우선한다. 서버의 district 값이
   // 잘못돼도 실제 장소가 '목포문화예술회관'인 공연을 순천여수권으로 보내지 않는다.
@@ -6867,7 +6867,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.62 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.63 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
