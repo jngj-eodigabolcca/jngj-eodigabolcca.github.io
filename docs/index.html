@@ -591,7 +591,6 @@ body:not([data-tab="events"]) .chips{display:none}
 .visitStats{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.visitStats span{background:#eef5f1;color:#24564a;border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700}
 .here{display:grid;gap:5px;background:var(--sky-l);border-radius:12px;padding:10px 12px;font-size:13.5px}
 .here b{color:#1d5674;font-size:13.5px}.here b.nx{margin-top:4px}
-.smallProg{display:block;margin:6px 0;padding:7px 10px;border-radius:10px;background:var(--sky-l);font-size:12.5px;line-height:1.55}
 .here button{all:unset;cursor:pointer;font-size:13.5px;color:var(--ink);line-height:1.5}
 .here button:hover{text-decoration:underline}
 .here span{color:var(--muted);font-size:13px;line-height:1.5}
@@ -992,13 +991,27 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .wtBig{font-size:46px;line-height:1}
 .wtNow b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:#1d2a3a;line-height:1.15}
 .wtNow span{font-size:14px;color:var(--muted)}
-.wtStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:14px 0 4px}
-.wtStats span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;text-align:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 4px;color:var(--ink2)}
-.wtStats span small{font-size:11.5px;font-weight:600;color:var(--muted);line-height:1.2}
-.wtStats span b{font-size:15px;font-weight:800;line-height:1.25;white-space:nowrap}
-.wtStats span.bad small,.wtStats span.good small{color:inherit;opacity:.8}
+.wtStats{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.wtStats span{font-size:13px;font-weight:700;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--ink2)}
 .wtStats span.bad{border-color:#f0b4a6;background:#fff1ec;color:#b2391f}
 .wtStats span.good{border-color:#bfe0cf;background:#effaf3;color:#1d6b49}
+.wtTime{margin:14px 0 6px;background:#f6f8fb;border:1px solid var(--line);border-radius:18px;padding:12px}
+.wtTimeHead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:10px}
+.wtTimeHead b{font-size:15px}.wtTimeHead small{font-size:12px;color:var(--ink2)}
+.wtSlots{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}
+.wtSlot{display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 4px;text-align:center;min-width:0}
+.wtSlot small{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.25}.wtSlot small em{display:block;font-style:normal;font-weight:600;font-size:11px;color:var(--ink2)}
+.wtSlot i{font-style:normal;font-size:24px;line-height:1.2}.wtSlot b{font-size:15px}.wtSlot span{font-size:11.5px;font-weight:700;color:var(--ink2)}
+.wtSlot.now{box-shadow:0 0 0 2px #1f7a66 inset}
+.wtSlot.wet{background:#eef4ff;border-color:#9db8ee}.wtSlot.wet span{color:#1f4fb5}
+.wtSlot.maybe{background:#f7f7ff;border-color:#c9cdee}.wtSlot.maybe span{color:#4b4fa0}
+.wtUmb{margin:10px 2px 0;font-size:14px;font-weight:800;color:#1d6b49}.wtUmb.wet{color:#1f4fb5}.wtUmb.maybe{color:#4b4fa0}
+:where(:root[data-theme="dark"]) .wtTime{background:#191c20;border-color:#2c3138}
+:where(:root[data-theme="dark"]) .wtSlot{background:#202226;border-color:#33373d}
+:where(:root[data-theme="dark"]) .wtSlot.now{box-shadow:0 0 0 2px #4fb89c inset}
+:where(:root[data-theme="dark"]) .wtSlot.wet{background:#17213a;border-color:#34508a}:where(:root[data-theme="dark"]) .wtSlot.wet span,:where(:root[data-theme="dark"]) .wtUmb.wet{color:#8fb2ff}
+:where(:root[data-theme="dark"]) .wtSlot.maybe{background:#1d1d2e;border-color:#3d3f66}:where(:root[data-theme="dark"]) .wtSlot.maybe span,:where(:root[data-theme="dark"]) .wtUmb.maybe{color:#b3b6f0}
+:where(:root[data-theme="dark"]) .wtUmb{color:#7ec8a1}
 .wtGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px;margin-top:14px}
 @media(max-width:760px){.wtGrid{grid-template-columns:1fr}}
 .wtWear{background:linear-gradient(135deg,#fff3dd,#ffe7d6);border-radius:20px;padding:16px 18px}
@@ -1013,11 +1026,6 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .wtItem span{display:block;font-size:12.5px;color:var(--muted);line-height:1.4}
 .wtItem.must{border-color:#f3a48f;background:#fff4ef}
 .wtItem.must b{color:#c2401f}
-.wtMustJump{flex-shrink:0;border:1.5px solid #f3a48f;background:#fff4ef;color:#b2391f;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer}
-.wtMustJump b{font-size:15px;margin:0 1px}
-:root[data-theme="dark"] .wtMustJump{background:#2a1a15;border-color:#66443b;color:#f0927c}
-.wtItem.must.flash{animation:wtFlash 1.4s ease}
-@keyframes wtFlash{0%,100%{box-shadow:0 0 0 0 rgba(239,91,60,0)}30%{box-shadow:0 0 0 5px rgba(239,91,60,.35)}}
 .wx{cursor:pointer}
 .wxFail,.wtLoading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
 .wxFail>div:nth-child(2){flex:1;min-width:190px}
@@ -1044,6 +1052,33 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .cultureSpot .cultureDay span{grid-column:2;font-size:12.5px;color:#675d4f;line-height:1.5}
 .cultureSpot .cultureDay a{grid-column:3;grid-row:1 / span 2;margin:0;background:#173d36;color:#fff!important;text-decoration:none;border-radius:999px;padding:8px 11px;font-size:12.5px;font-weight:800;white-space:nowrap}
 .cultureSpot .cultureDay a:hover{background:#245d50}
+.cultureDay .cdBtns{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.cultureDay .cdBtns button{border:1.5px solid #c9a35a;background:transparent;color:inherit;border-radius:999px;padding:7px 11px;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+.cultureSpot .cultureDay .cdBtns a{margin:0}
+.cultureSpot .cultureDay.hot,.cultureSpot .cultureDay.warm{display:block;padding:18px 16px;border:0;color:#fff;background:linear-gradient(135deg,#6d28d9 0%,#c026d3 55%,#f43f5e 100%);box-shadow:0 12px 30px rgba(124,58,237,.28);border-radius:22px}
+.cultureSpot .cultureDay.warm{background:linear-gradient(135deg,#7c3aed,#a855f7);box-shadow:0 8px 22px rgba(124,58,237,.2)}
+.cultureSpot .cultureDay.hot:before,.cultureSpot .cultureDay.warm:before{display:none}
+.cultureSpot .cultureDay .cdTag{color:#fff;grid-column:auto}
+.cultureDay .cdTag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 9px}
+.cultureSpot .cultureDay.hot .cdTop b,.cultureSpot .cultureDay.warm .cdTop b{display:block;color:#fff;font-size:22px;line-height:1.3;margin:8px 0 4px}
+.cultureSpot .cultureDay.warm .cdTop b{font-size:18px}
+.cultureDay .cdTop p{margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.92)}
+.cultureDay .cdChips{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.cultureDay .cdChips li{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:12px;padding:6px 10px;font-size:13px;font-weight:700}
+.cultureDay .cdPicks{margin-top:12px;display:grid;gap:6px}
+.cultureDay .cdPicks small{font-size:12px;font-weight:800;color:rgba(255,255,255,.85)}
+.cultureDay .cdPicks button{text-align:left;background:#fff;color:#3b0764;border:0;border-radius:12px;padding:9px 12px;font-size:14px;font-weight:800;cursor:pointer}
+.cultureDay .cdPicks button em{display:block;font-style:normal;font-weight:600;font-size:12px;color:#6b5a7a}
+.cultureSpot .cultureDay.hot .cdBtns,.cultureSpot .cultureDay.warm .cdBtns{margin-top:14px}
+.cultureSpot .cultureDay.hot .cdBtns a,.cultureSpot .cultureDay.warm .cdBtns a{background:#fff;color:#5b21b6!important}
+.cultureSpot .cultureDay.hot .cdBtns button,.cultureSpot .cultureDay.warm .cdBtns button{border-color:rgba(255,255,255,.7);color:#fff}
+@media(max-width:720px){.cultureSpot .cultureDay .cdBtns{grid-column:1 / -1;margin:6px 0 0}}
+#cdAsk{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.2s;z-index:3000;width:min(420px,calc(100% - 32px));background:var(--paper,#fff);color:var(--ink,#1d2a3a);border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.25);padding:14px;display:grid;gap:8px}
+#cdAsk.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#cdAsk button{text-align:left;border:1.5px solid var(--line,#ddd);background:transparent;color:inherit;border-radius:12px;padding:10px 12px;font-size:14px;font-weight:800;cursor:pointer}
+#cdAsk button small{display:block;font-weight:500;font-size:12px;opacity:.75;margin-top:2px}
+#cdAsk button.yes{background:#6d28d9;border-color:#6d28d9;color:#fff}
+#cdAsk button.no{text-align:center;border:0;font-weight:600;opacity:.7}
 @media(max-width:720px){.cultureSpot{margin:12px 0 18px}.cultureSpot .cultureDay{grid-template-columns:1fr auto;padding:12px}.cultureSpot .cultureDay:before{grid-column:1 / -1;grid-row:auto;justify-self:start}.cultureSpot .cultureDay b{grid-column:1 / -1}.cultureSpot .cultureDay span{grid-column:1;grid-row:auto}.cultureSpot .cultureDay a{grid-column:2;grid-row:3;align-self:end}}
 /* ── 장소마다 붙는 주차 줄 ── */
 .pkLine{display:flex!important;flex-wrap:wrap;align-items:center;gap:4px 6px;margin-top:5px;font-size:12.5px!important;line-height:1.4;color:var(--ink2)!important;background:#f1f5f9;border-radius:10px;padding:5px 9px;font-style:normal}
@@ -1967,7 +2002,7 @@ button{min-height:var(--tap)}
 
 <nav class="bottom"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><img class="navHomeIcon" src="favicon-64.png?v=2" alt=""><span>홈</span></button><button data-jump="events">📅<span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
-<script>window.__PC__=location.protocol==="file:";window.__PINNED__=[{"category": "행사", "subtype": "교육·체험", "venue": "광주수목원", "district": "남구", "address": "광주 남구 도동길 142", "time": "14:00", "price": "무료", "discount": "", "group": "", "child": "가족 참여 가능", "pet": "", "stroller": "", "nursing": "", "parking": "무료 주차", "accessibility": "", "reservation": "시 홈페이지 '바로예약' 사전접수 (2026.10.12~11.7)", "contact": "062-613-7864", "status": "예정", "verified": "2026-10-21", "source": "광주수목원 「가을 숲 생태탐험」 포스터 (전남광주통합특별시)", "url": "https://www.gwangju.go.kr/", "origin": "manual", "image": "", "ticket": {"status": "사전예약", "note": "바로예약 선착순", "checked": "2026-10-21"}, "id": "gj-arbo-insect-2026", "title": "가을 숲 생태탐험 「곤충을 찾아서」", "aliases": "가을 숲 생태탐험 생태탐험 숲 생태탐험 광주시립수목원 시립수목원 수목원 주말 프로그램 숲해설 곤충을 찾아서 곤충 관찰", "date": "10.24(토) 14시 (10.17 회차 종료)", "start": "2026-10-24", "end": "2026-10-24", "program": "가을 곤충의 흔적과 서식환경 관찰하기 · 곤충연구원 김원기", "verify": "포스터 기준 · 10.17·10.24 토요일 14시 (총 4회 중 1·2회)", "tags": ["체험", "교육", "무료", "가족", "아이", "야외", "자연"]},{"category": "행사", "subtype": "교육·체험", "venue": "광주수목원", "district": "남구", "address": "광주 남구 도동길 142", "time": "14:00", "price": "무료", "discount": "", "group": "", "child": "가족 참여 가능", "pet": "", "stroller": "", "nursing": "", "parking": "무료 주차", "accessibility": "", "reservation": "시 홈페이지 '바로예약' 사전접수 (2026.10.12~11.7)", "contact": "062-613-7864", "status": "예정", "verified": "2026-10-21", "source": "광주수목원 「가을 숲 생태탐험」 포스터 (전남광주통합특별시)", "url": "https://www.gwangju.go.kr/", "origin": "manual", "image": "", "ticket": {"status": "사전예약", "note": "바로예약 선착순", "checked": "2026-10-21"}, "id": "gj-arbo-berry-2026", "title": "가을 숲 생태탐험 「열매를 찾아서」", "aliases": "가을 숲 생태탐험 생태탐험 숲 생태탐험 광주시립수목원 시립수목원 수목원 주말 프로그램 숲해설 열매를 찾아서 가을 열매", "date": "10.31(토) · 11.7(토) 14시", "start": "2026-10-31", "end": "2026-11-07", "program": "가을 열매의 특징과 씨앗의 역할 알아보기 · 숲해설가 이미영", "verify": "포스터 기준 · 10.31·11.7 토요일 14시 (총 4회 중 3·4회)", "tags": ["체험", "교육", "무료", "가족", "아이", "야외", "자연"]},{"id":"nj-namdo-food-2026","category":"축제","subtype":"먹거리축제","title":"제31회 남도음식문화큰잔치","aliases":"남도음식 큰잔치 남도음식축제 남도음식문화 나주 음식축제","venue":"나주 영산강정원 일원","district":"나주시","address":"전남 나주시 영산강정원 일원","date":"10.23(금) ~ 10.25(일)","start":"2026-10-23","end":"2026-10-25","time":"기간 중 · 프로그램별 시간은 공식 안내 확인","price":"입장료 공식 확인 · 특별 미식 체험 회당 1만원(티켓링크 사전예매)","discount":"","group":"","child":"24~25일 어린이 쿠킹클래스 · 24일 어린이 인형극","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"특별 미식 체험은 티켓링크 선착순 사전예매 · 일부 현장 참여 가능","contact":"","status":"예정","verified":"2026-10-21","verify":"전남광주 27개 시·군·구 대표음식 · 23일 20:30·24일 20:00 불꽃놀이 · 23일 스페셜 디너쇼, 24일 사찰음식·셰프 만찬","source":"나주시 발표 · MTN뉴스 2026.10.15","url":"https://news.mtn.co.kr/article/2026101523191160683","tags":["축제","먹거리","가족","야외"],"origin":"manual","image":"","ticket":{"status":"확인필요","note":"미식 체험은 티켓링크 선착순","checked":"2026-10-21"}},{"id":"ys-bookjeok-2026","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"category":"축제","subtype":"책·독서","title":"독서문화축제 「BOOK적BOOK적 IN 여수」","venue":"이순신도서관 일원","libKey":"이순신도서관","district":"여수시","address":"","date":"10.23(금) ~ 10.24(토)","start":"2026-10-23","end":"2026-10-24","time":"프로그램별 시간은 여수시립도서관 누리집","price":"공식 안내 확인","discount":"","group":"","child":"어린이 체험존 '섬섬여수 가디언즈'","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"프로그램별 안내 확인","contact":"","status":"예정","verified":"2026-10-12","verify":"보도자료 기준 · 시간·참가비는 여수시립도서관 공지 확인","source":"여수시 독서문화축제 보도(전남투데이)","url":"https://www.jntoday.co.kr/news/article.html?no=318137","tags":["축제","책","가족","아이"],"origin":"manual","image":"","ticket":{"status":"확인필요","note":"야외 독서·공연, 책 나눔 장터, 그림 대회","checked":"2026-10-12"}},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-sansu-puppy-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"그림책 원화 전시 「내 강아지에게」","venue":"산수도서관","libKey":"산수도서관","district":"동구","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","가족","아이","실내"],"verify":"보도자료 기준 · 운영시간·휴관일은 도서관 누리집 확인","source":"광주도서관 10월 문화행사 보도(시사의창, 2026.9.27)","url":"https://sisaissue.com/View.aspx?No=4242083"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-sangsaeng-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"조선미 개인전 「상생」","venue":"목포시립도서관 1층 전시갤러리","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 운영시간은 도서관 확인","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-ink-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"한국화·문인화 전시 (김영곤 ~10.15 · 이광길 10.16~)","venue":"목포시립도서관 3층 문화라운지","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 작가별 기간 다름","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"id":"ys-kgarden-2026","category":"축제","subtype":"정원축제","title":"2026 남도 K-가든 페스티벌","venue":"여운문화의거리","district":"여수시","address":"전남 여수시 문수로 124","date":"09.11 — 10.31","start":"2026-09-11","end":"2026-10-31","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (주최: 전남광주통합특별시·여수시) / ysgarden.kr","url":"https://www.ktriptips.com/kor/festival/4095228","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-jinnam-media-2026","category":"행사","subtype":"미디어아트·야간","title":"국가유산 미디어아트 여수 진남관","venue":"여수 진남관","district":"여수시","address":"전라남도 여수시 동문로 11","date":"10.09 — 11.08","start":"2026-10-09","end":"2026-11-08","time":"매일 19:30–21:30 · 화요일 휴무","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (국가유산청 국가유산 미디어아트)","url":"https://www.ktriptips.com/kor/festival/4116779","tags":["축제","무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"},"venueId":"ys-jinnamgwan","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23425b3b%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239eb682%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3E%EC%97%AC%EC%88%98%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%95%84%ED%8A%B8%20%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼"},{"id":"ys-sieaf-2026","category":"공연","subtype":"실험예술","title":"2026 섬진강국제실험예술제 (SIEAF)","venue":"곡성 죽곡면 섬진강변","district":"곡성군","address":"전남 곡성군 죽곡면 섬진강로 1012","date":"09.22 — 10.30","start":"2026-09-22","end":"2026-10-30","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표와 대조 완료 · 프로그램별 장소·시간 다름","source":"곡성군 발표 · 스페셜타임스 2026.9.19 / 공식 sieaf.com","url":"https://www.specialtimes.co.kr/news/articleView.html?idxno=464784","tags":["공연","미술"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-nokdong-drone-2026","category":"행사","subtype":"드론쇼","title":"고흥 녹동항 드론쇼","venue":"녹동항 일원","district":"고흥군","address":"전남 고흥군 도양읍 녹동항","date":"04.04 — 10.31","start":"2026-04-04","end":"2026-10-31","time":"매주 토요일 20:00","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"고흥군 발표 · 헤럴드경제 2026.4.1","url":"https://www.heraldk.com/article/2026040121165542956","tags":["무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-port-2026","category":"축제","subtype":"지역축제","title":"목포항구축제","venue":"목포항·삼학도","district":"목포시","address":"전남 목포시 삼학로92번길 6","date":"10.16 — 10.18","start":"2026-10-16","end":"2026-10-18","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"목포시 발표 · MTN뉴스 2026.10.7 / 공식 누리집 mokpoharborfestival.com","url":"https://news.mtn.co.kr/news-detail/2026100716292179691","tags":["축제","무료"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gangjin-reed-2026","category":"축제","subtype":"생태축제","title":"강진만 춤추는 갈대축제","venue":"강진만 생태공원","district":"강진군","address":"전남 강진군 강진읍 생태공원길 47","date":"10.24 — 11.01","start":"2026-10-24","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"강진군 발표 · 파이낸셜뉴스 2026.10.6","url":"https://www.fnnews.com/news/202610061232572305","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gukhyang-2026","category":"축제","subtype":"국화축제","title":"대한민국 국향대전","venue":"함평엑스포공원","district":"함평군","address":"전남 함평군 함평읍 곤재로 27","date":"10.23 — 11.08","start":"2026-10-23","end":"2026-11-08","time":"기간 중 · 시간은 공식 채널 확인","price":"유료 (입장료 공식 확인)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"함평군 발표 · 위키트리 2026.9.28","url":"https://www.wikitree.co.kr/articles/1162352","tags":["축제","가족","야외"],"origin":"manual","ticket":{"status":"확인필요","note":"유료 (입장료 공식 확인)","checked":"2026-10-06"}},{"id":"gj-dolmen-flower-2026","category":"축제","subtype":"꽃축제","title":"2026 화순 고인돌 가을꽃 축제","venue":"화순 고인돌 유적지 일원","district":"화순군","address":"전남 화순군 화순읍 동헌길 23","date":"10.16(금) ~ 10.25(일)","start":"2026-10-16","end":"2026-10-25","time":"09:00–18:00","price":"첫날(10.16) 무료 · 10.17부터 5,000원(화순사랑상품권으로 전액 환급, 화순군민 무료)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 시작일 10.17→10.16 바로잡음","source":"화순군 발표 · MTN뉴스 2026.10.7","url":"https://news.mtn.co.kr/news-detail/2026100714431553836","tags":["축제","야외","가족"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-haenam-minam-2026","category":"축제","subtype":"먹거리축제","title":"해남미남축제","venue":"해남 대흥사 일원","district":"해남군","address":"전남 해남군 삼산면 대흥사길 400","date":"10.30 — 11.01","start":"2026-10-30","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"해남군 축제 안내 · 광주데일리뉴스 2026.10.4","url":"https://www.gjdaily.net/news/articleView.html?idxno=100796","tags":["축제","먹거리"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-jindo-bobae-2026","category":"축제","subtype":"문화예술제","title":"진도군 보배섬 문화예술제","venue":"진도군 철마광장 일원","district":"진도군","address":"전남 진도군 진도읍 진도대로 7197","date":"10.9(금) ~ 10.11(일)","start":"2026-10-09","end":"2026-10-11","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 10.31~11.2 → 10.9~10.11 바로잡음(종료)","source":"진도군 발표 · 서울신문 2026.9.29","url":"https://www.seoul.co.kr/news/society/2026/09/29/20260929500178","tags":["축제","공연"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"island-visit-year-2026","category":"축제","subtype":"섬 관광 정책·여행경비 지원","title":"2026년 섬 방문의 해 · 섬 여행비 지원","venue":"전국 대상 섬 여행 지원 사업 (여수세계섬박람회와 별도)","district":"전국","address":"전국 여객선 이용 대상 섬 (참여 섬 및 제외 지역 공식 확인)","date":"10.01 — 11.04 (2차 여행기간)","start":"2026-10-01","end":"2026-11-04","time":"2차 여행 기간: 2026.10.1.~11.4. · 사전 신청: 2026.9.8. 10:00~9.21. 18:00 (현재 마감)","price":"여행경비 최대 10만 원 지원 (사전 선정·정산 조건 충족 시)","discount":"대상 섬 1박 이상 여행, 승선권·숙박·식비 등 지출 증빙 필요. 여수 일부 섬 여객선 50% 특별할인은 별도 조건 확인","group":"팀 단위 신청·선정. 여행 전 사전 신청 및 추첨 선정 필요","child":"가족 여행도 지원 기준·선정 여부 확인","pet":"여객선·숙소마다 동반 규정 상이","stroller":"여객선·섬 이동 접근성 확인","nursing":"방문 시설별 확인","parking":"출항지별 확인","accessibility":"선박 및 섬별 편의시설 확인","reservation":"2026년 2차 신규 신청은 9월 21일 18시 마감. 기존 선정자는 안내받은 조건에 따라 여행·증빙 제출","contact":"","status":"진행중","verified":"2026-10-09","verify":"행정안전부 공식 발표 기준. 2026년 섬 방문의 해는 전국 섬 관광 활성화 정책으로, 여수세계섬박람회와 별도 사업입니다. 2차 여행 기간은 진행 중이나 사전 신청은 이미 마감됐습니다.","source":"행정안전부 2026.9.7. 보도자료 · 섬 방문의 해 공식 누리집","url":"https://www.visitisland.kr/","tags":["섬 방문의 해","섬방문의해","섬여행","섬 관광","여행비","여행경비 지원","숙박","여객선","관광정책"],"aliases":"섬 방문의 해 섬방문의해 섬 방문 캠페인 2026 섬 여행비 지원 10만원 지원 섬 여행 지원","origin":"manual","ticket":{"status":"확인필요","note":"사전 신청 9월 21일 마감 · 여행기간 진행중","checked":"2026-10-09"}},{"id":"ys-island-expo-2026","category":"축제","subtype":"박람회","title":"2026 여수세계섬박람회","venue":"여수 돌산 진모지구 (주행사장) · 개도·금오도·여수세계박람회장 (부행사장)","district":"여수시","address":"전남 여수시 돌산읍 진모지구","date":"09.05 — 11.04","start":"2026-09-05","end":"2026-11-04","time":"2026.9.5~11.4 · 일별 프로그램과 운영시간은 공식 홈페이지 확인","price":"입장권 공식 누리집 확인","discount":"여수 섬 여객선 특별할인 등은 지원 대상·운항편·조건을 공식 공지에서 별도 확인","group":"","child":"섬 캠핑·해양레저 체험","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-09","verify":"2026.9.5.~11.4. 여수 돌산 진모지구 주행사장, 여수세계박람회장·개도·금오도 부행사장. ‘2026 섬 방문의 해’ 여행비 지원 사업과 다른 행사입니다.","source":"2026 여수세계섬박람회 공식 홈페이지","url":"https://www.yeosu2026.or.kr/","tags":["축제","가족","야외","섬여행","섬관광","섬박람회"],"origin":"manual","ticket":{"status":"확인필요","note":"입장권은 공식 누리집에서","checked":"2026-10-06"},"venueId":"ys-geumodo","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231f4d6d%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2359a5b7%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3EEXPO%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E2026%20%EC%97%AC%EC%88%98%EC%84%B8%EA%B3%84%EC%84%AC%EB%B0%95%EB%9E%8C%ED%9A%8C%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EB%8F%8C%EC%82%B0%20%EC%A7%84%EB%AA%A8%EC%A7%80%EA%B5%AC%20%C2%B7%20%EC%84%AC%EA%B6%8C%EC%97%AD%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼","aliases":"여수세계섬박람회 여수섬박람회 섬박람회 2026 여수 국제 섬 박람회"}];</script>
+<script>window.__PC__=location.protocol==="file:";window.__PINNED__=[{"id":"ys-bookjeok-2026","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"category":"축제","subtype":"책·독서","title":"독서문화축제 「BOOK적BOOK적 IN 여수」","venue":"이순신도서관 일원","libKey":"이순신도서관","district":"여수시","address":"","date":"10.23(금) ~ 10.24(토)","start":"2026-10-23","end":"2026-10-24","time":"프로그램별 시간은 여수시립도서관 누리집","price":"공식 안내 확인","discount":"","group":"","child":"어린이 체험존 '섬섬여수 가디언즈'","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"프로그램별 안내 확인","contact":"","status":"예정","verified":"2026-10-12","verify":"보도자료 기준 · 시간·참가비는 여수시립도서관 공지 확인","source":"여수시 독서문화축제 보도(전남투데이)","url":"https://www.jntoday.co.kr/news/article.html?no=318137","tags":["축제","책","가족","아이"],"origin":"manual","image":"","ticket":{"status":"확인필요","note":"야외 독서·공연, 책 나눔 장터, 그림 대회","checked":"2026-10-12"}},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-sansu-puppy-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"그림책 원화 전시 「내 강아지에게」","venue":"산수도서관","libKey":"산수도서관","district":"동구","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","가족","아이","실내"],"verify":"보도자료 기준 · 운영시간·휴관일은 도서관 누리집 확인","source":"광주도서관 10월 문화행사 보도(시사의창, 2026.9.27)","url":"https://sisaissue.com/View.aspx?No=4242083"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-sangsaeng-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"조선미 개인전 「상생」","venue":"목포시립도서관 1층 전시갤러리","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 운영시간은 도서관 확인","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-ink-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"한국화·문인화 전시 (김영곤 ~10.15 · 이광길 10.16~)","venue":"목포시립도서관 3층 문화라운지","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 작가별 기간 다름","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"id":"ys-kgarden-2026","category":"축제","subtype":"정원축제","title":"2026 남도 K-가든 페스티벌","venue":"여운문화의거리","district":"여수시","address":"전남 여수시 문수로 124","date":"09.11 — 10.31","start":"2026-09-11","end":"2026-10-31","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (주최: 전남광주통합특별시·여수시) / ysgarden.kr","url":"https://www.ktriptips.com/kor/festival/4095228","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-jinnam-media-2026","category":"행사","subtype":"미디어아트·야간","title":"국가유산 미디어아트 여수 진남관","venue":"여수 진남관","district":"여수시","address":"전라남도 여수시 동문로 11","date":"10.09 — 11.08","start":"2026-10-09","end":"2026-11-08","time":"매일 19:30–21:30 · 화요일 휴무","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (국가유산청 국가유산 미디어아트)","url":"https://www.ktriptips.com/kor/festival/4116779","tags":["축제","무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"},"venueId":"ys-jinnamgwan","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23425b3b%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239eb682%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3E%EC%97%AC%EC%88%98%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%95%84%ED%8A%B8%20%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼"},{"id":"ys-sieaf-2026","category":"공연","subtype":"실험예술","title":"2026 섬진강국제실험예술제 (SIEAF)","venue":"곡성 죽곡면 섬진강변","district":"곡성군","address":"전남 곡성군 죽곡면 섬진강로 1012","date":"09.22 — 10.30","start":"2026-09-22","end":"2026-10-30","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표와 대조 완료 · 프로그램별 장소·시간 다름","source":"곡성군 발표 · 스페셜타임스 2026.9.19 / 공식 sieaf.com","url":"https://www.specialtimes.co.kr/news/articleView.html?idxno=464784","tags":["공연","미술"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-nokdong-drone-2026","category":"행사","subtype":"드론쇼","title":"고흥 녹동항 드론쇼","venue":"녹동항 일원","district":"고흥군","address":"전남 고흥군 도양읍 녹동항","date":"04.04 — 10.31","start":"2026-04-04","end":"2026-10-31","time":"매주 토요일 20:00","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"고흥군 발표 · 헤럴드경제 2026.4.1","url":"https://www.heraldk.com/article/2026040121165542956","tags":["무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-port-2026","category":"축제","subtype":"지역축제","title":"목포항구축제","venue":"목포항·삼학도","district":"목포시","address":"전남 목포시 삼학로92번길 6","date":"10.16 — 10.18","start":"2026-10-16","end":"2026-10-18","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"목포시 발표 · MTN뉴스 2026.10.7 / 공식 누리집 mokpoharborfestival.com","url":"https://news.mtn.co.kr/news-detail/2026100716292179691","tags":["축제","무료"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gangjin-reed-2026","category":"축제","subtype":"생태축제","title":"강진만 춤추는 갈대축제","venue":"강진만 생태공원","district":"강진군","address":"전남 강진군 강진읍 생태공원길 47","date":"10.24 — 11.01","start":"2026-10-24","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"강진군 발표 · 파이낸셜뉴스 2026.10.6","url":"https://www.fnnews.com/news/202610061232572305","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gukhyang-2026","category":"축제","subtype":"국화축제","title":"대한민국 국향대전","venue":"함평엑스포공원","district":"함평군","address":"전남 함평군 함평읍 곤재로 27","date":"10.23 — 11.08","start":"2026-10-23","end":"2026-11-08","time":"기간 중 · 시간은 공식 채널 확인","price":"유료 (입장료 공식 확인)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"함평군 발표 · 위키트리 2026.9.28","url":"https://www.wikitree.co.kr/articles/1162352","tags":["축제","가족","야외"],"origin":"manual","ticket":{"status":"확인필요","note":"유료 (입장료 공식 확인)","checked":"2026-10-06"}},{"id":"gj-dolmen-flower-2026","category":"축제","subtype":"꽃축제","title":"2026 화순 고인돌 가을꽃 축제","venue":"화순 고인돌 유적지 일원","district":"화순군","address":"전남 화순군 화순읍 동헌길 23","date":"10.16(금) ~ 10.25(일)","start":"2026-10-16","end":"2026-10-25","time":"09:00–18:00","price":"첫날(10.16) 무료 · 10.17부터 5,000원(화순사랑상품권으로 전액 환급, 화순군민 무료)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 시작일 10.17→10.16 바로잡음","source":"화순군 발표 · MTN뉴스 2026.10.7","url":"https://news.mtn.co.kr/news-detail/2026100714431553836","tags":["축제","야외","가족"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-haenam-minam-2026","category":"축제","subtype":"먹거리축제","title":"해남미남축제","venue":"해남 대흥사 일원","district":"해남군","address":"전남 해남군 삼산면 대흥사길 400","date":"10.30 — 11.01","start":"2026-10-30","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"해남군 축제 안내 · 광주데일리뉴스 2026.10.4","url":"https://www.gjdaily.net/news/articleView.html?idxno=100796","tags":["축제","먹거리"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-jindo-bobae-2026","category":"축제","subtype":"문화예술제","title":"진도군 보배섬 문화예술제","venue":"진도군 철마광장 일원","district":"진도군","address":"전남 진도군 진도읍 진도대로 7197","date":"10.9(금) ~ 10.11(일)","start":"2026-10-09","end":"2026-10-11","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 10.31~11.2 → 10.9~10.11 바로잡음(종료)","source":"진도군 발표 · 서울신문 2026.9.29","url":"https://www.seoul.co.kr/news/society/2026/09/29/20260929500178","tags":["축제","공연"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"island-visit-year-2026","category":"축제","subtype":"섬 관광 정책·여행경비 지원","title":"2026년 섬 방문의 해 · 섬 여행비 지원","venue":"전국 대상 섬 여행 지원 사업 (여수세계섬박람회와 별도)","district":"전국","address":"전국 여객선 이용 대상 섬 (참여 섬 및 제외 지역 공식 확인)","date":"10.01 — 11.04 (2차 여행기간)","start":"2026-10-01","end":"2026-11-04","time":"2차 여행 기간: 2026.10.1.~11.4. · 사전 신청: 2026.9.8. 10:00~9.21. 18:00 (현재 마감)","price":"여행경비 최대 10만 원 지원 (사전 선정·정산 조건 충족 시)","discount":"대상 섬 1박 이상 여행, 승선권·숙박·식비 등 지출 증빙 필요. 여수 일부 섬 여객선 50% 특별할인은 별도 조건 확인","group":"팀 단위 신청·선정. 여행 전 사전 신청 및 추첨 선정 필요","child":"가족 여행도 지원 기준·선정 여부 확인","pet":"여객선·숙소마다 동반 규정 상이","stroller":"여객선·섬 이동 접근성 확인","nursing":"방문 시설별 확인","parking":"출항지별 확인","accessibility":"선박 및 섬별 편의시설 확인","reservation":"2026년 2차 신규 신청은 9월 21일 18시 마감. 기존 선정자는 안내받은 조건에 따라 여행·증빙 제출","contact":"","status":"진행중","verified":"2026-10-09","verify":"행정안전부 공식 발표 기준. 2026년 섬 방문의 해는 전국 섬 관광 활성화 정책으로, 여수세계섬박람회와 별도 사업입니다. 2차 여행 기간은 진행 중이나 사전 신청은 이미 마감됐습니다.","source":"행정안전부 2026.9.7. 보도자료 · 섬 방문의 해 공식 누리집","url":"https://www.visitisland.kr/","tags":["섬 방문의 해","섬방문의해","섬여행","섬 관광","여행비","여행경비 지원","숙박","여객선","관광정책"],"aliases":"섬 방문의 해 섬방문의해 섬 방문 캠페인 2026 섬 여행비 지원 10만원 지원 섬 여행 지원","origin":"manual","ticket":{"status":"확인필요","note":"사전 신청 9월 21일 마감 · 여행기간 진행중","checked":"2026-10-09"}},{"id":"ys-island-expo-2026","category":"축제","subtype":"박람회","title":"2026 여수세계섬박람회","venue":"여수 돌산 진모지구 (주행사장) · 개도·금오도·여수세계박람회장 (부행사장)","district":"여수시","address":"전남 여수시 돌산읍 진모지구","date":"09.05 — 11.04","start":"2026-09-05","end":"2026-11-04","time":"2026.9.5~11.4 · 일별 프로그램과 운영시간은 공식 홈페이지 확인","price":"입장권 공식 누리집 확인","discount":"여수 섬 여객선 특별할인 등은 지원 대상·운항편·조건을 공식 공지에서 별도 확인","group":"","child":"섬 캠핑·해양레저 체험","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-09","verify":"2026.9.5.~11.4. 여수 돌산 진모지구 주행사장, 여수세계박람회장·개도·금오도 부행사장. ‘2026 섬 방문의 해’ 여행비 지원 사업과 다른 행사입니다.","source":"2026 여수세계섬박람회 공식 홈페이지","url":"https://www.yeosu2026.or.kr/","tags":["축제","가족","야외","섬여행","섬관광","섬박람회"],"origin":"manual","ticket":{"status":"확인필요","note":"입장권은 공식 누리집에서","checked":"2026-10-06"},"venueId":"ys-geumodo","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231f4d6d%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2359a5b7%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3EEXPO%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E2026%20%EC%97%AC%EC%88%98%EC%84%B8%EA%B3%84%EC%84%AC%EB%B0%95%EB%9E%8C%ED%9A%8C%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EB%8F%8C%EC%82%B0%20%EC%A7%84%EB%AA%A8%EC%A7%80%EA%B5%AC%20%C2%B7%20%EC%84%AC%EA%B6%8C%EC%97%AD%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼","aliases":"여수세계섬박람회 여수섬박람회 섬박람회 2026 여수 국제 섬 박람회"}];</script>
 <script>const CREAMING_SRC="creaming.webp";
 const CR_IC = `<img class="crIc" src="${CREAMING_SRC}" alt="">`;   // 🧸 대신 쓰는 작은 크리밍 아이콘
 
@@ -2130,11 +2165,11 @@ window.weatherQuickRecommend=(kind)=>{
 function renderDecisionWeather(){
   const el=document.getElementById('decisionWeather'); if(!el) return;
   if(!WEATHER){el.innerHTML='🌤 오늘 날씨를 확인해 추천에 반영할게요.';return}
-  const w=WMO(WEATHER.code), rain=w[2]||WEATHER.pp>=60, hot=WEATHER.max>=31, cold=WEATHER.max<=3;
+  const w=WMO(WEATHER.cur??WEATHER.code), rain=wxRainy(), hot=WEATHER.max>=31, cold=WEATHER.max<=3;
   let tip=rain?'비 소식이 있어 실내 비중을 높여 추천해요.':hot?'한낮 더위를 피해 실내·저녁 코스를 우선해요.':cold?'추위가 강해 실내 이동이 편한 코스를 우선해요.':'야외와 실내를 균형 있게 추천하기 좋은 날이에요.';
   const mode=rain?'rain':hot?'hot':cold?'cold':'clear';
   const label=rain?'☔ 실내 전시·박물관':hot?'🥵 시원한 실내·저녁':cold?'🧣 따뜻한 실내 공연':'🌿 야외·꽃·산책';
-  el.innerHTML=`<span>${w[0]} <b>${esc(w[1])} · ${WEATHER.now}℃</b></span><small>강수 ${WEATHER.pp}% · ${esc(tip)} · ${esc(weatherFreshLabel(WEATHER))}</small><div class="weatherReco"><span class="weatherReason">오늘 날씨 맞춤</span><button type="button" onclick="weatherQuickRecommend('${mode}')">${label} 추천받기 ↗</button><button type="button" onclick="weatherQuickRecommend('rain')">실내 코스</button><button type="button" onclick="weatherQuickRecommend('clear')">야외 코스</button></div>`;
+  el.innerHTML=`<span>${wxNowIcon(WEATHER)} <b>지금 ${esc(w[1])} · ${WEATHER.now}℃</b></span><small>${WEATHER.rest ? esc(wxUmbrellaLine(WEATHER)) : `강수 ${WEATHER.pp}%`} · ${esc(tip)} · ${esc(weatherFreshLabel(WEATHER))}</small><div class="weatherReco"><span class="weatherReason">오늘 날씨 맞춤</span><button type="button" onclick="weatherQuickRecommend('${mode}')">${label} 추천받기 ↗</button><button type="button" onclick="weatherQuickRecommend('rain')">실내 코스</button><button type="button" onclick="weatherQuickRecommend('clear')">야외 코스</button></div>`;
 }
 function deadlineLists(){
   const t=todayISO(), live=EVENTS.filter(e=>(!e.end||e.end>=t)&&!isCancelled(e));
@@ -2260,16 +2295,90 @@ function visitLine(v) {
 }
 /* 문화가 있는 날: 2026년 4월부터 매주 수요일 (문화체육관광부) · 영화관 할인은 5월부터 둘째·마지막 수요일 17~21시 성인 1만원·청소년 8천원 */
 function movieWed(y, m, d) { const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate(); return (d >= 8 && d <= 14) || d > last - 7 }
-function cultureDayHtml() {
-  const t = todayISO(), base = new Date(t + "T00:00:00Z"), dow = base.getUTCDay();
+function cultureInfo(iso = todayISO()) {
+  const base = new Date(iso + "T00:00:00Z"), dow = base.getUTCDay();
   const left = (3 - dow + 7) % 7, w = new Date(base.getTime() + left * 864e5);
   const y = w.getUTCFullYear(), m = w.getUTCMonth(), d = w.getUTCDate(), movie = movieWed(y, m, d);
   let mv = ""; if (!movie) { for (let k = 7; k <= 35; k += 7) { const n = new Date(w.getTime() + k * 864e5); if (movieWed(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate())) { mv = `${n.getUTCMonth() + 1}월 ${n.getUTCDate()}일`; break } } }
-  return `<div class="cultureDay">🎫 <b>${left === 0 ? "오늘은 수요일, '문화가 있는 날'이여!" : `이번 '문화가 있는 날'은 ${m + 1}월 ${d}일(수) · ${left}일 남음`}</b><span>매주 수요일 문화시설 할인·공연 · ${movie ? "🎬 이날은 영화관 17~21시 성인 1만원·청소년 8천원" : `🎬 영화 할인은 둘째·마지막 수요일 (다음: ${mv})`} · 혜택은 시설마다 달라요</span><a target="_blank" rel="noopener" href="https://www.culture.go.kr/wday">혜택 찾아보기 ↗</a></div>`;
+  return { left, iso: w.toISOString().slice(0, 10), m: m + 1, d, movie, mv, state: left === 0 ? "today" : left === 1 ? "tomorrow" : "soon" };
+}
+/* 오늘(수) 이 권역에서 '문화가 있는 날'과 관련 있거나 무료로 볼 수 있는 것 */
+function cultureTodayPicks(iso) {
+  try {
+    const list = (typeof nowItems === "function" ? nowItems([iso]) : []).map(x => x.e).filter(Boolean);
+    const tagged = list.filter(e => /문화가\s*있는\s*날|문화의\s*날/.test([e.title, e.desc, e.price, e.note].join(" ")));
+    const free = list.filter(e => !tagged.includes(e) && /무료/.test(e.price || ""));
+    return [...tagged, ...free].slice(0, 3);
+  } catch { return [] }
+}
+function cultureDayHtml() {
+  const c = cultureInfo(), alarm = cultureAlarmOn();
+  const movieTxt = c.movie ? "🎬 영화관 17~21시 할인 (참여 극장·요금은 예매 화면에서 확인)" : `🎬 영화 할인은 둘째·마지막 수요일 (다음: ${c.mv})`;
+  const btns = `<div class="cdBtns"><a target="_blank" rel="noopener" href="https://www.culture.go.kr/wday">혜택 찾아보기 ↗</a><button type="button" onclick="cultureAlarmMenu()">${alarm ? "🔔 알림 켜짐" : "🔔 수요일마다 알림 받기"}</button></div>`;
+  if (c.state === "today") {
+    const picks = cultureTodayPicks(todayISO());
+    return `<div class="cultureDay hot"><div class="cdTop"><span class="cdTag">TODAY · 매주 수요일</span><b>🎫 오늘은 '문화가 있는 날'이여!</b><p>박물관·미술관·공연장 할인이나 무료 입장이 많은 날이에요. 혜택은 시설마다 달라요.</p></div>
+    <ul class="cdChips"><li>🏛 국공립 박물관·미술관 무료·할인</li><li>🎭 공연·전시 할인 회차</li><li>${esc(movieTxt)}</li></ul>
+    ${picks.length ? `<div class="cdPicks"><small>오늘 ${esc(RNAME())}에서 바로 갈 만한 곳</small>${picks.map(e => `<button type="button" onclick="detail('${jsq(e.id)}')">${esc(e.title)}<em>${esc(e.venue || e.district || "")}${/무료/.test(e.price || "") ? " · 무료" : ""}</em></button>`).join("")}</div>` : ""}${btns}</div>`;
+  }
+  if (c.state === "tomorrow") return `<div class="cultureDay warm"><div class="cdTop"><span class="cdTag">내일 · 수요일</span><b>🎫 내일은 '문화가 있는 날'이에요</b><p>박물관·미술관·공연 할인 날 · ${esc(c.movie ? movieTxt.replace("🎬 ", "🎬 내일 ") : movieTxt)}</p></div>${btns}</div>`;
+  return `<div class="cultureDay">🎫 <b>다음 '문화가 있는 날'은 ${c.m}월 ${c.d}일(수) · ${c.left}일 남음</b><span>매주 수요일 문화시설 할인·공연 · ${esc(movieTxt)} · 혜택은 시설마다 달라요</span>${btns}</div>`;
 }
 function renderCultureSpot(){
   const el = document.getElementById("cultureSpot");
-  if (el) el.innerHTML = cultureDayHtml();
+  if (!el) return;
+  el.innerHTML = cultureDayHtml();
+  const st = cultureInfo().state;
+  el.classList.toggle("cdHot", st !== "soon");
+  // 수요일·화요일엔 첫 화면 맨 위(소식 상자 바로 아래)로 올림
+  const main = el.parentNode, ns = document.getElementById("nowShow");
+  if (st !== "soon" && main && ns && ns.parentNode === main && el.nextElementSibling !== ns) main.insertBefore(el, ns);
+  cultureNotifyOnce();
+}
+/* ── 문화가 있는 날 알림 ──
+   ① 휴대폰 캘린더(매주 수요일 반복 일정) — 앱을 닫아 둬도 화요일 저녁·수요일 아침에 울려요
+   ② 앱 알림 — 수요일에 앱을 열면 하루 한 번 알림 (서버가 없어 앱을 닫아 둔 동안엔 못 보내요) */
+const CD_ALARM = "glm_culture_alarm", CD_SEEN = "glm_culture_notified";
+function cultureAlarmOn() { try { return localStorage.getItem(CD_ALARM) === "1" } catch { return false } }
+window.cultureAlarmMenu = () => {
+  let t = document.getElementById("cdAsk");
+  if (!t) { t = document.createElement("div"); t.id = "cdAsk"; t.setAttribute("role", "dialog"); document.body.appendChild(t) }
+  const on = cultureAlarmOn();
+  t.innerHTML = `<b>🔔 '문화가 있는 날' 알림</b>
+  <button type="button" class="yes" onclick="cultureCalendar()">📅 휴대폰 캘린더에 넣기 <small>매주 수요일 반복 · 화요일 저녁 6시·수요일 아침 8시 30분에 알려줘요 (앱을 닫아 둬도 와요)</small></button>
+  <button type="button" onclick="cultureAppAlarm()">${on ? "🔕 앱 알림 끄기" : "📲 앱 알림도 켜기"} <small>수요일에 앱을 열면 한 번 알려줘요</small></button>
+  <button type="button" class="no" onclick="document.getElementById('cdAsk').classList.remove('on')">닫기</button>`;
+  t.classList.add("on");
+};
+window.cultureCalendar = () => {
+  const c = cultureInfo(), st = icsStamp(), ymd = c.iso.replace(/-/g, "");
+  const desc = "매주 수요일은 '문화가 있는 날' — 박물관·미술관·공연 할인·무료 입장. 영화관 할인은 둘째·마지막 수요일 17~21시(극장마다 다름). 혜택: https://www.culture.go.kr/wday";
+  icsDownload([[
+    "BEGIN:VEVENT", `UID:culture-wed-${ymd}@gwangju-eodi`, `DTSTAMP:${st}`, `DTSTART;TZID=Asia/Seoul:${ymd}T090000`, `DTEND;TZID=Asia/Seoul:${ymd}T093000`,
+    "RRULE:FREQ=WEEKLY;BYDAY=WE", "SUMMARY:🎫 문화가 있는 날 (박물관·공연 할인)", `DESCRIPTION:${desc}`, "TRANSP:TRANSPARENT",
+    "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:내일은 문화가 있는 날", "TRIGGER:-PT15H", "END:VALARM",
+    "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:오늘은 문화가 있는 날", "TRIGGER:-PT30M", "END:VALARM",
+    "END:VEVENT"]], "culture-day-wednesday.ics");
+  document.getElementById("cdAsk")?.classList.remove("on");
+  toast("📅 캘린더 파일을 받았어요. 열어서 '추가'를 누르면 매주 수요일마다 알려줘요.");
+};
+window.cultureAppAlarm = async () => {
+  document.getElementById("cdAsk")?.classList.remove("on");
+  if (cultureAlarmOn()) { try { localStorage.setItem(CD_ALARM, "0") } catch {} renderCultureSpot(); toast("앱 알림을 껐어요."); return }
+  if (!("Notification" in window) || !window.isSecureContext) { try { localStorage.setItem(CD_ALARM, "1") } catch {} renderCultureSpot(); renderNoticeBoard?.(); toast("이 브라우저는 시스템 알림이 안 돼서, 수요일엔 앱 첫 화면 소식 상자로 알려드려요."); return }
+  let p = "denied"; try { p = await Notification.requestPermission() } catch {}
+  try { localStorage.setItem(CD_ALARM, "1") } catch {}
+  renderCultureSpot();
+  toast(p === "granted" ? "🔔 알림을 켰어요. 수요일에 앱을 열면 알려드려요. 앱을 닫아 둬도 받으려면 캘린더에도 넣어 두세요." : "알림 권한이 없어 소식 상자로만 알려드려요. 캘린더에 넣으면 앱을 닫아 둬도 와요.");
+};
+async function cultureNotifyOnce() {
+  const c = cultureInfo(); if (c.state !== "today" || !cultureAlarmOn()) return;
+  const t = todayISO(); try { if (localStorage.getItem(CD_SEEN) === t) return } catch { return }
+  if (!("Notification" in window) || Notification.permission !== "granted") return;
+  try { localStorage.setItem(CD_SEEN, t) } catch {}
+  const title = "🎫 오늘은 문화가 있는 날!", body = `박물관·미술관·공연 할인 날이에요${c.movie ? " · 영화관 17~21시 할인" : ""}. 오늘 갈 곳을 골라 보세요.`;
+  try { const reg = navigator.serviceWorker && await Promise.race([navigator.serviceWorker.ready, new Promise(r => setTimeout(() => r(null), 2000))]); if (reg && reg.showNotification) { await reg.showNotification(title, { body, tag: "culture-" + t }); return } } catch {}
+  try { new Notification(title, { body, tag: "culture-" + t }) } catch {}
 }
 
 /* 🏟 프로스포츠 경기장: 공식 일정 바로가기 */
@@ -2465,27 +2574,14 @@ function renderQuick() {
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
-/* 해마다 열리는 축제: 같은 축제가 두 번 들어와 있으면 하나로 합침 (id가 같거나, 띄어쓰기만 다른 같은 이름)
-   먼저 나온 항목을 남기고, 비어 있는 칸만 나중 항목으로 채움 */
-function dedupeAnnual(list) {
-  const out = [], byKey = new Map();
-  for (const a of (Array.isArray(list) ? list : [])) {
-    if (!a || !a.name) continue;
-    const keys = [a.id && "id:" + a.id, "nm:" + String(a.district || "") + "|" + String(a.name).replace(/\s+/g, "")].filter(Boolean);
-    const hit = keys.map(k => byKey.get(k)).find(Boolean);
-    if (hit) { for (const [k, v] of Object.entries(a)) if (hit[k] == null || hit[k] === "") hit[k] = v; keys.forEach(k => byKey.set(k, hit)); continue }
-    const c = { ...a }; out.push(c); keys.forEach(k => byKey.set(k, c));
-  }
-  return out;
-}
 async function load() {
   const nr = document.getElementById("noRun"); if (nr) nr.remove();
   let [E0, C0, M0, V0, F0, B0, S0, META0] = await Promise.all([
     getJSON("events"), getJSON("cafes"), getJSON("cinemas"), getJSON("venues"), getJSON("restaurants"), getJSON("bakeries"), getJSON("stays"), getJSON("meta", null), getJSON("annual")
-  ]).then(r => { ANNUAL = dedupeAnnual(r[8]); return r.slice(0, 8) });
+  ]).then(r => { ANNUAL = r[8] || []; return r.slice(0, 8) });
   // 배포된 JSON이 구버전이어도 이 HTML에 포함된 최신 핵심 행사 정보를 우선합니다.
   // 특히 "섬 방문의 해"와 "여수세계섬박람회"를 서로 다른 행사로 유지합니다.
-  const pinnedIds = new Set(["gj-arbo-insect-2026", "gj-arbo-berry-2026", "island-visit-year-2026", "nj-namdo-food-2026", "ys-island-expo-2026", "lib-sansu-puppy-2026-10", "lib-mokpo-sangsaeng-2026-10", "lib-mokpo-ink-2026-10", "ys-bookjeok-2026", "gj-dolmen-flower-2026", "mp-jindo-bobae-2026", "mp-port-2026", "mp-gangjin-reed-2026", "mp-gukhyang-2026", "ys-kgarden-2026", "ys-jinnam-media-2026", "ys-sieaf-2026", "ys-nokdong-drone-2026", "mp-haenam-minam-2026"]);
+  const pinnedIds = new Set(["island-visit-year-2026", "ys-island-expo-2026", "lib-sansu-puppy-2026-10", "lib-mokpo-sangsaeng-2026-10", "lib-mokpo-ink-2026-10", "ys-bookjeok-2026", "gj-dolmen-flower-2026", "mp-jindo-bobae-2026", "mp-port-2026", "mp-gangjin-reed-2026", "mp-gukhyang-2026", "ys-kgarden-2026", "ys-jinnam-media-2026", "ys-sieaf-2026", "ys-nokdong-drone-2026", "mp-haenam-minam-2026"]);
   const embeddedPinned = (window.__PINNED__ || window.__DATA__?.events || []).filter(e => pinnedIds.has(e.id));
   // 서버(자동 수집) 자료가 더 최신이면 서버 것을 쓴다. 서버에 없거나 서버 것이 더 오래됐을 때만 내장본 사용.
   // (서버 항목에 확인일이 없으면 meta.updated_at 날짜를 그 자료의 날짜로 본다)
@@ -2531,7 +2627,7 @@ async function load() {
   const VENUE_FIX = { "citizen-forest": { address: "광주 북구 추암로 190", image: "https://tong.visitkorea.or.kr/cms/resource/03/3514703_image2_1.jpg", imageCredit: "한국관광공사" } };
   V0 = (V0 || []).map(v => VENUE_FIX[v.id] ? { ...v, ...VENUE_FIX[v.id] } : v)
     .map(v => /인근|대체|다른 장소/.test(v.imageCredit || "") ? { ...v, image: "", imageCredit: "" } : v);
-  V0 = attachPetInfo(applyFacilityNotes(applyKidsMuseumBoost(V0)), PET0);
+  V0 = attachPetInfo(applyKidsMuseumBoost(V0), PET0);
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
   const t = todayISO();
@@ -2735,7 +2831,13 @@ async function fetchWttrFallback(lat, lon){
   const desc = cur.weatherDesc?.[0]?.value || "";
   const hourly = Array.isArray(day.hourly) ? day.hourly : [];
   const pp = hourly.reduce((m, h) => Math.max(m, Number(h.chanceofrain || 0)), 0);
+  const hr = { t: [], tp: [], fl: [], pp: [], mm: [], c: [] };
+  for (const d of (j.weather || []).slice(0, 2)) for (const h of (d.hourly || [])) {
+    const hh = Math.floor(Number(h.time || 0) / 100), code = wttrWmo(h.weatherDesc?.[0]?.value || "");
+    for (let k = 0; k < 3; k++) { hr.t.push(`${d.date}T${String(hh + k).padStart(2, "0")}:00`); hr.tp.push(Number(h.tempC)); hr.fl.push(Number(h.FeelsLikeC ?? h.tempC)); hr.pp.push(Number(h.chanceofrain || 0)); hr.mm.push(Number(h.precipMM || 0) / 3); hr.c.push(code) }
+  }
   return {
+    hr: hr.t.length ? hr : null,
     now: Math.round(Number(cur.temp_C)),
     cur: wttrWmo(desc),
     code: wttrWmo(desc),
@@ -2753,9 +2855,71 @@ async function fetchWttrFallback(lat, lon){
     source: "wttr.in 보조 날씨"
   };
 }
+/* ───────── 시간대별 날씨 — '오늘 하루 중 한 번이라도'가 아니라 '지금부터 나가 있을 시간' 기준 ─────────
+   예전엔 하루 전체의 최댓값(새벽에 지나간 비 포함)을 써서, 지금은 맑은데 '비 100%·우산 필수'가 뜨곤 했어요. */
+const WX_SLOTS = [["아침", 6, 9], ["오전", 9, 12], ["점심", 12, 15], ["오후", 15, 18], ["저녁", 18, 21], ["밤", 21, 24]];
+const wxSnowC = c => (c >= 71 && c <= 77) || c === 85 || c === 86;
+const wxRainC = c => (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95;
+const wxWet = x => x.mm >= 0.3 || ((wxRainC(x.c) || wxSnowC(x.c)) && x.pp >= 40) || x.pp >= 70;
+const wxMaybe = x => !wxWet(x) && (x.pp >= 40 || x.mm >= 0.1 || wxRainC(x.c));
+function wxHours(W) {
+  const H = W && W.hr; if (!H || !Array.isArray(H.t)) return [];
+  return H.t.map((t, i) => ({ t, d: t.slice(0, 10), h: +t.slice(11, 13), tp: H.tp?.[i], fl: H.fl?.[i] ?? H.tp?.[i], pp: H.pp?.[i] ?? 0, mm: H.mm?.[i] ?? 0, c: H.c?.[i] ?? 0 })).filter(x => x.tp != null);
+}
+const wxHourTxt = h => h === 0 || h === 24 ? "밤 12시" : h < 12 ? `오전 ${h}시` : h === 12 ? "낮 12시" : `${h < 18 ? "오후" : "저녁"} ${h - 12}시`;
+function wxRanges(list) {   // 비 오는 시간을 '오후 3시~6시'처럼 묶기
+  const out = []; for (const x of list) { const l = out[out.length - 1]; if (l && l.d === x.d && l.b === x.h) l.b = x.h + 1; else out.push({ d: x.d, a: x.h, b: x.h + 1 }) }
+  return out;
+}
+function wxRangeTxt(r, today) {
+  const pre = r.d !== today ? "내일 " : "", A = wxHourTxt(r.a), B = r.b >= 24 ? "밤 12시" : wxHourTxt(r.b);
+  if (r.b - r.a <= 1) return `${pre}${A}쯤`;
+  return `${pre}${A}~${A.split(" ")[0] === B.split(" ")[0] ? B.split(" ")[1] : B}`;
+}
+function wxDerive(W) {
+  if (!W) return W;
+  if (W.ppDay == null) { W.ppDay = W.pp; W.codeDay = W.code }
+  const hrs = wxHours(W); W.rest = null;
+  if (!hrs.length) return W;
+  const today = todayISO(), nowH = Math.floor(tripNowMin() / 60), tmr = addDaysISO(today, 1);
+  const late = nowH >= 21;   // 밤 9시 넘으면 내일 낮 기준으로 안내
+  const out = late ? hrs.filter(x => x.d === tmr && x.h >= 6 && x.h < 22) : hrs.filter(x => x.d === today && x.h >= nowH && x.h < 22 + (nowH >= 18 ? 2 : 0));
+  if (!out.length) return W;
+  const nowX = hrs.find(x => x.d === today && x.h === nowH);
+  const wet = out.filter(wxWet), maybe = out.filter(wxMaybe), past = hrs.filter(x => x.d === today && x.h < nowH && x.h >= nowH - 3 && wxWet(x));
+  const slots = [];
+  for (const [label, a, b] of WX_SLOTS) {
+    const d = late ? tmr : today; if (!late && b <= nowH) continue; if (late && label === "밤") continue;
+    const hs = hrs.filter(x => x.d === d && x.h >= (d === today ? Math.max(a, nowH) : a) && x.h < b); if (!hs.length) continue;
+    const w = hs.filter(wxWet), m = hs.filter(wxMaybe);
+    const code = w.length ? Math.max(...w.map(x => wxRainC(x.c) || wxSnowC(x.c) ? x.c : 61)) : Math.max(...hs.map(x => wxRainC(x.c) ? 3 : x.c));
+    slots.push({ label: (late ? "내일 " : "") + label, a: d === today ? Math.max(a, nowH) : a, b, now: d === today && a <= nowH && nowH < b,
+      tmin: Math.round(Math.min(...hs.map(x => x.tp))), tmax: Math.round(Math.max(...hs.map(x => x.tp))), fl: Math.round(Math.min(...hs.map(x => x.fl))),
+      pp: Math.max(...hs.map(x => x.pp)), mm: Math.round(hs.reduce((s, x) => s + (x.mm || 0), 0) * 10) / 10, st: w.length ? "wet" : m.length ? "maybe" : "dry", code, night: a >= 18 || b <= 6 });
+  }
+  W.rest = { late, day: late ? tmr : today, wet: wet.length > 0, maybe: !wet.length && maybe.length > 0, nowWet: !late && !!nowX && wxWet(nowX),
+    pp: Math.max(...out.map(x => x.pp)), mm: Math.round(wet.reduce((s, x) => s + (x.mm || 0), 0) * 10) / 10,
+    snow: wet.some(x => wxSnowC(x.c)), ranges: wxRanges(wet).map(r => wxRangeTxt(r, today)), maybeRanges: wxRanges(maybe).map(r => wxRangeTxt(r, today)),
+    stopped: !late && past.length > 0 && !(nowX && wxWet(nowX)), slots,
+    fmin: Math.round(Math.min(...out.map(x => x.fl))), fmax: Math.round(Math.max(...out.map(x => x.fl))), tmin: Math.round(Math.min(...out.map(x => x.tp))), tmax: Math.round(Math.max(...out.map(x => x.tp))) };
+  // 앱 곳곳(추천·실내 코스)이 쓰는 값도 '나가 있을 시간' 기준으로 맞춤
+  W.pp = W.rest.pp;
+  W.code = W.rest.wet ? (W.rest.snow ? 71 : 61) : Math.max(...out.map(x => wxRainC(x.c) ? 3 : x.c));
+  return W;
+}
+const wxRainy = (W = WEATHER) => !!W && (W.rest ? W.rest.wet : (WMO(W.code)[2] || W.pp >= 60));
+const wxNowIcon = W => { const c = W.cur ?? W.code; return (c <= 1 && W.day === 0) ? "🌙" : WMO(c)[0] };
+function wxUmbrellaLine(W) {   // 한 줄 요약: 언제 비가 오는지
+  const r = W && W.rest; if (!r) return "";
+  if (r.nowWet) return `☂️ 지금 비 와요${r.ranges[0] && !/^지금/.test(r.ranges[0]) ? ` · ${r.ranges[0]}까지` : ""} — 우산 꼭 챙기쇼`;
+  if (r.wet) return `☂️ ${r.ranges.slice(0, 2).join(", ")} 비 — 우산 챙기쇼`;
+  if (r.maybe) return `🌂 ${r.maybeRanges[0] || ""} 비 올 수도 (최대 ${r.pp}%) — 작은 우산 하나`;
+  if (r.stopped) return "🌤 비는 그쳤어요 — 우산 없이 나가도 돼요";
+  return `🌤 ${r.late ? "내일 낮" : "오늘 남은 시간"} 비 소식 없어요`;
+}
 
 async function loadWeather(force = false) {
-  const cacheKey = `glm_weather_${REGION}`;
+  const cacheKey = `glm_weather2_${REGION}`;
   const wxEl = document.getElementById("wx");
   const tipsEl = document.getElementById("wxTips");
   const now = Date.now();
@@ -2773,6 +2937,7 @@ async function loadWeather(force = false) {
           stale: age >= 90 * 60 * 1000,
           source: cached.source || "저장된 날씨"
         };
+        wxDerive(WEATHER);
         renderDecisionWeather();
         renderWxTips();
         renderToday();
@@ -2816,16 +2981,18 @@ async function loadWeather(force = false) {
 
   const fullWeatherUrl =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    `&current=temperature_2m,apparent_temperature,weather_code` +
+    `&current=temperature_2m,apparent_temperature,weather_code,is_day` +
+    `&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weather_code` +
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_probability_max,uv_index_max,wind_speed_10m_max` +
-    `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=1`;
+    `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=2`;
 
   // 첫 요청이 실패하면 데이터 항목을 줄인 가벼운 요청으로 한 번 더 시도.
   const liteWeatherUrl =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    `&current=temperature_2m,apparent_temperature,weather_code` +
+    `&current=temperature_2m,apparent_temperature,weather_code,is_day` +
+    `&hourly=temperature_2m,precipitation_probability,precipitation,weather_code` +
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
-    `&timezone=Asia%2FSeoul&forecast_days=1`;
+    `&timezone=Asia%2FSeoul&forecast_days=2`;
 
   try {
     let j;
@@ -2850,12 +3017,15 @@ async function loadWeather(force = false) {
       fmax: Math.round(j.daily.apparent_temperature_max?.[0] ?? j.daily.temperature_2m_max?.[0] ?? j.current.temperature_2m),
       uv: j.daily.uv_index_max?.[0],
       wind: j.daily.wind_speed_10m_max?.[0],
+      day: j.current.is_day,
+      hr: j.hourly && Array.isArray(j.hourly.time) ? { t: j.hourly.time, tp: j.hourly.temperature_2m, fl: j.hourly.apparent_temperature, pp: j.hourly.precipitation_probability, mm: j.hourly.precipitation, c: j.hourly.weather_code } : null,
       fetchedAt: Date.now(),
       cached: false,
       stale: false,
       offline: false,
       source: "Open-Meteo"
     };
+    wxDerive(WEATHER);
     WEATHER_AUTO_RETRIES = 0;
     if (WEATHER_RETRY_TIMER) { clearTimeout(WEATHER_RETRY_TIMER); WEATHER_RETRY_TIMER = null; }
 
@@ -2929,6 +3099,7 @@ function outfit(t) {
     : t >= 5 ? ["코트·가죽자켓·히트텍", "속에 히트텍 하나 받쳐 입으면 든든해요"]
     : ["패딩·두꺼운 코트·목도리·장갑", "징허게 추워요, 꽁꽁 싸매고 나가쇼잉"];
 }
+const W0 = () => WEATHER;
 function renderWxTips() {
   const el = document.getElementById("wxTips"); if (!el) return;
   if (!WEATHER) {
@@ -2938,32 +3109,39 @@ function renderWxTips() {
     }
     return
   }
-  const W = WEATHER, c = W.cur ?? W.code, w = WMO(W.code), wn = WMO(c);
-  const snow = c >= 71 && c <= 77 || c === 85 || c === 86 || (W.code >= 71 && W.code <= 77);
-  const rainNow = wn[2] && !snow, rainDay = w[2] || W.pp >= 60;
+  wxDerive(W0());
+  const W = WEATHER, R = W.rest, c = W.cur ?? W.code, w = WMO(W.code), wn = WMO(c);
+  const snow = R ? R.snow : (c >= 71 && c <= 77 || c === 85 || c === 86 || (W.code >= 71 && W.code <= 77));
+  const rainNow = R ? R.nowWet && !snow : wn[2] && !snow, rainDay = wxRainy(W);
   const clear = W.code <= 2, uv = W.uv, dust = DUST(W.pm10, W.pm25);
-  const dayT = W.fmax ?? W.max, gap = W.max - W.min, [wear, wearTip] = outfit(dayT);
+  const dayT = R && !R.late ? Math.max(R.fmax, Math.round((W.fmax ?? W.max) - 2)) : (W.fmax ?? W.max);
+  const lo = R ? Math.min(R.tmin, W.min) : W.min, gap = W.max - lo; let [wear, wearTip] = outfit(dayT);
+  if (rainDay && /나들이/.test(wearTip)) wearTip = wearTip.replace(/,?\s*나들이하기 제일 좋은 날씨/, " — 비 올 땐 얇은 방수 겉옷 하나 걸치쇼");
   const tips = [];
   const add = (must, i, b, s) => tips.push({ must, i, b, s });
   // ☂️ 우산
-  if (snow) add(true, "☃️", "눈 와요 — 우산·미끄럼 안 타는 신발", "길 미끄러우니 운동화보다 접지 좋은 신발로");
+  if (R) {
+    const when = R.ranges.slice(0, 2).join(", ");
+    if (snow) add(true, "☃️", "눈 와요 — 우산·미끄럼 안 타는 신발", `${when} · 길 미끄러우니 접지 좋은 신발로`);
+    else if (rainNow) add(true, "☂️", "지금 비 와요, 우산 필수!", `${when}${R.mm ? ` · 비 양 약 ${R.mm}mm` : ""} — 신발은 젖어도 되는 걸로`);
+    else if (R.wet) add(true, "☂️", `우산 챙기쇼 — ${when} 비`, `지금은 ${wn[1]}이어도 그 시간엔 비 (최대 ${R.pp}%${R.mm ? ` · 약 ${R.mm}mm` : ""}) — 나갈 땐 꼭 들고 나가쇼`);
+    else if (R.maybe) add(false, "🌂", "접이식 우산 하나", `${R.maybeRanges[0] || "중간에"} 비 올 수도 있어요 (최대 ${R.pp}%) — 가방에 쏙 넣어두쇼`);
+    else if (R.stopped) add(false, "🌤", "비는 그쳤어요", "길이 젖어 있을 수 있으니 미끄럼 조심");
+  } else if (snow) add(true, "☃️", "눈 와요 — 우산·미끄럼 안 타는 신발", "길 미끄러우니 운동화보다 접지 좋은 신발로");
   else if (rainNow || W.pp >= 60) add(true, "☂️", "우산 필수!", `비 올 확률 ${W.pp}% — 큰 우산 챙기고, 신발은 젖어도 되는 걸로`);
   else if (W.pp >= 30) add(false, "🌂", "접이식 우산 하나", `비 올 확률 ${W.pp}% — 가방에 쏙 넣어두쇼`);
   // 🕶 선글라스 · 🧢 모자 · 🧴 선크림
-  // 비·눈 오는 날에도 구름 사이로 자외선은 들어와요 (uv_index_max는 구름을 반영한 값).
-  // 그래서 빼지 않고 강도만 낮춰요: 꼭 챙길 것 → 있으면 좋은 것, 선글라스·모자는 자외선 6 이상일 때만
-  const wetDay = rainDay || snow;
-  if (uv >= 6) add(!wetDay, "🕶", "선글라스 챙기쇼", `자외선 ${UV_TXT(uv)}(${Math.round(uv)})${wetDay ? " — 비 그치고 해 나면 강해요" : " — 눈도 탑니다"}`);
-  else if (!wetDay && uv >= 4 && clear) add(false, "🕶", "선글라스 있으면 좋아요", "햇빛 쨍한 날이에요");
-  if ((!wetDay && uv >= 6) || W.max >= 30) add(true, "🧢", "모자도 꼭 쓰세요", W.max >= 30 ? `최고 ${W.max}° — 챙 넓은 모자로 머리 열 식히기` : "한낮 햇볕이 강해요");
-  else if (!wetDay && uv >= 3 && clear) add(false, "🧢", "모자 쓰면 딱", "야외 오래 걸을 거면 챙기쇼");
-  if (uv >= 6) add(!wetDay, "🧴", "선크림 SPF50", wetDay ? "비 와도 구름 사이로 자외선이 강해요" : "2~3시간마다 덧바르기");
-  else if (uv >= 3) add(false, "🧴", wetDay ? "선크림 가볍게" : "선크림 바르고 나가기", wetDay ? `비 사이로 해 나면 자외선 ${UV_TXT(uv)}` : `자외선 ${UV_TXT(uv)}`);
+  if (uv >= 6) add(true, "🕶", "선글라스 챙기쇼", `자외선 ${UV_TXT(uv)}(${Math.round(uv)}) — 눈도 탑니다`);
+  else if (uv >= 4 && clear) add(false, "🕶", "선글라스 있으면 좋아요", "햇빛 쨍한 날이에요");
+  if (uv >= 6 || W.max >= 30) add(true, "🧢", "모자도 꼭 쓰세요", W.max >= 30 ? `최고 ${W.max}° — 챙 넓은 모자로 머리 열 식히기` : "한낮 햇볕이 강해요");
+  else if (uv >= 3 && clear) add(false, "🧢", "모자 쓰면 딱", "야외 오래 걸을 거면 챙기쇼");
+  if (uv >= 6) add(true, "🧴", "선크림 SPF50", "2~3시간마다 덧바르기");
+  else if (uv >= 3) add(false, "🧴", "선크림 바르고 나가기", `자외선 ${UV_TXT(uv)}`);
   // 🥵 더위 · 🥶 추위
   if (W.max >= 31) add(true, "💧", "물 자주 마시기", "12~16시 한낮엔 그늘·실내로 피하쇼");
   else if (W.max >= 28) add(false, "💧", "물병 하나", "걷다 보면 금방 목말라요");
   if (W.min <= 0) add(true, "🧤", "장갑·목도리·핫팩", `아침 최저 ${W.min}° — 영하여요`);
-  else if (gap >= 10 && W.min <= 15) add(false, "🧥", "겉옷 하나 더", `일교차 ${gap}° — 아침저녁 ${W.min}°라 쌀쌀해요`);
+  else if (gap >= 10 && lo <= 15) add(false, "🧥", "겉옷 하나 더", `일교차 ${gap}° — ${R && R.slots.some(x => x.night) ? "저녁엔" : "아침저녁"} ${lo}°라 쌀쌀해요`);
   // 🌬 바람
   if (W.wind >= 9) add(true, "🌬", "바람 세요", `최대 ${Math.round(W.wind)}m/s — 모자 날아가요, 바람막이 챙기쇼`);
   else if (W.wind >= 6) add(false, "🌬", "바람 좀 불어요", `최대 ${Math.round(W.wind)}m/s — 얇은 바람막이 있으면 좋아요`);
@@ -2972,29 +3150,26 @@ function renderWxTips() {
   if (!tips.length) add(false, "😎", "딱히 챙길 게 없는 날", "가볍게 나가서 실컷 노쇼잉!");
   tips.sort((a, b) => b.must - a.must);
   const stats = [
-    ["체감", `${W.feel ?? W.now}°`],
-    ["최고 / 최저", `${W.max}° / ${W.min}°`],
-    ["비 올 확률", `${W.pp}%`, W.pp >= 60 ? "bad" : W.pp < 20 ? "good" : ""],
-    uv != null ? ["자외선", UV_TXT(uv), uv >= 6 ? "bad" : uv < 3 ? "good" : ""] : null,
-    W.wind != null ? ["바람", `${Math.round(W.wind)}m/s`, W.wind >= 9 ? "bad" : ""] : null,
-    dust ? ["미세먼지", dust[1], dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""] : null
+    [`체감 ${W.feel ?? W.now}°`],
+    [`최고 ${W.max}° / 최저 ${W.min}°`],
+    [R ? `☔ ${R.late ? "내일 낮" : "남은 시간"} 비 ${R.pp}%` : `☔ 비 ${W.pp}%`, rainDay ? "bad" : (R ? R.maybe : W.pp >= 30) ? "" : "good"],
+    uv != null ? [`🔆 자외선 ${UV_TXT(uv)}`, uv >= 6 ? "bad" : uv < 3 ? "good" : ""] : null,
+    W.wind != null ? [`🌬 바람 ${Math.round(W.wind)}m/s`, W.wind >= 9 ? "bad" : ""] : null,
+    dust ? [`😷 미세먼지 ${dust[1]}`, dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""] : null
   ].filter(Boolean);
   const mustN = tips.filter(t => t.must).length;
-  const head = snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? "날 좋네잉, 나들이 가기 딱이여" : "무난한 날씨, 편하게 나가쇼";
+  const head = R && !snow && rainDay && !rainNow ? `지금은 ${wn[1]}, ${R.ranges[0]} 비 — 우산 챙기쇼잉` : R && rainNow ? "지금 비 와요, 우산 꼭 챙기쇼" : R && R.maybe ? `대체로 괜찮은데 ${R.maybeRanges[0] || "중간에"} 비 올 수도 있어요` : snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? (R && R.late ? "내일 낮은 맑아요, 나들이 가기 딱이여" : "날 좋네잉, 나들이 가기 딱이여") : (R && R.late ? "내일 낮은 무난한 날씨예요" : "무난한 날씨, 편하게 나가쇼");
   el.classList.remove("hidden");
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div>${mustN ? `<button type="button" class="wtMustJump" onclick="wxMustJump()" aria-label="꼭 챙길 것 ${mustN}개 보기">꼭 챙길 것 <b>${tips.filter(t => t.must).map(t => t.i).join(" ")}</b> 보기 ↓</button>` : ""}</div>
-  <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
-  <div class="wtStats">${stats.map(([l, v, k]) => `<span class="${k || ""}"><small>${l}</small><b>${v}</b></span>`).join("")}</div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
+  <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${!R && c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
+  ${R && R.slots.length ? `<div class="wtTime"><div class="wtTimeHead"><b>🕘 ${R.late ? "내일" : "오늘"} 시간대별 날씨</b><small>${R.late ? "밤이라 내일 낮 기준으로 보여드려요" : "지금부터 밤까지 · 나가 있을 시간 기준"}</small></div>
+   <div class="wtSlots">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
+   <p class="wtUmb ${rainDay ? "wet" : R.maybe ? "maybe" : ""}">${esc(wxUmbrellaLine(W))}</p></div>` : ""}
+  <div class="wtStats">${stats.map(([t, k]) => `<span class="${k || ""}">${t}</span>`).join("")}</div>
   <div class="wtGrid">
-   <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 아침저녁은 ${W.min}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
+   <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 ${R && !R.late && R.slots.some(x => x.night) ? "저녁엔" : "아침저녁은"} ${lo}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
   </div>`;
-  window.wxMustJump = () => {
-    const first = el.querySelector(".wtItem.must"); if (!first) return;
-    const hh = document.querySelector("header.top")?.offsetHeight || 0;
-    window.scrollTo({ top: Math.max(0, first.getBoundingClientRect().top + window.scrollY - hh - 16), behavior: "smooth" });
-    el.querySelectorAll(".wtItem.must").forEach(m => { m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash") });
-  };
   WX_SHORT = [wear.split("·")[0], ...tips.filter(t => t.must).map(t => t.i)].join(" ");
 }
 
@@ -3142,7 +3317,7 @@ function nowRow(e, h, iso) {
    <div class="ncPic"${bg(img)}>${img ? `<i class="ncBlur"${bg(img)}></i><i class="ncFull"${bg(img)}></i>` : ""}<span class="ncIcon">${ic}</span><span class="ncCat">${cat}</span>${last ? `<span class="ncHot">${NOW_WHEN ? `${dd}일(${dayName}) 마지막 날` : "오늘 마지막 날!"}</span>` : dl != null && dl <= 14 ? `<span class="ncHot">D-${dl}</span>` : ""}</div>
    <div class="ncBody"><b>${esc(e.title)}</b><small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
     <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags"><em class="t-${tk[0]}">${esc(tk[1])}</em>${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">🍽 코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
 }
 function nowMarket(v, iso, night) {
   const dayName = DAYC[isoDow(iso)];
@@ -3151,7 +3326,7 @@ function nowMarket(v, iso, night) {
    <div class="ncBody"><b>${esc(v.name)}</b><small class="ncVenue">📍 ${esc(v.district)}</small>
     <small class="ncTime">📅 ${Number(iso.slice(5, 7))}.${Number(iso.slice(8))}(${dayName}) ${night ? esc(night[1]) : "장 서요 · 오전이 활기차요"}</small>${parkLine(v)}
     <div class="ncTags"><em class="free">입장 무료</em>${(v.market.eats || []).slice(0, 2).map(x => `<em>😋 ${esc(x)}</em>`).join("")}</div>
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 보기</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 탭에서 보기 →</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div></div></article>`;
 }
 /* 한 달 안에 열리는 축제: 날짜가 나온 축제 + 해마다 이맘때 열리는데 아직 날짜가 안 나온 축제(예상)
    자동 수집으로 날짜가 들어오면 '예상' 줄은 저절로 진짜 일정으로 바뀌고, 축제가 끝나면 저절로 사라져요. */
@@ -3185,15 +3360,14 @@ function renderNowShow() {
   const shown = sorted.filter(x => !cat[1] || x.k === cat[1] || (cat[1] === "fe" && x.k === "sp"));
   const MAXN = window.NOW_MORE ? 24 : 8, list = shown.slice(0, MAXN);   // 홈에서는 8건만 먼저, 더 보기로 24건
   const wk = weekendDates(), md = s => `${Number(s.slice(5, 7))}.${Number(s.slice(8))}`;
-  const t1 = isoPlus(1);
-  const labels = [["오늘", `${md(t0)} ${DAYC[isoDow(t0)]}`], ["내일", `${md(t1)} ${DAYC[isoDow(t1)]}${HOLIDAYS[t1] ? " · 휴일" : ""}`], ["이번 주말", wk.length > 1 ? `${md(wk[0])}~${wk[0].slice(5,7) === wk[1].slice(5,7) ? Number(wk[1].slice(8)) : md(wk[1])} ${wk.map(d => DAYC[isoDow(d)]).join("·")}` : `${md(wk[0])} ${DAYC[isoDow(wk[0])]}`]];
+  const labels = [`오늘 ${md(t0)}(${DAYC[isoDow(t0)]})`, `내일${HOLIDAYS[isoPlus(1)] ? "(휴일)" : ""}`, `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`];
   const counts = [0, 1, 2].map(n => n === NOW_WHEN ? items.length : nowItems(nowDates(n)).length);
   const label = ["오늘", "내일", "이번 주말"][NOW_WHEN];
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
   el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
-    <div class="seg nowSeg">${labels.map(([d, sub], i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})" aria-label="${d} ${sub} ${counts[i]}건"><span class="nsDay">${d}</span><small>${esc(sub)}</small><b>${counts[i]}</b></button>`).join("")}</div></div>
-   <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')" aria-label="${c} ${n}건"><i>${k ? NK[k][0] : "✦"}</i><span>${c}</span><b>${n}</b></button>` }).join("")}</div>
+    <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
+   <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > MAXN ? (MAXN < 24 ? `<button type="button" class="nowMoreBtn" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${Math.min(shown.length, 24) - MAXN}건 더 보기 ▾</button>` : `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>`) : ""}
    <button type="button" class="nowAllBtn" onclick="showTab('events')">📅 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
@@ -3367,7 +3541,7 @@ function renderToday() {
   arrangeHome();   // 첫 화면 순서는 arrangeHome() 한 곳에서만 정해요
   if (ns) ns.classList.add("first"); [cs, ai, td, wt].forEach(el => el && el.classList.remove("first"));
   renderCultureSpot();
-  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = WEATHER ? (w[2] || WEATHER.pp >= 60) : false, hot = WEATHER && WEATHER.max >= 31, cold = WEATHER && WEATHER.max <= 3;
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = wxRainy(), hot = WEATHER && WEATHER.max >= 31, cold = WEATHER && WEATHER.max <= 3;
   const indoorDay = rainy || hot || cold;
   const openNow = v => openToday(v) !== false;
   const used = new Set(window.NOW_PICK_IDS || []);   // '지금 출발하면'에 이미 나온 곳은 하루 플랜에서 겹치지 않게
@@ -3426,8 +3600,8 @@ function renderToday() {
   if (!GP[gKey]) { const hi = [...GREET_HI[part], ...seasonHi], go = (GREET_GO[REGION] || GREET_GO.gj)[part]; GP[gKey] = [hi[Math.floor(Math.random() * hi.length)], go[Math.floor(Math.random() * go.length)]] }
   const greet = GP[gKey];
   $("#greet").innerHTML = `${esc(greet[0])}<br><em>${esc(greet[1])}</em>`;
-  $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : RNAME()}</span>`;
-  $("#wx").innerHTML = WEATHER ? `${w[0]} ${w[1]} · 지금 ${WEATHER.now}°<small>최고 ${WEATHER.max}° / 최저 ${WEATHER.min}° · 비 올 확률 ${WEATHER.pp}%</small><small>${indoorDay ? "☔ 오늘은 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small>인터넷 연결 시 표시돼요</small>`;
+  $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : cultureInfo().state === "today" ? "🎫 문화가 있는 날" : RNAME()}</span>`;
+  $("#wx").innerHTML = WEATHER ? `${wxNowIcon(WEATHER)} ${WMO(WEATHER.cur ?? WEATHER.code)[1]} · 지금 ${WEATHER.now}°<small>최고 ${WEATHER.max}° / 최저 ${WEATHER.min}°${WEATHER.rest ? "" : ` · 비 올 확률 ${WEATHER.pp}%`}</small>${WEATHER.rest ? `<small>${esc(wxUmbrellaLine(WEATHER))}</small>` : ""}<small>${rainy ? "☔ 오늘은 실내 위주로 골랐어요" : hot ? "🥵 더운 날이라 실내·저녁 위주로 골랐어요" : cold ? "🧣 추운 날이라 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small>인터넷 연결 시 표시돼요</small>`;
 
   // ① 오전: 날씨 좋으면 산책·숲·산, 궂으면 박물관·미술관
   let mPool = indoorDay ? VENUES.filter(v => /미술관|박물관|기념관|과학관|5·18|문학관/.test(v.kind) && (v.inout || "실내").includes("실내") && openNow(v) && v.image && fresh(v) && !emptyTripRisk(v))
@@ -4201,7 +4375,7 @@ function placeCard(v) {
   return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow">${flagTag(v)}${homeTag(v)}<span class="kind k-${esc(v.kind)}">${esc(v.kind)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : v.inout === "실내" ? "🏠 실내" : "🏠🌤 실내·야외"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${v.note || v.desc ? `<small class="note">${esc(v.note || v.desc)}</small>` : ""}${v.updated ? `<small class="upd">↻ ${esc(v.updated.slice(5).replace("-", "."))} 관광공사 정보로 갱신</small>` : ""}
   <dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
-  ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}${smallProgLine(v)}
+  ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   ${trustStrip(v)}
   <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
@@ -4935,7 +5109,11 @@ function noticeItems() {
     const jang = ALL.VENUES.filter(v => v.market && v.district === gu && v.market.days && v.market.days.length && jangOn(v, t));
     if (jang.length) out.push({ p: 2, ic: "🧺", txt: `오늘 장날 · ${jang.map(v => v.name).slice(0, 3).join(", ")}`, on: `aiProfile('${jsq(jang[0].id)}')` });
   }
-  // ④ 관심 가수 새 공연
+  // ④ 문화가 있는 날 (매주 수요일)
+  { const c = cultureInfo(); const go = `document.getElementById('cultureSpot')?.scrollIntoView({behavior:'smooth',block:'center'})`;
+    if (c.state === "today") out.push({ p: 1, ic: "🎫", txt: `오늘은 문화가 있는 날 · 박물관·미술관·공연 할인${c.movie ? " · 영화 17~21시 할인" : ""}`, on: go });
+    else if (c.state === "tomorrow") out.push({ p: 3, ic: "🎫", txt: `내일(수)은 문화가 있는 날 · 박물관·공연 할인`, on: go }); }
+  // ⑤ 관심 가수 새 공연
   let au = []; try { au = JSON.parse(localStorage.getItem("glm_artist_updates_v1") || "[]") } catch {}
   if (au.length) out.push({ p: 1, ic: "🎤", txt: `관심 가수 새 공연·예매 소식 ${au.length}건 · ${au.slice(0, 2).map(x => x.title).join(", ")}`, on: `showTab('popshows');document.getElementById('popshowsView').scrollIntoView()` });
   return out.sort((a, b) => a.p - b.p);
@@ -5586,7 +5764,7 @@ function itineraryRegion(s) {
   window.__TRIP_NOCAR = /ktx|srt|기차|열차|목포역|여수엑스포역|순천역/.test(s);
   const R = KTX_REGION[REGION]; if (!R) return false;
   const days = tripMode(s), ktx = /ktx|srt|기차|열차|목포역|여수엑스포역|순천역/.test(s);
-  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && (w[2] || WEATHER.pp >= 60));
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && wxRainy());
   const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
   const T_ = (time, title, sub, extra = {}) => Object.assign({ time, title, sub }, extra);
   const nk = t => String(t || "").replace(/\s/g, "");
@@ -5695,7 +5873,7 @@ function itinerary(s) {
   window.__TRIP_NOCAR = /ktx|srt|기차|송정역|열차|목포역|여수엑스포역|순천역/.test(s);
   if (REGION !== "gj" && KTX_REGION[REGION]) return itineraryRegion(s);
   const days = tripMode(s), ktx = /ktx|srt|기차|송정역|열차/.test(s);
-  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && (w[2] || WEATHER.pp >= 60));
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && wxRainy());
   const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
   const pickOpen = (ids, day) => ids.map(id => VENUES.find(v => v.id === id)).find(v => v && openOn(v, day) !== false)?.id || ids[0];
   const V_ = (id, time, extra, day = dow) => { const st = vStep(pickOpen([].concat(id), day), time, extra); return st };
@@ -6017,7 +6195,7 @@ function petList(s) {
 let DECISION_MAP=null;
 function decisionReasonSet(selected){
   const r=[];
-  if(WEATHER){const w=WMO(WEATHER.code); if(w[2]||WEATHER.pp>=60) r.push('비 예보 반영 · 실내 우선'); else r.push(`${w[1]} 날씨 반영`)}
+  if(WEATHER){const w=WMO(WEATHER.code); if(wxRainy()) r.push('비 예보 반영 · 실내 우선'); else r.push(`${w[1]} 날씨 반영`)}
   r.push(`${RNAME()} 우선`);
   r.push(`${selected.time} 안에 가능한 동선`);
   r.push(`입장료 ${selected.budget} 기준 (식사 별도)`);
@@ -6083,7 +6261,7 @@ function decisionRoutePicks(selected){
 
   if(/반려견/.test(selected.with) && CAFES.length){
     const petStart=tripNowMin(), petCap=decFirstCap(selected), petOk=(x,k)=>{ const lg=tripFirstLeg(x,{move:selected.move}).min; return lg<=petCap && tripCheck(x,k,petStart+lg).ok };
-    const petRain=WEATHER && (WMO(WEATHER.code)[2] || WEATHER.pp>=60);
+    const petRain=WEATHER && wxRainy();
     const petPool=CAFES.filter(c=>c.pet&&petOk(c,'cafe'));
     let first=aiDiverse(petPool.length?petPool:CAFES.filter(c=>petOk(c,'cafe')),key+":pet",1,8)[0];
     if(!first && !petRain){
@@ -6115,7 +6293,7 @@ function decisionRoutePicks(selected){
   if(/아이/.test(selected.with)){
     openV=openV.filter(v=>v.kids || /동물원|테마파크|과학관|박물관|공원|정원/.test([v.kind,v.name].join(" ")));
   }
-  if(WEATHER && (WMO(WEATHER.code)[2] || WEATHER.pp>=60)){
+  if(WEATHER && wxRainy()){
     const indoor=openV.filter(v=>(v.inout||"실내").includes("실내"));
     const market=openV.filter(v=>/시장/.test(v.kind||"")&&!indoor.includes(v));
     openV = indoor.length>=2 ? indoor : [...indoor,...market];
@@ -6363,7 +6541,7 @@ function detailView(id) {
     `${(x.ticket?.links || []).length > 1 ? `<p class="links">${x.ticket.links.map(l => `<a class="btn" target="_blank" rel="noopener" href="${safeUrl(l.url)}">${esc(l.name)} ↗</a>`).join(" ")}</p>` : ""}` +
     `${parkLine(x, true)}` +
     `${rows.map(r => `<div class="detail"><span>${r[0]}</span><div>${esc(r[1])}</div></div>`).join("")}` +
-    `${programHtml}${descHtml}${sourceHtml}${x.category === "축제" ? `<p class="verify">📌 축제 기간 중 현장 프로그램·부대행사는 일정이 바뀌거나 추가될 수 있어요. 방문 전 ${esc(x.sponsor || "주최 기관")} 공식 공지를 확인해 주세요.</p>` : ""}` +
+    `${programHtml}${descHtml}${sourceHtml}` +
     `<p>${urlBtn}<a class="btn" target="_blank" rel="noopener" href="${mapLink(x.venue || x.address || x.title)}">지도 ↗</a></p>` +
     `${calButtons(x)}` +
     `<p class="btnRow" style="margin-top:4px">${shareBtn("e", x.id, "📤 친구에게 보내기")}${reportBtn("e", x.id)}</p>`;
@@ -6587,51 +6765,6 @@ function applyKidsMuseumBoost(list) {
   }
   return list;
 }
-/* ───────── 🌳 시설 별칭 검색 · 소규모 프로그램 안내 (2026-10-21 확인) ─────────
-   - 통합 이후 이름이 바뀐 시설(광주시립수목원 → 광주수목원)도 옛 이름·지명으로 검색되게 별칭을 붙인다.
-   - 시가 직영하는 곳은 숲해설·체험 같은 작은 프로그램을 시 홈페이지·바로예약에만 올리는 경우가 많아
-     앱에 다 못 담을 수 있다 → 카드에 '방문 전 문의' 안내를 붙인다.
-   - 같은 이름이 이미 있으면 빈 칸만 채우고, 별칭은 더하기만 한다. 없으면(수목원) 새로 넣는다.
-   - 연락처 출처: 한국관광공사 관광정보(ktriptips, 2026-06 갱신분) */
-const FACILITY_NOTES = [
-  { re: /광주(시립)?수목원/, aliases: ["광주수목원", "광주시립수목원", "시립수목원", "광주광역시립수목원", "양과동 수목원", "남구 수목원", "수목원"],
-    phone: "062-613-7864", prog: "숲해설·생태체험", where: "시 홈페이지 '바로예약'을",
-    add: { id: "add-gj-arboretum", name: "광주수목원", kind: "공원·정원", district: "남구", address: "광주 남구 도동길 142", phone: "062-613-7864",
-      hours: "09:00–18:00 (방문자센터·전시온실은 1시간 전 입장마감)", closed: "방문자센터·전시온실: 월요일 · 1월 1일 · 설·추석 연휴", price: "무료", parking: "무료",
-      kids: "숲해설·주말 생태탐험(곤충·열매 관찰) · 전시온실", inout: "실내·야외", url: "https://www.gwangju.go.kr/",
-      desc: "옛 광역위생매립장 주변 훼손지를 숲으로 되살린 광주 1호 공립수목원이에요(옛 이름 광주시립수목원). 전시온실이 있어 추운 날에도 식물을 볼 수 있고, 주말 숲해설·생태체험이 자주 열려요." } },
-  { re: /호수생태원/, aliases: ["광주호 호수생태원", "호수생태원", "광주호생태원", "광주 지방정원"],
-    phone: "062-613-7891", prog: "생태관찰·숲길 해설", where: "시 홈페이지를" },
-  { re: /우치(공원)?동물원|^우치공원$/, aliases: ["우치동물원", "우치공원 동물원", "광주동물원", "우치공원"],
-    phone: "062-613-5855", prog: "동물생태해설·방학 동물교실", where: "우치공원 누리집을" },
-  { re: /역사민속박물관|시립민속박물관/, aliases: ["광주역사민속박물관", "광주시립민속박물관", "시립민속박물관", "민속박물관"],
-    phone: "062-613-5378", prog: "교육·체험 프로그램·기획전 연계 행사", where: "박물관 누리집을" },
-  { re: /^광주시립미술관$/, aliases: ["시립미술관", "광주미술관", "광주시립어린이미술관", "어린이미술관"],
-    phone: "", prog: "전시 해설·어린이 미술 강좌", where: "미술관 누리집을" },
-];
-function smallProgNote(f, v) {
-  const tel = (v && v.phone) || f.phone;
-  return `${f.prog} 등 소규모 프로그램이 수시로 열려요. 앱에 다 담기지 않을 수 있으니 방문 전 ${tel ? `문의(${tel})하거나 ` : ""}${f.where} 확인해 주세요.`;
-}
-function applyFacilityNotes(list) {
-  list = Array.isArray(list) ? list.slice() : [];
-  for (const f of FACILITY_NOTES) {
-    let hit = false;
-    list = list.map(v => {
-      const nm = norm(v.name || "");
-      if (!f.re.test(nm) && !(v.aliases || []).some(a => f.re.test(norm(a)))) return v;
-      hit = true;
-      const o = { ...v, aliases: [...new Set([...(v.aliases || []), ...f.aliases].filter(a => norm(a) !== nm))] };
-      if (BLANKISH(o.phone) && f.phone) o.phone = f.phone;
-      o.smallNote = smallProgNote(f, o);
-      return o;
-    });
-    if (!hit && f.add) list.push({ lat: null, lng: null, image: "", verified: "2026-10-21", infoSource: "한국관광공사 관광정보·시 누리집", ...f.add,
-      aliases: f.aliases.filter(a => norm(a) !== norm(f.add.name)), smallNote: smallProgNote(f, f.add) });
-  }
-  return list;
-}
-const smallProgLine = v => v && v.smallNote ? `<small class="goLine smallProg">📌 ${esc(v.smallNote)}</small>` : "";
 /* 🐶 반려동물 동반 정보 (한국문화정보원 「전국 반려동물 동반 가능 문화시설」 공공데이터 · docs/data/pet_public.json)
    박물관·미술관·문예회관·여행지(공원·관광지)만 장소에 붙인다. 이름이 맞고 가까울 때만 — 잘못 붙이느니 안 붙인다. */
 function attachPetInfo(list, pet) {
@@ -6955,7 +7088,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.66 (10.21)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.65 (10.22)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -7093,7 +7226,7 @@ initNav();
   const startMin=exactTime&&tripStartFromText(sentence)!=null?tripStartFromText(sentence):(/지금|바로|당장/.test(sentence)||when==='시간 미지정')?tripNowMin():({오전:600,오후:840,저녁:1080,하루:600})[when]??tripNowMin();
   const durM=sentence.match(/(\d{1,2})\s*시간/), durMin=durM?+durM[1]*60:/반나절/.test(sentence)?300:/하루/.test(sentence)?600:180;
   const originC=tripOriginCoord(origin);
-  const rainy=/비\s*오|비가|비\s*와|우천|실내/.test(sentence)||(typeof WEATHER!=='undefined'&&WEATHER&&isToday&&WEATHER.pp>=60);
+  const rainy=/비\s*오|비가|비\s*와|우천|실내/.test(sentence)||(typeof WEATHER!=='undefined'&&WEATHER&&isToday&&wxRainy());
   const kindOfO=o=>o.kind==='food'?'food':o.kind==='cafe'?'cafe':o.kind==='event'?'event':'venue';
   const shown=new Set(); let lastStop=null; // 묶어서 가는 코스: 앞에서 고른 곳을 보고 나온 시각 기준으로 다음 곳 판정
   const bundle=/묶|코스|가까운|근처|같이|하고|이어서/.test(sentence);
@@ -7222,15 +7355,8 @@ html body .mi7Head .mi7Han{font-style:normal;font-size:.8em;margin-left:2px;colo
 html body nav.bottom{transition:transform .28s ease,opacity .28s ease}
 html body nav.bottom.navAway{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
 html body.modal-open nav.bottom,html body:has(#modal.show) nav.bottom,html body:has(.exitAsk.show) nav.bottom{display:none!important}
-/* 숨었을 때 아래 가운데에 작은 손잡이 탭이 남음 → 누르면 메뉴가 다시 올라옴 (오른쪽 '빠른 메뉴'와 같은 색) */
-.navPeek{position:fixed;z-index:101;left:50%;bottom:0;transform:translate(-50%,100%);display:flex;align-items:flex-start;justify-content:center;min-height:0!important;width:56px;height:calc(13px + env(safe-area-inset-bottom,0px));padding:1px 0 0;border:0;border-radius:10px 10px 0 0;background:rgba(19,124,116,.85);color:#fff;font:inherit;box-shadow:0 -2px 8px rgba(18,33,28,.18);opacity:0;pointer-events:none;cursor:pointer;touch-action:manipulation;transition:transform .28s ease,opacity .28s ease}
-.navPeek::before{content:"";position:absolute;left:-14px;right:-14px;top:-18px;bottom:0}
-.navPeek .npArrow{font-size:11px;line-height:11px;font-weight:900;animation:npBob 1.6s ease-in-out infinite}
-@keyframes npBob{50%{transform:translateY(-1px)}}
-body.navHidden .navPeek{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
-.navPeek:focus-visible{outline:3px solid #f5a524;outline-offset:2px}
-@media(min-width:900px){.navPeek{display:none}}
-@media(prefers-reduced-motion:reduce){.navPeek .npArrow{animation:none}}
+.navPeek{position:fixed;z-index:49;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:54px;height:6px;border-radius:99px;background:rgba(24,42,36,.35);opacity:0;transition:opacity .28s;pointer-events:none}
+body.navHidden .navPeek{opacity:1}
 body:has(#modal.show) .navPeek,body:has(.exitAsk.show) .navPeek{display:none}
 /* 나가기 확인창: 작고 가운데에 */
 html body .exitAsk{align-items:center;padding:24px}
@@ -7240,7 +7366,7 @@ html body .exitBox p{font-size:12.5px;margin:6px 0 12px}
 html body .exitBox div{gap:6px}
 html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 </style>
-<button type="button" class="navPeek" aria-label="아래 메뉴 다시 보기"><span class="npArrow" aria-hidden="true">︿</span></button>
+<div class="navPeek" aria-hidden="true"></div>
 <style id="sysNavContrast">
 /* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
    어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
@@ -7265,11 +7391,8 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
     lastY = y;
   }, { passive: true });
   // 화면을 톡 치면(버튼·링크 말고 빈 곳) 다시 나타남
-  const peek = document.querySelector(".navPeek");
-  if (peek) peek.addEventListener("click", e => { e.stopPropagation(); show() });
   addEventListener("click", e => {
     if (nav.contains(e.target)) { show(); return }
-    if (peek && peek.contains(e.target)) return;
     if (document.body.classList.contains("navHidden") && !e.target.closest("a,button,input,select,textarea,label,[onclick],.leaflet-container")) show();
   }, true);
 })();
@@ -8345,7 +8468,7 @@ html:where([data-theme="dark"]),:where(:root[data-theme="dark"]) body{background
 :where(:root[data-theme="dark"]) .manualItem p{color:#a2b1aa}
 :where(:root[data-theme="dark"]) .manualNote{color:#a2aca6;border-top:1px solid #414341}
 html:where([data-theme="dark"]) body .mi7Head .mi7Han{color:#f2937d}
-:where(:root[data-theme="dark"]) .navPeek{background:#2f6b5e;box-shadow:0 -4px 14px rgba(0,0,0,.5)}
+:where(:root[data-theme="dark"]) .navPeek{background:rgba(24,42,36,.35)}
 html:where([data-theme="dark"]) body .exitBox{box-shadow:0 12px 32px rgba(0,0,0,0.484)}
 :where(:root[data-theme="dark"]) #moreHome>.moreHomeBtn{border:1.5px dashed rgba(29,75,57,.28);background:rgba(32,32,32,0.7);color:var(--green-d,#94cdc7)}
 :where(:root[data-theme="dark"]) #moreHome>.moreHomeBtn small{color:var(--muted)}
@@ -8923,23 +9046,4 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
   window.runDetailedNaturalQuery = q => window.guidePlan(q);
 })();
 </script>
-
-<style id="nowTabsTidy">
-/* 오늘·내일·주말 3칸, 종류 5칸: 같은 크기로 한 줄씩 (이름 · 날짜/아이콘 · 개수) */
-html body .nowSeg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:100%;flex-wrap:nowrap;border-radius:16px;padding:4px}
-html body .nowSeg button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;padding:7px 4px;border-radius:12px;line-height:1.2;text-align:center}
-html body .nowSeg button .nsDay{font-size:14.5px;font-weight:800}
-html body .nowSeg button small{font-size:11.5px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-html body .nowSeg button b{margin:2px 0 0;font-size:16px;font-weight:900}
-html body .nowChips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;flex-wrap:nowrap}
-html body .nowChips button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;padding:7px 2px;border-radius:14px;font-size:12.5px;line-height:1.2;text-align:center}
-html body .nowChips button i{font-style:normal;font-size:17px;line-height:1.1}
-html body .nowChips button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;font-weight:750}
-html body .nowChips button b{margin:0;font-size:14px;font-weight:900}
-@media(min-width:760px){html body .nowChips{grid-template-columns:repeat(5,minmax(0,140px))}html body .nowChips button{flex-direction:row;gap:5px;padding:9px 10px;font-size:14px}}
-/* 카드 아래 버튼 3개가 카드 밖으로 밀려나지 않게 */
-html body .ncBtns{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:5px}
-html body .ncBtns button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-html body .ncBtns .visit{padding:0 7px;font-size:11.5px}
-</style>
 </body></html>
