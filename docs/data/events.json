@@ -2148,6 +2148,36 @@
     "origin": "manual"
   },
   {
+    "id": "gma-961",
+    "apiId": "961",
+    "category": "전시",
+    "subtype": "미술",
+    "title": "하정웅컬렉션전Ⅱ",
+    "venue": "하정웅미술관",
+    "venueId": "hajungwoong",
+    "district": "서구",
+    "address": "광주 서구 상무대로 1165",
+    "date": "10.20 — 11.29",
+    "start": "2026-10-20",
+    "end": "2026-11-29",
+    "time": "운영시간·휴관일은 누리집 확인",
+    "price": "무료",
+    "status": "진행중",
+    "image": "https://gjartmuse.jeonnam-gwangju.go.kr/upload/pj/PJ_EXHIBIT/1792571787063449.jpg",
+    "imageCredit": "광주시립미술관",
+    "source": "광주시립미술관 누리집",
+    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjExhibit.php?pageID=artmuse0209000000&action=view&exhiCd=002&exhiTp=N&lang=KOR&eSeq=961",
+    "tags": [
+      "전시",
+      "미술",
+      "실내",
+      "무료"
+    ],
+    "origin": "auto",
+    "api": "gma",
+    "verified": "2026-10-21"
+  },
+  {
     "detailAt": "2026-10-13",
     "id": "kopis-PF303139",
     "apiId": "PF303139",
