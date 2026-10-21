@@ -3142,7 +3142,7 @@ function nowRow(e, h, iso) {
    <div class="ncPic"${bg(img)}>${img ? `<i class="ncBlur"${bg(img)}></i><i class="ncFull"${bg(img)}></i>` : ""}<span class="ncIcon">${ic}</span><span class="ncCat">${cat}</span>${last ? `<span class="ncHot">${NOW_WHEN ? `${dd}일(${dayName}) 마지막 날` : "오늘 마지막 날!"}</span>` : dl != null && dl <= 14 ? `<span class="ncHot">D-${dl}</span>` : ""}</div>
    <div class="ncBody"><b>${esc(e.title)}</b><small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
     <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags"><em class="t-${tk[0]}">${esc(tk[1])}</em>${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">🍽 코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
 }
 function nowMarket(v, iso, night) {
   const dayName = DAYC[isoDow(iso)];
@@ -3151,7 +3151,7 @@ function nowMarket(v, iso, night) {
    <div class="ncBody"><b>${esc(v.name)}</b><small class="ncVenue">📍 ${esc(v.district)}</small>
     <small class="ncTime">📅 ${Number(iso.slice(5, 7))}.${Number(iso.slice(8))}(${dayName}) ${night ? esc(night[1]) : "장 서요 · 오전이 활기차요"}</small>${parkLine(v)}
     <div class="ncTags"><em class="free">입장 무료</em>${(v.market.eats || []).slice(0, 2).map(x => `<em>😋 ${esc(x)}</em>`).join("")}</div>
-    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 탭에서 보기 →</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div></div></article>`;
+    <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="showTab('markets')">시장 보기</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div></div></article>`;
 }
 /* 한 달 안에 열리는 축제: 날짜가 나온 축제 + 해마다 이맘때 열리는데 아직 날짜가 안 나온 축제(예상)
    자동 수집으로 날짜가 들어오면 '예상' 줄은 저절로 진짜 일정으로 바뀌고, 축제가 끝나면 저절로 사라져요. */
@@ -3185,14 +3185,15 @@ function renderNowShow() {
   const shown = sorted.filter(x => !cat[1] || x.k === cat[1] || (cat[1] === "fe" && x.k === "sp"));
   const MAXN = window.NOW_MORE ? 24 : 8, list = shown.slice(0, MAXN);   // 홈에서는 8건만 먼저, 더 보기로 24건
   const wk = weekendDates(), md = s => `${Number(s.slice(5, 7))}.${Number(s.slice(8))}`;
-  const labels = [`오늘 ${md(t0)}(${DAYC[isoDow(t0)]})`, `내일${HOLIDAYS[isoPlus(1)] ? "(휴일)" : ""}`, `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`];
+  const t1 = isoPlus(1);
+  const labels = [["오늘", `${md(t0)} ${DAYC[isoDow(t0)]}`], ["내일", `${md(t1)} ${DAYC[isoDow(t1)]}${HOLIDAYS[t1] ? " · 휴일" : ""}`], ["이번 주말", wk.length > 1 ? `${md(wk[0])}~${wk[0].slice(5,7) === wk[1].slice(5,7) ? Number(wk[1].slice(8)) : md(wk[1])} ${wk.map(d => DAYC[isoDow(d)]).join("·")}` : `${md(wk[0])} ${DAYC[isoDow(wk[0])]}`]];
   const counts = [0, 1, 2].map(n => n === NOW_WHEN ? items.length : nowItems(nowDates(n)).length);
   const label = ["오늘", "내일", "이번 주말"][NOW_WHEN];
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
   el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
-    <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})">${x} <b>${counts[i]}</b></button>`).join("")}</div></div>
-   <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
+    <div class="seg nowSeg">${labels.map(([d, sub], i) => `<button class="${i === NOW_WHEN ? "on" : ""}" onclick="setNowWhen(${i})" aria-label="${d} ${sub} ${counts[i]}건"><span class="nsDay">${d}</span><small>${esc(sub)}</small><b>${counts[i]}</b></button>`).join("")}</div></div>
+   <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')" aria-label="${c} ${n}건"><i>${k ? NK[k][0] : "✦"}</i><span>${c}</span><b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > MAXN ? (MAXN < 24 ? `<button type="button" class="nowMoreBtn" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${Math.min(shown.length, 24) - MAXN}건 더 보기 ▾</button>` : `<p class="nowNote">더 있어요 ${shown.length - MAXN}건 — 위에서 종류를 골라 좁혀 보세요.</p>`) : ""}
    <button type="button" class="nowAllBtn" onclick="showTab('events')">📅 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
@@ -8912,4 +8913,23 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
   window.runDetailedNaturalQuery = q => window.guidePlan(q);
 })();
 </script>
+
+<style id="nowTabsTidy">
+/* 오늘·내일·주말 3칸, 종류 5칸: 같은 크기로 한 줄씩 (이름 · 날짜/아이콘 · 개수) */
+html body .nowSeg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;width:100%;flex-wrap:nowrap;border-radius:16px;padding:4px}
+html body .nowSeg button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;padding:7px 4px;border-radius:12px;line-height:1.2;text-align:center}
+html body .nowSeg button .nsDay{font-size:14.5px;font-weight:800}
+html body .nowSeg button small{font-size:11.5px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+html body .nowSeg button b{margin:2px 0 0;font-size:16px;font-weight:900}
+html body .nowChips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;flex-wrap:nowrap}
+html body .nowChips button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;padding:7px 2px;border-radius:14px;font-size:12.5px;line-height:1.2;text-align:center}
+html body .nowChips button i{font-style:normal;font-size:17px;line-height:1.1}
+html body .nowChips button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;font-weight:750}
+html body .nowChips button b{margin:0;font-size:14px;font-weight:900}
+@media(min-width:760px){html body .nowChips{grid-template-columns:repeat(5,minmax(0,140px))}html body .nowChips button{flex-direction:row;gap:5px;padding:9px 10px;font-size:14px}}
+/* 카드 아래 버튼 3개가 카드 밖으로 밀려나지 않게 */
+html body .ncBtns{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:5px}
+html body .ncBtns button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html body .ncBtns .visit{padding:0 7px;font-size:11.5px}
+</style>
 </body></html>
