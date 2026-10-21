@@ -156,7 +156,11 @@ def match_venue(name, addr=""):
     if len(n) < 3:
         return None
     best = None
+    ad = district_from_addr(addr)
     for v in VENUES:
+        vd = v.get("district") or district_from_addr(v.get("address", ""))
+        if ad and vd and ad != vd:
+            continue                              # 이름이 비슷해도 다른 시·군이면 다른 곳 ('영암군립 하정웅미술관' ≠ 광주 '하정웅미술관')
         names = [v.get("name", "")] + (v.get("aliases") or [])
         for cand in names:
             c = norm_title(cand)
