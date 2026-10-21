@@ -1013,6 +1013,11 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .wtItem span{display:block;font-size:12.5px;color:var(--muted);line-height:1.4}
 .wtItem.must{border-color:#f3a48f;background:#fff4ef}
 .wtItem.must b{color:#c2401f}
+.wtMustJump{flex-shrink:0;border:1.5px solid #f3a48f;background:#fff4ef;color:#b2391f;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer}
+.wtMustJump b{font-size:15px;margin:0 1px}
+:root[data-theme="dark"] .wtMustJump{background:#2a1a15;border-color:#66443b;color:#f0927c}
+.wtItem.must.flash{animation:wtFlash 1.4s ease}
+@keyframes wtFlash{0%,100%{box-shadow:0 0 0 0 rgba(239,91,60,0)}30%{box-shadow:0 0 0 5px rgba(239,91,60,.35)}}
 .wx{cursor:pointer}
 .wxFail,.wtLoading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
 .wxFail>div:nth-child(2){flex:1;min-width:190px}
@@ -2977,13 +2982,19 @@ function renderWxTips() {
   const mustN = tips.filter(t => t.must).length;
   const head = snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? "날 좋네잉, 나들이 가기 딱이여" : "무난한 날씨, 편하게 나가쇼";
   el.classList.remove("hidden");
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div>${mustN ? `<button type="button" class="wtMustJump" onclick="wxMustJump()" aria-label="꼭 챙길 것 ${mustN}개 보기">꼭 챙길 것 <b>${tips.filter(t => t.must).map(t => t.i).join(" ")}</b> 보기 ↓</button>` : ""}</div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
   <div class="wtStats">${stats.map(([l, v, k]) => `<span class="${k || ""}"><small>${l}</small><b>${v}</b></span>`).join("")}</div>
   <div class="wtGrid">
    <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 아침저녁은 ${W.min}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
   </div>`;
+  window.wxMustJump = () => {
+    const first = el.querySelector(".wtItem.must"); if (!first) return;
+    const hh = document.querySelector("header.top")?.offsetHeight || 0;
+    window.scrollTo({ top: Math.max(0, first.getBoundingClientRect().top + window.scrollY - hh - 16), behavior: "smooth" });
+    el.querySelectorAll(".wtItem.must").forEach(m => { m.classList.remove("flash"); void m.offsetWidth; m.classList.add("flash") });
+  };
   WX_SHORT = [wear.split("·")[0], ...tips.filter(t => t.must).map(t => t.i)].join(" ");
 }
 
