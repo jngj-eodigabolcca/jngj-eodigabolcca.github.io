@@ -9502,4 +9502,20 @@ window.openRightsAndLicenses=function(){
 @media(prefers-reduced-motion:reduce){html body #bottomQuickShell{transition:none!important}}
 </style>
 
+
+<style id="bottomQuickDefinitiveFix">
+@media(max-width:899px){
+ html body #bottomQuickShell{position:fixed!important;z-index:150!important;left:50%!important;right:auto!important;bottom:env(safe-area-inset-bottom,0px)!important;top:auto!important;width:calc(100% - 12px)!important;max-width:520px!important;height:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;transform:translate(-50%,calc(100% - 22px))!important;transition:transform .25s ease!important;overflow:visible!important;pointer-events:auto!important}
+ html body #bottomQuickShell.is-open{transform:translate(-50%,0)!important}
+ html body #bottomQuickShell nav.bottom,html body #bottomQuickShell nav.bottom.navAway,html body #bottomQuickShell nav.bottom:not(.navAway){display:grid!important;position:relative!important;visibility:visible!important;opacity:1!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:100%!important;height:64px!important;min-height:64px!important;max-height:64px!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:54px!important;grid-auto-flow:row!important;gap:2px!important;padding:4px!important;margin:0!important;overflow:hidden!important;border-radius:14px 14px 0 0!important;box-sizing:border-box!important;background:#19483e!important;white-space:nowrap!important}
+ html body #bottomQuickShell nav.bottom >button,html body #bottomQuickShell nav.bottom >button.navHome{display:flex!important;position:relative!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;min-width:0!important;max-width:none!important;width:100%!important;height:54px!important;min-height:54px!important;max-height:54px!important;margin:0!important;padding:2px 0!important;gap:3px!important;overflow:hidden!important;font-size:19px!important;line-height:21px!important;visibility:visible!important;opacity:1!important;box-sizing:border-box!important;flex:none!important}
+ html body #bottomQuickShell nav.bottom >button span{display:block!important;visibility:visible!important;opacity:1!important;width:100%!important;margin:0!important;font-size:clamp(8px,2.35vw,10px)!important;line-height:12px!important;text-align:center!important;overflow:hidden!important;text-overflow:clip!important;white-space:nowrap!important}
+ html body #bottomQuickShell nav.bottom .navHomeIcon{display:block!important;visibility:visible!important;opacity:1!important;width:20px!important;height:20px!important}
+ html body #bottomQuickShell .navPeek,html body #bottomQuickShell.is-open .navPeek,html body.navExpanded #bottomQuickShell .navPeek{display:flex!important;position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;margin:0!important;width:104px!important;height:31px!important;min-height:31px!important;max-height:31px!important;box-sizing:border-box!important;border-radius:0 0 12px 12px!important;justify-content:center!important;align-items:center!important;background:#19483e!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+ html body #bottomQuickShell .navPeek::after{content:'⌃'!important}
+ html body #bottomQuickShell.is-open .navPeek::after{content:'⌄'!important}
+ html body #bottomQuickShell:not(.is-open) nav.bottom{pointer-events:none!important}
+ html body.modal-open #bottomQuickShell,html body:has(#modal.show) #bottomQuickShell,html body:has(.exitAsk.show) #bottomQuickShell{display:none!important}
+}
+</style>
 </body></html>
