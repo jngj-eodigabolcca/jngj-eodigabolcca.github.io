@@ -7623,32 +7623,29 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 <div class="sysNavBack" aria-hidden="true"></div>
 <script id="navAutoHideScript">
 (function(){
- const nav=document.querySelector('nav.bottom');
- const handle=document.querySelector('.navPeek');
+ const nav=document.querySelector('nav.bottom'),handle=document.querySelector('.navPeek');
  if(!nav||!handle)return;
  nav.id='bottomNav';
+ // 아이콘 위 / 손잡이 아래: 두 부분이 항상 하나로 이동하도록 묶는다.
+ const shell=document.createElement('div');shell.id='bottomQuickShell';
+ nav.parentNode.insertBefore(shell,nav);shell.append(nav,handle);
  let opened=false;
- const updateSize=()=>document.body.style.setProperty('--bottom-quick-height',nav.getBoundingClientRect().height+'px');
- const setOpen=(value)=>{
+ function setOpen(value){
   opened=!!value;
-  updateSize();
+  shell.classList.toggle('is-open',opened);
   nav.classList.toggle('navAway',!opened);
   document.body.classList.toggle('navExpanded',opened);
   document.body.classList.toggle('navHidden',!opened);
   handle.setAttribute('aria-expanded',String(opened));
   handle.setAttribute('aria-label',opened?'하단 빠른메뉴 접기':'하단 빠른메뉴 열기');
   nav.setAttribute('aria-hidden',String(!opened));
-  nav.querySelectorAll('button').forEach(btn=>{btn.tabIndex=opened?0:-1;});
- };
+  nav.querySelectorAll('button').forEach(btn=>{btn.tabIndex=opened?0:-1});
+ }
  setOpen(false);
  handle.addEventListener('click',()=>setOpen(!opened));
  nav.addEventListener('click',e=>{if(e.target.closest('button'))setOpen(false)});
- document.addEventListener('pointerdown',e=>{
-  if(opened&&!nav.contains(e.target)&&!handle.contains(e.target))setOpen(false);
- },{passive:true});
+ document.addEventListener('pointerdown',e=>{if(opened&&!shell.contains(e.target))setOpen(false)},{passive:true});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);handle.focus()}});
- window.addEventListener('resize',updateSize,{passive:true});
- if(window.ResizeObserver)new ResizeObserver(updateSize).observe(nav);
 })();
 </script>
 <script id="visitCount">
@@ -9438,88 +9435,71 @@ window.openRightsAndLicenses=function(){
 
 
 <style id="bottomQuickUnified20261022">
-/* 하단 고정 빠른메뉴: 우측 빠른메뉴와 같은 가장자리 탭/터치 펼침 패턴 */
+/* 빠른메뉴: 우측 메뉴의 세로 버전. 아이콘이 위, 버튼이 아래, 두 요소가 함께 슬라이드. */
 @media(max-width:899px){
- html body nav.bottom,
- html body nav.bottom.navAway,
- html body nav.bottom:not(.navAway){
-  position:fixed!important;z-index:100!important;
-  box-sizing:border-box!important;
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  grid-auto-rows:48px!important;
-  align-items:stretch!important;justify-items:stretch!important;
-  left:50%!important;right:auto!important;
-  bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;
-  width:min(294px,calc(100vw - 28px))!important;
-  max-width:calc(100vw - 28px)!important;
-  height:auto!important;min-height:0!important;
-  padding:8px!important;gap:5px!important;
-  border:1px solid rgba(255,255,255,.23)!important;
-  border-radius:17px!important;
-  background:rgba(25,66,57,.97)!important;
-  box-shadow:0 12px 26px rgba(0,0,0,.20)!important;
-  overflow:hidden!important;
-  transition:opacity .20s ease,transform .24s ease,visibility .24s ease!important;
+ html body #bottomQuickShell{
+  position:fixed!important;left:50%!important;bottom:calc(0px + env(safe-area-inset-bottom,0px))!important;
+  z-index:105!important;width:calc(100vw - 12px)!important;max-width:520px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  box-sizing:border-box!important;transform:translate(-50%,calc(100% - 14px))!important;
+  transition:transform .28s cubic-bezier(.2,.7,.2,1)!important;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.16));
  }
- html body nav.bottom.navAway{
-  transform:translate(-50%,calc(100% + 36px))!important;
-  visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+ html body #bottomQuickShell.is-open{transform:translate(-50%,0)!important}
+ html body #bottomQuickShell nav.bottom,
+ html body #bottomQuickShell nav.bottom.navAway,
+ html body #bottomQuickShell nav.bottom:not(.navAway){
+  position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  display:grid!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+  transform:none!important;transition:none!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:50px!important;
+  grid-auto-flow:row!important;white-space:nowrap!important;grid-auto-rows:50px!important;
+  gap:3px!important;padding:5px!important;margin:0!important;
+  flex:none!important;align-items:stretch!important;justify-items:stretch!important;
+  box-sizing:border-box!important;border-radius:15px 15px 0 0!important;
+  overflow:visible!important;background:#19483e!important;border:1px solid rgba(255,255,255,.25)!important;
  }
- html body nav.bottom:not(.navAway){
-  transform:translate(-50%,0)!important;
-  visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+ html body #bottomQuickShell nav.bottom > button,
+ html body #bottomQuickShell nav.bottom > button.navHome{
+  position:relative!important;display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  height:50px!important;min-height:50px!important;max-height:50px!important;
+  padding:3px 0!important;margin:0!important;box-sizing:border-box!important;
+  border:0!important;border-radius:9px!important;gap:2px!important;
+  background:rgba(255,255,255,.08)!important;color:#fff!important;
+  font-size:18px!important;line-height:21px!important;text-align:center!important;
+  white-space:nowrap!important;overflow:hidden!important;
  }
- html body nav.bottom button,
- html body nav.bottom button.navHome{
-  box-sizing:border-box!important;
-  display:flex!important;flex-direction:column!important;
-  align-items:center!important;justify-content:center!important;
-  width:100%!important;min-width:0!important;
-  height:48px!important;min-height:48px!important;max-height:48px!important;
-  margin:0!important;padding:3px 2px!important;gap:3px!important;
-  background:rgba(255,255,255,.06)!important;
-  color:#fff!important;border:0!important;border-radius:10px!important;
-  font-size:17px!important;line-height:19px!important;
-  text-align:center!important;white-space:nowrap!important;
+ html body #bottomQuickShell nav.bottom > button.on{background:rgba(255,255,255,.20)!important}
+ html body #bottomQuickShell nav.bottom > button span{
+  display:block!important;width:100%!important;max-width:100%!important;
+  font-size:clamp(8px,2.5vw,10px)!important;line-height:13px!important;white-space:nowrap!important;
+  overflow:visible!important;text-align:center!important;margin:0!important;padding:0!important;color:#fff!important;
  }
- html body nav.bottom button.on{background:rgba(255,255,255,.19)!important}
- html body nav.bottom button span,
- html body nav.bottom button.on span{
-  display:block!important;width:100%!important;min-width:0!important;
-  margin:0!important;color:#fff!important;
-  text-align:center!important;white-space:nowrap!important;
-  font-size:10.5px!important;line-height:13px!important;font-weight:700!important;
-  letter-spacing:-.03em!important;
+ html body #bottomQuickShell nav.bottom .navHomeIcon{display:block!important;width:18px!important;height:18px!important;object-fit:contain!important;margin:0 auto!important}
+ html body #bottomQuickShell .navPeek,
+ html body #bottomQuickShell.is-open .navPeek,
+ html body.navExpanded #bottomQuickShell .navPeek{
+  position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  transform:none!important;display:flex!important;visibility:visible!important;
+  flex:none!important;align-items:center!important;justify-content:center!important;
+  width:96px!important;height:29px!important;min-height:29px!important;
+  margin:0!important;padding:0 8px!important;gap:5px!important;
+  border-radius:0 0 11px 11px!important;background:#19483e!important;color:#fff!important;
+  border:1px solid rgba(255,255,255,.25)!important;border-top:0!important;
+  box-sizing:border-box!important;font-size:11px!important;line-height:1!important;
+  transition:none!important;cursor:pointer!important;
  }
- html body nav.bottom .navHomeIcon{display:block!important;width:18px!important;height:18px!important;object-fit:contain!important;margin:0 auto!important}
- html body .navPeek{
-  position:fixed!important;z-index:101!important;left:50%!important;
-  bottom:calc(0px + env(safe-area-inset-bottom,0px))!important;
-  transform:translateX(-50%)!important;
-  width:82px!important;height:24px!important;
-  min-height:24px!important;padding:0 6px!important;
-  box-sizing:border-box!important;
-  border-radius:11px 11px 0 0!important;
-  background:#19483e!important;color:#fff!important;
-  border:1px solid rgba(255,255,255,.25)!important;
-  box-shadow:0 -2px 8px rgba(0,0,0,.13)!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  gap:4px!important;font-size:10px!important;line-height:1!important;
-  transition:bottom .24s ease!important;
- }
- html body.navExpanded .navPeek{
-  bottom:calc(var(--bottom-quick-height,124px) + 8px + env(safe-area-inset-bottom,0px))!important;
-  border-radius:10px 10px 0 0!important;
- }
- html body:has(#modal.show) nav.bottom,
- html body:has(.exitAsk.show) nav.bottom,
- html body.modal-open nav.bottom,
- html body:has(#modal.show) .navPeek,
- html body:has(.exitAsk.show) .navPeek,
- html body.modal-open .navPeek{display:none!important}
+ html body #bottomQuickShell .navPeek::after{content:'⌃'!important}
+ html body #bottomQuickShell.is-open .navPeek::after{content:'⌄'!important}
+ html body #bottomQuickShell:not(.is-open) nav.bottom{pointer-events:none!important}
+ html body:has(#modal.show) #bottomQuickShell,html body:has(.exitAsk.show) #bottomQuickShell,html body.modal-open #bottomQuickShell{display:none!important}
 }
-@media(prefers-reduced-motion:reduce){html body nav.bottom,html body .navPeek{transition:none!important}}
+@media(min-width:900px){#bottomQuickShell{display:contents!important}#bottomQuickShell .navPeek{display:none!important}}
+@media(prefers-reduced-motion:reduce){html body #bottomQuickShell{transition:none!important}}
 </style>
 
 </body></html>
