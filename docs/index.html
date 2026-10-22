@@ -7796,11 +7796,12 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 <aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-rightjump="today">📅 오늘 열리는 것</button>
-  <button type="button" data-rightjump="weekend">🗓 주말에 열리는 것</button>
-  <button type="button" data-rightjump="weather">🌤 오늘 날씨</button>
+  <button type="button" data-rightjump="today">📅 오늘 뭐하지</button>
+  
+  <button type="button" data-rightjump="weather">🌤 날씨</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
-  <button type="button" data-rightjump="favorites">♡ 찜</button>
+  <button type="button" data-rightjump="markets">🛒 시장</button>
+  <button type="button" data-rightjump="local">📚 동네도서관</button>
  </div>
 </aside>
 <script id="rightQuickScript">
@@ -7808,20 +7809,20 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  const rail=document.getElementById('rightQuick'), toggle=document.getElementById('rightQuickToggle');
  if(!rail||!toggle)return;
  let timeout, tabTimer;
- // 탭 보이기/숨기기: 터치하면 4초 동안 보였다가 다시 숨음 (메뉴가 펼쳐져 있으면 숨지 않음)
+ // 오른쪽 메뉴: 조작 후 약 3초면 펼친 메뉴도 닫히고 손잡이도 현재처럼 숨김
  function hideRail(){clearTimeout(tabTimer);if(rail.classList.contains('isCollapsed'))rail.classList.add('rqHidden')}
- function showRail(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideRail,ms||4000)}
- function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);showRail(2500)}
- function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,8000)}
+ function showRail(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideRail,ms||3000)}
+ function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);clearTimeout(tabTimer);rail.classList.add('rqHidden')}
+ function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,3000)}
  showRail(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
  let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed')&&e.clientX>innerWidth-70)showRail()},true);   // 화면 오른쪽 끝을 만질 때만 손잡이를 꺼냄 (아무 데나 누를 때마다 나와서 카드를 덮지 않게)
  let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showRail();else if(d>6&&Date.now()-touchAt>800)hideRail();lastY=scrollY},{passive:true});
- rail.addEventListener('scroll',()=>{if(!rail.classList.contains('isCollapsed')){clearTimeout(timeout);timeout=setTimeout(close,8000)}},true);
+ rail.addEventListener('scroll',()=>{if(!rail.classList.contains('isCollapsed')){clearTimeout(timeout);timeout=setTimeout(close,3000)}},true);
  toggle.addEventListener('click',()=>rail.classList.contains('isCollapsed')?open():close());
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=btn.dataset.rightjump;
    // 방문 통계: 빠른 메뉴에서 무엇을 눌렀는지 (GoatCounter 이벤트 '빠른메뉴-…')
-   try{const nm={today:'오늘',weekend:'주말',weather:'날씨',popshows:'대중공연',favorites:'찜',kids:'아이와',indoor:'실내',dayplan:'하루코스'}[target]||target;window.goatcounter?.count?.({path:'빠른메뉴-'+nm,title:'빠른 메뉴 · '+btn.textContent.trim(),event:true})}catch(e){}
+   try{const nm={today:'오늘',weekend:'주말',weather:'날씨',popshows:'대중공연',markets:'시장',local:'동네도서관',kids:'아이와',indoor:'실내',dayplan:'하루코스'}[target]||target;window.goatcounter?.count?.({path:'빠른메뉴-'+nm,title:'빠른 메뉴 · '+btn.textContent.trim(),event:true})}catch(e){}
    if(target==='kids'||target==='science'){
      showKids(target==='kids'?'전체':'과학·체험');
    }else if(target==='indoor'){
@@ -9509,18 +9510,24 @@ window.openRightsAndLicenses=function(){
  if(!nav||!handle)return;
  const dock=document.createElement('div');dock.id='quickDockV3';
  nav.before(dock);dock.append(nav,handle);nav.id='bottomNav';
- let open=false;
- function update(next){open=!!next;dock.classList.toggle('open',open);nav.classList.toggle('navAway',!open);
- document.body.classList.toggle('navExpanded',open);document.body.classList.toggle('navHidden',!open);
- nav.setAttribute('aria-hidden',String(!open));handle.setAttribute('aria-expanded',String(open));
- handle.setAttribute('aria-label',open?'빠른메뉴 접기':'빠른메뉴 펼치기');
- nav.querySelectorAll('button').forEach(b=>b.tabIndex=open?0:-1);
+ let open=false, awake=false, idleTimer;
+ function resetTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(()=>update(false,false),open?5000:3000)}
+ function update(nextOpen,nextAwake){
+  open=!!nextOpen;awake=!!nextAwake||open;
+  dock.classList.toggle('open',open);dock.classList.toggle('dockDormant',!awake);
+  nav.classList.toggle('navAway',!open);
+  document.body.classList.toggle('navExpanded',open);document.body.classList.toggle('navHidden',!open);
+  nav.setAttribute('aria-hidden',String(!open));handle.setAttribute('aria-expanded',String(open));
+  handle.setAttribute('aria-label',open?'빠른메뉴 접기':awake?'빠른메뉴 아이콘 펼치기':'빠른메뉴 표시하기');
+  nav.querySelectorAll('button').forEach(b=>b.tabIndex=open?0:-1);
+  resetTimer();
  }
- update(false);
- handle.addEventListener('click',()=>update(!open));
- nav.addEventListener('click',e=>{if(e.target.closest('button'))update(false)});
- document.addEventListener('pointerdown',e=>{if(open&&!dock.contains(e.target))update(false)},{passive:true});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&open)update(false)});
+ update(false,false);
+ handle.addEventListener('click',()=>{if(open)update(false,true);else if(awake)update(true,true);else update(false,true)});
+ nav.addEventListener('click',e=>{if(e.target.closest('button'))update(false,false)});
+ document.addEventListener('pointerdown',e=>{if(open&&!dock.contains(e.target))update(false,false)},{passive:true});
+ dock.addEventListener('pointerdown',()=>{if(open)resetTimer()},{passive:true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(open||awake))update(false,false)});
 })();
 </script>
 
@@ -9759,6 +9766,20 @@ html body .hero .photoCard .slideCap #dots{
   html body .hero .photoCard #wx{left:10px!important;bottom:10px!important;top:auto!important;max-width:63%!important;padding:8px 10px!important;}
   html body .hero .photoCard .slideCap #slideName{bottom:27px!important;max-width:35%!important;font-size:11px!important;}
   html body .hero .photoCard .slideCap #dots{bottom:0!important;}
+}
+</style>
+
+<style id="quickMenuTimeout20261023">
+@media(max-width:899px){
+ /* 접혔을 때는 하단으로 내려 작은 재진입 손잡이만 노출. 터치 영역은 유지 */
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{
+   transform:translateY(18px)!important;opacity:.76!important;
+   transition:transform .24s ease,opacity .24s ease!important;
+ }
+ html body #quickDockV3:not(.dockDormant) .navPeek{
+   transform:translateY(0)!important;opacity:1!important;
+   transition:transform .24s ease,opacity .24s ease!important;
+ }
 }
 </style>
 </body></html>
