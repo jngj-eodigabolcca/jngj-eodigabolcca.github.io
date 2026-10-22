@@ -1470,11 +1470,6 @@ html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:
   .wx small:last-child{display:block}
 }
 
-
-/* 동네서 시간 보내기: 지역 선택 버튼을 가로 스크롤 없이 한 화면 너비에 여러 줄 표시 */
-#localView .localDistrictChips{display:flex;flex-wrap:wrap;overflow-x:visible;overflow-y:visible;gap:7px;max-width:100%;scrollbar-width:auto}
-#localView .localDistrictChips button{flex:0 0 auto;white-space:nowrap;max-width:100%}
-@media(max-width:480px){#localView .localDistrictChips{gap:6px}#localView .localDistrictChips button{padding:6px 9px;font-size:12px}}
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -2798,7 +2793,7 @@ window.setRegion = r => {
   REGION = r; store.set("glm_region", r);
   // 다른 권역 출발지가 남아 있으면 이 권역 중심지로 (광주권인데 목포에서 출발로 계산하지 않게)
   if (typeof ORIGIN !== "undefined" && ORIGIN && ORIGIN_REGION[ORIGIN] !== r) { ORIGIN = null; try { localStorage.setItem("glm_origin", "null") } catch (e) {} }
-  PLACE_GROUP = "전체"; PLACE_GU = "전체"; KIDS_SUB = "전체"; KIDS_GU = "전체"; FOOD_GU = "전체"; if (typeof CAFE_GU !== "undefined") CAFE_GU = "전체"; VT.galleries.gu = VT.museums.gu = "전체"; MK.gu = "전체";
+  PLACE_GROUP = "전체"; PLACE_GU = "전체"; KIDS_SUB = "전체"; KIDS_GU = "전체"; FOOD_GU = "전체"; if (typeof CAFE_GU !== "undefined") CAFE_GU = "전체"; if (typeof LOCAL_GU !== "undefined") LOCAL_GU = "전체"; if (typeof LOCAL_EVENT_F !== "undefined") LOCAL_EVENT_F = "전체"; VT.galleries.gu = VT.museums.gu = "전체"; MK.gu = "전체";
   applyRegion(); renderAll(); loadWeather();
   if ($("#search").value) renderSearch();
   if (MAP_READY) { Object.keys(MAP_LAYERS).forEach(drawLayer); updateMapCount(); MAP.setView(REGIONS[r].center, REGIONS[r].zoom) }
@@ -5213,6 +5208,8 @@ function renderCafes() { if (regionEmpty("cafesView", "🐶", "반려견 동반 
 
 /* ───────── 🏘 동네: 오늘 문 연 도서관 · 접수 중인 강좌 · 이번 주 체험 ─────────
    관광이 아니라 '사는 동네에서 남는 시간 쓰기'용. 자료는 공공데이터 표준데이터(주 1회 자동 갱신). */
+let LOCAL_EVENT_F = "전체";
+window.setLocalEventF = f => { LOCAL_EVENT_F = f; renderLocal() };
 let LOCAL_F = "전체", LOCAL_GU = (store.get("glm_home", null) || {}).gu || "전체";
 window.setLocalF = f => { LOCAL_F = f; renderLocal() };
 window.setLocalGu = g => { LOCAL_GU = g; renderLocal() };
@@ -5284,6 +5281,8 @@ function localMissingRow(progs) {
 function renderLocal() {
   const el = document.getElementById("localView"); if (!el) return;
   const t = todayISO(), wk = isoPlus(7);
+  // 권역을 변경해도 이전 권역의 동네 필터가 남아 목록이 비지 않도록 보정.
+  if (LOCAL_GU !== "전체" && !REGIONS[REGION].districts.includes(LOCAL_GU)) LOCAL_GU = "전체";
   const gu = x => LOCAL_GU === "전체" || x.district === LOCAL_GU;
   const libs = sortHome(LIBS.filter(gu)).map(l => [l, libToday(l)]).sort((a, b) => libTier(a[0]) - libTier(b[0]) || libBooks(b[0]) - libBooks(a[0]));
   const openLibs = libs.filter(([, s]) => s.open !== false && !s.done);
@@ -5295,19 +5294,42 @@ function renderLocal() {
   if (LOCAL_F === "저녁") progs = progs.filter(evening);
   if (LOCAL_F === "주말") progs = progs.filter(weekend);
   progs = sortHome(progs); progs.sort((a, b) => progState(a)[2] - progState(b)[2] || (a.free === b.free ? 0 : a.free ? -1 : 1));
-  const exp = EVENTS.filter(e => (e.subtype === "교육·체험" || (e.tags || []).includes("체험")) && (!e.end || e.end >= t) && (!e.start || e.start <= wk)).filter(gu);
-  const dists = DIST_OPTS().slice(1).filter(g => LIBS.some(l => l.district === g) || PROGRAMS.some(p => p.district === g) || (REGIONS[REGION]?.districts || []).includes(g));
-  const nothing = !LIBS.length && !PROGRAMS.length;
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MY NEIGHBORHOOD</span><h2>동네서 시간 보내기<small>${esc(RW())} 도서관·구청·주민센터·평생학습관 강좌와 체험 — 대부분 무료거나 싸요</small></h2></div><span>${progs.length + openLibs.length}</span></div>
-  <div class="subchips localDistrictChips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${g}')">${g === "전체" ? "모든 동네" : g}</button>`).join("")}</div>
-  ${nothing ? `<div class="nowEmpty">🏘 동네 강좌·도서관 정보는 자동 수집이 처음 한 번 돈 뒤부터 채워져요. (공공데이터 '전국 평생학습강좌 표준데이터'·'전국 도서관 표준데이터')</div>` : ""}
-  ${exp.length ? `<h3 class="sub">이번 주 체험·교육 ${exp.length}</h3><div class="grid">${exp.slice(0, 12).map(eventCard).join("")}</div>` : ""}
-  ${LIBS.length ? `<h3 class="sub" style="margin-top:22px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 12).map(([l]) => libCard(l)).join("")}</div>${libs.length > 12 ? `<p class="emptyNote">그 밖에 ${libs.length - 12}곳 — 위에서 동네를 고르면 더 보여요.</p>` : ""}` : ""}
+  // 일정 탭과 같은 원본 데이터를 동네·날짜 기준으로 재사용합니다.
+  // 임의의 축제/공연 정보를 만들지 않고, 끝난 행사는 제외합니다.
+  const localEventKind = e => {
+    const c = String(e.category || ""), sub = String(e.subtype || ""), tags = (e.tags || []).join(" ");
+    if (c === "축제" || /축제|페스티벌|지역행사|마을행사/.test(sub + " " + tags)) return "축제·행사";
+    if (/공연|음악/.test(c) || /버스킹|콘서트|연극|무용/.test(sub + " " + tags)) return "공연·버스킹";
+    if (/체험|교육/.test(c + " " + sub + " " + tags)) return "체험·교육";
+    if (c === "행사") return "축제·행사";
+    return null;
+  };
+  const upcoming = days => EVENTS.filter(e => gu(e) && localEventKind(e) && (!e.end || e.end >= t) && (!e.start || e.start <= isoPlus(days)));
+  // 이번 주가 비어 있다면 같은 권역의 향후 30일 일정까지 안내합니다.
+  const weekEvents = upcoming(7);
+  const extended = !weekEvents.length;
+  const todayEvents = extended ? upcoming(30) : weekEvents;
+  const eventSort = (a, b) => {
+    const ongoing = e => !e.start || e.start <= t ? 0 : 1;
+    return ongoing(a) - ongoing(b) || String(a.start || t).localeCompare(String(b.start || t)) || String(a.title || "").localeCompare(String(b.title || ""));
+  };
+  const localEvents = todayEvents.filter(e => LOCAL_EVENT_F === "전체" || localEventKind(e) === LOCAL_EVENT_F).sort(eventSort);
+  const dists = DIST_OPTS().slice(1).filter(g => LIBS.some(l => l.district === g) || PROGRAMS.some(p => p.district === g) || EVENTS.some(e => e.district === g) || (REGIONS[REGION]?.districts || []).includes(g));
+  const nothing = !LIBS.length && !PROGRAMS.length && !EVENTS.length;
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MY NEIGHBORHOOD</span><h2>동네서 시간 보내기<small>${esc(RW())} 오늘·이번 주 동네 축제와 공연, 체험부터 도서관·강좌까지</small></h2></div><span>${todayEvents.length + progs.length + libs.length}</span></div>
+  <div class="subchips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${jsq(g)}')">${g === "전체" ? "모든 동네" : esc(g)}</button>`).join("")}</div>
+  ${nothing ? `<div class="nowEmpty">🏘 동네 행사·강좌·도서관 정보는 공공데이터 자동 수집 후 채워집니다.</div>` : ""}
+  <h3 class="sub">🎉 지금 즐길 수 있는 동네 행사 <small style="font-weight:500;color:var(--muted)">${extended ? "향후 30일 이내 예정 행사" : "오늘부터 7일 이내 행사"} · ${todayEvents.length}건</small></h3>
+  <div class="subchips">${["전체", "축제·행사", "공연·버스킹", "체험·교육"].map(f => `<button class="${f === LOCAL_EVENT_F ? "active" : ""}" onclick="setLocalEventF('${jsq(f)}')">${f}</button>`).join("")}</div>
+  <div class="grid">${localEvents.slice(0, 6).map(eventCard).join("") || `<p class="empty">해당 조건으로 등록된 행사가 없어요. 다른 동네나 분류를 선택하거나 ‘일정’ 탭에서 전체 행사를 확인해 주세요.</p>`}</div>
+  ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
+  <h3 class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
+  ${LIBS.length ? `<h3 class="sub" style="margin-top:16px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${libs.length > 6 ? `<p class="emptyNote">그 밖에 ${libs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
-  <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${f}')">${f}</button>`).join("")}</div>
+  <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
   <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
   ${LOCAL_GU === "전체" ? localMissingRow(progs) : ""}
-  <div class="verify" style="margin-top:14px">구청·교육청 등이 공공데이터로 올린 강좌예요(분기마다 갱신). 접수 기간·정원은 바뀔 수 있으니 신청 전에 운영기관에서 확인하세요.</div>` : ""}`;
+  <div class="verify" style="margin-top:14px">행사는 기존 ‘일정’ 탭과 동일한 데이터를 사용해 중복 등록하지 않아요. 강좌는 구청·교육청 등이 공개한 공공데이터를 사용하며, 행사 시간·접수 기간·정원은 방문 전에 주최 기관에서 확인하세요.</div>` : ""}`;
 }
 
 function visitedHtml() {
