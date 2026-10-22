@@ -2033,7 +2033,6 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
     <div class="photoCard">
       <div class="slides" id="slides"></div>
       <div class="fx" id="heroFx" aria-hidden="true"></div>
-      <span class="mood" id="heroMood"></span>
       <div class="wx" id="wx" onclick="document.querySelector('#wxTips').scrollIntoView({behavior:'smooth'})" title="오늘 날씨·옷차림·챙길 것 보기">날씨 불러오는 중…</div>
       <div class="slideCap"><span id="slideName"></span><div class="dots" id="dots"></div></div>
     </div>
@@ -2906,7 +2905,7 @@ function heroFx(x) {
   hero.dataset.season = x.season;
   hero.dataset.sky = x.snow ? "snow" : x.wet ? "rain" : x.cloud ? "cloud" : x.h >= 17 && x.h < 21 ? "dusk" : "day";
   const tag = x.snow ? " · ☃️ 눈 오는 날" : x.wet ? " · ☔ 비 오는 날 실내 추천" : x.harsh ? (WEATHER.max >= 33 ? " · 🥵 더운 날 시원한 곳" : " · 🧣 추운 날 따뜻한 곳") : x.night ? " · 🌙 저녁 야경" : x.clear ? " · ☀️ 나들이 날씨" : "";
-  $("#heroMood").textContent = SEASON_TXT[x.season].replace("광주", REGION === "gj" ? "광주" : RNAME()) + tag;
+  // 상단 날씨 카드와 중복되는 계절·나들이 뱃지는 표시하지 않습니다.
 }
 function renderHeroPics() {
   const el = document.getElementById("slides"); if (!el) return;
