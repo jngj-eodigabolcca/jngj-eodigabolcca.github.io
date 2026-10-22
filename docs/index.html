@@ -9631,4 +9631,42 @@ html body .slideCap #slideName{
  html body #quickDockV3.open .navPeek::after{display:none!important}
 }
 </style>
+
+<style id="ochreQuickMenuCompact20261022">
+/* 하단 빠른메뉴 크기와 색상만 개선: 배치 및 열림/닫힘 스크립트 유지 */
+@media (max-width:899px){
+ html body #quickDockV3 .navPeek,
+ html body:not(.navExpanded) #quickDockV3 .navPeek,
+ html body.navExpanded #quickDockV3 .navPeek{
+   width:94px!important;max-width:94px!important;
+   height:25px!important;min-height:25px!important;
+   padding:0 7px!important;font-size:10.5px!important;
+   background:#B78045!important;color:#FFF9ED!important;
+   border:1px solid #956231!important;
+   border-radius:0 0 9px 9px!important;
+   box-shadow:0 2px 7px rgba(86,52,23,.20)!important;
+ }
+ html body #quickDockV3 nav.bottom,
+ html body #quickDockV3 nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3 nav.bottom{
+   width:min(94vw,420px)!important;max-width:420px!important;
+   background:#B78045!important;
+   border-color:#956231!important;
+ }
+ html body #quickDockV3.open nav.bottom,
+ html body.navExpanded #quickDockV3.open nav.bottom,
+ html body:not(.navExpanded) #quickDockV3.open nav.bottom{
+   height:59px!important;min-height:59px!important;max-height:59px!important;
+   grid-template-rows:51px!important;
+ }
+ html body #quickDockV3 nav.bottom>button{
+   height:51px!important;min-height:51px!important;max-height:51px!important;
+   background:#EAD1AC!important;color:#69451F!important;
+   border-radius:7px!important;font-size:17px!important;
+ }
+ html body #quickDockV3 nav.bottom>button:active{
+   background:#D8AF7D!important;
+ }
+}
+</style>
 </body></html>
