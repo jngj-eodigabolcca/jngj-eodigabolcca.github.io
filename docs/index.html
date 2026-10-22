@@ -9703,27 +9703,36 @@ html body .slideCap #slideName{
 </style>
 
 <style id="homePhotoLayoutSwap20261022">
-/* 홈 사진: 날씨는 왼쪽 아래, 기존 왼쪽 사진 설명은 숨김. */
+/* 홈 사진: 날씨 카드는 왼쪽 아래, "역사유적 · 남구" 문구는 우측 상단으로 이동 */
 html body .hero .photoCard #wx{
- position:absolute!important;top:auto!important;left:12px!important;right:auto!important;bottom:12px!important;
- width:max-content!important;max-width:min(62%,340px)!important;max-height:calc(100% - 24px)!important;
- overflow:auto!important;margin:0!important;z-index:8!important;
+  position:absolute!important;top:auto!important;left:12px!important;right:auto!important;bottom:12px!important;
+  width:max-content!important;max-width:min(62%,340px)!important;max-height:calc(100% - 24px)!important;
+  overflow:auto!important;margin:0!important;z-index:8!important;
 }
-html body .hero .photoCard .slideCap #slideDesc{display:none!important}
-/* 오른쪽: 슬라이드 점이 위, 장소 이름이 아래. */
-html body .hero .photoCard .slideCap #dots{
- position:absolute!important;top:auto!important;bottom:28px!important;right:0!important;left:auto!important;
- display:flex!important;justify-content:flex-end!important;align-items:center!important;
- padding:6px 2px!important;z-index:7!important;pointer-events:auto!important;
+html body .hero .photoCard .slideCap{
+  position:static!important;
 }
+html body .hero .photoCard .slideCap #slideDesc{
+  display:block!important;position:absolute!important;top:12px!important;right:12px!important;left:auto!important;bottom:auto!important;
+  width:auto!important;max-width:42%!important;margin:0!important;text-align:right!important;
+  font-size:12px!important;line-height:1.35!important;color:#fff!important;font-weight:700!important;
+  z-index:7!important;pointer-events:none!important;text-shadow:0 1px 6px rgba(0,0,0,.8)!important;
+}
+/* 오른쪽 하단: 장소명 위 / 슬라이드 점 표시 아래 */
 html body .hero .photoCard .slideCap #slideName{
- position:absolute!important;top:auto!important;bottom:0!important;right:0!important;left:auto!important;
- max-width:38%!important;text-align:right!important;z-index:6!important;
+  position:absolute!important;top:auto!important;bottom:30px!important;right:12px!important;left:auto!important;
+  max-width:38%!important;text-align:right!important;z-index:6!important;
+}
+html body .hero .photoCard .slideCap #dots{
+  position:absolute!important;top:auto!important;bottom:0!important;right:12px!important;left:auto!important;
+  display:flex!important;justify-content:flex-end!important;align-items:center!important;
+  padding:6px 2px!important;z-index:7!important;pointer-events:auto!important;
 }
 @media(max-width:600px){
- html body .hero .photoCard #wx{left:10px!important;bottom:10px!important;top:auto!important;max-width:63%!important;padding:8px 10px!important;}
- html body .hero .photoCard .slideCap #slideName{bottom:0!important;max-width:35%!important;font-size:11px!important;}
- html body .hero .photoCard .slideCap #dots{bottom:27px!important;}
+  html body .hero .photoCard #wx{left:10px!important;bottom:10px!important;top:auto!important;max-width:63%!important;padding:8px 10px!important;}
+  html body .hero .photoCard .slideCap #slideDesc{top:10px!important;right:10px!important;max-width:41%!important;font-size:11px!important;}
+  html body .hero .photoCard .slideCap #slideName{bottom:27px!important;right:10px!important;max-width:35%!important;font-size:11px!important;}
+  html body .hero .photoCard .slideCap #dots{bottom:0!important;right:10px!important;}
 }
 </style>
 </body></html>
