@@ -1921,6 +1921,69 @@ button{min-height:var(--tap)}
 :root[data-theme="dark"] .nowShow .nowChips button.on,:root[data-theme="dark"] .nowShow .nowSeg button.on{background:var(--green);border-color:var(--green);color:#fff}
 
 </style>
+
+<style id="fix-mobile-weather-quickmenu-20261022">
+/* 날씨 오버레이: 모든 안내를 동일한 패널 안에서 정상 문서 흐름으로 배치 */
+.photoCard #wx{
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:3px!important;
+  width:max-content!important;
+  max-width:min(82%,calc(100% - 24px))!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding:11px 13px!important;
+  border-radius:15px!important;
+  line-height:1.35!important;
+}
+.photoCard #wx .wxTop,.photoCard #wx .wxMeta,
+.photoCard #wx .wxHint,.photoCard #wx .wxWear{
+  position:static!important; display:block!important;
+  float:none!important; clear:both!important;
+  transform:none!important;
+  margin:0!important; padding:0!important;
+  width:auto!important; max-width:100%!important;
+  height:auto!important; min-height:0!important;
+  background:transparent!important;
+  border:0!important; border-radius:0!important;
+  box-shadow:none!important; line-height:1.45!important;
+  white-space:normal!important;
+}
+.photoCard #wx .wxTop{display:flex!important;align-items:center!important;gap:7px!important}
+.photoCard #wx .wxWear{color:#17574c!important;font-weight:750!important}
+@media(max-width:600px){
+  /* 작은 모바일에서도 설명 네 줄과 하단 사진명을 독립적으로 표시 */
+  html body .hero .photoCard{
+    aspect-ratio:auto!important;
+    height:clamp(230px,63vw,310px)!important;
+    min-height:230px!important;
+  }
+  .photoCard #wx{top:12px!important;left:12px!important;max-width:calc(100% - 24px)!important;font-size:12px!important}
+  .photoCard #wx .wxTop b{font-size:16px!important}
+  .photoCard #wx .wxMeta,.photoCard #wx .wxHint,.photoCard #wx .wxWear{font-size:11.5px!important}
+  .photoCard .slideCap{bottom:12px!important}
+}
+/* 빠른메뉴 손잡이는 화면 하단의 작은 고정 버튼 */
+.navPeek{
+  width:86px!important; height:28px!important;
+  padding:0 8px!important; font-size:11px!important;
+  border-radius:11px!important; 
+}
+body:not(.navExpanded) nav.bottom,
+body:not(.navExpanded) nav#bottomNav{
+  display:none!important;visibility:hidden!important;
+  opacity:0!important;pointer-events:none!important;
+  transform:translateY(130%)!important;
+}
+body:not(.navExpanded) .navPeek{bottom:calc(12px + env(safe-area-inset-bottom,0px))!important}
+body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!important;opacity:1!important;transform:none!important}
+@media(max-width:759px){
+  body.navExpanded .navPeek{bottom:calc(62px + env(safe-area-inset-bottom,0px))!important}
+}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
@@ -7517,7 +7580,7 @@ html body .mi7Head .mi7Han{font-style:normal;font-size:.8em;margin-left:2px;colo
  .heroStats .heroNow span{font-size:12px!important}
 }
 
-/* 하단 빠른실행: 스크롤 방향과 무관하게 아래쪽 손잡이로만 열고 닫기 */
+/* 하단 빠른메뉴: 스크롤 방향과 무관하게 아래쪽 손잡이로만 열고 닫기 */
 html body nav.bottom{transition:opacity .15s ease!important}
 html body nav.bottom:not(.navAway){display:flex!important;visibility:visible!important;opacity:1!important}
 html body nav.bottom.navAway{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important}
@@ -7549,7 +7612,7 @@ html body .exitBox p{font-size:12.5px;margin:6px 0 12px}
 html body .exitBox div{gap:6px}
 html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 </style>
-<button class="navPeek" type="button" aria-label="하단 빠른실행 메뉴 열기" aria-expanded="false" aria-controls="bottomNav" ><span>빠른실행</span></button>
+<button class="navPeek" type="button" aria-label="하단 빠른메뉴 메뉴 열기" aria-expanded="false" aria-controls="bottomNav" ><span>빠른메뉴</span></button>
 <style id="sysNavContrast">
 /* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
    어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
@@ -7571,8 +7634,8 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
     document.body.classList.toggle('navExpanded',opened);
     document.body.classList.toggle('navHidden',!opened);
     handle.setAttribute('aria-expanded',String(opened));
-    handle.setAttribute('aria-label',opened?'하단 빠른실행 메뉴 접기':'하단 빠른실행 메뉴 열기');
-    handle.querySelector('span').textContent='빠른실행';
+    handle.setAttribute('aria-label',opened?'하단 빠른메뉴 메뉴 접기':'하단 빠른메뉴 메뉴 열기');
+    handle.querySelector('span').textContent='빠른메뉴';
     nav.setAttribute('aria-hidden',String(!opened));
   };
   setOpen(false);
