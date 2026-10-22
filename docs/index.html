@@ -624,6 +624,9 @@ html body .placeGrid button span{font-size:17px;flex:none}html body .placeGrid b
 .foodIntro{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;font-size:15px;line-height:1.7;color:var(--ink2);margin-bottom:14px}
 .foodIntro b{color:var(--green-d)}
 .subchips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}
+/* 동네서 시간 보내기: 모든 동네 및 시군구 버튼을 가로 스크롤 없이 여러 줄로 모두 표시 */
+#localView .subchips{display:flex;flex-wrap:wrap;overflow-x:visible;overflow-y:visible;gap:7px;max-width:100%;white-space:normal;}
+#localView .subchips button{flex:0 0 auto;max-width:100%;white-space:normal;}
 .jump{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
 .jump a,.jump button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:14px;font-weight:700;color:var(--green);text-decoration:none}
 /* 광주 7미 */
