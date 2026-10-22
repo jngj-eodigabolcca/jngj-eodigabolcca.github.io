@@ -1984,6 +1984,39 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
   body.navExpanded .navPeek{bottom:calc(62px + env(safe-area-inset-bottom,0px))!important}
 }
 </style>
+
+<style id="weather-slots-fit-screen-20261022">
+/* 시간대별 날씨: 화면 너비 안에 모든 시간대 카드를 한 줄로 표시 */
+.wtTime { min-width:0; box-sizing:border-box; }
+.wtSlots {
+  display:grid!important;
+  grid-template-columns:repeat(var(--wt-count,4),minmax(0,1fr))!important;
+  gap:4px!important;
+  overflow:visible!important;
+  padding:2px 1px 5px!important;
+  min-width:0!important;
+}
+.wtSlots>.wtSlot {
+  flex:none!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+  padding:7px 1px!important;
+  gap:3px!important;
+  border-radius:10px!important;
+}
+.wtSlots>.wtSlot small { font-size:clamp(9px,2.5vw,11px)!important; white-space:nowrap; }
+.wtSlots>.wtSlot small em { font-size:clamp(9px,2.35vw,10px)!important; white-space:nowrap; }
+.wtSlots>.wtSlot i { font-size:clamp(16px,4.4vw,19px)!important; }
+.wtSlots>.wtSlot b { font-size:clamp(11px,3vw,13px)!important; white-space:nowrap; }
+.wtSlots>.wtSlot span { font-size:clamp(9px,2.35vw,10px)!important; white-space:nowrap; }
+@media(max-width:360px) {
+ .wtTime {padding:7px!important}
+ .wtSlots {gap:3px!important}
+ .wtSlots>.wtSlot {padding-inline:0!important}
+}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
@@ -3371,7 +3404,7 @@ function renderWxTips() {
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">오늘 날씨 · 외출 준비</span><h2>오늘 날씨 한눈에<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${!R && c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
   ${R && R.slots.length ? `<div class="wtTime"><div class="wtTimeHead"><b>🕘 ${R.late ? "내일" : "오늘"} 시간대별 날씨</b><small>${R.late ? "밤이라 내일 낮 기준으로 보여드려요" : "지금부터 밤까지 · 나가 있을 시간 기준"}</small></div>
-   <div class="wtSlots">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
+   <div class="wtSlots" style="--wt-count:${R.slots.length}">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
    <p class="wtUmb ${rainDay ? "wet" : R.maybe ? "maybe" : ""}">${esc(wxUmbrellaLine(W))}</p></div>` : ""}
   <div class="wtStats">${stats.map(([t, k]) => `<span class="${k || ""}">${t}</span>`).join("")}</div>
   <details class="wtDetails"><summary>👕 ${esc(wear.split("·")[0].trim())} · 챙길 것 ${mustN ? mustN + "개 필수" : "확인"} <span style="font-size:11px;font-weight:600;color:var(--muted)">자세히 보기</span></summary><div class="wtGrid">
@@ -9629,77 +9662,6 @@ html body .slideCap #slideName{
    background:transparent!important;pointer-events:auto!important;
  }
  html body #quickDockV3.open .navPeek::after{display:none!important}
-}
-</style>
-
-<style id="ochreQuickMenuCompact20261022">
-/* 하단 빠른메뉴 크기와 색상만 개선: 배치 및 열림/닫힘 스크립트 유지 */
-@media (max-width:899px){
- html body #quickDockV3 .navPeek,
- html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek{
-   width:94px!important;max-width:94px!important;
-   height:25px!important;min-height:25px!important;
-   padding:0 7px!important;font-size:10.5px!important;
-   background:#B78045!important;color:#FFF9ED!important;
-   border:1px solid #956231!important;
-   border-radius:0 0 9px 9px!important;
-   box-shadow:0 2px 7px rgba(86,52,23,.20)!important;
- }
- html body #quickDockV3 nav.bottom,
- html body #quickDockV3 nav.bottom.navAway,
- html body:not(.navExpanded) #quickDockV3 nav.bottom{
-   width:min(94vw,420px)!important;max-width:420px!important;
-   background:#B78045!important;
-   border-color:#956231!important;
- }
- html body #quickDockV3.open nav.bottom,
- html body.navExpanded #quickDockV3.open nav.bottom,
- html body:not(.navExpanded) #quickDockV3.open nav.bottom{
-   height:59px!important;min-height:59px!important;max-height:59px!important;
-   grid-template-rows:51px!important;
- }
- html body #quickDockV3 nav.bottom>button{
-   height:51px!important;min-height:51px!important;max-height:51px!important;
-   background:#EAD1AC!important;color:#69451F!important;
-   border-radius:7px!important;font-size:17px!important;
- }
- html body #quickDockV3 nav.bottom>button:active{
-   background:#D8AF7D!important;
- }
-}
-</style>
-
-<style id="quickMenuContrast20261022">
-/* 아이콘 모양 및 메뉴 동작은 유지하고 바탕/메뉴 글씨 대비만 개선 */
-@media (max-width:899px){
- html body #quickDockV3 nav.bottom>button,
- html body #quickDockV3 nav.bottom>button:not(.on){
-   background:#FFF9EF!important;
-   color:#322319!important;
-   border:1px solid #E1C49D!important;
-   text-shadow:none!important;
-   font-size:19px!important;
-   font-weight:700!important;
- }
- html body #quickDockV3 nav.bottom>button span:not(.navHomeEmoji){
-   color:#322319!important;
-   font-size:11.5px!important;
-   font-weight:800!important;
-   opacity:1!important;
-   text-shadow:none!important;
- }
- html body #quickDockV3 nav.bottom>button .navHomeEmoji{
-   font-size:19px!important;
-   opacity:1!important;
- }
- html body #quickDockV3 nav.bottom>button.on{
-   background:#FFF0CC!important;
-   border-color:#8C592B!important;
- }
- html body #quickDockV3 nav.bottom>button:active{
-   background:#F9E7C7!important;
- }
 }
 </style>
 </body></html>
