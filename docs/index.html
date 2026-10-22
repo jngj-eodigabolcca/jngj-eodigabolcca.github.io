@@ -9402,6 +9402,27 @@ window.openRightsAndLicenses=function(){
   html body nav.bottom button{white-space:normal!important;word-break:keep-all!important}
   html body nav.bottom{background:rgba(24,42,36,.95)!important;border:1px solid rgba(255,255,255,.12)!important}
 }
+
+/* 2026-10-22: 오늘 시간대별 날씨 세부 카드를 언제나 한 줄로 표시 */
+.wxTips .wtSlots{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  grid-template-columns:none!important;
+  gap:5px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  padding:2px 1px 5px;
+}
+.wxTips .wtSlots > .wtSlot{
+  flex:1 0 72px!important;
+  min-width:72px!important;
+  box-sizing:border-box;
+}
+@media(max-width:759px){
+  .wxTips .wtSlots > .wtSlot{flex:0 0 76px!important;}
+}
 </style>
 <script id="bottomNavSlimHandleText20261022">
 (function(){
