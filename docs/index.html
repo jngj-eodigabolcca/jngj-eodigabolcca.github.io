@@ -7623,29 +7623,32 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 <div class="sysNavBack" aria-hidden="true"></div>
 <script id="navAutoHideScript">
 (function(){
-  const nav=document.querySelector('nav.bottom'), handle=document.querySelector('.navPeek');
-  if(!nav||!handle)return;
-  nav.id='bottomNav';
-  let opened=false;
-  const setOpen=(yes)=>{
-    opened=!!yes;
-    nav.classList.toggle('navAway',!opened);
-    document.body.classList.toggle('navExpanded',opened);
-    document.body.classList.toggle('navHidden',!opened);
-    handle.setAttribute('aria-expanded',String(opened));
-    handle.setAttribute('aria-label',opened?'하단 빠른메뉴 메뉴 접기':'하단 빠른메뉴 메뉴 열기');
-    handle.querySelector('span').textContent='빠른메뉴';
-    nav.setAttribute('aria-hidden',String(!opened));
-  };
-  setOpen(false);
-  handle.addEventListener('click',()=>setOpen(!opened));
-  // 메뉴를 눌러 이동하면 본문이 가리지 않도록 다시 접기
-  nav.addEventListener('click',e=>{if(e.target.closest('button'))setOpen(false)});
-  // 메뉴 밖을 눌렀을 때만 접기 (스크롤 방향 자체로는 열거나 닫지 않음)
-  document.addEventListener('pointerdown',e=>{
-    if(opened&&!nav.contains(e.target)&&!handle.contains(e.target))setOpen(false);
-  },{passive:true});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);handle.focus()}});
+ const nav=document.querySelector('nav.bottom');
+ const handle=document.querySelector('.navPeek');
+ if(!nav||!handle)return;
+ nav.id='bottomNav';
+ let opened=false;
+ const updateSize=()=>document.body.style.setProperty('--bottom-quick-height',nav.getBoundingClientRect().height+'px');
+ const setOpen=(value)=>{
+  opened=!!value;
+  updateSize();
+  nav.classList.toggle('navAway',!opened);
+  document.body.classList.toggle('navExpanded',opened);
+  document.body.classList.toggle('navHidden',!opened);
+  handle.setAttribute('aria-expanded',String(opened));
+  handle.setAttribute('aria-label',opened?'하단 빠른메뉴 접기':'하단 빠른메뉴 열기');
+  nav.setAttribute('aria-hidden',String(!opened));
+  nav.querySelectorAll('button').forEach(btn=>{btn.tabIndex=opened?0:-1;});
+ };
+ setOpen(false);
+ handle.addEventListener('click',()=>setOpen(!opened));
+ nav.addEventListener('click',e=>{if(e.target.closest('button'))setOpen(false)});
+ document.addEventListener('pointerdown',e=>{
+  if(opened&&!nav.contains(e.target)&&!handle.contains(e.target))setOpen(false);
+ },{passive:true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);handle.focus()}});
+ window.addEventListener('resize',updateSize,{passive:true});
+ if(window.ResizeObserver)new ResizeObserver(updateSize).observe(nav);
 })();
 </script>
 <script id="visitCount">
@@ -9432,5 +9435,91 @@ window.openRightsAndLicenses=function(){
   if(s) s.textContent='빠른메뉴';
 })();
 </script>
+
+
+<style id="bottomQuickUnified20261022">
+/* 하단 고정 빠른메뉴: 우측 빠른메뉴와 같은 가장자리 탭/터치 펼침 패턴 */
+@media(max-width:899px){
+ html body nav.bottom,
+ html body nav.bottom.navAway,
+ html body nav.bottom:not(.navAway){
+  position:fixed!important;z-index:100!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:48px!important;
+  align-items:stretch!important;justify-items:stretch!important;
+  left:50%!important;right:auto!important;
+  bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;
+  width:min(294px,calc(100vw - 28px))!important;
+  max-width:calc(100vw - 28px)!important;
+  height:auto!important;min-height:0!important;
+  padding:8px!important;gap:5px!important;
+  border:1px solid rgba(255,255,255,.23)!important;
+  border-radius:17px!important;
+  background:rgba(25,66,57,.97)!important;
+  box-shadow:0 12px 26px rgba(0,0,0,.20)!important;
+  overflow:hidden!important;
+  transition:opacity .20s ease,transform .24s ease,visibility .24s ease!important;
+ }
+ html body nav.bottom.navAway{
+  transform:translate(-50%,calc(100% + 36px))!important;
+  visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+ }
+ html body nav.bottom:not(.navAway){
+  transform:translate(-50%,0)!important;
+  visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+ }
+ html body nav.bottom button,
+ html body nav.bottom button.navHome{
+  box-sizing:border-box!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  width:100%!important;min-width:0!important;
+  height:48px!important;min-height:48px!important;max-height:48px!important;
+  margin:0!important;padding:3px 2px!important;gap:3px!important;
+  background:rgba(255,255,255,.06)!important;
+  color:#fff!important;border:0!important;border-radius:10px!important;
+  font-size:17px!important;line-height:19px!important;
+  text-align:center!important;white-space:nowrap!important;
+ }
+ html body nav.bottom button.on{background:rgba(255,255,255,.19)!important}
+ html body nav.bottom button span,
+ html body nav.bottom button.on span{
+  display:block!important;width:100%!important;min-width:0!important;
+  margin:0!important;color:#fff!important;
+  text-align:center!important;white-space:nowrap!important;
+  font-size:10.5px!important;line-height:13px!important;font-weight:700!important;
+  letter-spacing:-.03em!important;
+ }
+ html body nav.bottom .navHomeIcon{display:block!important;width:18px!important;height:18px!important;object-fit:contain!important;margin:0 auto!important}
+ html body .navPeek{
+  position:fixed!important;z-index:101!important;left:50%!important;
+  bottom:calc(0px + env(safe-area-inset-bottom,0px))!important;
+  transform:translateX(-50%)!important;
+  width:82px!important;height:24px!important;
+  min-height:24px!important;padding:0 6px!important;
+  box-sizing:border-box!important;
+  border-radius:11px 11px 0 0!important;
+  background:#19483e!important;color:#fff!important;
+  border:1px solid rgba(255,255,255,.25)!important;
+  box-shadow:0 -2px 8px rgba(0,0,0,.13)!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:4px!important;font-size:10px!important;line-height:1!important;
+  transition:bottom .24s ease!important;
+ }
+ html body.navExpanded .navPeek{
+  bottom:calc(var(--bottom-quick-height,124px) + 8px + env(safe-area-inset-bottom,0px))!important;
+  border-radius:10px 10px 0 0!important;
+ }
+ html body:has(#modal.show) nav.bottom,
+ html body:has(.exitAsk.show) nav.bottom,
+ html body.modal-open nav.bottom,
+ html body:has(#modal.show) .navPeek,
+ html body:has(.exitAsk.show) .navPeek,
+ html body.modal-open .navPeek{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){html body nav.bottom,html body .navPeek{transition:none!important}}
+</style>
 
 </body></html>
