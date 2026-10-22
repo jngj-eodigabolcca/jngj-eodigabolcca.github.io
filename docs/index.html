@@ -2034,7 +2034,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
       <div class="slides" id="slides"></div>
       <div class="fx" id="heroFx" aria-hidden="true"></div>
       <div class="wx" id="wx" onclick="document.querySelector('#wxTips').scrollIntoView({behavior:'smooth'})" title="오늘 날씨·옷차림·챙길 것 보기">날씨 불러오는 중…</div>
-      <div class="slideCap"><span id="slideName"></span><div class="dots" id="dots"></div></div>
+      <div class="slideCap"><span id="slideDesc" aria-live="polite"></span><span id="slideName"></span><div class="dots" id="dots"></div></div>
     </div>
   </div>
 </section>
@@ -2919,7 +2919,9 @@ function renderHeroPics() {
   const pics = pool.map(p => [heroScore(p, x), p]).sort((a, b) => b[0] - a[0]).slice(0, 9).map(a => a[1]);
   el.innerHTML = pics.map((p, i) => {
     const raw = rawImg(p.u), px = proxyImg(p.u);
-    return `<figure class="${i === 0 ? "on" : ""}" data-cap="${esc(p.c)}" onclick="openPic('${p.t}','${jsq(p.id)}')" role="img" aria-label="${esc(p.c)}"><img src="${esc(px || raw)}" data-raw="${esc(raw)}" data-step="0" alt="${esc(p.c)}" ${i === 0 ? 'loading="eager"' : 'loading="lazy"'} referrerpolicy="no-referrer" onerror="heroImgFail(this)"><div class="ph heroPhotoFallback"></div></figure>`;
+    const info = p.t === "v" ? VENUES.find(v => v.id === p.id) : p.t === "e" ? EVENTS.find(e => e.id === p.id) : null;
+    const desc = info ? [info.kind || info.category || "",info.district || info.area || ""].filter(Boolean).join(" · ") : p.t === "g" ? "자연 속에서 만나는 오늘의 풍경" : "오늘의 사진 속 장소";
+    return `<figure class="${i === 0 ? "on" : ""}" data-desc="${esc(desc)}" data-cap="${esc(p.c)}" onclick="openPic('${p.t}','${jsq(p.id)}')" role="img" aria-label="${esc(p.c)}"><img src="${esc(px || raw)}" data-raw="${esc(raw)}" data-step="0" alt="${esc(p.c)}" ${i === 0 ? 'loading="eager"' : 'loading="lazy"'} referrerpolicy="no-referrer" onerror="heroImgFail(this)"><div class="ph heroPhotoFallback"></div></figure>`;
   }).join("");
   const dots = $("#dots"); dots.innerHTML = pics.map((_, i) => `<i class="${i === 0 ? "on" : ""}" onclick="goSlide(${i})"></i>`).join("");
   heroFx(x);
@@ -2933,6 +2935,7 @@ window.goSlide = i => {
   fs.forEach((f, k) => f.classList.toggle("on", k === SLIDE));
   document.querySelectorAll("#dots i").forEach((d, k) => d.classList.toggle("on", k === SLIDE));
   $("#slideName").textContent = "📍 " + (fs[SLIDE].dataset.cap || "");
+  $("#slideDesc").textContent = fs[SLIDE].dataset.desc || "오늘의 사진 속 장소";
 };
 /* 사진으로 보는 광주: 사진이 있는 곳 전부 (같은 사진은 한 번만) */
 function renderGallery() {
@@ -9452,4 +9455,131 @@ window.openRightsAndLicenses=function(){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&open)update(false)});
 })();
 </script>
+
+<style id="quickDockSafeAreaFinal20261022">
+/* Dock touches the viewport; only the control content avoids the OS gesture area. */
+@media (max-width:899px){
+ html body #quickDockV3{
+   bottom:0!important; left:0!important; right:0!important;
+   width:100%!important;max-width:none!important;
+   transform:none!important; padding:0 0 env(safe-area-inset-bottom,0px)!important;
+   justify-content:flex-end!important;align-items:center!important;
+ }
+ html body #quickDockV3 .navPeek{
+   order:0!important; flex-shrink:0!important;
+   border-radius:13px 13px 0 0!important;
+   box-shadow:none!important;
+ }
+ html body #quickDockV3 nav.bottom{order:1!important;flex-shrink:0!important;
+   width:min(500px,100%)!important;max-width:100%!important;
+   border-radius:0!important;box-shadow:none!important;
+ }
+ html body #quickDockV3:not(.open) nav.bottom{height:0!important;min-height:0!important;max-height:0!important;padding:0!important}
+ html body #quickDockV3::after{
+   content:'';position:absolute;z-index:-1;bottom:0;
+   width:118px;height:env(safe-area-inset-bottom,0px);
+   background:#17483d;pointer-events:none;
+ }
+ html body #quickDockV3.open::after{width:min(500px,100%)}
+ html body #quickDockV3.open nav.bottom{height:64px!important;min-height:64px!important;max-height:64px!important}
+ html body #quickDockV3 .navPeek{touch-action:manipulation!important}
+}
+/* Text on home slideshow: description left, branch right above the dots */
+.slideCap{position:absolute!important;left:14px!important;right:14px!important;bottom:12px!important;
+  display:flex!important;align-items:flex-end!important;justify-content:space-between!important}
+.slideCap #slideDesc{position:relative!important;order:0!important;margin-right:auto!important;
+  max-width:60%!important;text-align:left!important;bottom:auto!important;left:auto!important;right:auto!important}
+.slideCap #slideName{position:absolute!important;order:1!important;right:0!important;
+  bottom:24px!important;text-align:right!important;max-width:44%!important}
+.slideCap .dots{order:2!important;margin-left:auto!important}
+</style>
+<script id="quickDockSafeAreaFixScript20261022">
+(function(){
+ const dock=document.getElementById('quickDockV3');
+ if(!dock)return;
+ const handle=dock.querySelector('.navPeek');
+ const nav=dock.querySelector('nav.bottom');
+ if(handle&&nav){dock.insertBefore(handle,nav);}
+})();
+</script>
+
+<style id="homeSlidePinAboveName20261022">
+/* Home photo: dots/touch controls above, place name directly underneath. */
+.slideCap{position:absolute!important;left:14px!important;right:14px!important;bottom:12px!important;min-height:50px!important;pointer-events:none!important}
+.slideCap .dots, .slideCap #dots{position:absolute!important;right:0!important;bottom:25px!important;margin:0!important;transform:none!important;pointer-events:auto!important;z-index:3!important}
+.slideCap #slideName{position:absolute!important;right:0!important;bottom:0!important;left:auto!important;max-width:55%!important;margin:0!important;text-align:right!important;line-height:1.2!important;z-index:2!important;pointer-events:none!important}
+.slideCap #slideDesc{z-index:2!important;max-width:58%!important;align-self:flex-end!important;pointer-events:none!important}
+</style>
+
+<style id="verifiedHeroAndDockLayout20261022">
+/* The lower photo bar contains two ACTUAL content nodes and the carousel touch dots. */
+html body .photoCard .slideCap, html body .slideCap {
+ position:absolute!important; left:14px!important; right:14px!important; bottom:12px!important;
+ height:58px!important; min-height:58px!important; padding:0!important;
+ display:block!important; pointer-events:none!important; z-index:5!important;
+}
+html body .slideCap #slideDesc{
+ position:absolute!important;left:0!important;bottom:0!important;top:auto!important;right:auto!important;
+ display:block!important;width:56%!important;max-width:56%!important;
+ color:#fff!important;text-align:left!important;font-size:12px!important;font-weight:600!important;
+ line-height:1.35!important;white-space:normal!important;overflow:hidden!important;
+ text-overflow:ellipsis!important;max-height:35px!important;pointer-events:none!important;
+ text-shadow:0 1px 5px rgba(0,0,0,.8)!important;
+}
+html body .slideCap #dots,html body .slideCap .dots{
+ position:absolute!important;right:0!important;left:auto!important;bottom:27px!important;top:auto!important;
+ transform:none!important;display:flex!important;gap:7px!important;z-index:6!important;
+ margin:0!important;padding:8px 2px!important;pointer-events:auto!important;align-items:center!important;
+}
+html body .slideCap #dots i{width:7px!important;height:7px!important;flex-shrink:0!important}
+html body .slideCap #slideName{
+ position:absolute!important;right:0!important;left:auto!important;top:auto!important;bottom:0!important;
+ width:auto!important;max-width:42%!important;margin:0!important;padding:0!important;
+ text-align:right!important;display:block!important;color:#fff!important;
+ font-size:12px!important;line-height:1.25!important;font-weight:700!important;
+ white-space:normal!important;overflow-wrap:break-word!important;pointer-events:none!important;
+ text-shadow:0 1px 5px rgba(0,0,0,.8)!important;
+}
+@media(max-width:899px){
+ html body #quickDockV3{
+   position:fixed!important;bottom:0!important;top:auto!important;
+   left:0!important;right:0!important;width:100%!important;max-width:none!important;
+   transform:none!important;display:flex!important;flex-direction:column!important;
+   align-items:center!important;justify-content:flex-end!important;
+   padding:0 0 env(safe-area-inset-bottom,0px)!important;
+   margin:0!important;gap:0!important;pointer-events:none!important;
+   box-sizing:border-box!important;
+ }
+ html body #quickDockV3 .navPeek{
+   order:0!important;position:relative!important;left:auto!important;right:auto!important;
+   top:auto!important;bottom:auto!important;transform:none!important;
+   margin:0!important;width:118px!important;height:31px!important;min-height:31px!important;
+   padding:0 8px!important;background:#17483d!important;color:white!important;
+   border:0!important;border-radius:13px 13px 0 0!important;box-shadow:none!important;
+   pointer-events:auto!important;z-index:3!important;
+ }
+ html body #quickDockV3 nav.bottom,html body #quickDockV3 nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3 nav.bottom{
+   order:1!important;position:relative!important;top:auto!important;bottom:auto!important;
+   left:auto!important;right:auto!important;transform:none!important;
+   margin:0!important;width:min(500px,100%)!important;max-width:100%!important;
+   background:#17483d!important;border:0!important;border-radius:13px 13px 0 0!important;
+   box-shadow:none!important;box-sizing:border-box!important;opacity:1!important;visibility:visible!important;
+   height:0!important;min-height:0!important;max-height:0!important;padding:0!important;
+   overflow:hidden!important;pointer-events:none!important;
+ }
+ html body #quickDockV3.open nav.bottom,html body.navExpanded #quickDockV3.open nav.bottom{
+   display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;
+   height:64px!important;min-height:64px!important;max-height:64px!important;
+   padding:4px!important;overflow:visible!important;pointer-events:auto!important;
+ }
+ html body #quickDockV3::after{
+   content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+   height:env(safe-area-inset-bottom,0px);width:118px;background:#17483d;
+   z-index:0;pointer-events:none;
+ }
+ html body #quickDockV3.open::after{width:min(500px,100%)}
+ html body #quickDockV3 nav.bottom>button{min-width:0!important;white-space:nowrap!important}
+}
+</style>
 </body></html>
