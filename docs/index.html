@@ -90,8 +90,13 @@ img{max-width:100%}
 .heroStats button{display:flex;align-items:baseline;justify-content:center;gap:6px;background:rgba(255,255,255,.85);border:1.5px solid #fff;color:var(--ink);border-radius:16px;padding:10px 14px;box-shadow:0 4px 14px rgba(180,110,40,.12);transition:transform .2s}
 .heroStats button:hover{transform:translateY(-2px)}
 .heroStats strong{font-size:22px;font-weight:800;color:#1d2a3a}.heroStats span{font-size:13px;color:var(--muted);font-weight:600}
-.heroStats .heroNow{background:linear-gradient(135deg,#ef5b3c,#f5a524);border-color:transparent}
-.heroStats .heroNow strong,.heroStats .heroNow span{color:#fff}.heroStats .heroNow span+strong{margin-left:8px}
+.heroStats .heroNow{background:linear-gradient(135deg,#ef5b3c,#f5a524);border-color:transparent;display:flex;align-items:center;justify-content:center;gap:0;padding:10px 14px}
+.heroStats .heroNow strong,.heroStats .heroNow span{color:#fff}
+.heroStats .heroNow .heroNowPair{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+.heroStats .heroNow .heroNowPair + .heroNowPair{margin-left:16px;padding-left:16px;position:relative}
+.heroStats .heroNow .heroNowPair + .heroNowPair:before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:22px;background:rgba(255,255,255,.35)}
+.heroStats .heroNow strong{line-height:1;font-size:22px;font-weight:800}
+.heroStats .heroNow span{font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap}
 .photoCard{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/3.1;background:linear-gradient(135deg,#ffd9b0,#c9e6dd);box-shadow:0 24px 60px rgba(150,80,30,.25),0 0 0 8px rgba(255,255,255,.7);transform:rotate(1.2deg)}
 @media(max-width:899px){.photoCard{aspect-ratio:16/11;transform:none;border-radius:22px}}
 .slides{position:absolute;inset:0}
@@ -110,7 +115,7 @@ img{max-width:100%}
 .heroFresh{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.74);border:1px solid rgba(29,75,57,.12);color:#53645b;font-size:12.5px;font-weight:700;box-shadow:0 3px 10px rgba(27,55,45,.05)}
 .heroFresh:before{content:"";width:7px;height:7px;border-radius:50%;background:#2f9a5d;box-shadow:0 0 0 3px rgba(47,154,93,.14)}
 .dot{width:8px;height:8px;border-radius:50%;background:#b8b1a4;flex-shrink:0}.dot.live{background:#2f9a5d;box-shadow:0 0 0 4px rgba(47,154,93,.18)}
-@media(max-width:600px){.heroIn{padding-bottom:70px;padding-top:16px}.heroStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.heroStats button{flex-direction:column;align-items:center;gap:0;padding:8px 4px}.heroStats strong{font-size:19px}.heroStats span{font-size:11.5px}.heroStats .heroNow{grid-column:1/-1;flex-direction:row;justify-content:center;gap:6px}.sun{left:62%;top:10px;width:110px;height:110px}.wx small:last-child{display:none}}
+@media(max-width:600px){.heroIn{padding-bottom:70px;padding-top:16px}.heroStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.heroStats button{flex-direction:column;align-items:center;gap:0;padding:8px 4px}.heroStats strong{font-size:19px}.heroStats span{font-size:11.5px}.heroStats .heroNow{grid-column:1/-1;flex-direction:row;justify-content:center;gap:0;padding:9px 10px}.heroStats .heroNow .heroNowPair{gap:5px}.heroStats .heroNow .heroNowPair + .heroNowPair{margin-left:12px;padding-left:12px}.heroStats .heroNow strong{font-size:20px}.heroStats .heroNow span{font-size:12px}.sun{left:62%;top:10px;width:110px;height:110px}.wx small:last-child{display:none}}
 .heroGuide{margin-top:12px;background:rgba(255,255,255,.87);border:1px solid rgba(29,75,57,.12);border-radius:15px;padding:11px 14px;box-shadow:0 5px 16px rgba(27,55,45,.06)}
 .heroGuideHead{display:flex;align-items:center;gap:8px;margin-bottom:6px}.heroGuideHead b{font-size:13px;color:var(--green-d)}
 .heroGuideList{display:flex;align-items:center;flex-wrap:wrap;gap:5px 9px;margin:0;padding:0;list-style:none}
@@ -1383,6 +1388,88 @@ html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:
 #calAsk span{display:flex;flex-direction:column}#calAsk small{opacity:.75;font-size:12px}
 #calAsk button{border:0;border-radius:10px;padding:7px 10px;font:inherit;font-size:13px;white-space:nowrap;cursor:pointer;background:rgba(255,255,255,.15);color:#fff}
 #calAsk .yes{background:#f2b33d;color:#1c1c1c;font-weight:700}
+
+/* 2026-10-22 v3: 날씨/일정 세부 컨트롤 일관성 개선 */
+.nowShow .nowHead{display:block;margin-bottom:12px}
+.nowShow .nowHead h2 small{line-height:1.5}
+.nowShow .nowSeg{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;padding:5px!important;background:var(--green-l)!important;border:1px solid #d2e8e0!important;border-radius:16px!important;margin:12px 0 14px!important;width:100%!important}
+.nowShow .nowSeg button{display:flex!important;flex-direction:row!important;gap:5px!important;justify-content:center!important;min-width:0!important;min-height:44px!important;padding:7px 3px!important;border-radius:11px!important;background:transparent!important;color:var(--green-d)!important;border:1px solid transparent!important;font-size:13px!important;font-weight:800!important;white-space:nowrap!important}
+.nowShow .nowSeg button b{display:inline-flex;align-items:center;justify-content:center;min-width:19px;padding:2px 4px;margin:0!important;border-radius:7px;background:rgba(15,118,110,.09);font-size:11px;color:var(--green-d)!important}
+.nowShow .nowSeg button.on{background:var(--green)!important;color:#fff!important;box-shadow:0 2px 6px rgba(15,118,110,.15)}
+.nowShow .nowSeg button.on b{background:rgba(255,255,255,.2)!important;color:#fff!important}
+.nowShow .nowChips{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:6px!important;margin:0 0 14px!important}
+.nowShow .nowChips button{grid-column:span 2;display:flex!important;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:40px;padding:8px 4px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--card)!important;font-size:12.5px!important;font-weight:750;white-space:nowrap;color:var(--ink2)!important;box-shadow:none!important}
+.nowShow .nowChips button:nth-child(4),.nowShow .nowChips button:nth-child(5){grid-column:span 3}
+.nowShow .nowChips button b{color:var(--muted)!important;font-size:11px;margin:0!important}
+.nowShow .nowChips button.on{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+.nowShow .nowChips button.on b{color:#fff!important}
+.wxTips{padding:17px 16px!important;border-radius:20px!important}
+.wxTips .sectionHead{margin:0 0 11px!important;align-items:center!important}
+.wxTips .sectionHead h2{font-size:clamp(20px,4.2vw,26px)!important}
+.wxTips .sectionHead>span{font-size:11px!important;padding:4px 8px!important}
+.wxTips .wtHead{padding:9px 0 11px!important;gap:10px!important}
+.wxTips .wtBig{font-size:36px!important}
+.wxTips .wtNow b{font-size:18px!important}
+.wxTips .wtNow span{font-size:12px!important;line-height:1.45!important}
+.wxTips .wtTime{margin:5px 0 7px!important;padding:10px!important;border-radius:15px!important}
+.wxTips .wtTimeHead{gap:5px!important;flex-wrap:wrap!important;margin-bottom:8px!important}
+.wxTips .wtTimeHead b{font-size:12.5px!important}
+.wxTips .wtTimeHead small{font-size:11px!important}
+.wxTips .wtSlots{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}
+.wxTips .wtSlot{padding:7px 1px!important;border-radius:11px!important;gap:2px!important}
+.wxTips .wtSlot small{font-size:11px!important}
+.wxTips .wtSlot small em{font-size:9px!important}
+.wxTips .wtSlot i{font-size:18px!important}
+.wxTips .wtSlot b{font-size:12px!important}
+.wxTips .wtSlot span{font-size:10px!important}
+.wxTips .wtUmb{margin:7px 0 0!important;font-size:12px!important}
+.wxTips .wtStats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;margin:8px 0!important}
+.wxTips .wtStats span{display:flex;align-items:center;justify-content:center;min-width:0;min-height:33px;text-align:center;font-size:11px!important;line-height:1.25!important;padding:5px 3px!important;border-radius:10px!important;white-space:normal!important}
+.wxTips .wtDetails{margin-top:7px!important}
+.wxTips .wtDetails summary{font-size:12px!important;padding:10px!important}
+@media(max-width:370px){.nowShow .nowChips button{font-size:11px!important}.nowShow .nowSeg button{font-size:11.5px!important}.wxTips .wtStats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(min-width:760px){.nowShow .nowChips{display:flex!important;flex-wrap:wrap!important}.nowShow .nowChips button{flex:1 1 auto!important;min-width:110px!important}.wxTips .wtStats{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
+
+
+/* 2026-10-22 v4: 상단 통계 4칸 + 날씨 카드 정리 */
+.heroStats button:not(.heroNow){
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  min-height:84px;
+  padding:12px 10px;
+  text-align:center;
+}
+.heroStats button:not(.heroNow) strong{display:block;line-height:1;font-size:24px}
+.heroStats button:not(.heroNow) span{display:block;line-height:1.25;font-size:12.5px;font-weight:700;white-space:nowrap}
+.wx{
+  max-width:min(82%, 310px);
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.94);
+  line-height:1.45;
+}
+.wx .wxTop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.25}
+.wx .wxNow{font-size:15px;font-weight:800;color:var(--ink)}
+.wx .wxTop b{font-size:17px;font-weight:850;color:#13253a}
+.wx .wxMeta,.wx .wxHint,.wx .wxWear{display:block;font-size:12px;line-height:1.45;margin-top:4px}
+.wx .wxMeta{color:var(--muted);font-weight:550}
+.wx .wxHint{color:var(--ink2);font-weight:650}
+.wx .wxWear{color:var(--green-d);font-weight:750}
+@media(max-width:600px){
+  .heroStats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:none}
+  .heroStats button:not(.heroNow){min-height:78px;padding:11px 8px}
+  .heroStats button:not(.heroNow) strong{font-size:22px}
+  .heroStats button:not(.heroNow) span{font-size:12px;white-space:normal}
+  .heroStats .heroNow{padding:10px 12px}
+  .wx{left:12px;top:12px;max-width:calc(100% - 24px);padding:10px 12px;border-radius:16px}
+  .wx .wxNow{font-size:14px}
+  .wx .wxTop b{font-size:16px}
+  .wx .wxMeta,.wx .wxHint,.wx .wxWear{font-size:11.5px}
+  .wx small:last-child{display:block}
+}
+
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -1872,7 +1959,7 @@ button{min-height:var(--tap)}
         <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="creaming.webp" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
       </div>
       <div class="heroStats">
-        <button class="heroNow" id="heroNow" onclick="document.querySelector('#nowShow').scrollIntoView({behavior:'smooth'})"><strong>—</strong><span>오늘 전시</span></button><button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span></button>
+        <button class="heroNow" id="heroNow" onclick="document.querySelector('#nowShow').scrollIntoView({behavior:'smooth'})"><span class="heroNowPair"><strong>—</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>—</strong><span>이번 주말</span></span></button><button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span></button>
         <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span></button>
         <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>맛집</span></button>
         <button onclick="showTab('cafes')"><strong id="cafeNum">—</strong><span>멍카페</span></button>
@@ -3216,7 +3303,7 @@ function renderWxTips() {
   const mustN = tips.filter(t => t.must).length;
   const head = R && !snow && rainDay && !rainNow ? `지금은 ${wn[1]}, ${R.ranges[0]} 비 — 우산 챙기쇼잉` : R && rainNow ? "지금 비 와요, 우산 꼭 챙기쇼" : R && R.maybe ? `대체로 괜찮은데 ${R.maybeRanges[0] || "중간에"} 비 올 수도 있어요` : snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? (R && R.late ? "내일 낮은 맑아요, 나들이 가기 딱이여" : "날 좋네잉, 나들이 가기 딱이여") : (R && R.late ? "내일 낮은 무난한 날씨예요" : "무난한 날씨, 편하게 나가쇼");
   el.classList.remove("hidden");
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BEFORE YOU GO · 나가기 전에 체크</span><h2>오늘 날씨, 이렇게 나가쇼잉<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">오늘 날씨 · 외출 준비</span><h2>오늘 날씨 한눈에<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${!R && c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
   ${R && R.slots.length ? `<div class="wtTime"><div class="wtTimeHead"><b>🕘 ${R.late ? "내일" : "오늘"} 시간대별 날씨</b><small>${R.late ? "밤이라 내일 낮 기준으로 보여드려요" : "지금부터 밤까지 · 나가 있을 시간 기준"}</small></div>
    <div class="wtSlots">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
@@ -3421,7 +3508,7 @@ function renderNowShow() {
   const label = ["오늘", "내일", "이번 주말"][NOW_WHEN];
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
-  el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">TODAY · WEEKEND · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 실제로 열리는 전시·공연·축제·장날만 골랐어요 · 휴관일·공연 요일·장날까지 따져요</small></h2></div>
+  el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">오늘 · 주말 · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 열리는 일정만 모았어요 · 날짜와 종류를 선택하세요</small></h2></div>
     <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" title="${esc(x)}" onclick="setNowWhen(${i})"><span>${i === 0 ? "오늘" : i === 1 ? "내일" : "이번 주말"}</span><b>${counts[i]}</b></button>`).join("")}</div></div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
@@ -3433,7 +3520,7 @@ function renderNowShow() {
    ${dates.some(x => HOLIDAYS[x]) ? `<p class="nowNote">📌 ${dates.filter(x => HOLIDAYS[x]).map(x => HOLIDAYS[x]).join(", ")}엔 미술관·박물관 휴관일이 바뀌기도 해요(공휴일 개관 → 다음 날 휴관). 가기 전에 한 번 확인!</p>` : ""}
    ${items.some(x => x.h && !x.h.sure) ? `<p class="nowNote">'기간 중'으로 표시된 건 날짜별 시간표가 아직 없어서, 공식 채널에서 시간을 확인하세요.</p>` : ""}`;
   const todayN = NOW_WHEN === 0 ? items.length : nowItems([t0]).length, wkN = counts[2];
-  const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<strong>${todayN}</strong><span>오늘 열리는 것</span><strong>${wkN}</strong><span>이번 주말</span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
+  const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>이번 주말</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
 }
 
 /* ════════ 오늘의 광주: 오전 → 점심 → 오후 → 저녁, 그리고 데이트 ════════
@@ -3657,7 +3744,7 @@ function renderToday() {
   const greet = GP[gKey];
   $("#greet").innerHTML = `${esc(greet[0])}<br><em>${esc(greet[1])}</em>`;
   $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : cultureInfo().state === "today" ? "🎫 문화가 있는 날" : RNAME()}</span>`;
-  $("#wx").innerHTML = WEATHER ? `${wxNowIcon(WEATHER)} ${WMO(WEATHER.cur ?? WEATHER.code)[1]} · 지금 ${WEATHER.now}°<small>최고 ${WEATHER.max}° / 최저 ${WEATHER.min}°${WEATHER.rest ? "" : ` · 비 올 확률 ${WEATHER.pp}%`}</small>${WEATHER.rest ? `<small>${esc(wxUmbrellaLine(WEATHER))}</small>` : ""}<small>${rainy ? "☔ 오늘은 실내 위주로 골랐어요" : hot ? "🥵 더운 날이라 실내·저녁 위주로 골랐어요" : cold ? "🧣 추운 날이라 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small>인터넷 연결 시 표시돼요</small>`;
+  $("#wx").innerHTML = WEATHER ? `<div class="wxTop"><span class="wxNow">${wxNowIcon(WEATHER)} ${WMO(WEATHER.cur ?? WEATHER.code)[1]}</span><b>지금 ${WEATHER.now}°</b></div><small class="wxMeta">최고 ${WEATHER.max}° / 최저 ${WEATHER.min}°${WEATHER.rest ? "" : ` · 비 올 확률 ${WEATHER.pp}%`}</small>${WEATHER.rest ? `<small class="wxMeta">${esc(wxUmbrellaLine(WEATHER))}</small>` : ""}<small class="wxHint">${rainy ? "☔ 오늘은 실내 위주로 골랐어요" : hot ? "🥵 더운 날이라 실내·저녁 위주로 골랐어요" : cold ? "🧣 추운 날이라 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small class="wxMeta">인터넷 연결 시 표시돼요</small>`;
 
   // ① 오전: 날씨 좋으면 산책·숲·산, 궂으면 박물관·미술관
   let mPool = indoorDay ? VENUES.filter(v => /미술관|박물관|기념관|과학관|5·18|문학관/.test(v.kind) && (v.inout || "실내").includes("실내") && openNow(v) && v.image && fresh(v) && !emptyTripRisk(v))
@@ -7407,14 +7494,26 @@ html body .mi7Head .mi7Han{font-style:normal;font-size:.8em;margin-left:2px;colo
 @media (max-width:640px){html body .mi7Head span{flex-basis:100%;font-size:13px}}
 </style>
 <style id="navAutoHide">
-/* 하단 빨리가기: 팝업·나가기 창이 뜨면 비켜 주고, 아래로 내리면 숨었다가 위로 올리거나 화면을 톡 치면 다시 나타남 */
-html body nav.bottom{transition:transform .28s ease,opacity .28s ease}
-html body nav.bottom.navAway{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
+/* 하단 빠른실행: 스크롤 방향과 무관하게 아래쪽 손잡이로만 열고 닫기 */
+html body nav.bottom{transition:transform .26s ease,opacity .26s ease!important}
+html body nav.bottom.navAway{transform:translateY(calc(100% + 40px))!important;opacity:0;pointer-events:none}
 html body.modal-open nav.bottom,html body:has(#modal.show) nav.bottom,html body:has(.exitAsk.show) nav.bottom{display:none!important}
-.navPeek{position:fixed;z-index:49;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:54px;height:6px;border-radius:99px;background:rgba(24,42,36,.35);opacity:0;transition:opacity .28s;pointer-events:none}
-body.navHidden .navPeek{opacity:1}
-body:has(#modal.show) .navPeek,body:has(.exitAsk.show) .navPeek{display:none}
-/* 나가기 확인창: 작고 가운데에 */
+/* 항상 보이는 작은 열기 손잡이. 메뉴가 열린 상태에서는 접기 손잡이로 이동 */
+.navPeek{position:fixed;z-index:101;left:50%;bottom:calc(5px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:106px;height:24px;border:1px solid rgba(255,255,255,.23);border-radius:13px 13px 5px 5px;background:rgba(24,42,36,.94);color:#fff;font:700 11px/1 var(--sans);box-shadow:0 3px 10px rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;touch-action:manipulation;transition:bottom .26s ease,background .2s ease}
+.navPeek::after{content:'⌃';font-size:15px;line-height:1}
+body.navExpanded .navPeek{bottom:calc(60px + env(safe-area-inset-bottom,0px));background:var(--green-d);border-radius:10px 10px 0 0}
+body.navExpanded .navPeek::after{content:'⌄'}
+body:has(#modal.show) .navPeek,body:has(.exitAsk.show) .navPeek,body.modal-open .navPeek{display:none!important}
+@media(min-width:900px){.navPeek{display:none!important}}
+@media(max-width:759px){
+ html body nav.bottom{height:54px!important;padding:3px 5px!important;border-radius:17px!important;left:11px!important;right:11px!important;bottom:calc(6px + env(safe-area-inset-bottom,0px))!important;gap:1px!important}
+ html body nav.bottom button{min-height:46px!important;padding:3px 1px!important;border-radius:12px!important;font-size:16px!important;gap:0!important}
+ html body nav.bottom button span{font-size:10px!important;line-height:1.2!important}
+ html body nav.bottom .navHomeIcon{width:17px!important;height:17px!important}
+}
+@media(min-width:760px) and (max-width:899px){html body nav.bottom{padding:4px 7px!important}body.navExpanded .navPeek{bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){html body nav.bottom,.navPeek{transition:none!important}}
+/* 나가기 확인창: 기존 축소 형태 유지 */
 html body .exitAsk{align-items:center;padding:24px}
 html body .exitBox{max-width:290px;padding:16px 16px 14px;border-radius:18px;box-shadow:0 12px 32px rgba(0,0,0,.22)}
 html body .exitBox b{font-size:16px}
@@ -7422,7 +7521,7 @@ html body .exitBox p{font-size:12.5px;margin:6px 0 12px}
 html body .exitBox div{gap:6px}
 html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 </style>
-<div class="navPeek" aria-hidden="true"></div>
+<button class="navPeek" type="button" aria-label="하단 빠른실행 메뉴 열기" aria-expanded="false" aria-controls="bottomNav" ><span>빠른실행</span></button>
 <style id="sysNavContrast">
 /* 휴대폰 자체 버튼(뒤로가기·홈·최근 앱) 줄: 그 아래가 화면 색과 같은 단색이 되게 해서
    어두운 화면에서도 휴대폰이 밝은 버튼을 쓰도록 맞춘다 (다크 모드에서 html 바탕이 밝게 남아 있던 문제) */
@@ -7434,23 +7533,28 @@ html body .exitBox button{padding:9px 6px;font-size:13.5px;border-radius:11px}
 <div class="sysNavBack" aria-hidden="true"></div>
 <script id="navAutoHideScript">
 (function(){
-  const nav = document.querySelector("nav.bottom"); if (!nav) return;
-  let lastY = scrollY, timer = 0;
-  const hide = () => { if (scrollY < 120) return; nav.classList.add("navAway"); document.body.classList.add("navHidden") };
-  const show = (stay) => { nav.classList.remove("navAway"); document.body.classList.remove("navHidden"); clearTimeout(timer); if (!stay) timer = setTimeout(hide, 3500) };
-  addEventListener("scroll", () => {
-    const y = scrollY, d = y - lastY;
-    if (y < 120) show(true);
-    else if (d > 6) { clearTimeout(timer); hide() }
-    else if (d < -10) show();
-    else if (innerHeight + y >= document.documentElement.scrollHeight - 40) show();
-    lastY = y;
-  }, { passive: true });
-  // 화면을 톡 치면(버튼·링크 말고 빈 곳) 다시 나타남
-  addEventListener("click", e => {
-    if (nav.contains(e.target)) { show(); return }
-    if (document.body.classList.contains("navHidden") && !e.target.closest("a,button,input,select,textarea,label,[onclick],.leaflet-container")) show();
-  }, true);
+  const nav=document.querySelector('nav.bottom'), handle=document.querySelector('.navPeek');
+  if(!nav||!handle)return;
+  nav.id='bottomNav';
+  let opened=false;
+  const setOpen=(yes)=>{
+    opened=!!yes;
+    nav.classList.toggle('navAway',!opened);
+    document.body.classList.toggle('navExpanded',opened);
+    document.body.classList.toggle('navHidden',!opened);
+    handle.setAttribute('aria-expanded',String(opened));
+    handle.setAttribute('aria-label',opened?'하단 빠른실행 메뉴 접기':'하단 빠른실행 메뉴 열기');
+    handle.querySelector('span').textContent=opened?'접기':'빠른실행';
+  };
+  setOpen(false);
+  handle.addEventListener('click',()=>setOpen(!opened));
+  // 메뉴를 눌러 이동하면 본문이 가리지 않도록 다시 접기
+  nav.addEventListener('click',e=>{if(e.target.closest('button'))setOpen(false)});
+  // 메뉴 밖을 눌렀을 때만 접기 (스크롤 방향 자체로는 열거나 닫지 않음)
+  document.addEventListener('pointerdown',e=>{
+    if(opened&&!nav.contains(e.target)&&!handle.contains(e.target))setOpen(false);
+  },{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&opened){setOpen(false);handle.focus()}});
 })();
 </script>
 <script id="visitCount">
