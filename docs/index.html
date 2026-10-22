@@ -9511,7 +9511,7 @@ window.openRightsAndLicenses=function(){
  const dock=document.createElement('div');dock.id='quickDockV3';
  nav.before(dock);dock.append(nav,handle);nav.id='bottomNav';
  let open=false, awake=false, idleTimer;
- function resetTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(()=>update(false,false),open?5000:3000)}
+ function resetTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(()=>update(false,false),3000)}
  function update(nextOpen,nextAwake){
   open=!!nextOpen;awake=!!nextAwake||open;
   dock.classList.toggle('open',open);dock.classList.toggle('dockDormant',!awake);
@@ -9779,6 +9779,47 @@ html body .hero .photoCard .slideCap #dots{
  html body #quickDockV3:not(.dockDormant) .navPeek{
    transform:translateY(0)!important;opacity:1!important;
    transition:transform .24s ease,opacity .24s ease!important;
+ }
+}
+</style>
+
+<!-- 2026-10-23: 숨김 상태에도 누를 수 있는 손잡이 확보, 3초 복귀 -->
+<style id="quickMenuTouchAccessFix20261023">
+/* 오른쪽: 숨김 상태에도 버튼의 실제 터치 영역(44px)은 남김 */
+html body .rightQuick.rqHidden.isCollapsed{
+ transform:translateY(-50%)!important;opacity:.85!important;
+ pointer-events:auto!important;visibility:visible!important;
+}
+html body .rightQuick .rightQuickToggle{
+ width:44px!important;min-width:44px!important;min-height:76px!important;
+ padding:12px 8px!important;pointer-events:auto!important;
+ touch-action:manipulation!important;position:relative!important;z-index:2!important;
+}
+html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
+ width:44px!important;min-width:44px!important;
+ /* 옆선처럼 작게 보이되 실제 버튼은 손가락 크기로 유지 */
+ background:linear-gradient(90deg,rgba(19,124,116,.96) 0 13px,rgba(19,124,116,.25) 13px 100%)!important;
+}
+/* 하단: 항상 누를 수 있는 손잡이, 비활성 시에도 최소 28px 노출 */
+@media(max-width:899px){
+ html body #quickDockV3,html body #quickDockV3:not(.open){
+  bottom:env(safe-area-inset-bottom,0px)!important;
+  pointer-events:none!important;
+ }
+ html body #quickDockV3 .navPeek,
+ html body:not(.navExpanded) #quickDockV3 .navPeek,
+ html body.navExpanded #quickDockV3 .navPeek{
+  width:150px!important;min-width:150px!important;
+  height:44px!important;min-height:44px!important;
+  pointer-events:auto!important;touch-action:manipulation!important;
+  cursor:pointer!important;z-index:3!important;
+ }
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{
+  transform:translateY(14px)!important;opacity:.92!important;
+  pointer-events:auto!important;
+ }
+ html body #quickDockV3:not(.dockDormant) .navPeek{
+  transform:translateY(0)!important;opacity:1!important;
  }
 }
 </style>
