@@ -9664,4 +9664,41 @@ html body .slideCap #slideName{
  html body #quickDockV3.open .navPeek::after{display:none!important}
 }
 </style>
+
+<style id="quickDockOchrePaletteFinal20261022">
+/* 최종 색상 지정: 초록색 제거, 황토·크림 배색. 열림/접힘 구조 유지 */
+@media (max-width:899px){
+ html body #quickDockV3 nav.bottom,
+ html body #quickDockV3 nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3 nav.bottom,
+ html body #quickDockV3.open nav.bottom,
+ html body.navExpanded #quickDockV3.open nav.bottom,
+ html body:not(.navExpanded) #quickDockV3.open nav.bottom{
+   background:#b27b3b!important;
+   border-color:#98612a!important;
+ }
+ html body #quickDockV3 .navPeek,
+ html body:not(.navExpanded) #quickDockV3 .navPeek,
+ html body.navExpanded #quickDockV3 .navPeek{
+   background:#b27b3b!important;
+   color:#fff9ee!important;
+ }
+ html body #quickDockV3 .navPeek span{color:#fff9ee!important}
+ html body #quickDockV3 nav.bottom>button{
+   background:#fff3dd!important;
+   color:#432809!important;
+   border:1px solid rgba(105,62,19,.13)!important;
+ }
+ html body #quickDockV3 nav.bottom>button span{
+   color:#432809!important;
+   font-weight:800!important;
+ }
+ html body #quickDockV3 nav.bottom>button.on,
+ html body #quickDockV3 nav.bottom>button[aria-current="page"]{
+   background:#f6d89e!important;
+   color:#382005!important;
+ }
+ html body #quickDockV3 nav.bottom>button.on span{color:#382005!important}
+}
+</style>
 </body></html>
