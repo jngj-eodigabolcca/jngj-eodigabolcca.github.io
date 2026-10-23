@@ -2314,7 +2314,7 @@ function sourceMeta(x){
 function trustStrip(x){
   const f = freshnessMeta(x), so = sourceMeta(x);
   const src = so.url && /^https?:\/\//i.test(so.url)
-    ? `<a class="trustPill sourceLink" target="_blank" rel="noopener" href="${safeUrl(so.url)}">↗ ${esc(so.label)}</a>`
+    ? `<a class="trustPill sourceLink" target="_blank" rel="noopener noreferrer" href="${safeUrl(so.url)}">↗ ${esc(so.label)}</a>`
     : `<span class="trustPill ${so.cls}">${so.cls==="public"?"◆":so.cls==="official"?"✓":"i"} ${esc(so.label)}</span>`;
   const kind = so.cls==="public" ? `<span class="trustPill public">◆ 공공데이터</span>`
     : so.cls==="official" ? `<span class="trustPill official">✓ 공식 출처</span>` : "";
@@ -2467,8 +2467,8 @@ function parkLine(x, box = false) {
   const note = p.ok ? `<i>✓ ${esc(p.ok.split(" ")[0])} 확인</i>` : p.txt ? `<i>· 방문 전 확인</i>` : "";
   const sports = sportsScheduleLine(x);
   // 주차 정보가 없으면 큰 상자 대신 작은 한 줄만 (알려줄 게 없는 안내가 카드를 차지하지 않게)
-  if (!p.txt && !box) return trLine(x) + `<small class="pkLine pkNone">🅿️ 주차 정보 없음 · <a target="_blank" rel="noopener" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
-  return trLine(x) + `<small class="pkLine ${p.lvl}${box ? " pkBox" : ""}">🅿️ ${esc(p.txt || "주차 정보 없음 — 가기 전에 확인하쇼")} ${note}<a target="_blank" rel="noopener" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
+  if (!p.txt && !box) return trLine(x) + `<small class="pkLine pkNone">🅿️ 주차 정보 없음 · <a target="_blank" rel="noopener noreferrer" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
+  return trLine(x) + `<small class="pkLine ${p.lvl}${box ? " pkBox" : ""}">🅿️ ${esc(p.txt || "주차 정보 없음 — 가기 전에 확인하쇼")} ${note}<a target="_blank" rel="noopener noreferrer" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
 }
 /* 🚇 가까운 지하철역 (광주 도시철도 1호선 · 역 좌표: 위키백과) — 직선거리 기준이라 '약'으로 표시 */
 const STATIONS = [["녹동", 35.10694, 126.93417], ["소태", 35.12361, 126.9325], ["학동·증심사입구", 35.1325, 126.92861], ["남광주", 35.1393861, 126.9228722], ["문화전당", 35.146497, 126.919644], ["금남로4가", 35.150885, 126.914277], ["금남로5가", 35.153969, 126.90964], ["양동시장", 35.154326, 126.901346], ["돌고개", 35.151771, 126.895349], ["농성", 35.153293, 126.883931], ["화정", 35.151933, 126.876648], ["쌍촌", 35.151547, 126.86949], ["운천", 35.150499, 126.858707], ["상무", 35.14674, 126.848713], ["김대중컨벤션센터", 35.1431389, 126.8414139], ["공항", 35.144104, 126.811607], ["송정공원", 35.1435194, 126.799083], ["광주송정", 35.1373917, 126.7914722]].map(([name, lat, lng]) => ({ name, lat, lng }));
@@ -2485,8 +2485,8 @@ function trLine(x) {
   const n = nearStation(x); if (!n) return "";
   const name = (n.v.name || n.v.venue || n.v.title || "").split(" (")[0];
   const dir = `https://map.naver.com/p/search/${encodeURIComponent(name)}`;
-  if (n.d <= SUBWAY_WALK_KM) { const min = Math.max(1, Math.round(n.d * 1.3 / 4.2 * 60)); return `<small class="goLine ok">🚗 차로 가요 · 지하철이면 ${esc(n.st.name)}역에서 걸어서 ${min}분 · <a target="_blank" rel="noopener" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>` }
-  return `<small class="goLine">🚗 차로 가요 · <a target="_blank" rel="noopener" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>`;
+  if (n.d <= SUBWAY_WALK_KM) { const min = Math.max(1, Math.round(n.d * 1.3 / 4.2 * 60)); return `<small class="goLine ok">🚗 차로 가요 · 지하철이면 ${esc(n.st.name)}역에서 걸어서 ${min}분 · <a target="_blank" rel="noopener noreferrer" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>` }
+  return `<small class="goLine">🚗 차로 가요 · <a target="_blank" rel="noopener noreferrer" href="${dir}" onclick="event.stopPropagation()">길찾기 ↗</a></small>`;
 }
 /* ⏳ 머무는 시간(종류별 보통 시간 · 앱 추정)과 오늘 마감까지 남은 시간(앱에 있는 운영시간으로 계산) */
 const STAY_KIND = { "미술관": "1~1.5시간", "박물관": "1.5~2시간", "과학관": "2~3시간", "동물원·테마파크": "2~3시간", "공원·정원": "1시간 안팎", "5·18 사적지": "30분~1시간", "근대문화유산": "20~30분", "골목·시장": "1~2시간", "역사유적": "30분~1시간", "복합문화공간": "2시간 이상", "전시관": "1~1.5시간", "갤러리": "30분~1시간", "기념관": "1시간", "문학관": "1시간", "양림 카페": "1시간", "워터파크": "3~4시간", "자연·경관": "1~2시간", "체험": "1~2시간", "레포츠": "2시간 안팎" };
@@ -2555,7 +2555,7 @@ function cultureTodayPicks(iso) {
 function cultureDayHtml() {
   const c = cultureInfo(), alarm = cultureAlarmOn();
   const movieTxt = c.movie ? "🎬 영화관 17~21시 할인 (참여 극장·요금은 예매 화면에서 확인)" : `🎬 영화 할인은 둘째·마지막 수요일 (다음: ${c.mv})`;
-  const btns = `<div class="cdBtns"><a target="_blank" rel="noopener" href="https://www.culture.go.kr/wday">혜택 찾아보기 ↗</a><button type="button" onclick="cultureAlarmMenu()">${alarm ? "🔔 알림 켜짐" : "🔔 수요일마다 알림 받기"}</button></div>`;
+  const btns = `<div class="cdBtns"><a target="_blank" rel="noopener noreferrer" href="https://www.culture.go.kr/wday">혜택 찾아보기 ↗</a><button type="button" onclick="cultureAlarmMenu()">${alarm ? "🔔 알림 켜짐" : "🔔 수요일마다 알림 받기"}</button></div>`;
   if (c.state === "today") {
     const picks = cultureTodayPicks(todayISO());
     return `<div class="cultureDay hot"><div class="cdTop"><span class="cdTag">TODAY · 매주 수요일</span><b>🎫 오늘은 '문화가 있는 날'이여!</b><p>박물관·미술관·공연장 할인이나 무료 입장이 많은 날이에요. 혜택은 시설마다 달라요.</p></div>
@@ -2630,7 +2630,7 @@ const SPORTS_LINKS = {
 };
 function sportsScheduleLine(x){
   const p=SPORTS_LINKS[x?.venueId||x?.id||""]; if(!p) return "";
-  return `<small class="goLine">🏟 <a target="_blank" rel="noopener" href="${p[1]}" onclick="event.stopPropagation()">${p[0]} ↗</a> · 경기 날엔 교통·주차가 혼잡할 수 있어요</small>`;
+  return `<small class="goLine">🏟 <a target="_blank" rel="noopener noreferrer" href="${p[1]}" onclick="event.stopPropagation()">${p[0]} ↗</a> · 경기 날엔 교통·주차가 혼잡할 수 있어요</small>`;
 }
 
 /* ▼ 앱을 인터넷에 올린 주소 (GitHub Pages). 넣어 두면 PC용 파일도 열 때마다 최신 일정을 받아와요.
@@ -2641,10 +2641,17 @@ const DATA_URL = "https://jngj-eodigabolcca.github.io";
 const REPORT_URL = "";
 const SITE_URL = (location.protocol.startsWith("http") && !location.hostname.match(/^(localhost|127\.)/) ? location.origin + location.pathname : DATA_URL.replace(/\/+$/, "") + "/");
 const DATA_HEALTH = { remoteOk: new Set(), remoteFailed: new Set(), checkedAt: null };
+/* 운영 안정성: 응답이 없는 외부 요청을 제한하고 기존 오류 처리·대체 자료 로직으로 복귀 */
+async function guardedFetch(url, options = {}, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try { return await fetch(url, { ...options, signal: controller.signal }); }
+  finally { clearTimeout(timer); }
+}
 async function getJSON(n, fallback = []) {
   const local = location.protocol === "file:" || window.__PC__;
   const base = local ? (DATA_URL ? DATA_URL.replace(/\/+$/, "") + "/" : "") : "";
-  if (!local || base) { try { const r = await fetch(`${base}data/${n}.json`, { cache: "no-cache" }); if (r.ok) { const j = await r.json();
+  if (!local || base) { try { const r = await guardedFetch(`${base}data/${n}.json`, { cache: "no-cache" }, 10000); if (r.ok) { const j = await r.json();
     // 서버 자료가 빈 목록([])으로 올라가 있으면 가볼 곳·맛집이 통째로 사라지니, 그때는 내장 자료를 쓴다
     if (!(Array.isArray(j) && !j.length && EMBEDDED_KEYS.includes(n))) { DATA_HEALTH.remoteOk.add(n); return j } } } catch { } }
   if (n === "meta" || EMBEDDED_KEYS.includes(n)) DATA_HEALTH.remoteFailed.add(n);
@@ -3631,7 +3638,7 @@ function planCard(p, i) {
   return `<article class="plan p${i % 3}${p.now ? " nowSlot" : ""}"><div class="planPic" role="button" tabindex="0" onclick="${p.eventId ? `detail('${jsq(p.eventId)}')` : p.mapId ? `aiProfile('${jsq(p.mapId)}')` : ""}">${img}<span class="planNo">${esc(p.slot)}</span>${p.now ? `<span class="nowTag">지금 딱 좋아요</span>` : ""}<span class="planIcon">${p.icon}</span></div>
   <div class="planBody"><div class="why">${p.why.map(w => `<span>${esc(w)}</span>`).join("")}</div><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p>
   ${p.eventId ? parkLine(EVENTS.find(e => e.id === p.eventId)) : p.mapId ? visitLine(VENUES.find(v => v.id === p.mapId)) + parkLine(VENUES.find(v => v.id === p.mapId)) : ""}
-  ${p.meal ? `<div class="planMeal"><span>${esc(p.meal.label)}</span><b>${esc(p.meal.name)}</b><small>${esc(p.meal.sub)}</small>${p.meal.reason ? `<small style="display:block;margin-top:3px;color:#6f7b74">추천 이유 · ${esc(p.meal.reason)}</small>` : ""}<a target="_blank" rel="noopener" href="${p.meal.link}">${p.meal.searchOnly ? "근처 식당 찾기 ↗" : "길찾기 ↗"}</a></div>` : ""}
+  ${p.meal ? `<div class="planMeal"><span>${esc(p.meal.label)}</span><b>${esc(p.meal.name)}</b><small>${esc(p.meal.sub)}</small>${p.meal.reason ? `<small style="display:block;margin-top:3px;color:#6f7b74">추천 이유 · ${esc(p.meal.reason)}</small>` : ""}<a target="_blank" rel="noopener noreferrer" href="${p.meal.link}">${p.meal.searchOnly ? "근처 식당 찾기 ↗" : "길찾기 ↗"}</a></div>` : ""}
   <div class="planCta"><button class="go" onclick="goPlan(${i})">이 코스로 짜기 →</button>${p.mapId ? `<button onclick="showOnMap('venue','${jsq(p.mapId)}')">지도</button>` : ""}${p.eventId ? `<button onclick="detail('${jsq(p.eventId)}')">상세</button>` : ""}</div></div></article>`;
 }
 let PLANS = [];
@@ -4435,7 +4442,7 @@ function ticketLabel(x) {
 }
 function ticketBadge(x, big = false) {
   const t = ticketOf(x), [cls, label] = ticketLabel(x);
-  const link = t.link ? `<a class="tLink" target="_blank" rel="noopener" href="${safeUrl(t.link)}">${esc(t.linkName || "예매처")}에서 확인 ↗</a>` : "";
+  const link = t.link ? `<a class="tLink" target="_blank" rel="noopener noreferrer" href="${safeUrl(t.link)}">${esc(t.linkName || "예매처")}에서 확인 ↗</a>` : "";
   return `<div class="ticket t-${cls}${big ? " big" : ""}"><b>${label}</b>${t.note ? `<span>${esc(t.note)}</span>` : ""}${t.checked ? `<small>${esc(t.checked.slice(5).replace("-", "."))} 확인</small>` : ""}${link}</div>`;
 }
 
@@ -4456,7 +4463,7 @@ function eventCard(x) {
   </ul>
   ${parkLine(x)}
   ${pills.length ? `<div class="icons">${pills.slice(0, 4).map(p => `<span class="iconpill">${p[0]} ${esc(p[1].split(" · ")[0])}</span>`).join("")}</div>` : ""}
-  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}${visitBtn(x.id)}</div></div></div></article>`;
+  ${reasonHtml(x)}${trustStrip(x)}<div class="foot"><div class="actions"><button class="btn" onclick="detail('${jsq(x.id)}')">상세 보기</button><a class="btn" target="_blank" rel="noopener noreferrer" href="${safeUrl(x.url)}">${auto || /search\.naver/.test(x.url || "") ? "원문 ↗" : "공식 원문 ↗"}</a>${favBtn(x.id)}${visitBtn(x.id)}</div></div></div></article>`;
 }
 function eventMatches(x, q) {
   const hay = [x.title, x.aliases, x.venue, x.district, x.category, x.subtype, x.price, x.discount, (x.tags || []).join(" ")].join(" ").toLowerCase();
@@ -4503,7 +4510,7 @@ function annualBlock() {
     return { a, st, cls, ahead: cur && cur.end < t ? 12 + ahead : ahead };
   }).sort((p, q) => p.ahead - q.ahead);
   if (!list.length) return { top: "", bottom: "" };
-  const card = ({ a, st, cls, live }) => `<div class="listCard">${a.image ? `<div class="cover">${imgWithFallback(a.image, a.name, "")}<span class="credit">${esc(a.imageCredit || "")}</span></div>` : ""}<div class="listMain"><div class="kindRow"><span class="kind">🎪 해마다 열리는 축제</span><span class="gu">${esc(a.district)}</span></div><b>${esc(a.name)}</b><small class="mkLine ${cls}">📅 ${esc(st)}</small><small class="note">${esc(a.desc)}</small><small>📍 ${esc(a.place)} · 출처 ${esc(a.src)}</small><div class="btnRow">${live ? `<button class="miniBtn" onclick="detail('${jsq(live.id)}')">일정 보기 →</button>` : ""}${a.venueId ? `<button class="miniBtn" onclick="aiProfile('${jsq(a.venueId)}')">근처 볼거리</button>` : ""}<a class="miniBtn" target="_blank" rel="noopener" href="https://search.naver.com/search.naver?query=${encodeURIComponent(y + " " + a.name)}">올해 일정 검색 ↗</a></div></div></div>`;
+  const card = ({ a, st, cls, live }) => `<div class="listCard">${a.image ? `<div class="cover">${imgWithFallback(a.image, a.name, "")}<span class="credit">${esc(a.imageCredit || "")}</span></div>` : ""}<div class="listMain"><div class="kindRow"><span class="kind">🎪 해마다 열리는 축제</span><span class="gu">${esc(a.district)}</span></div><b>${esc(a.name)}</b><small class="mkLine ${cls}">📅 ${esc(st)}</small><small class="note">${esc(a.desc)}</small><small>📍 ${esc(a.place)} · 출처 ${esc(a.src)}</small><div class="btnRow">${live ? `<button class="miniBtn" onclick="detail('${jsq(live.id)}')">일정 보기 →</button>` : ""}${a.venueId ? `<button class="miniBtn" onclick="aiProfile('${jsq(a.venueId)}')">근처 볼거리</button>` : ""}<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="https://search.naver.com/search.naver?query=${encodeURIComponent(y + " " + a.name)}">올해 일정 검색 ↗</a></div></div></div>`;
   return { top: "", bottom: `<h3 class="sub" style="margin-top:28px">해마다 열리는 축제 · ${esc(RNAME())} ${list.length}</h3><div class="grid">${list.map(card).join("")}</div><div class="verify" style="margin-top:12px">올해 날짜가 발표되면 일정 목록에 바로 올라와요. 날짜는 해마다 조금씩 바뀌니 가기 전에 꼭 확인하세요.</div>` };
 }
 /* '관람 가능' = 오늘 바로 가서 볼 수 있는 것: 진행 중 일정 + 오늘 문 여는 미술관·박물관 */
@@ -4622,7 +4629,7 @@ function placeCard(v) {
   ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   ${trustStrip(v)}
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name)}">네이버 지도 ↗</a>${v.url ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
 }
 // 아이와 안의 세부 분류 (큰 칸과 겹치지 않도록 '아이와' 안에서만 고름)
 function isKidsScience(v) { return /과학관|과학|천문|우주|체험|생태교육|어린이박물관/.test((v.kind || "") + " " + (v.name || "") + " " + (v.kids || "")) }
@@ -4917,7 +4924,7 @@ function renderPopShows(){
         <small>${esc(tk.note||"티켓 오픈·잔여석은 공식 예매처에서 확인하세요.")}${checked}</small>
         ${reasonHtml(e)}
         ${trustStrip({...e, verified:(tk.checked||e.verified)})}
-        <div class="popBtns"><button class="miniBtn" onclick="detail('${jsq(e.id)}')">상세 보기</button>${saleLink?`<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(saleLink)}">예매처 확인 ↗</a>`:""}</div>
+        <div class="popBtns"><button class="miniBtn" onclick="detail('${jsq(e.id)}')">상세 보기</button>${saleLink?`<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${safeUrl(saleLink)}">예매처 확인 ↗</a>`:""}</div>
       </div>
     </article>`;
   };
@@ -5001,7 +5008,7 @@ function foodCard(r) {
   const official = r.badge === "2025 광주맛집";
   return `<div class="listCard food"><div class="foodIcon">${foodIcon(r)}</div><div class="listMain"><div class="kindRow">${flagTag(r)}${homeTag(r)}<span class="kind ${official ? "k-gm" : ""}">${esc(r.badge)}</span><span class="gu">${esc(r.district)}</span>${r.menu ? `<span class="menu">${esc(r.menu)}</span>` : ""}</div><b>${esc(r.name)}</b>
   <small>${esc(r.address)}</small>${r.note ? `<small class="note">${esc(r.note)}</small>` : ""}${r.hours ? `<small class="goLine ok">🕘 ${esc(tidyHours(r.hours))}${r.brk ? ` · 브레이크 ${esc(r.brk)}` : ""} · 쉬는 날 ${esc(r.closed || "확인 필요")}${r.hoursSrc ? ` <i style="font-style:normal;opacity:.7">✓ ${esc(r.hoursSrc)} 확인</i>` : ""}</small>` : `<small class="goLine">🕘 영업시간·쉬는 날·브레이크타임은 자주 바뀌어요 — 가기 전에 '메뉴·영업시간'에서 확인하쇼</small>`}${parkLine(r)}
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('food','${jsq(r.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(r.name + " " + r.district)}">메뉴·영업시간 ↗</a>${favBtn("f:" + r.id)}${shareBtn("f", r.id)}${reportBtn("f", r.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('food','${jsq(r.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(r.name + " " + r.district)}">메뉴·영업시간 ↗</a>${favBtn("f:" + r.id)}${shareBtn("f", r.id)}${reportBtn("f", r.id)}</div></div></div>`;
 }
 function renderFood() {
   const gus = DIST_OPTS().filter(g => g === "전체" || FOOD.some(f => f.district === g));
@@ -5009,7 +5016,7 @@ function renderFood() {
   const list = sortHome(FOOD.filter(r => (FOOD_GU === "전체" || r.district === FOOD_GU) && [r.name, r.menu, r.district, r.address, r.note, r.badge].join(" ").toLowerCase().includes(q)));
   $("#foodView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">TASTE · ${esc(RNAME())}</span><h2>징하게 맛있는 ${RW()}<small>${REGION === "gj" ? "광주 7미부터 광주시 선정 맛집까지" : "관광공사에 등록된 노포·향토 음식점"}</small></h2></div><span>${list.length}곳</span></div>
   ${REGION === "gj" ? `<div class="mi7Head"><b>광주 7미<i class="mi7Han">(味)</i></b><span>광주 오면 이건 먹고 가야제 — 누르면 맛집이 나와요</span></div>
-  <div class="mi7">${MI7.map(([e, n, d, q]) => `<button onclick="mi7('${q}')"><em>${e}</em><b>${n}</b><small>${d}</small></button>`).join("")}</div>` : `<div class="nowEmpty">🍲 ${esc(RNAME())} 맛집 자료가 아직 들어오지 않았어요. 그동안은 <a class="btn" target="_blank" rel="noopener" href="${mapLink(REGIONS[REGION].hub + " 맛집")}">${esc(REGIONS[REGION].hub)} 맛집 지도에서 보기 ↗</a></div>`}
+  <div class="mi7">${MI7.map(([e, n, d, q]) => `<button onclick="mi7('${q}')"><em>${e}</em><b>${n}</b><small>${d}</small></button>`).join("")}</div>` : `<div class="nowEmpty">🍲 ${esc(RNAME())} 맛집 자료가 아직 들어오지 않았어요. 그동안은 <a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(REGIONS[REGION].hub + " 맛집")}">${esc(REGIONS[REGION].hub)} 맛집 지도에서 보기 ↗</a></div>`}
   <div class="foodIntro${REGION === "gj" ? "" : " hidden"}">광주광역시가 시민·업계 추천 217곳 중 <b>전문가 평가 + 시민 5,526명 온라인 평가</b>로 고른 <b>'2025 광주맛집' 50곳</b>과, 떡갈비·오리탕·보리밥 음식거리입니다.</div>
   <div class="subchips">${gus.map(g => `<button class="${g === FOOD_GU ? "active" : ""}" onclick="setFoodGu('${g}')">${g}</button>`).join("")}</div>
   ${paged("renderFood", list, foodCard, "<p class='empty'>조건에 맞는 맛집이 없습니다.</p>")}
@@ -5017,7 +5024,7 @@ function renderFood() {
 }
 window.setFoodGu = g => { FOOD_GU = g; renderFood() };
 const MI7 = [["🥩", "송정떡갈비", "다진 갈비를 치대 구운 송정역 앞 명물", "떡갈비"], ["🍲", "오리탕", "들깨 듬뿍, 미나리 얹어 먹는 유동 오리탕거리", "오리탕"], ["🍚", "무등산 보리밥", "산에서 내려와 나물 비벼 먹는 한 그릇", "보리밥"], ["🥞", "광주 육전", "얇게 저민 한우에 계란옷, 바로 부쳐 주는 전", "육전"], ["🍱", "남도 한정식", "상다리 휘어지는 남도 한 상", "한정식"], ["🥬", "광주 김치", "김치축제가 열리는 김치의 도시", "김치"], ["🍙", "오월 주먹밥", "1980년 5월, 시민들이 나눠 먹던 나눔의 밥", "주먹밥"]];
-window.mi7 = q => { const hit = FOOD.some(f => (f.menu + f.name).includes(q)) || VENUES.some(v => v.name.includes(q)) || EVENTS.some(e => e.title.includes(q)); if (hit) { $("#search").value = q; renderSearch() } else window.open(mapLink("광주 " + q), "_blank") };
+window.mi7 = q => { const hit = FOOD.some(f => (f.menu + f.name).includes(q)) || VENUES.some(v => v.name.includes(q)) || EVENTS.some(e => e.title.includes(q)); if (hit) { $("#search").value = q; renderSearch() } else window.open(mapLink("광주 " + q), "_blank", "noopener,noreferrer") };
 
 
 /* ───────── 🥐 빵지순례 ───────── */
@@ -5035,7 +5042,7 @@ function bakeryCard(b) {
     <small class="goLine ok">🕘 ${esc(b.hours || "영업시간 방문 전 확인")}</small>
     ${b.area ? `<small class="goLine">🗺 ${esc(b.area)}</small>` : ""}
     ${b.phone ? `<small>☎ ${esc(b.phone)}</small>` : ""}
-    <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(b.name + " " + b.district)}">지도·최신영업 ↗</a>${b.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(b.url)}">공식/출처 ↗</a>` : ""}<button class="miniBtn" onclick="bakeryRoute('${jsq(b.id)}')">이곳 포함 코스</button>${reportBtn("b", b.id)}</div>
+    <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(b.name + " " + b.district)}">지도·최신영업 ↗</a>${b.url ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${safeUrl(b.url)}">공식/출처 ↗</a>` : ""}<button class="miniBtn" onclick="bakeryRoute('${jsq(b.id)}')">이곳 포함 코스</button>${reportBtn("b", b.id)}</div>
     <small class="source">출처 ${esc(b.source || "공개된 업체 정보")}${b.verified ? " · " + esc(b.verified) + " 확인" : ""}</small>
   </div></div>`;
 }
@@ -5062,7 +5069,7 @@ function bakeryListAI(q = "") {
   }
   $("#answer").innerHTML = `<div class="aiTrip"><div class="alHead"><b>🥐 ${esc(city || RW())} 빵지순례</b><span>업체정보 확인</span></div>
     <p class="pfNote">별점·리뷰로 순위를 매기지 않고 ${HOME ? "내 동네에서 가까운 곳부터" : "물어볼 때마다 고르게 돌아가며"}보여드려요. 출발 전 영업 여부는 지도에서 다시 확인하세요.</p>
-    <ol class="trip">${list.map((b,i)=>`<li><span>${i+1}</span><div><b>${esc(b.name)}</b><small>${esc(b.district)} · ${esc(b.area || "")}</small><small>${esc(b.hours || "영업시간 확인 필요")}</small><a target="_blank" rel="noopener" href="${mapLink(b.name + " " + b.district)}">지도·메뉴 확인 ↗</a></div></li>`).join("")}</ol>
+    <ol class="trip">${list.map((b,i)=>`<li><span>${i+1}</span><div><b>${esc(b.name)}</b><small>${esc(b.district)} · ${esc(b.area || "")}</small><small>${esc(b.hours || "영업시간 확인 필요")}</small><a target="_blank" rel="noopener noreferrer" href="${mapLink(b.name + " " + b.district)}">지도·메뉴 확인 ↗</a></div></li>`).join("")}</ol>
     <p><button class="btn" onclick="showTab('bakeries')">빵집 전체 보기 →</button></p></div>`;
 }
 window.bakeryRoute = id => {
@@ -5072,7 +5079,7 @@ window.bakeryRoute = id => {
   $("#answer").innerHTML = `<div class="aiTrip"><div class="alHead"><b>🥐 ${esc(b.name)} 포함 코스</b><span>${esc(b.district)}</span></div>
     <ol class="trip">
       ${nearby[0] ? `<li><span>1</span><div><b>${esc(nearby[0].name)}</b><small>${esc(nearby[0].kind)} · ${esc(nearby[0].area || nearby[0].district)}</small></div></li>` : ""}
-      <li><span>${nearby[0] ? "2" : "1"}</span><div><b>${esc(b.name)}</b><small>${esc(b.area || b.district)} · ${esc(b.hours || "")}</small><a target="_blank" rel="noopener" href="${mapLink(b.name + " " + b.district)}">지도 확인 ↗</a></div></li>
+      <li><span>${nearby[0] ? "2" : "1"}</span><div><b>${esc(b.name)}</b><small>${esc(b.area || b.district)} · ${esc(b.hours || "")}</small><a target="_blank" rel="noopener noreferrer" href="${mapLink(b.name + " " + b.district)}">지도 확인 ↗</a></div></li>
       ${nearby[1] ? `<li><span>${nearby[0] ? "3" : "2"}</span><div><b>${esc(nearby[1].name)}</b><small>${esc(nearby[1].kind)} · ${esc(nearby[1].area || nearby[1].district)}</small></div></li>` : ""}
     </ol></div>`;
   document.querySelector('#aiBox')?.scrollIntoView({behavior:'smooth',block:'start'});
@@ -5103,13 +5110,13 @@ function marketCard(v) {
   return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow"><span class="kind k-${esc(m.type)}">${esc(m.type)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : "🏠 실내"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${mkStatus(v).map(([c, t]) => `<small class="mkLine ${c}">${esc(t)}</small>`).join("")}
   ${v.desc ? `<small class="note">${esc(v.desc)}</small>` : ""}
-  ${(m.eats || []).length ? `<div class="eats">${m.eats.map(e => `<a target="_blank" rel="noopener" href="${mapLink(v.name.split(" (")[0] + " " + e.split(" (")[0])}">😋 ${esc(e)}</a>`).join("")}</div>` : ""}
+  ${(m.eats || []).length ? `<div class="eats">${m.eats.map(e => `<a target="_blank" rel="noopener noreferrer" href="${mapLink(v.name.split(" (")[0] + " " + e.split(" (")[0])}">😋 ${esc(e)}</a>`).join("")}</div>` : ""}
   <dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
   ${m.tip ? `<small class="note">💡 ${esc(m.tip)}</small>` : ""}
   ${parkLine(v)}
   ${near ? `<small class="goLine">🍲 근처 맛집: ${esc(near[0].name)} (${kmTxt(near[1])})</small>` : ""}
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}${m.src ? ` · 출처 ${esc(m.src)}` : ""}</small>
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(v.name)}">네이버 지도 ↗</a>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name)}">네이버 지도 ↗</a>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}${shareBtn("v", v.id)}${reportBtn("v", v.id)}</div></div></div>`;
 }
 const MK_GROUPS = [
   ["전체", "✦", () => true],
@@ -5169,7 +5176,7 @@ function paged(key, list, cardFn, empty) {
 /* 이 권역에 아직 자료가 없을 때 보여줄 안내 */
 function regionEmpty(view, ic, what, list) {
   const el = document.getElementById(view); if (!el || list.length) return false;
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">${esc(RNAME())}</span><h2>${ic} ${esc(what)}<small>${esc(RNAME())} 자료가 아직 들어오지 않았어요</small></h2></div><span>0곳</span></div><div class="nowEmpty">${ic} ${esc(RNAME())}의 ${esc(what)} 정보는 아직 앱에 없어요. 지금은 <a class="btn" target="_blank" rel="noopener" href="${mapLink(REGIONS[REGION].hub + " " + what)}">네이버 지도에서 '${esc(REGIONS[REGION].hub)} ${esc(what)}' 보기 ↗</a><br><button class="btn" onclick="setRegion('gj')">🟢 광주권 ${esc(what)} 보기</button></div>`;
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">${esc(RNAME())}</span><h2>${ic} ${esc(what)}<small>${esc(RNAME())} 자료가 아직 들어오지 않았어요</small></h2></div><span>0곳</span></div><div class="nowEmpty">${ic} ${esc(RNAME())}의 ${esc(what)} 정보는 아직 앱에 없어요. 지금은 <a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(REGIONS[REGION].hub + " " + what)}">네이버 지도에서 '${esc(REGIONS[REGION].hub)} ${esc(what)}' 보기 ↗</a><br><button class="btn" onclick="setRegion('gj')">🟢 광주권 ${esc(what)} 보기</button></div>`;
   return true;
 }
 /* ───────── 숙소 ───────── */
@@ -5178,7 +5185,7 @@ function stayCard(h) {
   <small class="note">${esc(h.note)}</small>
   <dl>${[["추천", h.best], ["객실", [h.rooms, h.checkin ? "체크인/아웃 " + h.checkin : ""].filter(Boolean).join(" · ")], ["시설", h.facilities], ["주차", h.parking]].filter(r => r[1]).map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
   <small>${esc(h.address)}${h.phone ? " · ☎ " + esc(h.phone) : ""}</small>
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('stay','${jsq(h.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(h.name)}">요금·후기 ↗</a>${favBtn("s:" + h.id)}</div></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('stay','${jsq(h.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(h.name)}">요금·후기 ↗</a>${favBtn("s:" + h.id)}</div></div></div>`;
 }
 function renderStays() { if (regionEmpty("staysView", "🛏", "숙소", { staysView: STAYS, cinemasView: CINEMAS, cafesView: CAFES, marketsView: VENUES.filter(v => v.market) }["staysView"])) return;
   const q = "";
@@ -5191,12 +5198,12 @@ function renderStays() { if (regionEmpty("staysView", "🛏", "숙소", { staysV
 
 /* ───────── 영화·카페 ───────── */
 function renderCinemas() { if (regionEmpty("cinemasView", "🎬", "영화관", { staysView: STAYS, cinemasView: CINEMAS, cafesView: CAFES, marketsView: VENUES.filter(v => v.market) }["cinemasView"])) return; $("#cinemasView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MOVIE</span><h2>영화 한 편 볼랑가<small>극장별 실시간 상영표로 바로 연결</small></h2></div><span>${CINEMAS.length}곳</span></div><div class="grid">${CINEMAS.map(cinemaCard).join("")}</div><div class="verify" style="margin-top:12px">영화 상영시간은 매우 자주 바뀌므로 앱에 저장하지 않고 각 영화관 공식 예매처로 연결합니다.</div>` }
-function cinemaCard(c) { return `<div class="listCard"><div class="listMain"><b>${esc(c.name)}</b><small>${esc(c.district)} · ${esc(c.address)}<br>☎ ${esc(c.phone)}</small>${c.rating ? "" : `<div class="rating">🎞 독립·예술영화 · 손간판 극장</div>`}${parkLine(c)}<div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener" href="${safeUrl(c.url)}">${c.rating ? "실시간 상영시간" : "상영 시간표"} ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(c.name)}">지도 ↗</a></div></div></div>` }
+function cinemaCard(c) { return `<div class="listCard"><div class="listMain"><b>${esc(c.name)}</b><small>${esc(c.district)} · ${esc(c.address)}<br>☎ ${esc(c.phone)}</small>${c.rating ? "" : `<div class="rating">🎞 독립·예술영화 · 손간판 극장</div>`}${parkLine(c)}<div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${safeUrl(c.url)}">${c.rating ? "실시간 상영시간" : "상영 시간표"} ↗</a><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(c.name)}">지도 ↗</a></div></div></div>` }
 function petCard(c) {
   return `<div class="listCard pet"><div class="petTop">${c.big ? "🐕" : "🐶"}<small>${c.big ? "넓은 마당·야외" : esc(c.near || c.district)}</small></div><div class="listMain"><div class="kindRow">${flagTag(c)}${homeTag(c)}<span class="kind">반려견 동반</span>${c.publicListed === false ? `<span class="menu" title="관광공사 반려동물 동반여행 공공데이터에 아직 없는 곳이에요">운영자 확인</span>` : c.publicListed ? `<span class="menu" title="한국관광공사 반려동물 동반여행 공공데이터">✓ 공공데이터</span>` : ""}${c.bigDog ? `<span class="io">🐕 대형견 가능</span>` : ""}${c.outdoor && !c.big ? `<span class="io out">🌤 실외 공간</span>` : ""}<span class="gu">${esc(c.district)}${c.near ? " · " + esc(c.near) : ""}</span>${c.big ? `<span class="io out">🌳 야외 공간</span>` : ""}</div><b>${esc(c.name)}</b>
   <div class="petRule"><b>🐾 동반 규칙</b> ${esc(c.pet)}</div>${c.note ? `<small class="note">${esc(c.note)}</small>` : ""}
   <dl><dt>시간</dt><dd>${esc(c.hours || "매장에 확인")}</dd><dt>주소</dt><dd>${esc(c.address)}</dd>${c.phone ? `<dt>전화</dt><dd>${esc(c.phone)}</dd>` : ""}</dl>${parkLine(c)}
-  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('cafe','${jsq(c.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(c.name + " " + c.district)}">최신 정보 ↗</a>${favBtn("c:" + c.id)}${shareBtn("c", c.id)}${reportBtn("c", c.id)}</div><small class="source">출처 ${esc(c.source || "지역 반려동물 동반 장소 정보 모음")}${c.written ? " · " + esc(String(c.written).slice(0, 7).replace("-", ".")) + " 기준" : c.verified ? " · " + esc(String(c.verified).slice(0, 7).replace("-", ".")) + " 확인" : ""}${c.written && c.written < "2024" ? " · 오래된 자료라 지금도 영업하는지 꼭 확인하세요" : ""}</small></div></div>`;
+  <div class="btnRow"><button class="miniBtn" onclick="showOnMap('cafe','${jsq(c.id)}')">앱 지도에서 ◉</button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(c.name + " " + c.district)}">최신 정보 ↗</a>${favBtn("c:" + c.id)}${shareBtn("c", c.id)}${reportBtn("c", c.id)}</div><small class="source">출처 ${esc(c.source || "지역 반려동물 동반 장소 정보 모음")}${c.written ? " · " + esc(String(c.written).slice(0, 7).replace("-", ".")) + " 기준" : c.verified ? " · " + esc(String(c.verified).slice(0, 7).replace("-", ".")) + " 확인" : ""}${c.written && c.written < "2024" ? " · 오래된 자료라 지금도 영업하는지 꼭 확인하세요" : ""}</small></div></div>`;
 }
 let CAFE_GU = "전체";
 window.setCafeGu = g => { CAFE_GU = g; renderCafes() };
@@ -5249,7 +5256,7 @@ function libCard(l) {
   <small>${esc(l.address)}</small>
   <small class="note">평일 ${esc(l.weekday || "-")} · 토 ${esc(l.saturday || "-")} · 일·공휴일 ${esc(l.holiday || "-")}${l.closed ? ` · 휴관 ${esc(l.closed)}` : ""}</small>
   ${libEventsLine(l)}
-  <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(l.name)}">지도 ↗</a>${l.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${esc(/^https?:/.test(l.url) ? l.url : "http://" + l.url)}">도서관 누리집 ↗</a>` : ""}${l.phone ? `<a class="miniBtn" href="tel:${esc(l.phone)}">☎ ${esc(l.phone)}</a>` : ""}</div></div></div>`;
+  <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(l.name)}">지도 ↗</a>${l.url ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${esc(/^https?:/.test(l.url) ? l.url : "http://" + l.url)}">도서관 누리집 ↗</a>` : ""}${l.phone ? `<a class="miniBtn" href="tel:${esc(l.phone)}">☎ ${esc(l.phone)}</a>` : ""}</div></div></div>`;
 }
 function progState(p, t = todayISO()) {
   if (p.applyStart && p.applyEnd && p.applyStart <= t && t <= p.applyEnd) return ["접수 중", `~${p.applyEnd.slice(5).replace("-", ".")} 접수`, 0];
@@ -5263,7 +5270,7 @@ function progCard(p) {
   <small>${esc([p.org, p.place].filter(Boolean).join(" · "))}</small>
   <small class="note">${esc([sub, p.days, p.time, p.target].filter(Boolean).join(" · "))}</small>
   ${p.applyHow ? `<small>신청: ${esc(p.applyHow)}${p.select ? ` · ${esc(p.select)}` : ""}</small>` : ""}
-  <div class="btnRow">${p.url ? `<a class="miniBtn" target="_blank" rel="noopener" href="${esc(/^https?:/.test(p.url) ? p.url : "http://" + p.url)}">신청·자세히 ↗</a>` : ""}${p.phone ? `<a class="miniBtn" href="tel:${esc(p.phone)}">☎ 문의</a>` : ""}</div></div></div>`;
+  <div class="btnRow">${p.url ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${esc(/^https?:/.test(p.url) ? p.url : "http://" + p.url)}">신청·자세히 ↗</a>` : ""}${p.phone ? `<a class="miniBtn" href="tel:${esc(p.phone)}">☎ 문의</a>` : ""}</div></div></div>`;
 }
 /* 공공데이터에 강좌가 안 올라온 동네: 빈칸 대신 그 동네 평생학습관·주민자치센터 강좌를 찾아보는 길 */
 const localSearchName = g => (/^(동구|서구|남구|북구|광산구)$/.test(g) ? "광주 " : "") + g;
@@ -5273,7 +5280,7 @@ const localSearchUrl = (g, what) => "https://search.naver.com/search.naver?query
 function localFindCard(g) {
   return `<div class="listCard"><div class="listMain"><b>${esc(g)} 강좌는 아직 공공데이터에 안 올라왔어요</b>
   <small>구·군청이 4분기 강좌를 올리면 자동으로 채워져요. 그 전에는 아래에서 바로 찾아보세요.</small>
-  <div class="btnRow">${LOCAL_PORTALS[g] ? `<a class="miniBtn" target="_blank" rel="noopener" href="${LOCAL_PORTALS[g][1]}">🏛 ${esc(LOCAL_PORTALS[g][0])} ↗</a>` : ""}<a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "평생학습관 강좌 수강생 모집")}">📚 평생학습관 강좌 ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "주민자치센터 프로그램 모집")}">🏘 주민자치센터 프로그램 ↗</a><a class="miniBtn" target="_blank" rel="noopener" href="${localSearchUrl(g, "문화원 강좌 모집")}">🎨 문화원 강좌 ↗</a></div></div></div>`;
+  <div class="btnRow">${LOCAL_PORTALS[g] ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${LOCAL_PORTALS[g][1]}">🏛 ${esc(LOCAL_PORTALS[g][0])} ↗</a>` : ""}<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${localSearchUrl(g, "평생학습관 강좌 수강생 모집")}">📚 평생학습관 강좌 ↗</a><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${localSearchUrl(g, "주민자치센터 프로그램 모집")}">🏘 주민자치센터 프로그램 ↗</a><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${localSearchUrl(g, "문화원 강좌 모집")}">🎨 문화원 강좌 ↗</a></div></div></div>`;
 }
 function localMissingRow(progs) {
   const have = new Set(progs.map(p => p.district));
@@ -5473,11 +5480,11 @@ function pointsFor(layer) {
 }
 function popupHtml(layer, x) {
   if (layer === "events") return `<b>${esc(x.title)}</b><br><small>${esc(x.date)} · ${esc(x.venue)}</small><br><button class="miniBtn" onclick="detail('${jsq(x.id)}')">상세</button>`;
-  if (layer === "venues") return `${placeImage(x) ? `<div class="ph popImg"${bg(placeImage(x))}></div>` : ""}<b>${esc(x.name)}</b><br><small>${esc(x.kind)} · ${esc(x.hours || "")}<br>휴관 ${esc(x.closed || "확인 필요")} · ${esc(x.price || "")}</small><br><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(x.name)}">길찾기 ↗</a>`;
-  if (layer === "stays") return `${placeImage(x) ? `<div class="ph popImg"${bg(placeImage(x))}></div>` : ""}<b>${esc(x.name)}</b><br><small>${esc(x.area)} · ${esc(x.note)}</small><br><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(x.name)}">요금·길찾기 ↗</a>`;
-  if (layer === "food") return `<b>${esc(x.name)}</b><br><small>${esc(x.badge)}${x.menu ? " · " + esc(x.menu) : ""}<br>${esc(x.address)}</small><br><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(x.name + " " + x.district)}">메뉴·길찾기 ↗</a>`;
-  if (layer === "cafes") return `<b>🐶 ${esc(x.name)}</b><br><small>${esc(x.district)} · ${esc(x.hours)}<br>${esc(x.pet)}</small><br><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(x.name + " " + x.district)}">길찾기 ↗</a>`;
-  return `<b>${esc(x.name)}</b><br><small>${esc(x.address)}</small><br><a class="miniBtn" target="_blank" rel="noopener" href="${mapLink(x.name)}">길찾기 ↗</a>`;
+  if (layer === "venues") return `${placeImage(x) ? `<div class="ph popImg"${bg(placeImage(x))}></div>` : ""}<b>${esc(x.name)}</b><br><small>${esc(x.kind)} · ${esc(x.hours || "")}<br>휴관 ${esc(x.closed || "확인 필요")} · ${esc(x.price || "")}</small><br><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.name)}">길찾기 ↗</a>`;
+  if (layer === "stays") return `${placeImage(x) ? `<div class="ph popImg"${bg(placeImage(x))}></div>` : ""}<b>${esc(x.name)}</b><br><small>${esc(x.area)} · ${esc(x.note)}</small><br><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.name)}">요금·길찾기 ↗</a>`;
+  if (layer === "food") return `<b>${esc(x.name)}</b><br><small>${esc(x.badge)}${x.menu ? " · " + esc(x.menu) : ""}<br>${esc(x.address)}</small><br><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.name + " " + x.district)}">메뉴·길찾기 ↗</a>`;
+  if (layer === "cafes") return `<b>🐶 ${esc(x.name)}</b><br><small>${esc(x.district)} · ${esc(x.hours)}<br>${esc(x.pet)}</small><br><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.name + " " + x.district)}">길찾기 ↗</a>`;
+  return `<b>${esc(x.name)}</b><br><small>${esc(x.address)}</small><br><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.name)}">길찾기 ↗</a>`;
 }
 const approxNote = x => x && x.approx ? `<br><small style="color:#b87414">📍 대략 위치예요 · 정확한 길은 길찾기로</small>` : "";
 /* 지도 프로그램(Leaflet)은 처음부터 받지 않고, 지도 탭이나 결과 창의 미니 지도가 처음 필요할 때 한 번만 받는다 */
@@ -5551,7 +5558,7 @@ function updateMapCount() {
   Object.keys(LAYER_DEF).forEach(k => { if (MAP && MAP.hasLayer(MAP_LAYERS[k])) { const ps = pointsFor(k); total += ps.length; ps.forEach(p => p.c ? shown++ : miss.push([k, p])) } });
   $("#mapCount").textContent = `${shown}/${total}곳 표시`;
   const box = document.getElementById("mapMissing");
-  if (box) box.innerHTML = miss.length ? `<details><summary>지도에 아직 위치가 없는 곳 ${miss.length}곳 · 누르면 네이버 지도로 바로 찾기</summary><div>${miss.map(([k, p]) => `<a target="_blank" rel="noopener" href="${mapLink(p.name + " " + (p.x.district || "광주"))}">${esc(p.name)} ↗</a>`).join("")}</div></details>` : "";
+  if (box) box.innerHTML = miss.length ? `<details><summary>지도에 아직 위치가 없는 곳 ${miss.length}곳 · 누르면 네이버 지도로 바로 찾기</summary><div>${miss.map(([k, p]) => `<a target="_blank" rel="noopener noreferrer" href="${mapLink(p.name + " " + (p.x.district || "광주"))}">${esc(p.name)} ↗</a>`).join("")}</div></details>` : "";
 }
 window.fitAll = () => { const b = L.latLngBounds([]); Object.keys(MAP_LAYERS).forEach(k => { if (MAP.hasLayer(MAP_LAYERS[k])) MAP_LAYERS[k].eachLayer(m => m.getLatLng && b.extend(m.getLatLng())) }); if (b.isValid()) MAP.fitBounds(b.pad(0.08)) };
 /* 좌표가 아직 없는 곳은 OpenStreetMap(Photon)으로 한 곳씩(1.2초 간격) 찾아서 이 기기에 저장한다.
@@ -5575,7 +5582,7 @@ async function geocodeMissing() {
     const core = norm(p.name.split(/[(·]/)[0]);
     const okName = pr => pr && pr.name && (norm(pr.name).includes(core) || core.includes(norm(pr.name))) && core.length >= 2;
     const okAddr = pr => pr && pr.street && pr.housenumber && addr.includes(pr.street) && new RegExp(`\\b${pr.housenumber}\\b`).test(addr);
-    const photon = async (q, check) => { const j = await (await fetch(`https://photon.komoot.io/api/?limit=5&lat=${ctr[0]}&lon=${ctr[1]}&q=${encodeURIComponent(q)}`)).json(); const f = (j.features || []).find(f => inG(f.geometry.coordinates[1], f.geometry.coordinates[0]) && check(f.properties || {})); return f && { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] } };
+    const photon = async (q, check) => { const j = await (await guardedFetch(`https://photon.komoot.io/api/?limit=5&lat=${ctr[0]}&lon=${ctr[1]}&q=${encodeURIComponent(q)}`, {}, 9000)).json(); const f = (j.features || []).find(f => inG(f.geometry.coordinates[1], f.geometry.coordinates[0]) && check(f.properties || {})); return f && { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] } };
     // 잘못된 핀보다 핀 없음이 낫다: 이름이나 주소(도로명+번호)가 맞을 때만 받아들인다
     const tries = [
       () => photon(p.name + " " + city, okName),
@@ -5594,12 +5601,12 @@ window.showOnMap = (layer, id) => {
   const k = layer === "venue" ? "venues" : layer === "stay" ? "stays" : layer === "cafe" ? "cafes" : "food";
   const x = (k === "venues" ? VENUES : k === "stays" ? STAYS : k === "cafes" ? CAFES : FOOD).find(v => v.id === id);
   loadLeaflet().then(() => setTimeout(() => {
-    if (!MAP_READY) { if (x) window.open(mapLink(x.name + " " + (x.district || "")), "_blank"); return }   // 지도를 못 받았으면 네이버 지도로
+    if (!MAP_READY) { if (x) window.open(mapLink(x.name + " " + (x.district || "")), "_blank", "noopener,noreferrer"); return }   // 지도를 못 받았으면 네이버 지도로
     const inp = $(`#layers input[data-layer="${k}"]`); if (inp && !inp.checked) { inp.checked = true; toggleLayer(k, true) }
   setTimeout(() => {
     const m = MARKERS[`${k}:${id}`];
     if (m) { const g = MAP_LAYERS[k]; if (g.zoomToShowLayer) g.zoomToShowLayer(m, () => m.openPopup()); else { MAP.setView(m.getLatLng(), 16); m.openPopup() } }
-    else if (x) { $("#geoStatus").innerHTML = `${esc(x.name)}은(는) 아직 앱 지도에 위치가 없어요. <a target="_blank" rel="noopener" href="${mapLink(x.name + " " + (x.district || ""))}">네이버 지도에서 보기 ↗</a>`; window.open(mapLink(x.name + " " + (x.district || "")), "_blank") }
+    else if (x) { $("#geoStatus").innerHTML = `${esc(x.name)}은(는) 아직 앱 지도에 위치가 없어요. <a target="_blank" rel="noopener noreferrer" href="${mapLink(x.name + " " + (x.district || ""))}">네이버 지도에서 보기 ↗</a>`; window.open(mapLink(x.name + " " + (x.district || "")), "_blank", "noopener,noreferrer") }
   }, 150);
   }, 0));
 };
@@ -5916,11 +5923,11 @@ function placeProfile(v) {
    <h4>같이 가기 좋은 곳</h4><ul class="pfNear">
      ${near.map(([x, dd]) => `<li><span>걸어서</span>${esc(x.name)} <small>${kmTxt(dd)} · ${esc(x.kind)}</small></li>`).join("")}
      ${fdNear ? `<li><span>맛집</span>${esc(fdNear[0].name)} <small>${kmTxt(fdNear[1])}${fdNear[0].menu ? " · " + esc(fdNear[0].menu) : ""}</small></li>` : fdGu.length ? `<li><span>맛집</span>${fdGu.map(f => esc(f.name)).join(" · ")} <small>같은 ${esc(v.district)} 광주맛집 (거리 확인)</small></li>` : ""}
-     <li><span>맛집</span><a target="_blank" rel="noopener" href="${searchNear(v.name, "맛집")}">${esc(v.name)} 근처 맛집 지도에서 보기 ↗</a></li>
-     ${cfNear ? `<li><span>카페</span>${esc(cfNear[0].name)} <small>${kmTxt(cfNear[1])}</small></li>` : `<li><span>카페</span><a target="_blank" rel="noopener" href="${searchNear(v.name, "카페")}">${esc(v.name)} 근처 카페 지도에서 보기 ↗</a></li>`}
+     <li><span>맛집</span><a target="_blank" rel="noopener noreferrer" href="${searchNear(v.name, "맛집")}">${esc(v.name)} 근처 맛집 지도에서 보기 ↗</a></li>
+     ${cfNear ? `<li><span>카페</span>${esc(cfNear[0].name)} <small>${kmTxt(cfNear[1])}</small></li>` : `<li><span>카페</span><a target="_blank" rel="noopener noreferrer" href="${searchNear(v.name, "카페")}">${esc(v.name)} 근처 카페 지도에서 보기 ↗</a></li>`}
      ${stNear ? `<li><span>숙소</span>${esc(stNear[0].name)} <small>${kmTxt(stNear[1])} · ${esc(stNear[0].area)}</small></li>` : ""}
    </ul>
-   <div class="pfBtns"><button onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도</button><a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent(v.name)}">길찾기 ↗</a>${v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${v.infoSource && v.infoSource !== v.url ? `<a target="_blank" rel="noopener" href="${safeUrl(v.infoSource)}">정보 출처 ↗</a>` : ""}<button onclick="$('#aiq').value='${esc(v.name)} 보고 맛집 카페';recommend('${esc(v.name)} 보고 맛집 카페')">코스로 짜기</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div>
+   <div class="pfBtns"><button onclick="showOnMap('venue','${jsq(v.id)}')">앱 지도</button><a target="_blank" rel="noopener noreferrer" href="https://map.naver.com/p/search/${encodeURIComponent(v.name)}">길찾기 ↗</a>${v.url ? `<a target="_blank" rel="noopener noreferrer" href="${safeUrl(v.url)}">홈페이지 ↗</a>` : ""}${v.infoSource && v.infoSource !== v.url ? `<a target="_blank" rel="noopener noreferrer" href="${safeUrl(v.infoSource)}">정보 출처 ↗</a>` : ""}<button onclick="$('#aiq').value='${esc(v.name)} 보고 맛집 카페';recommend('${esc(v.name)} 보고 맛집 카페')">코스로 짜기</button>${favBtn("v:" + v.id)}${visitBtn("v:" + v.id)}</div>
   </div>`;
 }
 
@@ -6006,7 +6013,7 @@ function stepPark(x) {
   return h.replace(/🚗 차로 가요 · /, "").replace(/<small class="pkLine[\s\S]*?<\/small>/g, "");
 }
 function stepHtml(st) {
-  return `<li class="${st.cls || ""}"><time>${esc(st.time)}</time><div>${st.img ? `<div class="ph tripPh"${bg(st.img)}></div>` : ""}<b>${esc(st.title)}</b>${st.sub ? `<small>${esc(st.sub)}</small>` : ""}${st.move ? `<small class="mv">${creamingMoveLine(st.move)}</small>` : ""}${st.tip ? `<small class="tip">💡 ${esc(st.tip)}</small>` : ""}${st.v ? visitLine(st.v) : ""}${(st.v || st.x) && !/^걸어서/.test(st.move || "") ? stepPark(st.v || st.x) : ""}${st.id ? `<button onclick="aiProfile('${jsq(st.id)}')">자세히</button>` : ""}${st.link ? `<a target="_blank" rel="noopener" href="${safeUrl(st.link)}">${esc(st.linkText || "지도 ↗")}</a>` : ""}</div></li>`;
+  return `<li class="${st.cls || ""}"><time>${esc(st.time)}</time><div>${st.img ? `<div class="ph tripPh"${bg(st.img)}></div>` : ""}<b>${esc(st.title)}</b>${st.sub ? `<small>${esc(st.sub)}</small>` : ""}${st.move ? `<small class="mv">${creamingMoveLine(st.move)}</small>` : ""}${st.tip ? `<small class="tip">💡 ${esc(st.tip)}</small>` : ""}${st.v ? visitLine(st.v) : ""}${(st.v || st.x) && !/^걸어서/.test(st.move || "") ? stepPark(st.v || st.x) : ""}${st.id ? `<button onclick="aiProfile('${jsq(st.id)}')">자세히</button>` : ""}${st.link ? `<a target="_blank" rel="noopener noreferrer" href="${safeUrl(st.link)}">${esc(st.linkText || "지도 ↗")}</a>` : ""}</div></li>`;
 }
 function vStep(id, time, extra = "") {
   const v = VENUES.find(x => x.id === id); if (!v) return null;
@@ -6454,7 +6461,7 @@ function recommend(t, forced = null, fixedMeal = null) {
   const firstX = out.find(o => o.x && !o.link)?.x;
   if (!tripHead && firstX) { const o0 = tripOriginInfo({}); if (o0.label) tripHead = `🚩 ${o0.label}에서 출발 기준` }
   const head = [rain ? "☔ 실내 위주" : outdoor ? "🌤 야외 위주" : "", firstX && tripDistrictOf(firstX) ? `${tripDistrictOf(firstX)} 일대 코스` : ""].filter(Boolean).join(" · ");
-  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
+  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener noreferrer" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
 }
 function petList(s) {
   const gu = (s.match(/(동구|서구|남구|북구|광산구)/) || [])[1], big = /대형|큰|마당|야외/.test(s);
@@ -6462,7 +6469,7 @@ function petList(s) {
   if (!list.length) list = CAFES;
   $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🐶 멍뭉이랑 갈 만한 카페</b><span>${list.length}곳</span></div>
    <p class="pfNote">${gu ? gu + " · " : ""}${big ? "넓은 야외 공간 위주 · " : ""}동반 규칙은 가게마다 달라요. 가기 전에 전화 한 통!</p>
-   <div class="acGrid">${list.slice(0, 10).map(c => `<article class="aiCard"><div class="acBody"><div class="acTags"><span>${esc(c.district)}</span>${c.big ? `<span class="on">넓은 야외</span>` : ""}</div><b>${esc(c.name)}</b><small>🐾 ${esc(c.pet)}</small><small>🕘 ${esc(c.hours)}</small>${c.note ? `<small class="acV">${esc(c.note)}</small>` : ""}<div class="acBtns"><button onclick="showOnMap('cafe','${jsq(c.id)}')">지도</button><button onclick="window.open('${mapLink(c.name + " " + c.district)}','_blank')">최신 정보 ↗</button></div></div></article>`).join("")}</div>
+   <div class="acGrid">${list.slice(0, 10).map(c => `<article class="aiCard"><div class="acBody"><div class="acTags"><span>${esc(c.district)}</span>${c.big ? `<span class="on">넓은 야외</span>` : ""}</div><b>${esc(c.name)}</b><small>🐾 ${esc(c.pet)}</small><small>🕘 ${esc(c.hours)}</small>${c.note ? `<small class="acV">${esc(c.note)}</small>` : ""}<div class="acBtns"><button onclick="showOnMap('cafe','${jsq(c.id)}')">지도</button><button onclick="window.open('${mapLink(c.name + " " + c.district)}','_blank','noopener,noreferrer')">최신 정보 ↗</button></div></div></article>`).join("")}</div>
    ${list.length > 10 ? `<p class="pfNote"><button class="btn" onclick="showTab('cafes')">멍카페 ${list.length}곳 전부 보기 →</button></p>` : ""}</div>`;
 }
 
@@ -6654,7 +6661,7 @@ function decisionDetailHtml(picks,sel={}){
     const info = k==='event' ? [x.date||[x.start,x.end].filter(Boolean).join('~'), x.time, x.price] : k==='food' ? [x.menu, x.hours, x.closed&&('쉬는 날 '+x.closed)] : k==='cafe' ? [x.hours, x.pet&&('🐶 '+x.pet)] : [x.hours, x.closed&&('휴관 '+x.closed), x.price];
     const q = [p.name, tripDistrictOf(x)].filter(Boolean).join(' ');
     const more = k==='event' ? `<button class="btn" onclick="closeModal();setTimeout(()=>detail('${jsq(x.id)}'),80)">자세히</button>` : k==='venue' ? `<button class="btn" onclick="closeModal();setTimeout(()=>aiProfile('${jsq(x.id)}'),80)">자세히</button>` : '';
-    return `<li><span>${i+1}</span><div><b>${esc(p.name)}</b><small>${esc(decisionPlaceType(p))}${decisionPlaceArea(p)?' · '+esc(decisionPlaceArea(p)):''}</small><small>${esc(info.filter(Boolean).join(' · '))}</small>${typeof parkLine==='function'&&k!=='event'?parkLine(x):''}<div class="drLinks">${more}<a class="btn" target="_blank" rel="noopener" href="${mapLink(q)}">길찾기 ↗</a></div></div></li>`; };
+    return `<li><span>${i+1}</span><div><b>${esc(p.name)}</b><small>${esc(decisionPlaceType(p))}${decisionPlaceArea(p)?' · '+esc(decisionPlaceArea(p)):''}</small><small>${esc(info.filter(Boolean).join(' · '))}</small>${typeof parkLine==='function'&&k!=='event'?parkLine(x):''}<div class="drLinks">${more}<a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(q)}">길찾기 ↗</a></div></div></li>`; };
   return `<b>📋 코스 장소 정보</b><ol class="course">${picks.map(row).join('')}</ol><p class="pfNote">시간은 지금 출발 기준 어림값이에요. 운영시간·요금은 바뀔 수 있으니 가기 전에 한 번 확인하세요.${pet?' 🐶 공원·산책지의 반려견 동반 규칙(목줄·입장 가능 구역)은 곳마다 달라요. 현장 안내를 꼭 확인하세요.':''}</p>`;
 }
 function coordForDecision(p){
@@ -6805,7 +6812,7 @@ function detailView(id) {
     : "";
   const originLabel = isAuto ? "자동수집" : "공식발표 보완";
   const urlBtn = x.url
-    ? `<a class="btn" target="_blank" rel="noopener" href="${safeUrl(x.url)}">공식 원문 ↗</a> `
+    ? `<a class="btn" target="_blank" rel="noopener noreferrer" href="${safeUrl(x.url)}">공식 원문 ↗</a> `
     : "";
 
   $("#modalContent").innerHTML =
@@ -6814,11 +6821,11 @@ function detailView(id) {
     `${FLAGS[x.id] ? `<p class="nowNote">⚠ ${esc(FLAGS[x.id].since.slice(5).replace("-", "."))}부터 '정보가 다르다'는 제보가 있어 확인 중이에요. 가기 전에 공식 원문을 꼭 확인하세요.</p>` : ""}` +
     `<p style="font-size:11px;color:#6d766f">${placeLine}</p>` +
     `${ticketHtml}${trustStrip(x)}` +
-    `${(x.ticket?.links || []).length > 1 ? `<p class="links">${x.ticket.links.map(l => `<a class="btn" target="_blank" rel="noopener" href="${safeUrl(l.url)}">${esc(l.name)} ↗</a>`).join(" ")}</p>` : ""}` +
+    `${(x.ticket?.links || []).length > 1 ? `<p class="links">${x.ticket.links.map(l => `<a class="btn" target="_blank" rel="noopener noreferrer" href="${safeUrl(l.url)}">${esc(l.name)} ↗</a>`).join(" ")}</p>` : ""}` +
     `${parkLine(x, true)}` +
     `${rows.map(r => `<div class="detail"><span>${r[0]}</span><div>${esc(r[1])}</div></div>`).join("")}` +
     `${programHtml}${descHtml}${sourceHtml}` +
-    `<p>${urlBtn}<a class="btn" target="_blank" rel="noopener" href="${mapLink(x.venue || x.address || x.title)}">지도 ↗</a></p>` +
+    `<p>${urlBtn}<a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(x.venue || x.address || x.title)}">지도 ↗</a></p>` +
     `${calButtons(x)}` +
     `<p class="btnRow" style="margin-top:4px">${shareBtn("e", x.id, "📤 친구에게 보내기")}${reportBtn("e", x.id)}</p>`;
 
@@ -6906,7 +6913,7 @@ function googleCalUrl(x) {
 function calButtons(x) {
   const pl = calPlan(x); if (!pl) return "";
   const what = pl.kind === "time" ? `${pl.date.slice(5).replace("-", ".")} ${pl.hh}:${pl.mm}` : pl.title.startsWith("[마지막 날]") ? `마지막 날 ${pl.from.slice(5).replace("-", ".")}` : `${pl.from.slice(5).replace("-", ".")}${pl.to !== pl.from ? "~" + pl.to.slice(5).replace("-", ".") : ""}`;
-  return `<p class="btnRow" style="margin-top:4px"><button class="miniBtn" type="button" onclick="addToCalendar('${jsq(x.id)}')">📅 내 캘린더에 추가 <small style="opacity:.7">(${esc(what)})</small></button><a class="miniBtn" target="_blank" rel="noopener" href="${esc(googleCalUrl(x))}">Google 캘린더</a></p>`;
+  return `<p class="btnRow" style="margin-top:4px"><button class="miniBtn" type="button" onclick="addToCalendar('${jsq(x.id)}')">📅 내 캘린더에 추가 <small style="opacity:.7">(${esc(what)})</small></button><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${esc(googleCalUrl(x))}">Google 캘린더</a></p>`;
 }
 
 
@@ -7306,7 +7313,7 @@ window.reportItem = (kind, id) => {
     <div class="rpWhy">${REASONS.map(r => `<button type="button" data-r="${r}">${r}</button>`).join("")}</div>
     <p class="rvHint" role="note">개인정보 보호를 위해 제보 유형만 전달합니다. 이름·연락처·상세 설명은 수집하지 않습니다. 상세 제보는 아래 외부 페이지의 공개 범위에 주의해 주세요.</p>
     <button type="button" class="rvSend" disabled>보내기</button>
-    <p class="rpLong"><a href="${safeUrl(reportLongUrl(kind, id))}" target="_blank" rel="noopener">GitHub 계정이 있으면 자세히 쓰기 ↗</a></p>`;
+    <p class="rpLong"><a href="${safeUrl(reportLongUrl(kind, id))}" target="_blank" rel="noopener noreferrer">GitHub 계정이 있으면 자세히 쓰기 ↗</a></p>`;
   box.querySelectorAll(".rpWhy button").forEach(b => b.onclick = () => { why = b.dataset.r; box.querySelectorAll(".rpWhy button").forEach(o => o.classList.toggle("on", o === b)); box.querySelector(".rvSend").disabled = false });
   box.querySelector(".rvSend").onclick = () => {
     let sent = false;
@@ -7480,7 +7487,7 @@ initNav();
  const groups=[['museum',/박물관|역사관|기념관|과학관|미술관|문화시설|문화공간/],['exhibition',/전시|갤러리|미술/],['performance',/공연|콘서트|연극|음악/],['food',/맛집|음식|식사|밥|먹|떡갈비|한정식|보리밥|국밥|육전|오리탕|회|초밥|낙지|게장/],['cafe',/카페|커피|디저트/],['park',/산책|공원|정원|자연/]];
  function categoryMatch(item,cat,kind){const str=[item.name,item.title,item.kind,item.category,item.subtype,(item.tags||[]).join(' ')].join(' ');if(cat==='food')return kind==='food';if(cat==='cafe')return kind==='cafe';if(cat==='museum')return kind==='venue'&&/박물관|역사관|기념관|과학관|미술관|문학관|전시관|복합문화공간|문화관/.test(str);if(cat==='exhibition')return /전시|미술관|갤러리/.test(str);if(cat==='performance')return kind==='event'&&/공연|음악|콘서트/.test(str);if(cat==='park')return kind==='venue'&&/공원|정원|산책|숲|수목원/.test(str);return false}
  function areaMatch(x,area){if(!area)return true;let all=[x.address,x.district,x.area,x.near,x.venue,x.name].filter(Boolean).join(' ');if(area==='무안')return /무안|일로|몽탄/.test(all);if(area==='서구'||area==='동구'||area==='남구'||area==='북구')return x.district===area||new RegExp('광주[^\\s]*\\s*'+area).test(all);return all.includes(area)}
- function card(x,when){const n=x.title||x.name||'장소';const area=x.address||x.venue||x.district||'';return `<div class="detailResultCard"><b>${esc(n)}</b>${when?`<small class="tripWhen">⏰ ${esc(when)}</small>`:''}<small>${esc(area)}${x.price?' · '+esc(x.price):''}</small><div><a href="${mapLink(n)}" target="_blank" rel="noopener">🗺 지도에서 확인 ↗</a></div></div>`}
+ function card(x,when){const n=x.title||x.name||'장소';const area=x.address||x.venue||x.district||'';return `<div class="detailResultCard"><b>${esc(n)}</b>${when?`<small class="tripWhen">⏰ ${esc(when)}</small>`:''}<small>${esc(area)}${x.price?' · '+esc(x.price):''}</small><div><a href="${mapLink(n)}" target="_blank" rel="noopener noreferrer">🗺 지도에서 확인 ↗</a></div></div>`}
  function submit(){
   const sentence=$d('detailRequest').value.trim(), origin=$d('detailOrigin').value.trim()||(sentence.match(/(?:광주\s*)?(?:동구|서구|남구|북구|광산구|무안|목포|순천|여수|광주)(?=에서\s*(?:출발|가|떠나|있))/ )||[])[0]||'';const out=$d('detailResults');
   if(!sentence){out.innerHTML='<div class="detailResultNote">방문하고 싶은 장소나 활동을 문장으로 입력해 주세요.</div>';return}
@@ -7520,7 +7527,7 @@ initNav();
    if(cat==='food'&&dish){
      const desired=arr.filter(o=>[o.x.name,o.x.kind,o.x.category,o.x.note,o.x.menu,o.x.signature,(o.x.tags||[]).join(' ')].filter(Boolean).join(' ').includes(dish));
      if(desired.length)arr=desired;
-     else {body+=`<div class="detailResultHead">${names[cat]}</div><div class="detailResultCard"><small>등록된 ${esc(dish)} 전문점 자료가 부족합니다. 임의의 다른 음식점으로 바꾸지 않았습니다. <a target="_blank" rel="noopener" href="https://map.naver.com/p/search/${encodeURIComponent((destArea||REGIONS[r].name)+' '+dish)}">${esc(dish)} 식당 지도 검색 ↗</a></small></div>`;continue;}
+     else {body+=`<div class="detailResultHead">${names[cat]}</div><div class="detailResultCard"><small>등록된 ${esc(dish)} 전문점 자료가 부족합니다. 임의의 다른 음식점으로 바꾸지 않았습니다. <a target="_blank" rel="noopener noreferrer" href="https://map.naver.com/p/search/${encodeURIComponent((destArea||REGIONS[r].name)+' '+dish)}">${esc(dish)} 식당 지도 검색 ↗</a></small></div>`;continue;}
    }
    let filtered=arr.filter(o=>areaMatch(o.x,destArea));
    if(destArea && !filtered.length){body+=`<p style="font-size:12px;color:#8a6738">${esc(destArea)}의 ${esc(names[cat])} 등록 자료가 없어 인근 권역 후보로 넓혀 보여드립니다.</p>`}else if(destArea)arr=filtered;
@@ -7576,15 +7583,19 @@ initNav();
  <section class="manualPanel" role="dialog" aria-modal="true" aria-labelledby="manualTitle" tabindex="-1">
   <div class="manualTop"><div><small>오늘, 전남광주 어디로?</small><h2 id="manualTitle">📖 앱 사용설명서</h2><p>처음 이용하는 분도 쉽게 찾을 수 있도록 정리했어요.</p></div><button type="button" class="manualClose" onclick="closeUserManual()" aria-label="설명서 닫기">×</button></div>
   <div class="manualIntro"><b>이 앱은 무엇인가요?</b><div>여러 공공기관에 흩어진 문화·생활 정보를 자동으로 모아, 전남광주 시민이 오늘 무엇을 할지 한곳에서 정할 수 있게 돕는 지역 생활 여가 안내 앱입니다. 전시·공연·축제·장날 일정, 도서관과 동네 강좌를 권역별로 보여 주고, 날씨와 요일에 맞는 하루 코스를 추천해요.</div></div>
-  <div class="manualNote"><b>↗ 빠른실행키 이용 안내</b><div>화면 오른쪽과 하단에 있는 빠른실행키를 한 번 터치하면 주요 메뉴가 펼쳐져 원하는 기능으로 빠르게 이동할 수 있어요. 약 3초 동안 터치하지 않으면 자동으로 접히며, 접힌 상태에서도 가장자리의 작은 손잡이를 누르면 다시 열립니다.</div></div>
+  <div class="manualNote"><b>↗ 빠른실행키 이용 안내</b><div>화면 오른쪽과 하단의 접힌 손잡이를 누르면 빠른 메뉴가 펼쳐져요. 펼쳐진 아이콘을 누르면 해당 기능으로 이동합니다. 약 3초 동안 조작하지 않으면 자동으로 접히며, 손잡이를 다시 누르면 언제든 다시 펼칠 수 있어요. 오른쪽은 '오늘 뭐하지·날씨·대중공연·시장·동네도서관' 등 주요 기능, 하단은 화면 이동용 빠른 메뉴로 이용해 보세요. 기기 화면 크기에 따라 표시 위치는 다를 수 있습니다.</div></div>
   <h3>주요 기능</h3>
   <div class="manualGrid">
    <div class="manualItem"><strong>📍 권역 선택</strong><p>광주권·순천여수권·무안목포권 등 원하는 방문 지역을 먼저 선택해요.</p></div>
    <div class="manualItem"><strong>🔎 통합 검색</strong><p>장소명, 전시, 섬 방문의 해, 가수 이름 등 궁금한 키워드를 입력해요.</p></div>
    <div class="manualItem"><strong>✨ 오늘 뭐하지? 추천</strong><p>동행인·이용시간·예산을 선택하면 어울리는 코스를 제안해요.</p></div>
    <div class="manualItem"><strong>🎤 공연·문화 일정</strong><p>대중가수 콘서트와 전시·축제·스포츠·영화 등 일정을 살펴봐요.</p></div>
-   <div class="manualItem"><strong>🗺 지도·길찾기</strong><p>장소 위치와 주변 정보를 확인하고 길찾기 링크를 이용해요.</p></div>
+   <div class="manualItem"><strong>🗺 지도·길찾기</strong><p>장소 위치와 주변 정보를 확인하고 길찾기 링크를 이용해요. '지금 위치로'를 직접 누르고 위치 권한을 허용하면 가까운 곳부터 볼 수 있으며, 허용하지 않아도 동네를 선택할 수 있어요.</p></div>
    <div class="manualItem"><strong>♡ 즐겨찾기·상세정보</strong><p>관심 있는 장소를 저장하고 운영시간·요금·공식 안내를 확인해요.</p></div>
+   <div class="manualItem"><strong>🚶 지금 출발·오늘 결정</strong><p>오늘의 추천과 조건별 추천을 살펴보고, 마음에 드는 항목을 눌러 상세정보·이동 경로를 확인해요. 추천은 참고용이므로 운영 여부는 출발 전에 확인하세요.</p></div>
+   <div class="manualItem"><strong>🛒 시장·📚 동네도서관</strong><p>상단 메뉴나 빠른실행키에서 시장 또는 동네도서관을 선택해 목록을 확인하고, 필요한 항목을 눌러 위치·관련 정보를 살펴보세요.</p></div>
+   <div class="manualItem"><strong>🎤 관심 가수·공연 알림</strong><p>대중공연에서 가수를 찾아 관심 가수로 저장하거나 알림을 설정할 수 있어요. 브라우저·기기 알림 권한과 앱 실행 상태에 따라 알림 동작은 달라질 수 있으니 공식 예매처도 확인하세요.</p></div>
+   <div class="manualItem"><strong>💬 후기·⚠ 정보 수정</strong><p>하단의 '이 앱 어땠어요?'에서 만족도와 기능을 고를 수 있어요. 틀린 정보는 해당 항목의 정보 수정 버튼에서 유형을 선택해 제보하세요. 자세한 내용을 적기 위해 외부 GitHub 페이지로 이동한다면 이름·전화번호 등 개인정보를 쓰지 마세요.</p></div>
    <div class="manualItem"><strong>🔄 자동 자료 갱신·이상 안내</strong><p>행사·장소 자료는 하루 두 차례 자동 갱신을 시도해요. 최신 서버 자료를 확인할 수 없거나 마지막 수집 시각이 36시간 넘게 지났다면 상단에 안내가 나타나요. 이때도 기존 자료는 볼 수 있지만, 실제 방문 전 공식 정보를 확인해 주세요.</p></div>
    <div class="manualItem"><strong>✅ 방문 가능한 일정 우선 추천</strong><p>추천 코스를 구성할 때 일정 종료, 휴관일, 운영·입장시간, 매진·예매 종료 또는 예매 시작 전 상태 등 확인 가능한 조건을 고려해요. 확인되지 않은 운영·예약 정보는 실제 이용이 가능하다는 뜻이 아니므로 공식 기관·예매처에서 확인해 주세요.</p></div>
   </div>
@@ -7599,10 +7610,10 @@ initNav();
   <ol class="manualSteps"><li><b>갤럭시(삼성 인터넷)</b> — 아래 ≡ 메뉴 → 현재 페이지 추가 → 홈 화면</li><li><b>갤럭시(크롬)</b> — 오른쪽 위 ⋮ → 홈 화면에 추가 (또는 앱 설치)</li><li><b>아이폰(사파리)</b> — 아래 공유 □↑ → 홈 화면에 추가</li><li><b>카카오톡·네이버 앱 안에서 열었다면</b> — 먼저 '다른 브라우저로 열기'(아이폰은 'Safari로 열기')를 누른 다음 위 방법대로</li></ol>
   <h3>공식 사이트 모음 — 더 자세히 보고 싶을 때</h3>
   <ol class="manualSteps officialLinks">
-   <li><b>여행·축제</b> — <a href="https://korean.visitkorea.or.kr/" target="_blank" rel="noopener">대한민국 구석구석(한국관광공사)</a> · <a href="https://tour.gwangju.go.kr/" target="_blank" rel="noopener">오매광주(광주 관광)</a> · <a href="https://korean.visitkorea.or.kr/kfes/list/wntyFstvlList.do" target="_blank" rel="noopener">전국 축제 일정</a></li>
-   <li><b>공연·전시</b> — <a href="https://www.kopis.or.kr/" target="_blank" rel="noopener">공연예술통합전산망(KOPIS)</a> · <a href="https://www.culture.go.kr/" target="_blank" rel="noopener">문화포털</a> · <a href="https://www.acc.go.kr/" target="_blank" rel="noopener">국립아시아문화전당</a></li>
-   <li><b>동네 강좌</b> — <a href="https://www.lifelongedu.go.kr/" target="_blank" rel="noopener">늘배움(국가평생학습포털)</a> · <a href="https://edu.gwangsan.go.kr/index.cs" target="_blank" rel="noopener">광산 배우랑께</a> · <a href="https://lms.schc.go.kr/" target="_blank" rel="noopener">순천 평생교육포털</a></li>
-   <li><b>공공데이터 원본</b> — <a href="https://www.data.go.kr/" target="_blank" rel="noopener">공공데이터포털</a> (전통시장·박물관미술관·도서관·평생학습강좌 표준데이터)</li>
+   <li><b>여행·축제</b> — <a href="https://korean.visitkorea.or.kr/" target="_blank" rel="noopener noreferrer">대한민국 구석구석(한국관광공사)</a> · <a href="https://tour.gwangju.go.kr/" target="_blank" rel="noopener noreferrer">오매광주(광주 관광)</a> · <a href="https://korean.visitkorea.or.kr/kfes/list/wntyFstvlList.do" target="_blank" rel="noopener noreferrer">전국 축제 일정</a></li>
+   <li><b>공연·전시</b> — <a href="https://www.kopis.or.kr/" target="_blank" rel="noopener noreferrer">공연예술통합전산망(KOPIS)</a> · <a href="https://www.culture.go.kr/" target="_blank" rel="noopener noreferrer">문화포털</a> · <a href="https://www.acc.go.kr/" target="_blank" rel="noopener noreferrer">국립아시아문화전당</a></li>
+   <li><b>동네 강좌</b> — <a href="https://www.lifelongedu.go.kr/" target="_blank" rel="noopener noreferrer">늘배움(국가평생학습포털)</a> · <a href="https://edu.gwangsan.go.kr/index.cs" target="_blank" rel="noopener noreferrer">광산 배우랑께</a> · <a href="https://lms.schc.go.kr/" target="_blank" rel="noopener noreferrer">순천 평생교육포털</a></li>
+   <li><b>공공데이터 원본</b> — <a href="https://www.data.go.kr/" target="_blank" rel="noopener noreferrer">공공데이터포털</a> (전통시장·박물관미술관·도서관·평생학습강좌 표준데이터)</li>
   </ol>
   <div class="manualNote">※ 행사 일정, 예매 상태, 입장료, 운영시간은 갑자기 변경될 수 있습니다. 앱은 공식 기관의 실시간 예약·휴관 정보를 모두 보장하지 않습니다. 방문이나 결제 전에 연결된 공식 기관·예매처에서 최종 확인해 주세요. 일부 기능은 인터넷 연결이 필요합니다.</div>
  </section>
@@ -7779,7 +7790,7 @@ html body #aiBox #answer .creamingState b{color:#fff}html body #aiBox #answer .c
   // 누적 방문자 수 (GoatCounter 설정에서 '방문자 수 공개'를 켰을 때만 보임)
   const foot = document.querySelector("footer.foot2 .wrap") || document.querySelector("footer");
   if (foot && /github\.io$/.test(location.hostname)) {
-    fetch("https://jngj-eodigabolcca.goatcounter.com/counter/TOTAL.json").then(r => r.ok ? r.json() : null).then(j => {
+    guardedFetch("https://jngj-eodigabolcca.goatcounter.com/counter/TOTAL.json", {}, 6000).then(r => r.ok ? r.json() : null).then(j => {
       if (!j || !j.count) return;
       const d = document.createElement("div"); d.className = "visitLine"; d.textContent = `👣 지금까지 ${j.count}번 다녀갔어요`; foot.appendChild(d);
     }).catch(() => {});
@@ -8019,19 +8030,22 @@ window.openPrivacy = function(){
   <p><b>이 앱은 회원가입·로그인을 요구하지 않으며, 제보·후기에서 이름이나 연락처를 입력받지 않습니다. 다만 외부 서비스 접속 시 IP 주소 등 접속정보가 해당 서비스에 전달될 수 있습니다.</b></p>
   <h4>1. 이 기기 안에만 저장하는 것</h4>
   <p>아래 내용은 쓰시는 휴대폰·PC의 브라우저 안에만 저장되고, 운영자를 포함해 누구에게도 전송되지 않아요.</p>
-  <ul><li>찜한 일정·장소</li><li>고른 권역, 선택한 동네 또는 GPS로 판별한 행정구역의 대표 좌표(정밀 GPS 좌표는 저장하지 않음)</li><li>관심 가수와 새 공연 알림 설정</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li></ul>
-  <p>지우려면 브라우저 설정에서 이 사이트의 '사이트 데이터 삭제'를 하시면 돼요.</p>
+  <ul><li>찜한 일정·장소 및 선택한 지역·출발지 관련 설정</li><li>고른 권역, 선택한 동네 또는 GPS로 판별한 행정구역의 대표 좌표(정밀 GPS 좌표는 저장하지 않음)</li><li>관심 가수, 새 공연·문화 소식 알림 설정과 확인 상태</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li><li>화면 밝기 선택, 날씨 등 일부 조회 결과의 임시 저장정보</li><li>후기 중복 제출 방지를 위한 마지막 작성일, 동네 선택 안내의 숨김 여부 등 이용 편의 설정</li></ul>
+  <p>이 정보는 기기 브라우저의 사이트 데이터에 보관되며, 사용자가 삭제하거나 브라우저 정책에 따라 지워질 수 있어요. 지우려면 브라우저 설정에서 이 사이트의 '사이트 데이터 삭제'를 선택하세요. 삭제하면 찜과 일부 설정이 초기화될 수 있습니다.</p>
   <h4>2. 위치 정보</h4>
   <p>'지금 위치로'나 지도의 '내 위치'를 <b>직접 누를 때만</b> 브라우저가 허락을 물은 뒤 위치를 써요. 가까운 곳부터 보여주는 데 사용합니다. 정밀 GPS 좌표를 앱 저장소에 저장하거나 주소검색 API에 전달하지 않으며, 외부 지도 타일 서비스에는 화면에 표시된 지도 영역 및 접속정보가 전달될 수 있습니다. 허락하지 않아도 동네를 골라 똑같이 쓸 수 있어요.</p>
   <h4>3. 방문 통계</h4>
-  <p>방문자 수를 세기 위해 <b>GoatCounter</b>를 써요. 쿠키 없이 이용 통계를 집계합니다. 외부 서비스는 접속 IP 등 기술적 정보를 처리할 수 있으며, 제보·후기 자유입력 정보는 보내지 않습니다.</p>
+  <p>방문자 수와 일부 기능 이용 횟수를 파악하기 위해 <b>GoatCounter</b>를 사용합니다. 쿠키 없이 집계하도록 구성되어 있지만, 외부 서비스는 접속 IP·브라우저 정보 및 방문 페이지나 기능 이벤트 정보를 처리할 수 있어요. 앱에서 제보·후기 자유입력 문장을 전송하는 기능은 두지 않았습니다.</p>
   <h4>4. 화면을 그리는 데 쓰는 외부 서비스</h4>
   <p>아래 서비스에 요청이 갈 때 일반 웹사이트처럼 접속 주소(IP)와 브라우저 정보가 함께 전달될 수 있어요. 개인 찜 목록이나 GPS 정밀좌표를 앱에서 직접 API 요청에 포함하지 않습니다. 지도 이용 시 표시하는 지도 범위가 외부 지도 제공자에게 알려질 수 있습니다.</p>
-  <ul><li>날씨: Open-Meteo (권역 중심 좌표로만 조회)</li><li>지도: OpenStreetMap 계열 지도·주소 검색 (장소 주소로 좌표 찾기)</li><li>글꼴·지도 프로그램: jsDelivr, cdnjs</li><li>사진: 한국관광공사·한국문화정보원·각 기관 누리집 등 원 출처 (원 출처 사정으로 안 보일 수 있어요)</li></ul>
+  <ul><li>날씨·대기질: Open-Meteo (선택 지역 등에 대응하는 조회 좌표 사용)</li><li>지도·지도 타일: OpenStreetMap 및 지도 화면에서 선택한 다른 제공자(예: Esri), 장소 주소 검색·좌표 확인 서비스</li><li>글꼴·지도 프로그램: jsDelivr, cdnjs 등 외부 제공 서버</li><li>사진: 한국관광공사·한국문화정보원·각 기관 누리집 등 원 출처 (원 출처 사정으로 안 보일 수 있어요)</li><li>자세한 정보 제보: 외부 GitHub 페이지로 이동하는 경우 GitHub의 별도 처리방침 적용</li></ul>
+  <p>이 안내는 HTML에서 확인한 주요 외부 연결을 설명한 것으로, 외부 제공자의 실제 서버 로그 보관기간이나 처리 방식까지 확인했다는 뜻은 아닙니다.</p>
   <h4>5. 한 줄 후기</h4>
   <p>'후기'에서는 선택한 만족도와 기능 분류만 GoatCounter에 기록합니다. 자유입력 글은 수집하지 않습니다.</p>
   <h4>6. 정보 수정 제보</h4>
   <p>'⚠ 정보 수정'에서는 선택한 제보 유형과 항목 식별정보만 통계 서비스(GoatCounter)에 전송합니다. 이름·연락처·자유입력 글은 받지 않습니다. '자세히 쓰기'는 외부 GitHub 페이지로 이동하며, 작성한 내용이 공개될 수 있으니 개인정보를 적지 마세요.</p>
+  <h4>7. 운영 주체·문의 및 향후 변경</h4>
+  <p>현재 개인이 제작한 비공식 안내 앱이며 관공서의 공식 서비스가 아닙니다. 잘못된 정보는 각 항목의 '정보 수정' 기능을 통해 제보할 수 있습니다. 개인정보 관련 문의처, 실제 운영 주체, 외부 서비스별 보유기간·처리 근거와 필요한 계약 사항은 공식 운영 전 별도 확인·고지해야 합니다. 운영 주체 또는 기능이 바뀌면 이 안내도 수정하겠습니다.</p>
   <p class="privacyFoot">이 앱은 개인이 만든 비공식 안내 앱이에요. · 안내 수정일 2026.10.23</p>
   </div>`;
   document.getElementById("modal").classList.add("show"); document.body.classList.add("modal-open");
@@ -9313,12 +9327,12 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
         else if ((o.r.wait || 0) > 30) h += `<small>⏳ ${esc(tripHM(o.r.arrive))}에 열어서 ${fm(o.r.wait)} 기다려야 해요</small>`;
         if (o.r.offMeal) h += o.r.mealWant ? `<div class="gpWhy">⚠ ${esc(tripHM(o.r.arrive))} 도착이라 ${esc(o.r.mealWant)} 시간대(${o.r.mealWant === "점심" ? "11:00~14:30" : "17:00~20:30"})와 안 맞아요. 앞 일정을 줄이거나 출발을 당기세요.</div>` : `<div class="gpWhy">⚠ ${esc(tripHM(o.r.arrive))}은 식사 시간대(11:30~14:30, 17:00~20:30)가 아니라 브레이크타임일 수 있어요. 가기 전 전화로 확인하세요.</div>`;
         else if (o.r.short) h += `<div class="gpWhy">⚠ 마감이 가까워 짧게만 볼 수 있어요.</div>`;
-        h += `<a href="${typeof mapLink === "function" ? mapLink(nameOf(o.x)) : "#"}" target="_blank" rel="noopener">🗺 지도 ↗</a>${o.k === "event" || o.k === "venue" ? ` · <a href="#" onclick="${o.k === "event" ? `detail('${jsq(o.x.id)}')` : `briefOpenItem('${jsq(o.x.id)}')`};return false">자세히</a>` : ""}</div></li>`;
+        h += `<a href="${typeof mapLink === "function" ? mapLink(nameOf(o.x)) : "#"}" target="_blank" rel="noopener noreferrer">🗺 지도 ↗</a>${o.k === "event" || o.k === "venue" ? ` · <a href="#" onclick="${o.k === "event" ? `detail('${jsq(o.x.id)}')` : `briefOpenItem('${jsq(o.x.id)}')`};return false">자세히</a>` : ""}</div></li>`;
       } else if (s.arriveOnly) {
         h += `<li class="gpLeg">↓ ${esc(s.fromName)}에서 약 ${s.legC ?? "?"}분</li>`;
         h += `<li class="gpStop ${s.warn ? "warn" : "ok"}"><span class="gpNo">${n}</span><div><b>${esc(s.st.areaLabel)} 도착</b><small>📍 ${s.arriveGuess != null ? esc(tripHM(s.arriveGuess)) + "쯤 도착 (시·군 중심 기준 어림)" : "도착 시각 계산 불가"}</small>${s.why ? `<div class="gpWhy">ℹ 이동은 가능해요. 다만 도착 뒤 들를 볼거리는 추천할 수 없어요 — ${esc(s.why)}</div>` : ""}</div></li>`;
       } else {
-        h += `<li class="gpStop fail"><span class="gpNo">${n}</span><div><b>${esc(s.st.areaLabel ? s.st.areaLabel + " " : "")}${esc(s.st.cat === "food" && s.st.dish ? s.st.dish : s.label.replace(/^\S+\s/, ""))} — 추천할 수 없어요</b><div class="gpWhy">❌ ${esc(s.why)}</div>${s.tip ? `<div class="gpTip">${esc(s.tip)}</div>` : ""}${s.searchLink ? `<a href="${safeUrl(s.searchLink)}" target="_blank" rel="noopener">지도에서 직접 찾아보기 ↗</a>` : ""}${steps.length > n ? `<small>${s.movedTo ? `이 구간은 빼고, ${esc(s.movedTo)}에 ${esc(tripHM(s.arriveGuess))}쯤 도착한 것으로 보고 다음 구간을 계산했어요.` : "이 구간은 빼고, 앞 장소에서 다음 구간을 이어서 계산했어요."}</small>` : ""}</div></li>`;
+        h += `<li class="gpStop fail"><span class="gpNo">${n}</span><div><b>${esc(s.st.areaLabel ? s.st.areaLabel + " " : "")}${esc(s.st.cat === "food" && s.st.dish ? s.st.dish : s.label.replace(/^\S+\s/, ""))} — 추천할 수 없어요</b><div class="gpWhy">❌ ${esc(s.why)}</div>${s.tip ? `<div class="gpTip">${esc(s.tip)}</div>` : ""}${s.searchLink ? `<a href="${safeUrl(s.searchLink)}" target="_blank" rel="noopener noreferrer">지도에서 직접 찾아보기 ↗</a>` : ""}${steps.length > n ? `<small>${s.movedTo ? `이 구간은 빼고, ${esc(s.movedTo)}에 ${esc(tripHM(s.arriveGuess))}쯤 도착한 것으로 보고 다음 구간을 계산했어요.` : "이 구간은 빼고, 앞 장소에서 다음 구간을 이어서 계산했어요."}</small>` : ""}</div></li>`;
       }
     });
     h += `</ol><p class="gpNote" style="margin-top:8px">🏁 일정 끝 ${esc(tripHM(res.endMin))}쯤</p></div>`;
@@ -9539,7 +9553,7 @@ window.openRightsAndLicenses=function(){
   resetTimer();
  }
  update(false,false);
- handle.addEventListener('click',()=>{if(open)update(false,true);else if(!awake)update(false,true);else update(true,true)});
+ handle.addEventListener('click',()=>{if(open)update(false,false);else update(true,true)});
  nav.addEventListener('click',e=>{if(e.target.closest('button'))update(false,false)});
  document.addEventListener('pointerdown',e=>{if(open&&!dock.contains(e.target))update(false,false)},{passive:true});
  dock.addEventListener('pointerdown',()=>{if(open)resetTimer()},{passive:true});
