@@ -9533,7 +9533,7 @@ window.openRightsAndLicenses=function(){
   resetTimer();
  }
  update(false,false);
- handle.addEventListener('click',()=>{if(open)update(false,true);else update(true,true)});
+ handle.addEventListener('click',()=>{if(open)update(false,true);else if(!awake)update(false,true);else update(true,true)});
  nav.addEventListener('click',e=>{if(e.target.closest('button'))update(false,false)});
  document.addEventListener('pointerdown',e=>{if(open&&!dock.contains(e.target))update(false,false)},{passive:true});
  dock.addEventListener('pointerdown',()=>{if(open)resetTimer()},{passive:true});
@@ -9706,19 +9706,77 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
 
 
 <style id="bottomDockCanonical20261023">
+/* 하단은 우측 퀵메뉴를 90도 돌린 구조: 펼침 아이콘 위/손잡이 아래 */
 @media(max-width:899px){
- html body #quickDockV3 {position:fixed!important;z-index:2147483000!important;left:50%!important;right:auto!important;top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 8px)!important;transform:translateX(-50%)!important;width:calc(100vw - 16px)!important;max-width:500px!important;height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-end!important;gap:0!important;margin:0!important;padding:0!important;pointer-events:none!important;overflow:visible!important}
- html body #quickDockV3::after {display:none!important;content:none!important}
- html body #quickDockV3 nav.bottom,html body #quickDockV3 nav.bottom.navAway,html body:not(.navExpanded) #quickDockV3 nav.bottom {position:relative!important;order:0!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:56px!important;grid-auto-flow:row!important;gap:2px!important;width:100%!important;min-width:0!important;max-width:100%!important;height:0!important;min-height:0!important;max-height:0!important;overflow:hidden!important;visibility:visible!important;opacity:1!important;border:0!important;border-radius:18px 18px 0 0!important;margin:0!important;padding:0!important;background:#b27b3b!important;pointer-events:none!important;box-sizing:border-box!important;transition:height .22s ease,padding .22s ease!important}
- html body #quickDockV3.open nav.bottom,html body:not(.navExpanded) #quickDockV3.open nav.bottom {height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important;overflow:hidden!important;pointer-events:auto!important}
- html body #quickDockV3 nav.bottom>button {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;max-width:100%!important;width:100%!important;height:56px!important;min-height:56px!important;max-height:56px!important;padding:2px 0!important;margin:0!important;border-radius:9px!important;white-space:nowrap!important;overflow:hidden!important;box-sizing:border-box!important;background:#fff3dd!important;color:#432809!important}
- html body #quickDockV3 nav.bottom>button span {font-size:10px!important;line-height:13px!important;color:#432809!important}
- html body #quickDockV3 .navPeek,html body:not(.navExpanded) #quickDockV3 .navPeek,html body.navExpanded #quickDockV3 .navPeek {position:relative!important;order:1!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 44px!important;width:98px!important;min-width:98px!important;max-width:98px!important;height:44px!important;min-height:44px!important;max-height:44px!important;margin:0!important;padding:0 6px!important;border:0!important;border-radius:0 0 14px 14px!important;background:#b27b3b!important;color:#fff9ee!important;box-shadow:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important;box-sizing:border-box!important}
- html body #quickDockV3.dockDormant:not(.open) .navPeek {transform:none!important;background:linear-gradient(to bottom,rgba(178,123,59,.03) 0 28px,#b27b3b 28px 100%)!important;color:transparent!important;text-shadow:none!important}
- html body #quickDockV3.dockDormant:not(.open) .navPeek span,html body #quickDockV3.dockDormant:not(.open) .navPeek::before {visibility:hidden!important}
- html body #quickDockV3.open .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek {background:#b27b3b!important;color:#fff9ee!important}
- html body #quickDockV3.open .navPeek span,html body #quickDockV3:not(.dockDormant) .navPeek span,html body #quickDockV3.open .navPeek::before,html body #quickDockV3:not(.dockDormant) .navPeek::before {visibility:visible!important}
- html body #quickDockV3 .navPeek span {color:inherit!important}
- html body #quickDockV3 .navPeek::after {display:none!important;content:none!important}
+ html body #quickDockV3{
+  position:fixed!important;z-index:2147483000!important;
+  left:50%!important;right:auto!important;top:auto!important;
+  bottom:env(safe-area-inset-bottom,0px)!important;
+  transform:translateX(-50%)!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:flex-end!important;gap:0!important;
+  width:calc(100vw - 16px)!important;max-width:500px!important;
+  height:auto!important;min-height:0!important;margin:0!important;padding:0!important;
+  overflow:visible!important;pointer-events:none!important;
+ }
+ html body #quickDockV3::after{display:none!important;content:none!important}
+ html body #quickDockV3 nav.bottom,
+ html body #quickDockV3 nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3 nav.bottom{
+  position:relative!important;order:0!important;inset:auto!important;
+  transform:none!important;display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  grid-template-rows:54px!important;grid-auto-flow:row!important;
+  gap:2px!important;width:100%!important;min-width:0!important;max-width:100%!important;
+  height:0!important;min-height:0!important;max-height:0!important;
+  padding:0!important;margin:0!important;border:0!important;
+  overflow:hidden!important;visibility:visible!important;opacity:1!important;
+  border-radius:18px 18px 0 0!important;background:#b27b3b!important;
+  pointer-events:none!important;box-sizing:border-box!important;
+  transition:height .22s ease,padding .22s ease!important;
+ }
+ html body #quickDockV3.open nav.bottom,
+ html body:not(.navExpanded) #quickDockV3.open nav.bottom{
+  height:62px!important;min-height:62px!important;max-height:62px!important;
+  padding:4px!important;pointer-events:auto!important;overflow:hidden!important;
+ }
+ html body #quickDockV3 nav.bottom>button{
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;width:100%!important;min-width:0!important;
+  max-width:100%!important;height:54px!important;min-height:54px!important;max-height:54px!important;
+  margin:0!important;padding:2px 0!important;box-sizing:border-box!important;
+  border:0!important;border-radius:9px!important;background:#fff3dd!important;
+  color:#432809!important;white-space:nowrap!important;overflow:hidden!important;
+ }
+ html body #quickDockV3 nav.bottom>button span{font-size:10px!important;line-height:13px!important;color:#432809!important}
+ html body #quickDockV3 .navPeek,
+ html body:not(.navExpanded) #quickDockV3 .navPeek,
+ html body.navExpanded #quickDockV3 .navPeek{
+  position:relative!important;order:1!important;inset:auto!important;transform:none!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex:0 0 44px!important;width:98px!important;min-width:98px!important;max-width:98px!important;
+  height:44px!important;min-height:44px!important;max-height:44px!important;
+  margin:0!important;padding:0 6px!important;border:0!important;
+  border-radius:0 0 15px 15px!important;
+  background:#b27b3b!important;color:#fff9ee!important;
+  opacity:1!important;visibility:visible!important;pointer-events:auto!important;
+  cursor:pointer!important;touch-action:manipulation!important;box-sizing:border-box!important;
+ }
+ /* 완전 숨김이 아닌 '아랫부분 12px만' 표시. 버튼 터치영역 44px 유지 */
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{
+  background:linear-gradient(to bottom,transparent 0 32px,#b27b3b 32px 100%)!important;
+  color:transparent!important;text-shadow:none!important;
+ }
+ html body #quickDockV3.dockDormant:not(.open) .navPeek span,
+ html body #quickDockV3.dockDormant:not(.open) .navPeek::before{visibility:hidden!important}
+ html body #quickDockV3:not(.dockDormant) .navPeek,
+ html body #quickDockV3.open .navPeek{
+  background:#b27b3b!important;color:#fff9ee!important;
+ }
+ html body #quickDockV3:not(.dockDormant) .navPeek span,
+ html body #quickDockV3:not(.dockDormant) .navPeek::before,
+ html body #quickDockV3.open .navPeek span,
+ html body #quickDockV3.open .navPeek::before{visibility:visible!important}
+ html body #quickDockV3 .navPeek::after{display:none!important;content:none!important}
 }
 </style></body></html>
