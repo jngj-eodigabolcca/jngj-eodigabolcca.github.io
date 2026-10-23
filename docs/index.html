@@ -5326,7 +5326,7 @@ function renderLocal() {
   <div class="subchips">${["전체", "축제·행사", "공연·버스킹", "체험·교육"].map(f => `<button class="${f === LOCAL_EVENT_F ? "active" : ""}" onclick="setLocalEventF('${jsq(f)}')">${f}</button>`).join("")}</div>
   <div class="grid">${localEvents.slice(0, 6).map(eventCard).join("") || `<p class="empty">해당 조건으로 등록된 행사가 없어요. 다른 동네나 분류를 선택하거나 ‘일정’ 탭에서 전체 행사를 확인해 주세요.</p>`}</div>
   ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
-  <h3 class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
+  <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
   ${LIBS.length ? `<h3 class="sub" style="margin-top:16px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${libs.length > 6 ? `<p class="emptyNote">그 밖에 ${libs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
   <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
@@ -7851,6 +7851,15 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
    }else if(target==='dayplan'){
      document.querySelector('nav.bottom [data-jump="decide"]')?.click();
      setTimeout(()=>document.getElementById('today')?.scrollIntoView({behavior:'smooth',block:'start'}),350);
+   }else if(target==='local' && typeof window.showTab==='function'){
+     window.showTab('local');
+     const go=()=>{
+       const t=document.getElementById('quickLibraryAnchor');
+       if(!t)return;
+       const hh=document.querySelector('header.top')?.offsetHeight||0;
+       window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-12),behavior:'instant'});
+     };
+     [80,350,850].forEach(ms=>setTimeout(go,ms));
    }else if(typeof window.showTab==='function'){window.showTab(target);const go=()=>{const t=document.getElementById(target+'View');if(!t)return;const hh=document.querySelector('header.top')?.offsetHeight||0;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-10),behavior:'instant'})};[80,400,900].forEach(ms=>setTimeout(go,ms))}
    close();
  }));
@@ -9855,26 +9864,59 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
  html body #quickDockV3.open .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek{transform:translateY(0)!important;opacity:1!important;}
 }
 </style>
-<!-- 빠른실행키 탭 크기만 통일: 오른쪽 30x76, 하단 76x30 (90도 회전한 동일 규격) -->
-<style id="quickHandleSizeOnly20261023">
-html body .rightQuick .rightQuickToggle,
-html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
- width:30px!important;min-width:30px!important;max-width:30px!important;
- height:76px!important;min-height:76px!important;max-height:76px!important;
- padding:8px 2px!important;box-sizing:border-box!important;
-}
+
+<style id="bottomQuickMatchedToRight20261023">
+/* 오른쪽처럼: 얇은 노출 표시, 44px 터치 손잡이, 부드러운 둥근 패널. 색상은 기존 황토색 유지. */
 @media(max-width:899px){
+ html body #quickDockV3 {bottom:env(safe-area-inset-bottom,0px)!important}
  html body #quickDockV3 .navPeek,
  html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek{
-  width:76px!important;min-width:76px!important;max-width:76px!important;
-  height:30px!important;min-height:30px!important;max-height:30px!important;
-  padding:0 2px!important;gap:2px!important;box-sizing:border-box!important;
-  border-radius:16px 16px 0 0!important;
+ html body.navExpanded #quickDockV3 .navPeek {
+   width:76px!important;min-width:76px!important;max-width:76px!important;
+   height:44px!important;min-height:44px!important;
+   border-radius:0 0 12px 12px!important;
+   background:#b27b3b!important;
+   font-size:11px!important;pointer-events:auto!important;
+   touch-action:manipulation!important;
  }
- html body #quickDockV3 .navPeek span{font-size:10px!important;}
- html body #quickDockV3 .navPeek::before{font-size:12px!important;}
- html body #quickDockV3.dockDormant:not(.open) .navPeek{transform:translateY(16px)!important;}
+ /* 화면 아래쪽 손잡이도 오른쪽과 동일하게 12px 강조선. 터치 영역은 44px. */
+ html body #quickDockV3.dockDormant:not(.open) .navPeek {
+   transform:none!important;opacity:1!important;
+   background:linear-gradient(to bottom,rgba(178,123,59,.97) 0 12px,rgba(178,123,59,.025) 12px 100%)!important;
+   color:transparent!important;text-shadow:none!important;
+ }
+ html body #quickDockV3.dockDormant:not(.open) .navPeek span,
+ html body #quickDockV3.dockDormant:not(.open) .navPeek::before {
+   visibility:hidden!important;
+ }
+ html body #quickDockV3:not(.dockDormant) .navPeek span,
+ html body #quickDockV3.open .navPeek span,
+ html body #quickDockV3:not(.dockDormant) .navPeek::before,
+ html body #quickDockV3.open .navPeek::before {visibility:visible!important}
+ html body #quickDockV3 nav.bottom,
+ html body #quickDockV3 nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3 nav.bottom {
+   width:min(312px,calc(100vw - 24px))!important;max-width:312px!important;
+   border-radius:19px 19px 0 0!important;
+   background:#b27b3b!important;
+   grid-template-columns:repeat(3,minmax(0,1fr))!important;
+   grid-template-rows:repeat(2,49px)!important;
+   gap:4px!important;
+ }
+ html body #quickDockV3.open nav.bottom,
+ html body.navExpanded #quickDockV3.open nav.bottom,
+ html body:not(.navExpanded) #quickDockV3.open nav.bottom {
+   height:110px!important;min-height:110px!important;max-height:110px!important;
+   padding:6px!important;
+   grid-template-columns:repeat(3,minmax(0,1fr))!important;
+   grid-template-rows:repeat(2,49px)!important;
+   border-radius:19px 19px 0 0!important;
+   overflow:hidden!important;
+ }
+ html body #quickDockV3 nav.bottom>button {
+   height:49px!important;min-height:49px!important;max-height:49px!important;
+   border-radius:10px!important;
+ }
 }
 </style>
 </body></html>
