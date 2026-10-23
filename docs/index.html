@@ -2119,7 +2119,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
   <div class="decide">
     <div class="decideTop">
       <div class="decisionHeroRow">
-        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2><span class="dhLead">오늘 뭐하지?</span> 조건 몇 개만 고르면 바로 골라드려요.</h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 3개 코스로 묶습니다.</p></div>
+        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2><span class="dhLead">오늘 뭐하지?</span> 조건 몇 개만 고르면 바로 골라드려요.</h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 다양한 코스로 묶습니다.</p></div>
         <div class="heroCreaming" aria-hidden="true">
           <div class="heroCreamingCard">
             <span class="heroCreamingBubble">크리밍이 같이 찾아볼게요</span>
@@ -2154,7 +2154,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
         <div id="detailResults" class="detailResults" aria-live="polite"></div>
       </div>
     </div>
-    <div class="decideAction"><div><b>최신 정보에서 3개 코스를 골라드려요.</b><small>지금 출발해 도착했을 때 입장마감 전이고 충분히 볼 시간이 있는 곳만, 가까운 동선으로 묶어요.</small></div><button class="decideGo" id="decideGo">✨ 오늘 코스 골라줘</button></div>
+    <div class="decideAction"><div><b>최신 정보에서 맞춤 코스를 골라드려요.</b><small>지금 출발해 도착했을 때 입장마감 전이고 충분히 볼 시간이 있는 곳만, 가까운 동선으로 묶어요.</small></div><button class="decideGo" id="decideGo">✨ 오늘 코스 골라줘</button></div>
   </div>
 </section>
 
@@ -6842,6 +6842,92 @@ function decisionRoutePicks(selected){
   }
   return decBestOrder([first,second&&wrap('venue',second),wrap('venue',third)].filter(Boolean).slice(0,3),selected);
 }
+/* 맞춤 결정: 짧은 일정은 간결하게, 반나절·하루는 활동 종류를 섞는다.
+   서버 정보·영업시간·이동 가능성 검증은 기존 tripPlanPicks를 그대로 사용. */
+function decisionVariedPicks(selected){
+  const original=decisionRoutePicks(selected);
+  const duration=TRIP_DUR[selected.time]||180;
+  const goal=duration<=60?2:duration<=180?3:duration<=300?4:6;
+  if(!original.length||duration<=60) return original;
+  const rainy=!!(WEATHER&&wxRainy());
+  const pet=/반려견/.test(selected.with), kid=/아이/.test(selected.with), elder=/부모님/.test(selected.with);
+  const wrap=(kind,x)=>({kind,x,name:kind==='event'?x.title:x.name,sub:kind==='event'?(x.venue||x.category):(x.menu||x.district||x.kind||'')});
+  const familyOk=(v)=>!kid||(v.kids||/동물원|테마파크|과학관|박물관|공원|정원|체험|어린이|가족/.test([v.kind,v.name].join(' ')));
+  const kinds=(p)=>{
+    if(p.kind==='food')return 'meal';
+    if(p.kind==='cafe')return 'cafe';
+    const x=p.x||{},str=[x.kind,x.name,x.category,x.title].filter(Boolean).join(' ');
+    if(/미술관|갤러리|전시|박물관|기념관/.test(str))return 'culture';
+    if(/과학|체험|공방|레포츠/.test(str))return 'experience';
+    if(/공원|정원|산책|자연|숲|호수|해변|트레킹|등산|야경/.test(str))return 'outdoor';
+    if(p.kind==='event')return 'event';
+    return 'sight';
+  };
+  // 처음 장소는 기존의 입장마감·출발지 검증을 통과한 후보를 유지.
+  let best=[original[0]];
+  const cap=DEC_LEG_CAP[tripMoveKey(selected.move)]||40;
+  const radius=/도보/.test(selected.move)?3:/자동차/.test(selected.move)?14:7;
+  const extras=[];
+  const venueOk=v=>openToday(v)!==false&&decBudgetOk(v,selected.budget)&&decCoordOk(v,selected)&&familyOk(v)&&(!pet||decPetVenueOk(v))&&(!rainy||(v.inout||'').includes('실내'));
+  for(const v of VENUES.filter(venueOk))extras.push(wrap('venue',v));
+  if(!pet){
+    const today=todayISO();
+    for(const e of EVENTS.filter(e=>(!e.start||e.start<=today)&&(!e.end||e.end>=today)&&decBudgetOk(e,selected.budget)&&!['매진','종료'].includes(ticketOf(e).status)))extras.push(wrap('event',e));
+    for(const f of FOOD.filter(f=>!kid||decKidFoodOk(f)))extras.push(wrap('food',f));
+    for(const c of [...CAFES,...BAKERIES])extras.push(wrap('cafe',c));
+  }else{
+    for(const c of CAFES.filter(c=>c.pet))extras.push(wrap('cafe',c));
+  }
+  const signature=aiQueryKey([selected.with,selected.time,selected.budget,selected.move].join('|'),'decision-variety');
+  const recent=AI_RECENT_PICKS[signature]||[];
+  // 마지막 장소에서 다음 장소로 옮기는 방식으로 검증하므로 비현실적인 왕복·긴 이동은 제외한다.
+  for(let idx=best.length;idx<goal;idx++){
+    const tail=best[best.length-1], prevType=kinds(tail);
+    const usedTypes=best.map(kinds), usedNames=best.map(p=>aiItemKey(p.x));
+    const current=tripPlanPicks(best,selected);
+    if(current.picks.length!==best.length)break;
+    const last=current.picks[current.picks.length-1];
+    const remain=current.end-last.plan.leave;
+    if(remain<35)break;
+    const mealDue=duration>=300&&decMealOk(last.plan.leave+25)&&!usedTypes.includes('meal');
+    const cafeDue=duration>=180&&!usedTypes.includes('cafe')&&best.length>=2;
+    const pool=extras.map(p=>{
+      if(usedNames.includes(aiItemKey(p.x))||best.some(q=>decSameSite(q.x,p.x)))return null;
+      if(pet&&p.kind==='venue'&&!decPetVenueOk(p.x))return null;
+      const dist=kmAny(tail.x,p.x);
+      if(dist==null||dist>radius)return null;
+      const leg=tripLegMin(tail.x,p.x,selected.move);
+      if(leg==null||leg>cap)return null;
+      const type=kinds(p);
+      if(type==='meal'&&(usedTypes.includes('meal')||!decMealOk(last.plan.leave+leg)))return null;
+      if(type==='cafe'&&usedTypes.includes('cafe')&&best.length<4)return null;
+      if(type==='culture'&&prevType==='culture'&&extras.some(q=>kinds(q)!=='culture'))return null;
+      const scored=tripPlanPicks([...best,p],selected);
+      if(scored.picks.length!==best.length+1)return null;
+      const item=scored.picks[scored.picks.length-1];
+      if(item.plan.leave>scored.end+10)return null;
+      let score=160-leg*2-dist*5;
+      if(!usedTypes.includes(type))score+=90;
+      if(type===prevType)score-=80;
+      if(type==='meal')score+=mealDue?135:-100;
+      if(type==='cafe')score+=cafeDue?110:duration>=300?25:-30;
+      if((kid||elder)&&type==='experience')score+=kid?35:0;
+      if(elder&&type==='outdoor')score-=20;
+      if(/연인|친구/.test(selected.with)&&type==='outdoor'&&!rainy)score+=35;
+      if(type==='culture'&&usedTypes.filter(t=>t==='culture').length>=1)score-=110;
+      if(recent.includes(aiItemKey(p.x)))score-=55;
+      // 동일 조건 재검색 시 상위 동선 중 다양한 후보가 순환되도록 한다.
+      score+=Math.random()*16;
+      return {p,score};
+    }).filter(Boolean).sort((a,b)=>b.score-a.score);
+    if(!pool.length)break;
+    best.push(pool[0].p);
+  }
+  const result=tripPlanPicks(best,selected).picks;
+  if(result.length<original.length&&duration<=180)return original;
+  AI_RECENT_PICKS[signature]=[...result.map(p=>aiItemKey(p.x)),...recent].slice(0,30);
+  return result;
+}
 /* 고른 순서대로 출발·이동·도착·관람 시각을 계산해 붙인다. 시간이 안 맞는 뒤쪽 장소는 잘라낸다. */
 function tripPlanPicks(list,selected){
   const start=tripNowMin(), dur=TRIP_DUR[selected.time]||180, out=[];
@@ -6951,13 +7037,13 @@ function initDecisionMiniMap(picks){
   if(go) go.addEventListener('click',()=>{
     const pick=k=>document.querySelector(`.choiceRow[data-choice="${k}"] button.on`)?.textContent.trim()||'';
     const selected={with:pick('with').replace('🐶 ','').trim(),time:pick('time'),budget:pick('budget'),move:pick('move')};
-    const reasons=decisionReasonSet(selected), routePicks=decisionRoutePicks(selected);
+    const reasons=decisionReasonSet(selected), routePicks=decisionVariedPicks(selected);
     const wideOk = false; // 권역 선택 시 다른 권역으로 자동 확대하지 않음
     // 짧은 일정·제한 예산은 현재 권역을 절대 벗어나지 않는다. 광주권 확장은 '하루+자동차+예산 상관없음'일 때만 허용한다.
     const scope = wideOk
       ? `현재 선택 권역은 ${RNAME()}이며 광주권을 우선 추천하되, 하루 종일 자동차 이동이고 예산 제한이 없으므로 필요할 때만 순천여수권·무안목포권까지 확대 가능.`
       : `현재 선택 권역 ${RNAME()} 안에서만 추천. 다른 권역(순천여수권·무안목포권)으로 넘어가지 말 것.`;
-    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·가볼 곳·맛집·카페 중 가까운 동선으로 3개 코스 추천`;
+    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·가볼 곳·맛집·카페 중 가까운 동선으로 시간에 맞춰 다양한 장소를 추천`;
     const input=document.getElementById('aiq'); if(input) input.value=`${selected.with}와 ${selected.time} · ${selected.budget} · ${selected.move}`;
     // 아래 '더 자세히 보기'에도 위 동선과 똑같은 코스가 보이게 (예전엔 다른 엔진이 다른 곳을 골라 엇갈렸음)
     const ans=document.getElementById('answer'); if(ans) ans.innerHTML=routePreviewHtml(routePicks,selected.move).replace('<div id="decisionMiniMap" class="decisionMiniMap"></div>','')+decisionDetailHtml(routePicks,selected);
