@@ -5854,6 +5854,20 @@ function featureHits(q) {
 }
 function featureCard([f, i]) { return `<div class="listCard" style="cursor:pointer" onclick="runFeature(${i})"><div class="listMain"><b>${esc(f[0])}</b><small>${esc(f[1])}</small></div></div>` }
 function annualSearchCard(a) { return `<div class="listCard"><div class="listMain"><div class="kindRow"><span class="kind">🎪 해마다 열리는 축제</span><span class="gu">${esc(a.district || "")}</span></div><b>${esc(a.name)}</b><small>${esc(a.when || "")}${a.place ? " · " + esc(a.place) : ""}</small>${a.desc ? `<p>${esc(a.desc)}</p>` : ""}</div></div>` }
+/* 첫 화면 통합검색: 단어/복합 단어는 기존 검색, 자연어 질문은 기존 길잡이 추천으로 연결 */
+function isNaturalSearch(q) {
+  const t = String(q || "").trim();
+  return /[?？]/.test(t) || /(?:어디|뭐|무엇|추천|알려|찾아|갈\s*만|할\s*만|가고\s*싶|하고\s*싶|하고싶|갈까|좋을까|좋겠|어떨까|있을까|있나요|있어\?|해줘|해\s*줘|해주|싶어|되나|할까|갈래|갈\s*수|할\s*수|날인데|오는데|오면|때는|같이|함께|데리고|시간\s*정도)/.test(t) && t.split(/\s+/).length >= 2;
+}
+window.searchToGuide = function(q) {
+  const text = String(q == null ? $("#search").value : q).trim();
+  if (!text) return;
+  clearSearch();
+  ensureHome();
+  const aiq = $("#aiq"); if (aiq) aiq.value = text;
+  recommend(text);
+  setTimeout(() => $("#aiBox")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+};
 function renderSearch() {
   const q = $("#search").value.trim();
   if (!q) { $("#searchView").classList.add("hidden"); return }
@@ -5909,6 +5923,7 @@ function renderSearch() {
   if (sv.dataset.q !== q) sv.scrollTop = 0; sv.dataset.q = q;
   sv.classList.remove("hidden");
   sv.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">SEARCH</span><h2>'${esc(q)}' 검색 결과</h2></div><span>${n}개</span></div>
+  ${q.split(/\s+/).length >= 2 ? `<div class="verify"><b>✨ 문장으로 찾으시나요?</b> 단어별 검색 결과는 아래에 그대로 보여드려요. 날씨·시간·동행 조건을 고려한 코스가 필요하면 <button type="button" class="btn" onclick="searchToGuide()">이 문장으로 맞춤 추천받기 →</button></div>` : ""}
   <div class="jump">${[["앱 기능", ft.length, "sft"], ["가볼 곳", pl.length, "sp"], ["일정", ev.length, "se"], ["맛집", fd.length, "sf"], ["빵지순례", bk.length, "sb"], ["숙소", st.length, "ss"], ["멍카페", cf.length, "sc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", cn.length, "scn"], ["해마다 축제", an.length, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
   ${otherRegions.length ? `<p class="emptyNote">📍 ${showAll ? `${esc(RNAME())} ${mineN}개를 먼저 보여 주고, 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) ${otherN}개도 같이 보여 드려요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=null;renderSearch()">${esc(RNAME())}만 보기</a>` : `${mineN ? `${esc(RNAME())} 결과만 보여 드려요.` : `${esc(RNAME())}에는 없어요.`} 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")})에 ${otherN}개 더 있어요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=$('#search').value.trim()+'|'+REGION;renderSearch()">다른 권역도 보기</a>`} ${otherRegions.map(r => `<a href="#" onclick="event.preventDefault();setRegion('${r}')">${REGIONS[r].emoji} ${REGIONS[r].name}으로 바꾸기</a>`).join(" ")}</p>` : ""}
   ${ft.length ? `<h3 class="sub" id="sft">🧭 앱 기능 바로가기 ${ft.length}</h3><div class="grid">${ft.map(featureCard).join("")}</div>` : ""}
@@ -5926,10 +5941,10 @@ function renderSearch() {
 }
 window.clearSearch = () => { $("#search").value = ""; if ($("#search2")) $("#search2").value = ""; $("#searchView").classList.add("hidden"); $("#searchView").dataset.q = "" };
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#searchView").classList.contains("hidden") && !$("#modal").classList.contains("show")) { clearSearch(); document.activeElement?.blur?.() } });
-const s2 = $("#search2"); if (s2) { s2.addEventListener("input", () => { $("#search").value = s2.value; $("#search").dispatchEvent(new Event("input")) }); s2.addEventListener("keydown", e => { if (e.key === "Enter") { $("#search").value = s2.value; renderSearch(); s2.blur() } }) }
+const s2 = $("#search2"); if (s2) { s2.addEventListener("input", () => { $("#search").value = s2.value; $("#search").dispatchEvent(new Event("input")) }); s2.addEventListener("keydown", e => { if (e.key === "Enter" && !e.isComposing) { $("#search").value = s2.value; if (isNaturalSearch(s2.value)) searchToGuide(s2.value); else renderSearch(); s2.blur() } }) }
 let searchTimer; $("#search").addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(renderSearch, 180) });
 $("#search").addEventListener("compositionend", renderSearch);
-$("#search").addEventListener("keydown", e => { if (e.key === "Enter") { renderSearch(); e.target.blur() } });
+$("#search").addEventListener("keydown", e => { if (e.key === "Enter" && !e.isComposing) { if (isNaturalSearch(e.target.value)) searchToGuide(e.target.value); else renderSearch(); e.target.blur() } });
 
 /* ───────── AI 길잡이 (규칙 기반: 같은 동네로 코스 묶기) ───────── */
 const AREAS = { "양림": "남구", "충장로": "동구", "동명": "동구", "acc": "동구", "금남": "동구", "무등산": "동구", "증심사": "동구", "상무": "서구", "송정": "광산구", "수완": "광산구", "첨단": "광산구", "중외공원": "북구", "비엔날레": "북구" };
