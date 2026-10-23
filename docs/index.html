@@ -9541,35 +9541,7 @@ window.openRightsAndLicenses=function(){
 })();
 </script>
 
-<style id="quickDockSafeAreaFinal20261022">
-/* Dock touches the viewport; only the control content avoids the OS gesture area. */
-@media (max-width:899px){
- html body #quickDockV3{
-   bottom:0!important; left:0!important; right:0!important;
-   width:100%!important;max-width:none!important;
-   transform:none!important; padding:0 0 env(safe-area-inset-bottom,0px)!important;
-   justify-content:flex-end!important;align-items:center!important;
- }
- html body #quickDockV3 .navPeek{
-   order:0!important; flex-shrink:0!important;
-   border-radius:13px 13px 0 0!important;
-   box-shadow:none!important;
- }
- html body #quickDockV3 nav.bottom{order:1!important;flex-shrink:0!important;
-   width:min(500px,100%)!important;max-width:100%!important;
-   border-radius:0!important;box-shadow:none!important;
- }
- html body #quickDockV3:not(.open) nav.bottom{height:0!important;min-height:0!important;max-height:0!important;padding:0!important}
- html body #quickDockV3::after{
-   content:'';position:absolute;z-index:-1;bottom:0;
-   width:118px;height:env(safe-area-inset-bottom,0px);
-   background:#17483d;pointer-events:none;
- }
- html body #quickDockV3.open::after{width:min(500px,100%)}
- html body #quickDockV3.open nav.bottom{height:64px!important;min-height:64px!important;max-height:64px!important}
- html body #quickDockV3 .navPeek{touch-action:manipulation!important}
-}
-/* Text on home slideshow: description left, branch right above the dots */
+<style id="homeSlideSafeAreaLegacy">/* Text on home slideshow: description left, branch right above the dots */
 .slideCap{position:absolute!important;left:14px!important;right:14px!important;bottom:12px!important;
   display:flex!important;align-items:flex-end!important;justify-content:space-between!important}
 .slideCap #slideDesc{position:relative!important;order:0!important;margin-right:auto!important;
@@ -9578,15 +9550,7 @@ window.openRightsAndLicenses=function(){
   bottom:24px!important;text-align:right!important;max-width:44%!important}
 .slideCap .dots{order:2!important;margin-left:auto!important}
 </style>
-<script id="quickDockSafeAreaFixScript20261022">
-(function(){
- const dock=document.getElementById('quickDockV3');
- if(!dock)return;
- const handle=dock.querySelector('.navPeek');
- const nav=dock.querySelector('nav.bottom');
- if(handle&&nav){dock.append(nav,handle);}
-})();
-</script>
+
 
 <style id="homeSlidePinAboveName20261022">
 /* Home photo: dots/touch controls above, place name directly underneath. */
@@ -9668,92 +9632,6 @@ html body .slideCap #slideName{
 }
 </style>
 
-<style id="quickDockCorrectBottomOrderAndPeek20261022">
-/* 2026-10-22: 아이콘 위 / 실행 탭 아래. 기본 접힘 상태는 얇은 손잡이만 표시. */
-@media (max-width:899px){
- html body #quickDockV3{
-   position:fixed!important;top:auto!important;left:0!important;right:0!important;
-   bottom:calc(env(safe-area-inset-bottom,0px) - 19px)!important;
-   display:flex!important;flex-direction:column!important;align-items:center!important;
-   justify-content:flex-end!important;gap:0!important;
-   width:100%!important;max-width:none!important;
-   padding:0!important;transform:none!important;pointer-events:none!important;
-   transition:bottom .22s ease!important;
- }
- html body #quickDockV3.open{bottom:env(safe-area-inset-bottom,0px)!important}
- html body #quickDockV3 nav.bottom,
- html body #quickDockV3 nav.bottom.navAway,
- html body:not(.navExpanded) #quickDockV3 nav.bottom{
-   order:0!important;flex-shrink:0!important;
-   border-radius:13px 13px 0 0!important;
-   height:0!important;min-height:0!important;max-height:0!important;
-   margin:0!important;padding:0!important;overflow:hidden!important;
-   pointer-events:none!important;
- }
- html body #quickDockV3.open nav.bottom,
- html body.navExpanded #quickDockV3.open nav.bottom,
- html body:not(.navExpanded) #quickDockV3.open nav.bottom{
-   order:0!important;display:grid!important;
-   height:64px!important;min-height:64px!important;max-height:64px!important;
-   padding:4px!important;overflow:visible!important;pointer-events:auto!important;
- }
- html body #quickDockV3 .navPeek,
- html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek{
-   order:1!important;flex-shrink:0!important;position:relative!important;
-   margin:0!important;height:31px!important;min-height:31px!important;
-   border-radius:0 0 0 0!important; /* 아래 탭은 아이콘 패널 밑에 붙음 */
-   pointer-events:auto!important;touch-action:manipulation!important;
- }
- /* 휴대폰 제스처/시스템 키 영역은 비워 두고, 탭만 하단에 밀착 */
- html body #quickDockV3::after{display:none!important;content:none!important}
- /* 닫혔을 때 보이는 12px 외에도 손가락으로 누르기 쉬운 투명 터치 범위를 둔다. */
- html body #quickDockV3:not(.open) .navPeek::after{
-   content:''!important;display:block!important;position:absolute!important;
-   left:0!important;right:0!important;top:-16px!important;height:24px!important;
-   background:transparent!important;pointer-events:auto!important;
- }
- html body #quickDockV3.open .navPeek::after{display:none!important}
-}
-</style>
-
-<style id="quickDockOchrePaletteFinal20261022">
-/* 최종 색상 지정: 초록색 제거, 황토·크림 배색. 열림/접힘 구조 유지 */
-@media (max-width:899px){
- html body #quickDockV3 nav.bottom,
- html body #quickDockV3 nav.bottom.navAway,
- html body:not(.navExpanded) #quickDockV3 nav.bottom,
- html body #quickDockV3.open nav.bottom,
- html body.navExpanded #quickDockV3.open nav.bottom,
- html body:not(.navExpanded) #quickDockV3.open nav.bottom{
-   background:#b27b3b!important;
-   border-color:#98612a!important;
- }
- html body #quickDockV3 .navPeek,
- html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek{
-   background:#b27b3b!important;
-   color:#fff9ee!important;
- }
- html body #quickDockV3 .navPeek span{color:#fff9ee!important}
- html body #quickDockV3 nav.bottom>button{
-   background:#fff3dd!important;
-   color:#432809!important;
-   border:1px solid rgba(105,62,19,.13)!important;
- }
- html body #quickDockV3 nav.bottom>button span{
-   color:#432809!important;
-   font-weight:800!important;
- }
- html body #quickDockV3 nav.bottom>button.on,
- html body #quickDockV3 nav.bottom>button[aria-current="page"]{
-   background:#f6d89e!important;
-   color:#382005!important;
- }
- html body #quickDockV3 nav.bottom>button.on span{color:#382005!important}
-}
-</style>
-
 <style id="homePhotoLayoutSwap20261022">
 /* 홈 사진: 날씨 설명을 왼쪽 아래로, 기존 왼쪽 아래 문구는 제거 */
 html body .hero .photoCard #wx{
@@ -9779,19 +9657,7 @@ html body .hero .photoCard .slideCap #dots{
 }
 </style>
 
-<style id="quickMenuTimeout20261023">
-@media(max-width:899px){
- /* 접혔을 때는 하단으로 내려 작은 재진입 손잡이만 노출. 터치 영역은 유지 */
- html body #quickDockV3.dockDormant:not(.open) .navPeek{
-   transform:translateY(18px)!important;opacity:.76!important;
-   transition:transform .24s ease,opacity .24s ease!important;
- }
- html body #quickDockV3:not(.dockDormant) .navPeek{
-   transform:translateY(0)!important;opacity:1!important;
-   transition:transform .24s ease,opacity .24s ease!important;
- }
-}
-</style>
+
 
 <!-- 2026-10-23: 숨김 상태에도 누를 수 있는 손잡이 확보, 3초 복귀 -->
 <style id="quickMenuTouchAccessFix20261023">
@@ -9811,27 +9677,7 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
  background:linear-gradient(90deg,rgba(19,124,116,.96) 0 13px,rgba(19,124,116,.25) 13px 100%)!important;
 }
 /* 하단: 항상 누를 수 있는 손잡이, 비활성 시에도 최소 28px 노출 */
-@media(max-width:899px){
- html body #quickDockV3,html body #quickDockV3:not(.open){
-  bottom:env(safe-area-inset-bottom,0px)!important;
-  pointer-events:none!important;
- }
- html body #quickDockV3 .navPeek,
- html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek{
-  width:150px!important;min-width:150px!important;
-  height:44px!important;min-height:44px!important;
-  pointer-events:auto!important;touch-action:manipulation!important;
-  cursor:pointer!important;z-index:3!important;
- }
- html body #quickDockV3.dockDormant:not(.open) .navPeek{
-  transform:translateY(14px)!important;opacity:.92!important;
-  pointer-events:auto!important;
- }
- html body #quickDockV3:not(.dockDormant) .navPeek{
-  transform:translateY(0)!important;opacity:1!important;
- }
-}
+
 </style>
 
 <style id="quickMenuUnifiedFinal20261023">
@@ -9840,11 +9686,7 @@ html body .rightQuick.rqHidden.isCollapsed{transform:translateY(-50%)!important;
 html body .rightQuick .rightQuickToggle{min-width:44px!important;width:44px!important;min-height:76px!important;cursor:pointer!important;touch-action:manipulation!important;}
 html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{background:linear-gradient(to left,rgba(19,124,116,.97) 0 12px,rgba(19,124,116,.05) 12px 100%)!important;color:transparent!important;text-shadow:none!important;}
 html body .rightQuick:not(.isCollapsed) .rightQuickToggle{background:rgba(19,124,116,.94)!important;color:#fff!important;}
-@media(max-width:899px){
- html body #quickDockV3.dockDormant:not(.open) .navPeek{transform:translateY(14px)!important;opacity:.88!important;}
- html body #quickDockV3.open .navPeek{transform:translateY(0)!important;opacity:1!important;}
- html body #quickDockV3 .navPeek{touch-action:manipulation!important;pointer-events:auto!important;}
-}
+
 </style>
 
 <!-- 빠른실행키: 위치만 다르고 동일한 터치/복귀 동작 -->
@@ -9857,66 +9699,26 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
  color:transparent!important;pointer-events:auto!important;touch-action:manipulation!important;
 }
 /* 하단: 닫히면 손잡이 윗부분 18px만 보이고, 44px 전체가 터치 대상으로 남음 */
-@media(max-width:899px){
- html body #quickDockV3{bottom:env(safe-area-inset-bottom,0px)!important;}
- html body #quickDockV3 .navPeek{width:150px!important;min-width:150px!important;height:44px!important;min-height:44px!important;pointer-events:auto!important;touch-action:manipulation!important;}
- html body #quickDockV3.dockDormant:not(.open) .navPeek{transform:translateY(26px)!important;opacity:1!important;}
- html body #quickDockV3.open .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek{transform:translateY(0)!important;opacity:1!important;}
-}
+
 </style>
 
-<style id="bottomQuickMatchedToRight20261023">
-/* 오른쪽처럼: 얇은 노출 표시, 44px 터치 손잡이, 부드러운 둥근 패널. 색상은 기존 황토색 유지. */
+
+
+
+<style id="bottomDockCanonical20261023">
 @media(max-width:899px){
- html body #quickDockV3 {bottom:env(safe-area-inset-bottom,0px)!important}
- html body #quickDockV3 .navPeek,
- html body:not(.navExpanded) #quickDockV3 .navPeek,
- html body.navExpanded #quickDockV3 .navPeek {
-   width:76px!important;min-width:76px!important;max-width:76px!important;
-   height:44px!important;min-height:44px!important;
-   border-radius:0 0 12px 12px!important;
-   background:#b27b3b!important;
-   font-size:11px!important;pointer-events:auto!important;
-   touch-action:manipulation!important;
- }
- /* 화면 아래쪽 손잡이도 오른쪽과 동일하게 12px 강조선. 터치 영역은 44px. */
- html body #quickDockV3.dockDormant:not(.open) .navPeek {
-   transform:none!important;opacity:1!important;
-   background:linear-gradient(to bottom,rgba(178,123,59,.97) 0 12px,rgba(178,123,59,.025) 12px 100%)!important;
-   color:transparent!important;text-shadow:none!important;
- }
- html body #quickDockV3.dockDormant:not(.open) .navPeek span,
- html body #quickDockV3.dockDormant:not(.open) .navPeek::before {
-   visibility:hidden!important;
- }
- html body #quickDockV3:not(.dockDormant) .navPeek span,
- html body #quickDockV3.open .navPeek span,
- html body #quickDockV3:not(.dockDormant) .navPeek::before,
- html body #quickDockV3.open .navPeek::before {visibility:visible!important}
- html body #quickDockV3 nav.bottom,
- html body #quickDockV3 nav.bottom.navAway,
- html body:not(.navExpanded) #quickDockV3 nav.bottom {
-   width:min(312px,calc(100vw - 24px))!important;max-width:312px!important;
-   border-radius:19px 19px 0 0!important;
-   background:#b27b3b!important;
-   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-   grid-template-rows:repeat(2,49px)!important;
-   gap:4px!important;
- }
- html body #quickDockV3.open nav.bottom,
- html body.navExpanded #quickDockV3.open nav.bottom,
- html body:not(.navExpanded) #quickDockV3.open nav.bottom {
-   height:110px!important;min-height:110px!important;max-height:110px!important;
-   padding:6px!important;
-   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-   grid-template-rows:repeat(2,49px)!important;
-   border-radius:19px 19px 0 0!important;
-   overflow:hidden!important;
- }
- html body #quickDockV3 nav.bottom>button {
-   height:49px!important;min-height:49px!important;max-height:49px!important;
-   border-radius:10px!important;
- }
+ html body #quickDockV3 {position:fixed!important;z-index:2147483000!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(54px, calc(env(safe-area-inset-bottom,0px) + 16px))!important;transform:translateX(-50%)!important;width:calc(100vw - 16px)!important;max-width:500px!important;height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-end!important;gap:0!important;margin:0!important;padding:0!important;pointer-events:none!important;overflow:visible!important}
+ html body #quickDockV3::after {display:none!important;content:none!important}
+ html body #quickDockV3 nav.bottom,html body #quickDockV3 nav.bottom.navAway,html body:not(.navExpanded) #quickDockV3 nav.bottom {position:relative!important;order:0!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:56px!important;grid-auto-flow:row!important;gap:2px!important;width:100%!important;min-width:0!important;max-width:100%!important;height:0!important;min-height:0!important;max-height:0!important;overflow:hidden!important;visibility:visible!important;opacity:1!important;border:0!important;border-radius:18px 18px 0 0!important;margin:0!important;padding:0!important;background:#b27b3b!important;pointer-events:none!important;box-sizing:border-box!important;transition:height .22s ease,padding .22s ease!important}
+ html body #quickDockV3.open nav.bottom,html body:not(.navExpanded) #quickDockV3.open nav.bottom {height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important;overflow:hidden!important;pointer-events:auto!important}
+ html body #quickDockV3 nav.bottom>button {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;max-width:100%!important;width:100%!important;height:56px!important;min-height:56px!important;max-height:56px!important;padding:2px 0!important;margin:0!important;border-radius:9px!important;white-space:nowrap!important;overflow:hidden!important;box-sizing:border-box!important;background:#fff3dd!important;color:#432809!important}
+ html body #quickDockV3 nav.bottom>button span {font-size:10px!important;line-height:13px!important;color:#432809!important}
+ html body #quickDockV3 .navPeek,html body:not(.navExpanded) #quickDockV3 .navPeek,html body.navExpanded #quickDockV3 .navPeek {position:relative!important;order:1!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 44px!important;width:98px!important;min-width:98px!important;max-width:98px!important;height:44px!important;min-height:44px!important;max-height:44px!important;margin:0!important;padding:0 6px!important;border:0!important;border-radius:0 0 14px 14px!important;background:#b27b3b!important;color:#fff9ee!important;box-shadow:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important;box-sizing:border-box!important}
+ html body #quickDockV3.dockDormant:not(.open) .navPeek {transform:none!important;background:linear-gradient(to bottom,#b27b3b 0 16px,rgba(178,123,59,.03) 16px 100%)!important;color:transparent!important;text-shadow:none!important}
+ html body #quickDockV3.dockDormant:not(.open) .navPeek span,html body #quickDockV3.dockDormant:not(.open) .navPeek::before {visibility:hidden!important}
+ html body #quickDockV3.open .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek {background:#b27b3b!important;color:#fff9ee!important}
+ html body #quickDockV3.open .navPeek span,html body #quickDockV3:not(.dockDormant) .navPeek span,html body #quickDockV3.open .navPeek::before,html body #quickDockV3:not(.dockDormant) .navPeek::before {visibility:visible!important}
+ html body #quickDockV3 .navPeek span {color:inherit!important}
+ html body #quickDockV3 .navPeek::after {display:none!important;content:none!important}
 }
-</style>
-</body></html>
+</style></body></html>
