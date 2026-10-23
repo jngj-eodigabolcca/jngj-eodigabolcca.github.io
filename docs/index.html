@@ -3159,6 +3159,8 @@ function wxDerive(W) {
   return W;
 }
 const wxRainy = (W = WEATHER) => !!W && (W.rest ? W.rest.wet : (WMO(W.code)[2] || W.pp >= 60));
+/* 오인식 방지: 비엔날레·비용·비교의 ‘비’는 비 소식이 아닙니다. */
+const hasRainIntent = q => /비\s*(?:가|는|도|오|와|올|내|소식|예보|때문|맞|맞아|때|오는|오는날)|우천|장마|소나기|빗길|빗방울|강수|비오는|비올|실내/.test(String(q || ""));
 const wxNowIcon = W => { const c = W.cur ?? W.code; return (c <= 1 && W.day === 0) ? "🌙" : WMO(c)[0] };
 function wxUmbrellaLine(W) {   // 한 줄 요약: 언제 비가 오는지
   const r = W && W.rest; if (!r) return "";
@@ -3755,7 +3757,14 @@ window.dateCourse = id => {
   const c = DATES.find(d => d.id === id); if (!c) return;
   // 일반 추천 흐름에서는 선택한 권역과 다른 데이트 코스를 섞지 않는다.
   if ((c.region || 'gj') !== REGION && id !== 'taebaek') return;
-  const steps = addMoves(c.steps.map(dateStep).filter(Boolean));
+  const dateItems = c.id === "mudeung" ? c.steps.map(step => {
+    if (step[1] !== "t:카페: 카페지즈") return dateStep(step);
+    const base = VENUES.find(v => v.id === "uijae") || VENUES.find(v => v.id === "jeungsimsa");
+    const candidates = base ? CAFES.map(x => [x, kmAny(base, x)]).filter(([x,d]) => d != null && d <= 4 && x.district === "동구").sort((a,b) => a[1]-b[1]) : [];
+    if (candidates.length) { const [x,d] = candidates[0]; return {time:step[0], title:`카페: ${x.name}`, sub:`증심사 인근 · ${kmTxt(d)} (직선거리)`, link:mapLink(x.name+" "+(x.address||"광주 동구")),linkText:"지도 ↗",x}; }
+    return {time:step[0], title:"☕ 증심사 근처 카페 찾아보기", sub:"등록된 동구 카페가 가까운 범위에 없어 지도 검색으로 안내합니다",link:searchNear("광주 동구 증심사", "카페"),linkText:"지도에서 찾기 ↗"};
+  }) : c.steps.map(dateStep);
+  const steps = addMoves(dateItems.filter(Boolean));
   const d = DAY_KO[kstNow().getUTCDay()];
   const closed = steps.filter(s => s.v && openToday(s.v) === false).map(s => s.v.name);
   // ⏰ 지금 출발하면 권장 시각이 이미 지났거나 입장마감에 못 맞추는 곳
@@ -3928,15 +3937,15 @@ function renderToday() {
   const part = h < 5 ? "dawn" : h < 11 ? "morning" : h < 14 ? "lunch" : h < 18 ? "afternoon" : "night";
   const inMonths = ([a, b]) => a <= b ? mm >= a && mm <= b : mm >= a || mm <= b;
   const seasonHiRaw = GREET_SEASON.filter(([r]) => inMonths(r)).flatMap(([, x]) => x[part] || []);
-  const weatherKind = rainy ? "rain" : hot ? "hot" : cold ? "cold" : "normal";
+  const weatherKind = WEATHER && (WEATHER.rest?.nowWet || (!WEATHER.rest && WMO(WEATHER.cur ?? WEATHER.code)[2])) ? "rain" : hot ? "hot" : cold ? "cold" : rainy ? "rainLater" : "normal";
   const fairOnly = /하늘|꽃 핀|봄바람|단풍|걷기 좋|선선하니|선선해졌네/;
   const hiBase = (GREET_HI[part] || []).filter(x => !(weatherKind === "rain" && fairOnly.test(x)));
-  const seasonHi = weatherKind === "rain" ? [] : seasonHiRaw;
-  const weatherHi = weatherKind === "normal" ? [] : (((GREET_WEATHER_HI[weatherKind] || {})[part]) || []);
+  const seasonHi = weatherKind === "normal" ? seasonHiRaw : [];
+  const weatherHi = weatherKind === "normal" || weatherKind === "rainLater" ? [] : (((GREET_WEATHER_HI[weatherKind] || {})[part]) || []);
   const goBase = ((GREET_GO[REGION] || GREET_GO.gj)[part]) || [];
-  const weatherGo = weatherKind === "normal" ? [] : (((((GREET_WEATHER_GO[weatherKind] || {})[REGION]) || ((GREET_WEATHER_GO[weatherKind] || {}).gj) || {})[part]) || []);
-  const hiPool = [...weatherHi, ...hiBase, ...seasonHi];
-  const goPool = weatherGo.length ? weatherGo : goBase;
+  const weatherGo = weatherKind === "normal" || weatherKind === "rainLater" ? [] : (((((GREET_WEATHER_GO[weatherKind] || {})[REGION]) || ((GREET_WEATHER_GO[weatherKind] || {}).gj) || {})[part]) || []);
+  const hiPool = weatherKind === "rainLater" ? ["오늘 비 소식이 있네잉, 우산 챙겨보장께"] : weatherHi.length ? weatherHi : [...hiBase, ...seasonHi];
+  const goPool = weatherKind === "rainLater" ? ["비 올 때는 실내 위주로 골라보장께"] : weatherGo.length ? weatherGo : goBase;
   const gKey = [REGION, part, TODAY_SEED, weatherKind, WEATHER ? (WEATHER.cur ?? WEATHER.code ?? "") : "no-weather"].join("|"), GP = window.__GREET_PICK || (window.__GREET_PICK = {});
   if (!GP[gKey]) { const hi = hiPool.length ? hiPool : (GREET_HI[part] || [RNAME()]), go = goPool.length ? goPool : ((GREET_GO[REGION] || GREET_GO.gj).morning || [RNAME()]); GP[gKey] = [hi[Math.floor(Math.random() * hi.length)], go[Math.floor(Math.random() * go.length)]] }
   const greet = GP[gKey];
@@ -5857,7 +5866,7 @@ function annualSearchCard(a) { return `<div class="listCard"><div class="listMai
 /* 첫 화면 통합검색: 단어/복합 단어는 기존 검색, 자연어 질문은 기존 길잡이 추천으로 연결 */
 function isNaturalSearch(q) {
   const t = String(q || "").trim();
-  return /[?？]/.test(t) || /(?:어디|뭐|무엇|추천|알려|찾아|갈\s*만|할\s*만|가고\s*싶|하고\s*싶|하고싶|갈까|좋을까|좋겠|어떨까|있을까|있나요|있어\?|해줘|해\s*줘|해주|싶어|되나|할까|갈래|갈\s*수|할\s*수|날인데|오는데|오면|때는|같이|함께|데리고|시간\s*정도)/.test(t) && t.split(/\s+/).length >= 2;
+  return /[?？]/.test(t) || /(?:어디|뭐|무엇|추천|알려|찾아|갈\s*만|할\s*만|가고\s*싶|하고\s*싶|하고싶|갈까|좋을까|좋겠|어떨까|있을까|있나요|있어\?|해줘|해\s*줘|해주|싶어|되나|할까|갈래|갈\s*수|할\s*수|날인데|오는데|오면|때는|같이|함께|데리고|시간\s*정도|\d+\s*시간|무료로|돈\s*안|비\s*(?:가|오|와|내)|아이랑|부모님과)/.test(t) && t.split(/\s+/).length >= 2;
 }
 window.searchToGuide = function(q) {
   const text = String(q == null ? $("#search").value : q).trim();
@@ -6152,7 +6161,7 @@ function itineraryRegion(s) {
   window.__TRIP_NOCAR = /ktx|srt|기차|열차|목포역|여수엑스포역|순천역/.test(s);
   const R = KTX_REGION[REGION]; if (!R) return false;
   const days = tripMode(s), ktx = /ktx|srt|기차|열차|목포역|여수엑스포역|순천역/.test(s);
-  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && wxRainy());
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = hasRainIntent(s) || (WEATHER && wxRainy());
   const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
   const T_ = (time, title, sub, extra = {}) => Object.assign({ time, title, sub }, extra);
   const nk = t => String(t || "").replace(/\s/g, "");
@@ -6261,7 +6270,7 @@ function itinerary(s) {
   window.__TRIP_NOCAR = /ktx|srt|기차|송정역|열차|목포역|여수엑스포역|순천역/.test(s);
   if (REGION !== "gj" && KTX_REGION[REGION]) return itineraryRegion(s);
   const days = tripMode(s), ktx = /ktx|srt|기차|송정역|열차/.test(s);
-  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = /비/.test(s) || (WEATHER && wxRainy());
+  const w = WEATHER ? WMO(WEATHER.code) : null, rainy = hasRainIntent(s) || (WEATHER && wxRainy());
   const dow = kstNow().getUTCDay(), dayOf = n => (dow + n) % 7;
   const pickOpen = (ids, day) => ids.map(id => VENUES.find(v => v.id === id)).find(v => v && openOn(v, day) !== false)?.id || ids[0];
   const V_ = (id, time, extra, day = dow) => { const st = vStep(pickOpen([].concat(id), day), time, extra); return st };
@@ -6300,7 +6309,7 @@ function itinerary(s) {
   // ── 2일차 ──
   const d2 = days >= 2 ? (rainy
     ? [V_("nmg", "10:00", "상설전시 무료", dayOf(1)), V_("nmg-ceramic", "11:30", "도자문화관", dayOf(1)), F_("gm25-41", "12:30", "점심"), V_(["biennale", "gma"], "14:00", "비엔날레·시립미술관", dayOf(1)), V_("gma", "15:30", "", dayOf(1)), V_("science", "16:40", "아이와 함께면 강추", dayOf(1))]
-    : [V_("jeungsimsa", "09:00", "무등산 들머리 천년 고찰", dayOf(1)), V_("trail-jungmeori", "09:40", "입문 코스 · 당산나무 → 중머리재 조망", dayOf(1)), F_("st-bori", "12:30", "점심", "산에서 내려와 나물 비벼서"), V_("uijae", "14:00", "무등산 자락 미술관", dayOf(1)), V_("traditional-culture", "15:00", "주말 국악 공연", dayOf(1)), T_("16:00", "☕ 카페지즈", "증심사·우제길미술관 근처에서 쉬어가기", { link: mapLink("광주 동구 카페지즈"), linkText: "지도 ↗" }), V_("518cemetery", "17:00", "망월동 묵념", dayOf(1))]) : [];
+    : [V_("jeungsimsa", "09:00", "무등산 들머리 천년 고찰", dayOf(1)), V_("trail-jungmeori", "09:40", "입문 코스 · 당산나무 → 중머리재 조망", dayOf(1)), F_("st-bori", "12:30", "점심", "산에서 내려와 나물 비벼서"), V_("uijae", "14:00", "무등산 자락 미술관", dayOf(1)), V_("traditional-culture", "15:00", "주말 국악 공연", dayOf(1)), T_("16:00", "☕ 증심사 인근 카페", "근처 카페의 위치·영업시간을 지도에서 확인하세요", { link: searchNear("광주 동구 증심사", "카페"), linkText: "지도에서 찾기 ↗" }), V_("518cemetery", "17:00", "망월동 묵념", dayOf(1))]) : [];
   if (days === 2) { d2.push(ktx ? F_("st-songjeong", "18:00", "저녁", "송정역 앞 떡갈비거리") : F_("st-ori", "18:00", "저녁", "들깨 오리탕")); if (ktx) d2.push(T_("19:30", "🚄 광주송정역 출발", "", { cls: "move" })) }
   if (days === 3) { d2.push(F_("st-ori", "18:30", "저녁", "광주식 들깨 오리탕")); d2.push(V_("geumnamro", "20:00", "금남로·충장로 밤 산책")); d2.push(stay("l7-chungjang")) }
   // ── 3일차 ──
@@ -6370,7 +6379,7 @@ function aiNearestChoices(base, arr, maxKm=8, limit=8){
 }
 function recommend(t, forced = null, fixedMeal = null) {
   const s = t.toLowerCase(), out = [];
-  const rainyDate = /비/.test(s) || (WEATHER && wxRainy());
+  const rainyDate = hasRainIntent(s) || (WEATHER && wxRainy());
   if (!forced && /빵지순례|빵집|베이커리|제과점|빵\s*투어/.test(s)) return bakeryListAI(s);
   if (!forced) {
     if (/태백산맥|벌교|문학길/.test(s)) { if (REGION !== "ys") setRegion("ys"); return dateCourse("taebaek") }
@@ -6382,15 +6391,16 @@ function recommend(t, forced = null, fixedMeal = null) {
     if (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|하루 종일|여행 코스|일정 짜/.test(s)) return itinerary(s);
     if (/강아지|반려|멍멍|멍카페|애견|댕댕/.test(s)) return petList(s);
     if (/데이트|연인|커플/.test(s) || (/시장/.test(s) && /먹방|구경|투어/.test(s))) {
-      const map = [[/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시\s*(?:이후|넘어|부터|쯤|에)/, "yangnim"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "ys-night"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "mp-sunset"], [/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비|실내|우천/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"],
-        [/순천만|갈대|국가정원|노을/, "ys-bay"], [/여수|밤바다|오동도|케이블카|낭만포차|야경/, "ys-night"], [/비|실내|우천|아르떼/, "ys-indoor"], [/보성|녹차|차밭/, "ys-tea"], [/구례|지리산|화엄사|사성암/, "ys-gurye"], [/벌교|태백산맥|꼬막/, "taebaek"],
-        [/근대|원도심|유달산|케이블카|중깐/, "mp-old"], [/갓바위|노을|바다|평화광장/, "mp-sunset"], [/비|실내|우천|박물관/, "mp-indoor"], [/신안|퍼플|천사대교|드라이브/, "mp-purple"], [/강진|다산|가우도|청자/, "mp-gangjin"], [/해남|땅끝|대흥사|미황사/, "mp-haenam"]];
+      const map = [[/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시\s*(?:이후|넘어|부터|쯤|에)/, "yangnim"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "ys-night"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "mp-sunset"], [/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"],
+        [/순천만|갈대|국가정원|노을/, "ys-bay"], [/여수|밤바다|오동도|케이블카|낭만포차|야경/, "ys-night"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마|아르떼/, "ys-indoor"], [/보성|녹차|차밭/, "ys-tea"], [/구례|지리산|화엄사|사성암/, "ys-gurye"], [/벌교|태백산맥|꼬막/, "taebaek"],
+        [/근대|원도심|유달산|케이블카|중깐/, "mp-old"], [/갓바위|노을|바다|평화광장/, "mp-sunset"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마|박물관/, "mp-indoor"], [/신안|퍼플|천사대교|드라이브/, "mp-purple"], [/강진|다산|가우도|청자/, "mp-gangjin"], [/해남|땅끝|대흥사|미황사/, "mp-haenam"]];
       // 현재 선택 권역의 코스만 후보로 사용한다. 예: 광주권에서 '연인'만 골랐는데 벌교 코스가 튀어나오는 일을 막는다.
       const inRegionDate = id => { const d = DATES.find(x => x.id === id); return d && (d.region || "gj") === REGION };
       const hit = map.find(([re, id]) => re.test(s) && inRegionDate(id));
       const hitDate = hit ? DATES.find(d => d.id === hit[1]) : null;
       const explicitOutdoorHint = /양림|근대|펭귄|동명|acc|영화|극장|충장|무등산|증심사|보리밥|호수|광주호|정자|드라이브|시장|먹방|통닭|피크닉|첨단|공원|순천만|갈대|국가정원|노을|여수|밤바다|오동도|케이블카|낭만포차|아르떼|보성|녹차|차밭|구례|지리산|화엄사|사성암|벌교|태백산맥|꼬막|원도심|유달산|중깐|갓바위|바다|평화광장|신안|퍼플|천사대교|강진|다산|가우도|청자|해남|땅끝|대흥사|미황사/;
-      const allowHit = !rainyDate || !hitDate || hitDate.rainOk || explicitOutdoorHint.test(s);
+      const explicitlyRequested = explicitOutdoorHint.test(s) && !/^(?:오늘\s*)?(?:여수|순천|목포|무안|광주)\s*(?:데이트|추천|어디|코스)/.test(s.trim());
+      const allowHit = !rainyDate || !hitDate || hitDate.rainOk || explicitlyRequested;
       const regionDates = DATES.filter(d => (d.region || "gj") === REGION && (rainyDate ? d.rainOk : !d.indoor));
       const pick = (hit && allowHit) ? hit[1] : pickR(regionDates, rnd(Number(todayISO().replace(/-/g, "")) + TODAY_SEED))?.id;
       if (pick) return dateCourse(pick);
