@@ -1473,6 +1473,23 @@ html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:
   .wx small:last-child{display:block}
 }
 
+
+/* 지역별 대표·연례축제: 행사 목록 아래에서 필요한 경우에만 펼쳐 보는 독립 구역 */
+.repFestival{margin-top:26px;border:1px solid var(--line, #dfe5df);border-radius:16px;background:var(--card, #fff);overflow:hidden}
+.repFestival>summary{list-style:none;cursor:pointer;padding:17px 19px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.repFestival>summary::-webkit-details-marker{display:none}
+.repFestival>summary span:first-child{display:flex;flex-direction:column;gap:5px}
+.repFestival>summary b{font-size:1.04rem}
+.repFestival>summary small{color:var(--muted, #64706b);font-size:.82rem}
+.repOpen{font-size:.84rem;white-space:nowrap;color:var(--gold-d, #8c680e)}
+.repFestival[open] .repOpen{font-size:0}
+.repFestival[open] .repOpen:after{content:'접기 ▴';font-size:.84rem}
+.repFestivalBody{padding:0 16px 18px}
+.repFestivalNotice{font-size:.85rem;line-height:1.6;color:var(--muted, #64706b);margin:3px 0 14px}
+.repDistricts{display:flex;gap:7px;overflow-x:auto;flex-wrap:wrap;margin-bottom:15px}
+.repDistrictBtn{border:1px solid var(--line, #dfe5df);background:transparent;border-radius:999px;padding:8px 13px;color:inherit;cursor:pointer;font-size:.84rem}
+.repDistrictBtn.active{background:var(--green, #316b55);color:white;border-color:transparent}
+.repFestivalGrid>[hidden]{display:none!important}
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -4609,9 +4626,16 @@ function annualBlock() {
     return { a, st, cls, ahead: cur && cur.end < t ? 12 + ahead : ahead };
   }).sort((p, q) => p.ahead - q.ahead);
   if (!list.length) return { top: "", bottom: "" };
-  const card = ({ a, st, cls, live }) => `<div class="listCard">${a.image ? `<div class="cover">${imgWithFallback(a.image, a.name, "")}<span class="credit">${esc(a.imageCredit || "")}</span></div>` : ""}<div class="listMain"><div class="kindRow"><span class="kind">🎪 해마다 열리는 축제</span><span class="gu">${esc(a.district)}</span></div><b>${esc(a.name)}</b><small class="mkLine ${cls}">📅 ${esc(st)}</small><small class="note">${esc(a.desc)}</small><small>📍 ${esc(a.place)} · 출처 ${esc(a.src)}</small><div class="btnRow">${live ? `<button class="miniBtn" onclick="detail('${jsq(live.id)}')">일정 보기 →</button>` : ""}${a.venueId ? `<button class="miniBtn" onclick="aiProfile('${jsq(a.venueId)}')">근처 볼거리</button>` : ""}<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="https://search.naver.com/search.naver?query=${encodeURIComponent(y + " " + a.name)}">올해 일정 검색 ↗</a></div></div></div>`;
-  return { top: "", bottom: `<h3 class="sub" style="margin-top:28px">해마다 열리는 축제 · ${esc(RNAME())} ${list.length}</h3><div class="grid">${list.map(card).join("")}</div><div class="verify" style="margin-top:12px">올해 날짜가 발표되면 일정 목록에 바로 올라와요. 날짜는 해마다 조금씩 바뀌니 가기 전에 꼭 확인하세요.</div>` };
+  const card = ({ a, st, cls, live }) => `<div class="listCard" data-rep-district="${esc(a.district || '')}">${a.image ? `<div class="cover">${imgWithFallback(a.image, a.name, "")}<span class="credit">${esc(a.imageCredit || "")}</span></div>` : ""}<div class="listMain"><div class="kindRow"><span class="kind">🎪 해마다 열리는 축제</span><span class="gu">${esc(a.district)}</span></div><b>${esc(a.name)}</b><small class="mkLine ${cls}">📅 ${esc(st)}</small><small class="note">${esc(a.desc)}</small><small>📍 ${esc(a.place)} · 출처 ${esc(a.src)}</small><div class="btnRow">${live ? `<button class="miniBtn" onclick="detail('${jsq(live.id)}')">일정 보기 →</button>` : ""}${a.venueId ? `<button class="miniBtn" onclick="aiProfile('${jsq(a.venueId)}')">근처 볼거리</button>` : ""}<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="https://search.naver.com/search.naver?query=${encodeURIComponent(y + " " + a.name)}">올해 일정 검색 ↗</a></div></div></div>`;
+  const districts = [...new Set(list.map(({a}) => a.district).filter(Boolean))];
+  const districtButtons = ['전체', ...districts].map((d, i) => `<button type="button" class="repDistrictBtn${i === 0 ? ' active' : ''}" onclick="filterRepFestival(this, '${jsq(d)}')">${esc(d)}</button>`).join('');
+  return { top: "", bottom: `<details class="repFestival" id="repFestival"><summary><span>🎪 <b>지역별 대표·연례축제</b><small>${esc(RNAME())} · ${list.length}개 축제 · 지역별로 찾아보세요</small></span><span class="repOpen">펼쳐보기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
 }
+window.filterRepFestival = (button, district) => {
+  const root = button.closest('.repFestival'); if (!root) return;
+  root.querySelectorAll('.repDistrictBtn').forEach(b => b.classList.toggle('active', b === button));
+  root.querySelectorAll('[data-rep-district]').forEach(el => { el.hidden = district !== '전체' && el.dataset.repDistrict !== district });
+};
 /* '관람 가능' = 오늘 바로 가서 볼 수 있는 것: 진행 중 일정 + 오늘 문 여는 미술관·박물관 */
 function renderOpenToday(q) {
   const t = todayISO(), d = DAY_KO[kstNow().getUTCDay()];
