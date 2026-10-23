@@ -6031,7 +6031,26 @@ function renderSearch() {
   // 설명에 있는 곳이 엉뚱하게 검색되지 않도록 구문 단위로 판정합니다.
   const islandVisitIntent = /섬방문|섬여행|섬관광/.test(norm(q)) && !/박람회|엑스포/.test(norm(q));
   const islandExpoIntent = /섬박람회|세계섬박람회/.test(norm(q)) && !/방문의해/.test(norm(q));
+  // 분류어 검색은 소개 문장 속 단어가 아니라 실제 자료 유형을 기준으로 찾습니다.
+  // 예: '축제' → 축제 일정·연례축제만, '미술관' → 미술관 시설만.
+  const categoryWord = /(?:^|\s)(축제|전시|미술관|박물관|시장|전통시장|가볼\s*곳|가볼곳)(?=\s|$)/.exec(q);
+  const category = categoryWord ? categoryWord[1].replace(/\s+/g, "") : "";
+  const categoryRest = category ? q.replace(categoryWord[0], " ").trim() : "";
+  const categoryMatches = x => !categoryRest || hitsAll(categoryRest, x);
+  const eventCategory = x => String(x.category || "").trim();
+  const venueKind = x => String(x.kind || x.category || "").trim();
+  const venueIsMarket = x => !!x.market || /전통시장|재래시장|오일장|정기시장/.test(venueKind) || (/시장/.test(venueKind) && /시장|장터|장날/.test(x.name || ""));
   const find = D => {
+    if (category) {
+      const ev = /^(축제|전시)$/.test(category) ? D.EVENTS.filter(x => eventCategory(x) === category && categoryMatches(x)) : [];
+      const pl = category === "미술관" ? D.VENUES.filter(x => /미술관/.test(venueKind(x)) && categoryMatches(x))
+        : category === "박물관" ? D.VENUES.filter(x => /박물관/.test(venueKind(x)) && categoryMatches(x))
+        : /^(시장|전통시장)$/.test(category) ? D.VENUES.filter(x => venueIsMarket(x) && categoryMatches(x))
+        : category === "가볼곳" ? D.VENUES.filter(categoryMatches) : [];
+      const an = category === "축제" ? D.ANNUAL.filter(categoryMatches) : [];
+      return { ev, pl, an, fd: [], bk: [], st: [], cf: [], lb: [], pg: [], cn: [],
+        n: ev.length + pl.length + an.length };
+    }
     const ev = islandVisitIntent
       ? ALL.EVENTS.filter(x => x.id === "island-visit-year-2026")
       : islandExpoIntent
@@ -6067,7 +6086,7 @@ function renderSearch() {
   const otherRegions = [...new Set(everyHit.filter(x => !mine(x)).map(regionOfItem))].filter(r => REGIONS[r]);
   const otherN = everyHit.filter(x => !mine(x)).length;
   const mineN = allHits.filter(mine).length;
-  const ft = featureHits(q);
+  const ft = category ? [] : featureHits(q);
   const n = allHits.length + ft.length;
   const sv = $("#searchView"), s2v = $("#search2");
   if (s2v && document.activeElement !== s2v) s2v.value = q;
