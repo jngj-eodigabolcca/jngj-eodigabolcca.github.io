@@ -1490,6 +1490,7 @@ html body .planMeal a{grid-row:auto;grid-column:2;justify-self:start;margin-top:
 .repDistrictBtn{border:1px solid var(--line, #dfe5df);background:transparent;border-radius:999px;padding:8px 13px;color:inherit;cursor:pointer;font-size:.84rem}
 .repDistrictBtn.active{background:var(--green, #316b55);color:white;border-color:transparent}
 .repFestivalGrid>[hidden]{display:none!important}
+.repFestivalSearch{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}.repFestivalSearch label{font-size:13px;font-weight:700}.repFestivalSearch input{min-width:160px;max-width:100%;flex:1;padding:9px 11px;border:1px solid #b8b8b8;border-radius:9px;background:var(--paper,#fff);color:inherit}.repFestivalSearch button{padding:9px 11px;border-radius:9px;border:1px solid #b8b8b8;background:transparent;color:inherit}.repCalResults li{margin:8px 0;line-height:1.6}.repCalResults li button{margin-left:5px;cursor:pointer}
 /* 지역별 대표축제: 기존 접이식 영역 안에서만 달력/목록 전환 */
 .repViewSwitch{display:flex;gap:7px;margin:0 0 13px}
 .repViewBtn{border:1px solid var(--line,#dfe5df);background:transparent;border-radius:9px;padding:9px 15px;color:inherit;cursor:pointer;font-size:.87rem}
@@ -4651,14 +4652,24 @@ function annualBlock() {
   // 달력에는 올해 날짜가 명시된 축제만 표시. '해마다 10월경' 같은 시기는 추정하지 않음.
   // 실제 일정 데이터가 있다면 우선 사용하되, 종료된 행사는 연례축제의 확정 기록을 사용.
   const isoDate = v => /^\d{4}-\d{2}-\d{2}$/.test(String(v || '')) && !Number.isNaN(Date.parse(String(v) + 'T00:00:00Z'));
-  window.__REP_FEST_CAL = list.map(({a, live}) => {
+  const annualCalendar = list.map(({a, live}) => {
     const cur = a.this && Number(a.this.year) === y ? a.this : null;
     const source = live && isoDate(live.start) && isoDate(live.end || live.start) ? live : cur;
     return { name: a.name, district: a.district || '', start: source && isoDate(source.start) ? source.start : '', end: source && isoDate(source.end || source.start) ? (source.end || source.start) : '', eventId: live && live.id || '' };
   }).filter(x => x.start && x.end && x.start <= x.end && x.start.slice(0,4) === String(y));
-  const districts = [...new Set(list.map(({a}) => a.district).filter(Boolean))];
+  // 올해 실제 축제 일정도 달력 검색에 포함합니다. 개최일을 추정하지 않습니다.
+  const actualFestivals = (EVENTS || []).filter(e => e.category === '축제' && isoDate(e.start) && isoDate(e.end || e.start)).map(e => ({
+    name: e.title || e.venue || '축제', district: e.district || '', start: e.start,
+    end: e.end || e.start, eventId: e.id || ''
+  })).filter(e => e.start <= e.end);
+  window.__REP_FEST_CAL = [...annualCalendar, ...actualFestivals].filter((x, i, arr) => !arr.some((p, j) => j < i && (
+    (x.eventId && p.eventId === x.eventId) || (x.district === p.district && x.start === p.start && norm(x.name).slice(0, 6) === norm(p.name).slice(0, 6))
+  )));
+  // 날짜가 정해지지 않은 연례축제도 축제명 검색에서는 찾을 수 있어야 합니다.
+  window.__REP_FEST_UNDATED = list.filter(({a}) => !window.__REP_FEST_CAL.some(x => norm(x.name) === norm(a.name) && x.district === a.district)).map(({a}) => ({ name: a.name, district: a.district || '', when: a.when || '일정 미정' }));
+  const districts = [...new Set([...list.map(({a}) => a.district), ...window.__REP_FEST_CAL.map(x => x.district)].filter(Boolean))];
   const districtButtons = ['전체', ...districts].map((d, i) => `<button type="button" class="repDistrictBtn${i === 0 ? ' active' : ''}" onclick="filterRepFestival(this, '${jsq(d)}')">${esc(d)}</button>`).join('');
-  return { top: "", bottom: `<details class="repFestival" id="repFestival"><summary><span>🎪 <b>지역별 대표·연례축제</b><small>${esc(RNAME())} · ${list.length}개 축제 · 지역별로 찾아보세요</small></span><span class="repOpen">펼쳐보기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="repViewSwitch" aria-label="축제 표시 방식"><button type="button" class="repViewBtn active" data-rep-view="list" onclick="repFestivalView(this, 'list')">☷ 목록 보기</button><button type="button" class="repViewBtn" data-rep-view="calendar" onclick="repFestivalView(this, 'calendar')">▦ 달력 보기</button></div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="repCalendar" hidden><div class="repCalTop"><button type="button" onclick="repCalendarMove(this,-1)" aria-label="이전 달">‹</button><strong class="repCalTitle"></strong><button type="button" onclick="repCalendarMove(this,1)" aria-label="다음 달">›</button></div><div class="repCalGrid"></div><div class="repCalResults" aria-live="polite"></div><div class="repCalHint">● 일정이 확인된 축제 날짜만 표시합니다. 날짜 미정인 연례축제는 목록 보기에서 확인하세요.</div></div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
+  return { top: "", bottom: `<details class="repFestival" id="repFestival"><summary><span>🎪 <b>지역별 대표·연례축제</b><small>${esc(RNAME())} · ${list.length}개 축제 · 지역별로 찾아보세요</small></span><span class="repOpen">펼쳐보기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="repFestivalSearch"><label for="repFestSearch">🔎 축제 이름 찾기</label><input id="repFestSearch" type="search" placeholder="예: 김치축제, 장미축제, 여수" oninput="repFestivalSearch(this)" autocomplete="off"><button type="button" onclick="repFestivalClearSearch(this)">지우기</button></div><div class="repViewSwitch" aria-label="축제 표시 방식"><button type="button" class="repViewBtn active" data-rep-view="list" onclick="repFestivalView(this, 'list')">☷ 목록 보기</button><button type="button" class="repViewBtn" data-rep-view="calendar" onclick="repFestivalView(this, 'calendar')">▦ 달력 보기</button></div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="repCalendar" hidden><div class="repCalTop"><button type="button" onclick="repCalendarMove(this,-1)" aria-label="이전 달">‹</button><strong class="repCalTitle"></strong><button type="button" onclick="repCalendarMove(this,1)" aria-label="다음 달">›</button></div><div class="repCalGrid"></div><div class="repCalResults" aria-live="polite"></div><div class="repCalHint">● 일정이 확인된 축제 날짜만 표시합니다. 날짜 미정인 연례축제는 목록 보기에서 확인하세요.</div></div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
 }
 window.repFestivalView = (button, view) => {
   const root = button.closest('.repFestival'); if (!root) return;
@@ -4683,7 +4694,10 @@ function renderRepCalendar(root) {
   root.__repMonth = month;
   const year = month.getFullYear(), m = month.getMonth(), days = new Date(year, m+1, 0).getDate();
   const district = root.querySelector('.repDistrictBtn.active')?.textContent.trim() || '전체';
-  const items = (window.__REP_FEST_CAL || []).filter(x => district === '전체' || x.district === district);
+  const keyword = (root.querySelector('#repFestSearch')?.value || '').trim().toLowerCase();
+  const matching = x => !keyword || [x.name, x.district].some(v => String(v || '').toLowerCase().includes(keyword));
+  const items = (window.__REP_FEST_CAL || []).filter(x => (district === '전체' || x.district === district) && matching(x));
+  const undated = (window.__REP_FEST_UNDATED || []).filter(x => (district === '전체' || x.district === district) && matching(x));
   holder.querySelector('.repCalTitle').textContent = `${year}년 ${m+1}월`;
   const fmt = day => `${year}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
   const week = ['일','월','화','수','목','금','토'].map(x => `<span class="repCalDow">${x}</span>`).join('');
@@ -4696,7 +4710,15 @@ function renderRepCalendar(root) {
   const selected = root.__repSelected;
   const found = selected ? items.filter(x => x.start <= selected && selected <= x.end) : [];
   const results = holder.querySelector('.repCalResults');
-  if (!selected) { results.textContent = '● 표시된 날짜를 누르면 해당 날짜의 축제가 나옵니다.'; return; }
+  if (!selected) {
+    // 검색 중에는 다른 달 일정도 결과에 표시하고, 클릭하면 해당 월로 이동합니다.
+    const shown = keyword ? items : items.filter(x => x.start <= fmt(days) && x.end >= fmt(1));
+    const unknown = keyword ? undated : [];
+    const resultRows = shown.map(x => `<li>${esc(x.name)} · ${esc(x.district)} · ${esc(x.start)} ~ ${esc(x.end)} <button type="button" onclick="repFestivalJump(this,'${jsq(x.start)}')">날짜 보기 ↗</button>${x.eventId ? ` <button type="button" onclick="detail('${jsq(x.eventId)}')">상세 ↗</button>` : ''}</li>`).join('');
+    const unknownRows = unknown.map(x => `<li>${esc(x.name)} · ${esc(x.district)} · ${esc(x.when)} (날짜 미정)</li>`).join('');
+    results.innerHTML = `<b>${keyword ? `‘${esc(keyword)}’ 검색` : `${year}년 ${m+1}월`} · ${shown.length + unknown.length}개 축제</b>` + (shown.length || unknown.length ? `<ul>${resultRows}${unknownRows}</ul>` : `<p>${keyword ? '검색 결과가 없습니다. 축제명 일부 또는 지역명으로 다시 검색해 보세요.' : '이 달에 날짜가 확인된 축제가 없습니다. 다른 달로 이동하거나 목록 보기에서 연례축제를 확인하세요.'}</p>`);
+    return;
+  }
   results.innerHTML = `<b>${esc(selected)} · ${found.length}개 축제</b>` + (found.length ? '<ul>'+ found.map(x => `<li>${esc(x.name)} · ${esc(x.district)}${x.eventId ? ` <button type="button" onclick="detail('${jsq(x.eventId)}')">행사 상세 ↗</button>` : ''}</li>`).join('')+'</ul>' : '<p>이 날짜에 확인된 대표축제 일정이 없습니다.</p>');
 }
 window.repCalendarSelect = (button, date) => {
@@ -4704,11 +4726,33 @@ window.repCalendarSelect = (button, date) => {
   root.__repSelected = date;
   renderRepCalendar(root);
 };
+window.repFestivalSearch = input => {
+  const root = input.closest('.repFestival'); if (!root) return;
+  const q = input.value.trim().toLowerCase();
+  const district = root.querySelector('.repDistrictBtn.active')?.textContent.trim() || '전체';
+  root.querySelectorAll('[data-rep-district]').forEach(el => {
+    const matchesArea = district === '전체' || el.dataset.repDistrict === district;
+    el.hidden = !matchesArea || (q && !el.textContent.toLowerCase().includes(q));
+  });
+  root.__repSelected = '';
+  if (!root.querySelector('.repCalendar').hidden) renderRepCalendar(root);
+};
+window.repFestivalClearSearch = button => {
+  const input = button.closest('.repFestival')?.querySelector('#repFestSearch');
+  if (input) { input.value = ''; repFestivalSearch(input); input.focus(); }
+};
+window.repFestivalJump = (button, date) => {
+  const root = button.closest('.repFestival'); if (!root || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+  root.__repMonth = new Date(Number(date.slice(0,4)), Number(date.slice(5,7)) - 1, 1);
+  root.__repSelected = date;
+  renderRepCalendar(root);
+};
 window.filterRepFestival = (button, district) => {
   const root = button.closest('.repFestival'); if (!root) return;
   root.querySelectorAll('.repDistrictBtn').forEach(b => b.classList.toggle('active', b === button));
-  root.querySelectorAll('[data-rep-district]').forEach(el => { el.hidden = district !== '전체' && el.dataset.repDistrict !== district });
-  if (!root.querySelector('.repCalendar').hidden) renderRepCalendar(root);
+  const input = root.querySelector('#repFestSearch');
+  if (input) repFestivalSearch(input);
+  else if (!root.querySelector('.repCalendar').hidden) renderRepCalendar(root);
 };
 /* '관람 가능' = 오늘 바로 가서 볼 수 있는 것: 진행 중 일정 + 오늘 문 여는 미술관·박물관 */
 function renderOpenToday(q) {
