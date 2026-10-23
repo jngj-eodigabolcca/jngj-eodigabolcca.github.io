@@ -9798,4 +9798,41 @@ html body .rightQuick:not(.isCollapsed) .rightQuickToggle {
  }
 }
 </style>
+
+<style id="bottomDockNoGhost20261023">
+/* 접힌 하단 메뉴는 0px 높이가 아니라 완전히 비표시: 그림자/흐림/경계 잔상 차단 */
+@media(max-width:899px){
+ html body #quickDockV3{
+  background:transparent!important;box-shadow:none!important;filter:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  border:0!important;outline:0!important;
+ }
+ html body #quickDockV3:not(.open) nav.bottom,
+ html body #quickDockV3:not(.open) nav.bottom.navAway,
+ html body:not(.navExpanded) #quickDockV3:not(.open) nav.bottom{
+  display:none!important;visibility:hidden!important;opacity:0!important;
+  height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;border:0!important;outline:0!important;
+  box-shadow:none!important;filter:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  background:transparent!important;pointer-events:none!important;
+ }
+ html body #quickDockV3.open nav.bottom,
+ html body:not(.navExpanded) #quickDockV3.open nav.bottom{
+  display:grid!important;visibility:visible!important;opacity:1!important;
+  background:#b27b3b!important;
+ }
+ html body #quickDockV3 .navPeek{
+  box-shadow:none!important;filter:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  outline:0!important;
+ }
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{
+  background:linear-gradient(to bottom,transparent 0 32px,#b27b3b 32px 100%)!important;
+  box-shadow:none!important;border:0!important;
+ }
+ html body #quickDockV3::before,
+ html body #quickDockV3::after{content:none!important;display:none!important}
+}
+</style>
 </body></html>
