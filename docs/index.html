@@ -9855,4 +9855,25 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
  html body #quickDockV3.open .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek{transform:translateY(0)!important;opacity:1!important;}
 }
 </style>
+<!-- 빠른실행키 탭 크기만 통일: 오른쪽 30x76, 하단 76x30 (90도 회전한 동일 규격) -->
+<style id="quickHandleSizeOnly20261023">
+html body .rightQuick .rightQuickToggle,
+html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
+ width:30px!important;min-width:30px!important;max-width:30px!important;
+ height:76px!important;min-height:76px!important;max-height:76px!important;
+ padding:8px 2px!important;box-sizing:border-box!important;
+}
+@media(max-width:899px){
+ html body #quickDockV3 .navPeek,
+ html body:not(.navExpanded) #quickDockV3 .navPeek,
+ html body.navExpanded #quickDockV3 .navPeek{
+  width:76px!important;min-width:76px!important;max-width:76px!important;
+  height:30px!important;min-height:30px!important;max-height:30px!important;
+  padding:0 2px!important;gap:2px!important;box-sizing:border-box!important;
+ }
+ html body #quickDockV3 .navPeek span{font-size:10px!important;}
+ html body #quickDockV3 .navPeek::before{font-size:12px!important;}
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{transform:translateY(16px)!important;}
+}
+</style>
 </body></html>
