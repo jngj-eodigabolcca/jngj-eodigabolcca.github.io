@@ -9757,13 +9757,14 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
   flex:0 0 44px!important;width:98px!important;min-width:98px!important;max-width:98px!important;
   height:44px!important;min-height:44px!important;max-height:44px!important;
   margin:0!important;padding:0 6px!important;border:0!important;
-  border-radius:0 0 15px 15px!important;
+  border-radius:7px 7px 0 0!important;
   background:#b27b3b!important;color:#fff9ee!important;
   opacity:1!important;visibility:visible!important;pointer-events:auto!important;
   cursor:pointer!important;touch-action:manipulation!important;box-sizing:border-box!important;
  }
  /* 완전 숨김이 아닌 '아랫부분 12px만' 표시. 버튼 터치영역 44px 유지 */
  html body #quickDockV3.dockDormant:not(.open) .navPeek{
+  border-radius:0!important; /* 일부만 노출될 때 직사각형 */
   background:linear-gradient(to bottom,transparent 0 32px,#b27b3b 32px 100%)!important;
   color:transparent!important;text-shadow:none!important;
  }
