@@ -470,7 +470,7 @@ h3.sub:before{content:"";width:6px;height:20px;border-radius:3px;background:var(
 .tabs button i{font-style:normal;font-size:14px}
 .tabs button:hover{border-color:#b9d6ce;background:#fff;box-shadow:0 2px 7px rgba(27,55,45,.06)}
 .tabs .on,.tabs .on:hover{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 3px 9px rgba(15,118,110,.17)}
-.chips{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:7px 2px 1px;border-top:1px solid var(--line2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;overflow:visible;scrollbar-width:none;padding:7px 2px 1px;border-top:1px solid var(--line2)}
 body:not([data-tab="events"]) .chips{display:none}
 .chips button,.subchips button{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 10px;font-size:12.5px;line-height:1.2;color:var(--ink2);font-weight:650}
 .chips .active,.subchips .active{background:var(--gold-l);color:#7a4a05;border-color:var(--gold)}
@@ -480,7 +480,7 @@ body:not([data-tab="events"]) .chips{display:none}
   .quickNavIntro{top:calc(var(--hh,62px) + 4px);margin:10px 0 16px;padding:7px 8px 8px;border-radius:15px}
   .quickNavHead{padding:0 1px 5px}.quickNavHead b{font-size:12.5px}.quickFav{padding:4px 8px;font-size:11.5px}
   .tabs{gap:4px;padding-bottom:4px}.tabs button{padding:5px 9px;font-size:12px}.tabs button i{font-size:12.5px}
-  .chips{gap:4px;padding-top:4px}.chips button{padding:4px 7px;font-size:11px}
+  .chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding-top:4px}.chips button{min-width:0;width:100%;white-space:normal;overflow-wrap:anywhere;word-break:keep-all;padding:6px 3px;font-size:11px;text-align:center;line-height:1.3}
   .view,#aiBox,#today,.sub,#wxTips{scroll-margin-top:calc(var(--hh,62px) + 108px)}
 }
 
@@ -4624,6 +4624,8 @@ function renderEvents(listOverride = null, heading = "오늘·이번 달 추천"
   if (EV_SHOW.key !== evKey) { EV_SHOW.key = evKey; EV_SHOW.n = 12 }
   EV_SHOW.override = listOverride; EV_SHOW.heading = heading;
   const annualHtml = listOverride ? { top: "", bottom: "" } : annualBlock();
+  // 지역 대표축제 달력은 기존 일정 화면 상단의 버튼 하나로 바로 열 수 있게 합니다.
+  if (annualHtml.bottom) annualHtml.top = `<div style="margin:4px 0 18px"><button type="button" class="btn" onclick="openRepFestivalCalendar()" style="width:100%;max-width:360px;min-height:46px;text-align:center">🎪 지역별 축제 달력 보기 ▾</button></div>`;
   $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || "<p class='empty'>조건에 맞는 일정이 없습니다.</p>"}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom;
 }
 
@@ -4671,6 +4673,18 @@ function annualBlock() {
   const districtButtons = ['전체', ...districts].map((d, i) => `<button type="button" class="repDistrictBtn${i === 0 ? ' active' : ''}" onclick="filterRepFestival(this, '${jsq(d)}')">${esc(d)}</button>`).join('');
   return { top: "", bottom: `<details class="repFestival" id="repFestival"><summary><span>🎪 <b>지역별 대표·연례축제</b><small>${esc(RNAME())} · ${list.length}개 축제 · 지역별로 찾아보세요</small></span><span class="repOpen">펼쳐보기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="repFestivalSearch"><label for="repFestSearch">🔎 축제 이름 찾기</label><input id="repFestSearch" type="search" placeholder="예: 김치축제, 장미축제, 여수" oninput="repFestivalSearch(this)" autocomplete="off"><button type="button" onclick="repFestivalClearSearch(this)">지우기</button></div><div class="repViewSwitch" aria-label="축제 표시 방식"><button type="button" class="repViewBtn active" data-rep-view="list" onclick="repFestivalView(this, 'list')">☷ 목록 보기</button><button type="button" class="repViewBtn" data-rep-view="calendar" onclick="repFestivalView(this, 'calendar')">▦ 달력 보기</button></div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="repCalendar" hidden><div class="repCalTop"><button type="button" onclick="repCalendarMove(this,-1)" aria-label="이전 달">‹</button><strong class="repCalTitle"></strong><button type="button" onclick="repCalendarMove(this,1)" aria-label="다음 달">›</button></div><div class="repCalGrid"></div><div class="repCalResults" aria-live="polite"></div><div class="repCalHint">● 일정이 확인된 축제 날짜만 표시합니다. 날짜 미정인 연례축제는 목록 보기에서 확인하세요.</div></div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
 }
+window.openRepFestivalCalendar = () => {
+  const root = document.getElementById('repFestival'); if (!root) return;
+  root.open = true;
+  const button = root.querySelector('[data-rep-view="calendar"]');
+  if (button) repFestivalView(button, 'calendar');
+  // 상단 고정 헤더에 가리지 않도록 위치 보정
+  requestAnimationFrame(() => {
+    const header = document.querySelector('header.top') || document.querySelector('header');
+    const offset = (header ? header.getBoundingClientRect().height : 0) + 12;
+    window.scrollTo({ top: Math.max(0, window.scrollY + root.getBoundingClientRect().top - offset), behavior: 'smooth' });
+  });
+};
 window.repFestivalView = (button, view) => {
   const root = button.closest('.repFestival'); if (!root) return;
   root.querySelectorAll('.repViewBtn').forEach(b => b.classList.toggle('active', b === button));
