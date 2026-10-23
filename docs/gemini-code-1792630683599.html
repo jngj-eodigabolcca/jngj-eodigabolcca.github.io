@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 콘텐츠 보안 정책(CSP) 설정 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;">
+    <title>오늘, 전남광주 어디로? (오늘어디로)</title>
+    
+    <!-- Tailwind CSS (외부 라이브러리 및 SRI 무결성 적용 예시) -->
+    <link rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" 
+          integrity="sha384-..." 
+          crossorigin="anonymous">
+          
+    <style>
+        /* 지역 색상 및 테마 스타일 */
+        body {
+            background-color: #F9F8F6; /* 한지 바탕 */
+            color: #2C3E50;
+            font-family: 'Apple SD Gothic Neo', sans-serif;
+        }
+        .theme-green { background-color: #2D6A4F; color: white; } /* 무등산 초록색 */
+        .theme-gold { color: #D4AF37; } /* 빛고을 금빛 */
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- 상단 헤더 -->
+    <header class="theme-green p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">오늘, 전남광주 어디로?</h1>
+            <button id="open-license-modal" class="text-sm bg-white text-green-800 px-3 py-1 rounded shadow">오픈소스 라이선스</button>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="container mx-auto p-4 flex-grow">
+        <section class="mb-6 bg-white p-4 rounded-lg shadow">
+            <h2 class="text-lg font-semibold theme-gold mb-2">오늘 뭐하지? 맞춤 추천</h2>
+            <p class="text-sm text-gray-600">날씨, 시간대, 동행인에 맞춰 최적의 문화·생활 정보를 확인하세요[cite: 2].</p>
+        </section>
+        
+        <div id="content-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- 동적 데이터 영역 (XSS 방어 적용 대상) -->
+        </div>
+    </main>
+
+    <!-- 푸터 및 오픈소스 고지 -->
+    <footer class="bg-gray-200 text-center py-4 text-xs text-gray-600">
+        <p>&copy; 2026 오늘어디로. 공공데이터 기반 실시간 문화·생활 정보 서비스[cite: 2].</p>
+    </footer>
+
+    <!-- 오픈소스 라이선스 모달 -->
+    <div id="license-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">
+            <h3 class="text-lg font-bold mb-4">오픈소스 라이선스 고지</h3>
+            <div class="text-xs space-y-3 text-gray-700">
+                <p><strong>Tailwind CSS</strong> - MIT License</p>
+                <p><strong>FontAwesome / Lucide Icons</strong> - MIT / SIL OFL</p>
+                <p>본 서비스는 공공데이터를 활용하며, 오픈소스 라이선스 조항을 준수합니다.</p>
+            </div>
+            <div class="mt-6 text-right">
+                <button id="close-license-modal" class="bg-gray-500 text-white px-4 py-2 rounded text-sm">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 보안 및 XSS 방어 안전 처리 스크립트 예시 -->
+    <script>
+        // XSS 방어를 위해 innerHTML 대신 textContent를 활용하여 안전하게 주입
+        function renderSafeContent(data) {
+            const container = document.getElementById('content-container');
+            container.innerHTML = ''; // 초기화
+            
+            const card = document.createElement('div');
+            card.className = 'bg-white p-4 rounded shadow border border-gray-100';
+            
+            const title = document.createElement('h3');
+            title.className = 'font-bold text-md mb-1';
+            title.textContent = data.title; // XSS 방어 (텍스트로 처리)
+            
+            card.appendChild(title);
+            container.appendChild(card);
+        }
+
+        // 모달 제어 이벤트
+        document.getElementById('open-license-modal').addEventListener('click', () => {
+            document.getElementById('license-modal').classList.remove('hidden');
+        });
+        document.getElementById('close-license-modal').addEventListener('click', () => {
+            document.getElementById('license-modal').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
