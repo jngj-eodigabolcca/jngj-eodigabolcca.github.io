@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23T09:45:06+09:00",
+  "updated_at": "2026-10-23T18:35:19+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -12,15 +12,15 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 104건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "ok": true,
+      "count": 100,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 100건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 42,
+      "count": 43,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -42,15 +42,15 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 104건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "ok": true,
+      "count": 100,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 100건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 42,
+      "count": 43,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -81,7 +81,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-23T09:47:20+09:00",
+      "fetched_at": "2026-10-23T18:37:08+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -117,7 +117,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 319,
-      "fetched_at": "2026-10-23T09:47:20+09:00",
+      "fetched_at": "2026-10-23T18:37:08+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -150,9 +150,9 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-23T09:47:22+09:00",
-    "tourapi_calls": 266,
-    "osm_lookups": 164,
+    "checked_at": "2026-10-23T18:37:10+09:00",
+    "tourapi_calls": 10,
+    "osm_lookups": 1,
     "wiki_lookups": 0,
     "unfinished": false,
     "lists": {
@@ -199,6 +199,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-10-23T09:47:21+09:00"
+    "checked_at": "2026-10-23T18:37:09+09:00"
   }
 }
