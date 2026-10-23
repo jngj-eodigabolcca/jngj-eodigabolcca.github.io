@@ -9780,4 +9780,16 @@ html body .rightQuick.rqHidden.isCollapsed .rightQuickToggle{
  html body #quickDockV3.open .navPeek::before{visibility:visible!important}
  html body #quickDockV3 .navPeek::after{display:none!important;content:none!important}
 }
-</style></body></html>
+</style><style id="quickHandleThicknessOnly20261023">
+/* 펼쳐진 탭의 짧은 변만 축소. 긴 변, 숨김 상태, 아이콘, 위치는 그대로. */
+html body .rightQuick:not(.isCollapsed) .rightQuickToggle {
+ width:34px!important;min-width:34px!important;max-width:34px!important;
+}
+@media(max-width:899px){
+ html body #quickDockV3:not(.dockDormant) .navPeek,
+ html body #quickDockV3.open .navPeek{
+  flex:0 0 36px!important;height:36px!important;min-height:36px!important;max-height:36px!important;
+ }
+}
+</style>
+</body></html>
