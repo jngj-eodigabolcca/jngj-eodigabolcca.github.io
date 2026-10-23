@@ -7114,6 +7114,12 @@ function dedupeLibs(list) {
 
 /* ───────── 🏠 내 동네: 사는 구를 고르면(또는 지금 위치) 가까운 곳부터 ───────── */
 let HOME = store.get("glm_home", null);
+// 구버전에 저장된 GPS 정밀좌표도 앱 시작 시 제거합니다.
+if (HOME && HOME.src === "gps") {
+  const district = HOME.gu && HOME.gu !== "내 위치" ? HOME.gu : null;
+  HOME = district ? { gu: district, ...guCenter(district), src: "gu" } : null;
+  store.set("glm_home", HOME);
+}
 function coordAny(x) {
   if (!x) return null;
   const c = coordOf(x); if (c) return c;
@@ -7166,7 +7172,9 @@ window.useMyLocation = () => {
     // 가장 가까운 장소의 구를 내 동네로
     let best = null; for (const v of ALL.VENUES) { const c = coordOf(v); if (!c || !v.district) continue; const d = km(me, c); if (best == null || d < best[0]) best = [d, v.district] }
     HOME = { gu: best ? best[1] : "내 위치", lat: me.lat, lng: me.lng, src: "gps" };
-    store.set("glm_home", HOME);
+    // 정확한 GPS 좌표는 실행 중 메모리에서만 사용하고 기기 저장소에는 남기지 않습니다.
+    const coarse = best && guCenter(best[1]);
+    store.set("glm_home", coarse ? { gu: best[1], lat: coarse.lat, lng: coarse.lng, src: "gu" } : null);
     const r = regionOfGu(HOME.gu);
     if (r !== REGION) setRegion(r); else { applyRegion(); renderAll() }
     toast(`📍 지금 위치(${HOME.gu}) 기준으로 가까운 곳부터 보여드려요`);
@@ -7296,14 +7304,13 @@ window.reportItem = (kind, id) => {
   const box = $("#modalContent"); let why = null;
   box.innerHTML = `<span class="eyebrow">REPORT</span><h3>⚠ 정보가 달라요</h3><p class="rvHint">${esc(what)} · <b>${esc(name)}</b><br>알려 주시면 확인해서 고칠게요. 이름 없이 보내져요.</p>
     <div class="rpWhy">${REASONS.map(r => `<button type="button" data-r="${r}">${r}</button>`).join("")}</div>
-    <textarea id="rpText" maxlength="120" rows="2" placeholder="맞는 정보를 아시면 한 줄 적어 주세요 (선택 · 120자) — 예: 매주 월요일 휴무예요"></textarea>
+    <p class="rvHint" role="note">개인정보 보호를 위해 제보 유형만 전달합니다. 이름·연락처·상세 설명은 수집하지 않습니다. 상세 제보는 아래 외부 페이지의 공개 범위에 주의해 주세요.</p>
     <button type="button" class="rvSend" disabled>보내기</button>
     <p class="rpLong"><a href="${safeUrl(reportLongUrl(kind, id))}" target="_blank" rel="noopener">GitHub 계정이 있으면 자세히 쓰기 ↗</a></p>`;
   box.querySelectorAll(".rpWhy button").forEach(b => b.onclick = () => { why = b.dataset.r; box.querySelectorAll(".rpWhy button").forEach(o => o.classList.toggle("on", o === b)); box.querySelector(".rvSend").disabled = false });
   box.querySelector(".rvSend").onclick = () => {
-    const txt = (box.querySelector("#rpText").value || "").replace(/\s+/g, " ").trim().slice(0, 120);
     let sent = false;
-    try { if (window.goatcounter && typeof window.goatcounter.count === "function") { window.goatcounter.count({ path: `제보/${what}/${id}`, title: `${name} · ${why}${txt ? " | " + txt : ""}`, event: true }); sent = true } } catch (e) { }
+    try { if (window.goatcounter && typeof window.goatcounter.count === "function") { window.goatcounter.count({ path: `제보/${what}/${id}`, title: `${what} · ${why}`, event: true }); sent = true } } catch (e) { }
     if (sent) { closeModal(); toast("고마워요! 확인해서 고칠게요 🙏") }
     else toast("지금은 보낼 수 없어요. 아래 '자세히 쓰기'를 이용하거나 광고 차단을 잠시 꺼 주세요.");
   };
@@ -8009,23 +8016,23 @@ window.openPrivacy = function(){
   const box=document.getElementById("modalContent"); if(!box) return;
   box.innerHTML=`<span class="eyebrow">PRIVACY</span><h3>🔒 개인정보 처리 안내</h3>
   <div class="privacyDoc">
-  <p><b>이 앱은 회원가입·로그인이 없고, 이름·연락처 같은 개인정보를 모으거나 서버에 저장하지 않아요.</b></p>
+  <p><b>이 앱은 회원가입·로그인을 요구하지 않으며, 제보·후기에서 이름이나 연락처를 입력받지 않습니다. 다만 외부 서비스 접속 시 IP 주소 등 접속정보가 해당 서비스에 전달될 수 있습니다.</b></p>
   <h4>1. 이 기기 안에만 저장하는 것</h4>
   <p>아래 내용은 쓰시는 휴대폰·PC의 브라우저 안에만 저장되고, 운영자를 포함해 누구에게도 전송되지 않아요.</p>
-  <ul><li>찜한 일정·장소</li><li>고른 권역, 사는 동네(또는 '지금 위치로'를 눌렀을 때의 위치)</li><li>관심 가수와 새 공연 알림 설정</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li></ul>
+  <ul><li>찜한 일정·장소</li><li>고른 권역, 선택한 동네 또는 GPS로 판별한 행정구역의 대표 좌표(정밀 GPS 좌표는 저장하지 않음)</li><li>관심 가수와 새 공연 알림 설정</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li></ul>
   <p>지우려면 브라우저 설정에서 이 사이트의 '사이트 데이터 삭제'를 하시면 돼요.</p>
   <h4>2. 위치 정보</h4>
-  <p>'지금 위치로'나 지도의 '내 위치'를 <b>직접 누를 때만</b> 브라우저가 허락을 물은 뒤 위치를 써요. 가까운 곳부터 보여주는 데만 쓰고, 다른 곳으로 보내지 않아요. 허락하지 않아도 동네를 골라 똑같이 쓸 수 있어요.</p>
+  <p>'지금 위치로'나 지도의 '내 위치'를 <b>직접 누를 때만</b> 브라우저가 허락을 물은 뒤 위치를 써요. 가까운 곳부터 보여주는 데 사용합니다. 정밀 GPS 좌표를 앱 저장소에 저장하거나 주소검색 API에 전달하지 않으며, 외부 지도 타일 서비스에는 화면에 표시된 지도 영역 및 접속정보가 전달될 수 있습니다. 허락하지 않아도 동네를 골라 똑같이 쓸 수 있어요.</p>
   <h4>3. 방문 통계</h4>
-  <p>방문자 수를 세기 위해 <b>GoatCounter</b>를 써요. 쿠키 없이 어떤 화면이 몇 번 열렸는지만 세고, 이용자를 알아볼 수 있는 정보는 남기지 않아요.</p>
+  <p>방문자 수를 세기 위해 <b>GoatCounter</b>를 써요. 쿠키 없이 이용 통계를 집계합니다. 외부 서비스는 접속 IP 등 기술적 정보를 처리할 수 있으며, 제보·후기 자유입력 정보는 보내지 않습니다.</p>
   <h4>4. 화면을 그리는 데 쓰는 외부 서비스</h4>
-  <p>아래 서비스에 요청이 갈 때 일반 웹사이트처럼 접속 주소(IP)와 브라우저 정보가 함께 전달될 수 있어요. 이용자의 위치나 찜 목록은 보내지 않아요.</p>
+  <p>아래 서비스에 요청이 갈 때 일반 웹사이트처럼 접속 주소(IP)와 브라우저 정보가 함께 전달될 수 있어요. 개인 찜 목록이나 GPS 정밀좌표를 앱에서 직접 API 요청에 포함하지 않습니다. 지도 이용 시 표시하는 지도 범위가 외부 지도 제공자에게 알려질 수 있습니다.</p>
   <ul><li>날씨: Open-Meteo (권역 중심 좌표로만 조회)</li><li>지도: OpenStreetMap 계열 지도·주소 검색 (장소 주소로 좌표 찾기)</li><li>글꼴·지도 프로그램: jsDelivr, cdnjs</li><li>사진: 한국관광공사·한국문화정보원·각 기관 누리집 등 원 출처 (원 출처 사정으로 안 보일 수 있어요)</li></ul>
   <h4>5. 한 줄 후기</h4>
-  <p>'한 줄 후기'에서 고른 표정과 적은 글은 이름 없이 방문 통계(GoatCounter)에 기록돼 앱을 고치는 데만 써요. 이름·연락처는 적지 말아 주세요.</p>
+  <p>'후기'에서는 선택한 만족도와 기능 분류만 GoatCounter에 기록합니다. 자유입력 글은 수집하지 않습니다.</p>
   <h4>6. 정보 수정 제보</h4>
-  <p>'⚠ 정보 수정'에서 고른 내용과 적은 글은 이름 없이 방문 통계(GoatCounter)에 기록되고, 정보를 고치는 데만 써요. '자세히 쓰기'를 누르면 GitHub 제보 페이지가 열리며, 이때는 GitHub에 공개 글로 올라가요.</p>
-  <p class="privacyFoot">이 앱은 개인이 만든 비공식 안내 앱이에요. · 안내 기준일 2026.10.12</p>
+  <p>'⚠ 정보 수정'에서는 선택한 제보 유형과 항목 식별정보만 통계 서비스(GoatCounter)에 전송합니다. 이름·연락처·자유입력 글은 받지 않습니다. '자세히 쓰기'는 외부 GitHub 페이지로 이동하며, 작성한 내용이 공개될 수 있으니 개인정보를 적지 마세요.</p>
+  <p class="privacyFoot">이 앱은 개인이 만든 비공식 안내 앱이에요. · 안내 수정일 2026.10.23</p>
   </div>`;
   document.getElementById("modal").classList.add("show"); document.body.classList.add("modal-open");
   if (typeof navPush==="function") navPush({ modal: "privacy" });
@@ -8052,13 +8059,12 @@ window.openPrivacy = function(){
       <div class="rvFaces">${FACES.map(([t,e],i)=>`<button type="button" data-i="${i}"><span>${e}</span>${t}</button>`).join("")}</div>
       <p class="rvQ">좋았던(또는 아쉬운) 기능 <small>여러 개 골라도 돼요 · 안 골라도 돼요</small></p>
       <div class="rvParts">${PARTS.map(p=>`<button type="button" data-p="${p}">${p}</button>`).join("")}</div>
-      <textarea id="rvText" maxlength="100" rows="2" placeholder="한 줄 남겨 주세요 (선택 · 100자) — 이름·연락처는 적지 마세요"></textarea>
+      <p class="rvHint" role="note">개인정보 보호를 위해 만족도와 선택한 기능만 전송합니다. 자유입력 글은 받지 않습니다.</p>
       <button type="button" class="rvSend" disabled>보내기</button>`;
     box.querySelectorAll(".rvFaces button").forEach(b=>b.onclick=()=>{pick=+b.dataset.i;box.querySelectorAll(".rvFaces button").forEach(x=>x.classList.toggle("on",x===b));box.querySelector(".rvSend").disabled=false});
     box.querySelectorAll(".rvParts button").forEach(b=>b.onclick=()=>{const p=b.dataset.p;parts=parts.includes(p)?parts.filter(x=>x!==p):[...parts,p];b.classList.toggle("on",parts.includes(p))});
     box.querySelector(".rvSend").onclick=()=>{
-      const txt=(box.querySelector("#rvText").value||"").replace(/\s+/g," ").trim().slice(0,100);
-      const title=[parts.join("·"),txt].filter(Boolean).join(" | ")||"(글 없음)";
+      const title=parts.join("·")||"(기능 미선택)";
       let sent=false;
       try{ if(window.goatcounter&&typeof window.goatcounter.count==="function"){ window.goatcounter.count({path:"후기/"+FACES[pick][0],title:title+" · "+REGION,event:true}); sent=true } }catch(e){}
       if(sent){ try{localStorage.setItem("glm_review_day",todayISO())}catch(e){} closeModal(); toast("고마워요! 후기가 잘 전달됐어요 💚") }
@@ -9789,63 +9795,6 @@ html body .rightQuick:not(.isCollapsed) .rightQuickToggle {
  html body #quickDockV3:not(.dockDormant) .navPeek,
  html body #quickDockV3.open .navPeek{
   flex:0 0 36px!important;height:36px!important;min-height:36px!important;max-height:36px!important;
- }
-}
-</style>
-
-<style id="bottomDockHiddenGhostOnly20261023">
-/* 숨김 상태의 원래 탭 크기 윤곽선·음영만 제거. 터치 면적은 유지 */
-@media(max-width:899px){
- html body #quickDockV3.dockDormant:not(.open) .navPeek {
-   border:0!important;outline:0!important;box-shadow:none!important;
-   filter:none!important;-webkit-filter:none!important;
-   background:linear-gradient(to bottom,transparent 0 32px,#b27b3b 32px 100%)!important;
- }
- html body #quickDockV3.dockDormant:not(.open) .navPeek::before,
- html body #quickDockV3.dockDormant:not(.open) .navPeek::after {
-   content:none!important;display:none!important;box-shadow:none!important;
- }
- html body #quickDockV3.dockDormant:not(.open) nav.bottom {
-   box-shadow:none!important;border:0!important;outline:0!important;
-   filter:none!important;background:transparent!important;
- }
- html body #quickDockV3.dockDormant:not(.open) {
-   box-shadow:none!important;border:0!important;outline:0!important;
-   filter:none!important;background:transparent!important;
- }
-}
-</style>
-
-<style id="bottomDockGhostClean20261023">
-/* 숨김 시 실제 손잡이 전체를 투명화하고 별도 12px 표시만 그림. 44px 터치 영역은 유지. */
-@media(max-width:899px){
- html body #quickDockV3.dockDormant:not(.open) .navPeek{
-  background:transparent!important;background-image:none!important;
-  box-shadow:none!important;border:0!important;outline:0!important;
-  filter:none!important;-webkit-filter:none!important;
-  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-  border-radius:0!important;opacity:1!important;
- }
- html body #quickDockV3.dockDormant:not(.open) .navPeek::after{
-  content:""!important;display:block!important;visibility:visible!important;
-  position:absolute!important;left:0!important;right:0!important;bottom:0!important;top:auto!important;
-  width:100%!important;height:12px!important;margin:0!important;padding:0!important;
-  background:#b27b3b!important;border:0!important;border-radius:0!important;
-  box-shadow:none!important;filter:none!important;pointer-events:none!important;
- }
- html body #quickDockV3.dockDormant:not(.open) nav.bottom{
-  background:transparent!important;background-image:none!important;
-  box-shadow:none!important;border:0!important;outline:0!important;
-  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-  filter:none!important;-webkit-filter:none!important;
- }
- html body #quickDockV3.dockDormant:not(.open),
- html body #quickDockV3.dockDormant:not(.open)::before,
- html body #quickDockV3.dockDormant:not(.open)::after{
-  background:transparent!important;box-shadow:none!important;
-  border:0!important;outline:0!important;
-  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-  filter:none!important;-webkit-filter:none!important;
  }
 }
 </style>
