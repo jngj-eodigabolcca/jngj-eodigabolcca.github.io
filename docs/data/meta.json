@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-25T09:39:27+09:00",
+  "updated_at": "2026-10-25T18:31:57+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -13,15 +13,15 @@
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 100,
-      "message": "정상 수집"
+      "count": 88,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 88건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 33,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -29,6 +29,13 @@
       "ok": true,
       "count": 9,
       "message": "정상 수집"
+    },
+    {
+      "id": "stdevents",
+      "name": "공공데이터 표준(축제·공연행사)",
+      "ok": true,
+      "count": 0,
+      "message": "정상 수집 (문화축제 CSV 없음 · 공연행사 CSV 없음)"
     }
   ],
   "api_status": [
@@ -43,15 +50,15 @@
       "id": "kopis",
       "name": "KOPIS 공연",
       "ok": true,
-      "count": 100,
-      "message": "정상 수집"
+      "count": 88,
+      "message": "하루 한 번만 받아요 · 8시간 전 자료 88건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 33,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -59,6 +66,13 @@
       "ok": true,
       "count": 9,
       "message": "정상 수집"
+    },
+    {
+      "id": "stdevents",
+      "name": "공공데이터 표준(축제·공연행사)",
+      "ok": true,
+      "count": 0,
+      "message": "정상 수집 (문화축제 CSV 없음 · 공연행사 CSV 없음)"
     }
   ],
   "counts": {
@@ -81,7 +95,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-10-25T09:42:28+09:00",
+      "fetched_at": "2026-10-25T18:33:48+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -117,7 +131,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 318,
-      "fetched_at": "2026-10-25T09:42:28+09:00",
+      "fetched_at": "2026-10-25T18:33:48+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -150,7 +164,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-10-25T09:42:31+09:00",
+    "checked_at": "2026-10-25T18:33:51+09:00",
     "tourapi_calls": 5,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -199,6 +213,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-10-25T09:42:30+09:00"
+    "checked_at": "2026-10-25T18:33:49+09:00"
   }
 }
