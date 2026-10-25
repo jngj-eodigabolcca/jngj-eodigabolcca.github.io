@@ -8,7 +8,7 @@
 -->
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fff3e2">
+<meta name="theme-color" content="#ffffff">
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="오늘어디로">
 <meta name="author" content="오늘, 전남광주 어디로?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디로? All rights reserved.">
@@ -26,6 +26,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
 <style>
 /* ════════ 오늘, 전남광주 어디로? — 무등산 초록 · 빛고을 금빛 · 한지 바탕 ════════ */
 :root{
@@ -2079,6 +2080,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 <section class="hero" id="hero">
   <div class="sky" aria-hidden="true">
     <div class="sun"><i></i></div>
+    <img class="js-creaming-src heroSkyCream" alt="" src="creaming.webp">
     <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span><span class="spark s5"></span>
     <svg class="ridges" viewBox="0 0 1440 260" preserveAspectRatio="none">
       <path d="M0 150 C120 120 210 70 330 80 C430 88 470 40 560 30 C640 22 700 60 780 58 C860 56 920 10 1010 6 C1100 2 1160 50 1250 70 C1330 88 1390 80 1440 90 L1440 260 L0 260Z" fill="#cfe6e0"/>
@@ -2164,7 +2166,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 <div class="tabsBar" id="tabsBar">
 <div class="tabs" id="tabs"><button class="on" data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button data-tab="events"><i>📅</i>일정</button><button data-tab="kids"><i><img class="crIc" src="creaming.webp" alt=""></i>아이와</button><button data-tab="places"><i>🏛</i>가볼 곳</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="food"><i>🍽</i>먹을 곳</button><button data-tab="map"><i>🗺</i>지도</button></div>
 <div class="chips" id="chips">
-<button class="active" data-filter="전체">전체</button><button data-filter="전시">🖼 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="관람가능">✅ 지금 볼 수 있는</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button data-filter="김대중컨벤션센터">김대중컨벤션센터</button>
+<button class="active" data-filter="전체">전체</button><button data-filter="전시">🎨 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button class="chipWide" data-filter="관람가능">✅ 지금 볼 수 있는</button><button class="chipWide" data-filter="김대중컨벤션센터">🏢 김대중컨벤션센터</button>
 </div>
 </div>
 </section>
@@ -2182,7 +2184,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 
 <section class="nowStart" id="nowStart">
   <div class="nowStartBox">
-    <div class="nowStartHead"><div><span class="eyebrow" style="color:#ffd88b">RIGHT NOW</span><h2>🚀 지금 바로 갈 곳</h2><p>고민 없이 <b>지금 바로</b> 나서면 제대로 볼 수 있는 3곳이에요.</p></div><span class="nowClock" id="nowClock">현재 시간 확인 중</span></div>
+    <div class="nowStartHead"><div><span class="eyebrow" style="color:#ffd88b">RIGHT NOW</span><h2>🚀 지금 바로 갈 곳</h2><p>고민 없이 <b>지금 바로</b> 나서면 제대로 볼 수 있는 <span id="nowStartN">3</span>곳이에요.</p></div><span class="nowClock" id="nowClock">현재 시간 확인 중</span></div>
     <div class="nowStartGrid" id="nowStartGrid"><div class="nowPick"><b>추천을 준비하고 있어요.</b><small>오늘 이용 가능한 정보를 확인 중입니다.</small></div></div>
     <div class="nowStartFoot"><span id="nowStartNote">운영·행사 기간을 우선 확인합니다.</span><button class="nowRefresh" type="button" onclick="renderNowStart(true)">↻ 다시 추천</button></div>
   </div>
@@ -2278,7 +2280,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요.</p><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디로? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터 디자인의 권리 관계 및 등록 여부는 관련 증빙자료로 확인해야 합니다. 사용·재배포에는 권리자의 허락이 필요할 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></div></footer>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디로? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터 디자인의 권리 관계 및 등록 여부는 관련 증빙자료로 확인해야 합니다. 사용·재배포에는 권리자의 허락이 필요할 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
 
 <nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events">📅<span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
@@ -3156,6 +3158,26 @@ function wxHours(W) {
   const H = W && W.hr; if (!H || !Array.isArray(H.t)) return [];
   return H.t.map((t, i) => ({ t, d: t.slice(0, 10), h: +t.slice(11, 13), tp: H.tp?.[i], fl: H.fl?.[i] ?? H.tp?.[i], pp: H.pp?.[i] ?? 0, mm: H.mm?.[i] ?? 0, c: H.c?.[i] ?? 0 })).filter(x => x.tp != null);
 }
+/* 앞으로 24시간: 지금부터 3시간씩 8칸 (지나간 시간은 빠지고, 자정 넘어 내일 예보가 이어서 채워져요) */
+function wx24Blocks(W) {
+  const hrs = wxHours(W); if (!hrs.length) return [];
+  const today = todayISO(), nowH = Math.floor(tripNowMin() / 60), key = (d, h) => d + "|" + h;
+  const map = new Map(hrs.map(x => [key(x.d, x.h), x]));
+  const part = h => h < 6 ? "새벽" : h < 9 ? "아침" : h < 12 ? "오전" : h < 15 ? "점심" : h < 18 ? "오후" : h < 21 ? "저녁" : "밤";
+  const out = [];
+  for (let k = 0; k < 8; k++) {
+    const hs = [];
+    for (let j = 0; j < 3; j++) { const o = nowH + k * 3 + j, d = addDaysISO(today, Math.floor(o / 24)), x = map.get(key(d, o % 24)); if (x) hs.push(x) }
+    if (!hs.length) continue;
+    const a = hs[0].h, b = (hs[hs.length - 1].h + 1) % 24, tmr = hs[0].d !== today;
+    const w = hs.filter(wxWet), m = hs.filter(wxMaybe);
+    const code = w.length ? Math.max(...w.map(x => wxRainC(x.c) || wxSnowC(x.c) ? x.c : 61)) : Math.max(...hs.map(x => wxRainC(x.c) ? 3 : x.c));
+    out.push({ label: k === 0 ? "지금" : (tmr ? "내일 " : "") + part(a), a, b: b === 0 ? 24 : b, tmr,
+      tmin: Math.round(Math.min(...hs.map(x => x.tp))), tmax: Math.round(Math.max(...hs.map(x => x.tp))),
+      pp: Math.max(...hs.map(x => x.pp)), st: w.length ? "wet" : m.length ? "maybe" : "dry", code, night: a >= 18 || a < 6, now: k === 0 });
+  }
+  return out;
+}
 const wxHourTxt = h => h === 0 || h === 24 ? "밤 12시" : h < 12 ? `오전 ${h}시` : h === 12 ? "낮 12시" : `${h < 18 ? "오후" : "저녁"} ${h - 12}시`;
 function wxRanges(list) {   // 비 오는 시간을 '오후 3시~6시'처럼 묶기
   const out = []; for (const x of list) { const l = out[out.length - 1]; if (l && l.d === x.d && l.b === x.h) l.b = x.h + 1; else out.push({ d: x.d, a: x.h, b: x.h + 1 }) }
@@ -3276,7 +3298,7 @@ async function loadWeather(force = false) {
     `&current=temperature_2m,apparent_temperature,weather_code,is_day` +
     `&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,weather_code` +
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_probability_max,uv_index_max,wind_speed_10m_max` +
-    `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=2`;
+    `&wind_speed_unit=ms&timezone=Asia%2FSeoul&forecast_days=3`;
 
   // 첫 요청이 실패하면 데이터 항목을 줄인 가벼운 요청으로 한 번 더 시도.
   const liteWeatherUrl =
@@ -3284,7 +3306,7 @@ async function loadWeather(force = false) {
     `&current=temperature_2m,apparent_temperature,weather_code,is_day` +
     `&hourly=temperature_2m,precipitation_probability,precipitation,weather_code` +
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max` +
-    `&timezone=Asia%2FSeoul&forecast_days=2`;
+    `&timezone=Asia%2FSeoul&forecast_days=3`;
 
   try {
     let j;
@@ -3441,28 +3463,32 @@ function renderWxTips() {
   if (dust && dust[0] >= 2) add(true, "😷", "마스크 쓰세요", `미세먼지 ${dust[1]} — KF94 마스크, 야외 활동 줄이기`);
   if (!tips.length) add(false, "😎", "딱히 챙길 게 없는 날", "가볍게 나가서 실컷 노쇼잉!");
   tips.sort((a, b) => b.must - a.must);
+  // 작은 정보 6칸: 아이콘 · 이름 · 값 (값이 없으면 '정보 없음'으로 자리 유지)
   const stats = [
-    [`체감 ${W.feel ?? W.now}°`],
-    [`최고 ${W.max}° / 최저 ${W.min}°`],
-    [R ? `☔ ${R.late ? "내일 낮" : "남은 시간"} 비 ${R.pp}%` : `☔ 비 ${W.pp}%`, rainDay ? "bad" : (R ? R.maybe : W.pp >= 30) ? "" : "good"],
-    uv != null ? [`🔆 자외선 ${UV_TXT(uv)}`, uv >= 6 ? "bad" : uv < 3 ? "good" : ""] : null,
-    W.wind != null ? [`🌬 바람 ${Math.round(W.wind)}m/s`, W.wind >= 9 ? "bad" : ""] : null,
-    dust ? [`😷 미세먼지 ${dust[1]}`, dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""] : null
-  ].filter(Boolean);
+    ["🌡", "체감", `${W.feel ?? W.now}°`, ""],
+    ["↕", "최고 / 최저", `${W.max}° / ${W.min}°`, ""],
+    ["☔", R ? `${R.late ? "내일 낮" : "남은 시간"} 비` : "비 올 확률", `${R ? R.pp : W.pp}%`, rainDay ? "bad" : (R ? R.maybe : W.pp >= 30) ? "" : "good"],
+    ["🔆", "자외선", uv != null ? UV_TXT(uv) : "정보 없음", uv == null ? "na" : uv >= 6 ? "bad" : uv < 3 ? "good" : ""],
+    ["🌬", "바람", W.wind != null ? `${Math.round(W.wind)}m/s` : "정보 없음", W.wind == null ? "na" : W.wind >= 9 ? "bad" : ""],
+    ["😷", "미세먼지", dust ? dust[1] : "정보 없음", !dust ? "na" : dust[0] >= 2 ? "bad" : dust[0] === 0 ? "good" : ""]
+  ];
   const mustN = tips.filter(t => t.must).length;
   const head = R && !snow && rainDay && !rainNow ? `지금은 ${wn[1]}, ${R.ranges[0]} 비 — 우산 챙기쇼잉` : R && rainNow ? "지금 비 와요, 우산 꼭 챙기쇼" : R && R.maybe ? `대체로 괜찮은데 ${R.maybeRanges[0] || "중간에"} 비 올 수도 있어요` : snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? (R && R.late ? "내일 낮은 맑아요, 나들이 가기 딱이여" : "날 좋네잉, 나들이 가기 딱이여") : (R && R.late ? "내일 낮은 무난한 날씨예요" : "무난한 날씨, 편하게 나가쇼");
   el.classList.remove("hidden");
+  const B24 = wx24Blocks(W);
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">오늘 날씨 · 외출 준비</span><h2>오늘 날씨 한눈에<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${!R && c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
-  ${R && R.slots.length ? `<div class="wtTime"><div class="wtTimeHead"><b>🕘 ${R.late ? "내일" : "오늘"} 시간대별 날씨</b><small>${R.late ? "밤이라 내일 낮 기준으로 보여드려요" : "지금부터 밤까지 · 나가 있을 시간 기준"}</small></div>
-   <div class="wtSlots" style="--wt-count:${R.slots.length}">${R.slots.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}"><small>${x.now ? "지금" : esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ 비 ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
-   <p class="wtUmb ${rainDay ? "wet" : R.maybe ? "maybe" : ""}">${esc(wxUmbrellaLine(W))}</p></div>` : ""}
-  <div class="wtStats">${stats.map(([t, k]) => `<span class="${k || ""}">${t}</span>`).join("")}</div>
+  ${B24.length ? `<div class="wtTime wt24"><div class="wtTimeHead"><b>🕘 앞으로 24시간 날씨</b><small>지금부터 내일 이 시간까지 · 3시간 단위</small></div>
+   <div class="wtSlots wtSlots24">${B24.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}${x.tmr ? " tmr" : ""}"><small>${esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
+   ${R ? `<p class="wtUmb ${rainDay ? "wet" : R.maybe ? "maybe" : ""}">${esc(wxUmbrellaLine(W))}</p>` : ""}</div>` : ""}
+  <div class="wtStats wtStats6">${stats.map(([ic, lb, v, k]) => `<span class="${k || ""}"><i aria-hidden="true">${ic}</i><small>${esc(lb)}</small><b>${esc(v)}</b></span>`).join("")}</div>
   <details class="wtDetails"><summary>👕 ${esc(wear.split("·")[0].trim())} · 챙길 것 ${mustN ? mustN + "개 필수" : "확인"} <span style="font-size:11px;font-weight:600;color:var(--muted)">자세히 보기</span></summary><div class="wtGrid">
    <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 ${R && !R.late && R.slots.some(x => x.night) ? "저녁엔" : "아침저녁은"} ${lo}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
   </div></details>`;
   WX_SHORT = [wear.split("·")[0], ...tips.filter(t => t.must).map(t => t.i)].join(" ");
+  const hw = document.getElementById("wx");
+  if (hw && /확인 중|준비 중/.test(hw.textContent)) hw.innerHTML = `<div class="wxTop"><span class="wxNow">${wn[0]} ${esc(wn[1])}</span><b>지금 ${W.now}°</b></div><small class="wxMeta">최고 ${W.max}° / 최저 ${W.min}° · 체감 ${W.feel ?? W.now}°</small>`;
 }
 
 setInterval(()=>{ if(document.visibilityState !== "hidden") loadWeather(false); }, 30 * 60e3);
@@ -3592,7 +3618,7 @@ window.setNowWhen = n => { NOW_WHEN = n; renderNowShow() };
 function weekendDates() { const dow = kstNow().getUTCDay(); if (dow === 6) return [isoPlus(0), isoPlus(1)]; if (dow === 0) return [isoPlus(0)]; return [isoPlus(6 - dow), isoPlus(7 - dow)] }
 const nowDates = n => n === 0 ? [isoPlus(0)] : n === 1 ? [isoPlus(1)] : weekendDates();
 const nowKind = e => e.category === "전시" ? "ex" : /음악|공연/.test(e.category) ? "mu" : e.category === "스포츠" ? "sp" : "fe";
-const NK = { ex: ["🖼", "전시회"], mu: ["🎵", "음악회·공연"], fe: ["🎪", "축제·행사"], sp: ["🏟", "경기"], mk: ["🏮", "장날"] };
+const NK = { ex: ["🎨", "전시회"], mu: ["🎵", "음악회·공연"], fe: ["🎪", "축제·행사"], sp: ["🏟", "경기"], mk: ["🏮", "장날"] };
 const NOW_CATS = [["전체", null], ["전시", "ex"], ["공연·음악", "mu"], ["축제·행사", "fe"], ["장날", "mk"]];
 /** 그 날짜들에 실제로 열리는 일정 + 장 서는 시장 */
 function nowItems(dates) {
@@ -3641,6 +3667,7 @@ let NOW_CAT = "전체";
 window.setNowCat = c => { NOW_CAT = c; renderNowShow() };
 function renderNowShow() {
   const el = document.getElementById("nowShow"); if (!el) return;
+  const wpBox = document.getElementById("weekendPick"); if (wpBox && el.contains(wpBox)) el.after(wpBox);   // 다시 그리기 전에 주말 5선을 밖으로 빼 둠
   const dates = nowDates(NOW_WHEN), t0 = isoPlus(0), off0 = isOff(t0);
   const items = nowItems(dates);
   const by = k => items.filter(x => x.k === k);
@@ -3670,6 +3697,13 @@ function renderNowShow() {
    ${items.some(x => x.h && !x.h.sure) ? `<p class="nowNote">'기간 중'으로 표시된 건 날짜별 시간표가 아직 없어서, 공식 채널에서 시간을 확인하세요.</p>` : ""}`;
   const todayN = NOW_WHEN === 0 ? items.length : nowItems([t0]).length, wkN = counts[2];
   const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>이번 주말</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
+  // 이번 주말 5선: 평일(월~금)엔 '주말 뭐 하지?' 칸으로 따로, 토·일엔 '오늘'과 겹치므로 '이번 주말' 탭 안에만
+  if (wpBox) {
+    const wkend = [0, 6].includes(isoDow(t0));
+    wpBox.classList.toggle("wpWeekday", !wkend);
+    wpBox.classList.toggle("wpInNow", wkend && NOW_WHEN === 2);
+    if (wkend && NOW_WHEN === 2) (el.querySelector(".nowHead") || el.firstElementChild)?.after(wpBox);
+  }
 }
 
 /* ════════ 오늘의 광주: 오전 → 점심 → 오후 → 저녁, 그리고 데이트 ════════
@@ -4027,8 +4061,8 @@ function renderToday() {
   const vPlan = (v, slot, icon, extra) => ({ slot, icon, img: v.image, title: v.name, desc: v.desc || v.note || v.hours, why: [extra, v.inout, /무료/.test(v.price || "") ? "무료" : "", openToday(v) === true ? "오늘 문 열어요" : ""].filter(Boolean), query: `${v.name} 보고 맛집 카페`, anchor: v, mapId: v.id, x: v });
   PLANS = [];
   if (am) PLANS.push(Object.assign(vPlan(am, "🌅 오전엔 여기", indoorDay ? "🏛" : "🌳", indoorDay ? (rainy ? "비 와도 OK" : "시원·따뜻한 실내") : weekend ? "주말 아침 나들이" : "아침 공기 좋은 곳"), { meal: mealNear(am, "🍚 점심은 근처에서") }));
-  if (pmEv) PLANS.push(evPlan(pmEv, "☀️ 오후엔 여기", "🖼", "놓치면 아쉬워요"));
-  else if (pmV) PLANS.push(vPlan(pmV, "☀️ 오후엔 여기", "🖼", "오후 전시 산책"));
+  if (pmEv) PLANS.push(evPlan(pmEv, "☀️ 오후엔 여기", "🎨", "놓치면 아쉬워요"));
+  else if (pmV) PLANS.push(vPlan(pmV, "☀️ 오후엔 여기", "🎨", "오후 전시 산책"));
   if (evening) PLANS.push(Object.assign(evPlan(evening, "🌙 저녁엔 여기", "🎶", "오늘 저녁"), { meal: mealNear(VENUES.find(v => v.id === evening.venueId), "🍖 저녁은 여기서") }));
   else if (nightV) PLANS.push(Object.assign(vPlan(nightV, "🌙 저녁엔 여기", "🌃", "밤이 더 이쁜 곳"), { meal: mealNear(nightV, "🍖 저녁은 근처에서") }));
   const slotNow = !OFF && h < 17 ? 2 : h < 12 ? 0 : h < 17 ? 1 : 2;
@@ -4561,6 +4595,7 @@ function renderNowStart(refresh=false) {
   for(const p of candidates){const key=(p.x.venue||p.x.name||p.x.title||'').trim();if(used.has(key))continue;used.add(key);unique.push(p)}
   const rot=unique.length ? unique.slice(NOWSTART_SHIFT%unique.length).concat(unique.slice(0,NOWSTART_SHIFT%unique.length)) : [];
   const picks=rot.slice(0,3); window.NOW_PICK_IDS=new Set(picks.map(p=>p.x.id).filter(Boolean));
+  const nN=document.getElementById('nowStartN'); if(nN) nN.textContent=picks.length||0;
   if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 가볼 곳·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
   const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'가볼 곳');
   const name=p=>p.kind==='event'?p.x.title:p.x.name;
@@ -4592,7 +4627,7 @@ function eventCard(x) {
   const vimg = !x.image && (VENUES.find(v => v.id === x.venueId) || {}).image;
   if (vimg) x = { ...x, image: vimg };
   const bg = x.image && /^https?:/.test(x.image) ? ` style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.35)),url('${esc(x.image.replace(/^http:/, "https:"))}')"` : "";
-  return `<article class="card"><div class="visual${bg ? " photo" : " art-" + esc(x.category)}"${bg} role="button" tabindex="0" onclick="detail('${jsq(x.id)}')">${bg ? "" : `<span class="evIcon">${({ "전시": "🖼", "음악": "🎵", "공연": "🎭", "축제": "🎪", "스포츠": "🏟" })[x.category] || "✦"}</span>`}<div class="topTags"><span class="tag">${esc([x.category, x.subtype && x.subtype !== x.category ? x.subtype : ""].filter(Boolean).join(" · "))}</span><span class="tag status">${esc(x.status)}</span></div><div class="date"><small>DATE</small><strong>${esc(x.date)}</strong></div>${(() => { const n = daysLeft(x), st = !x.start || x.start <= todayISO(); if (!st && x.start) { const k = Math.round((new Date(x.start + "T00:00:00+09:00") - new Date(todayISO() + "T00:00:00+09:00")) / 864e5); return `<span class="dleft calm">${k === 1 ? "내일 시작" : k + "일 뒤 시작"}</span>` } return n == null ? "" : n === 0 ? `<span class="dleft">오늘 마지막 날</span>` : n <= 14 ? `<span class="dleft">D-${n}</span>` : "" })()}</div>
+  return `<article class="card"><div class="visual${bg ? " photo" : " art-" + esc(x.category)}"${bg} role="button" tabindex="0" onclick="detail('${jsq(x.id)}')">${bg ? "" : `<span class="evIcon">${({ "전시": "🎨", "음악": "🎵", "공연": "🎭", "축제": "🎪", "스포츠": "🏟" })[x.category] || "✦"}</span>`}<div class="topTags"><span class="tag">${esc([x.category, x.subtype && x.subtype !== x.category ? x.subtype : ""].filter(Boolean).join(" · "))}</span><span class="tag status">${esc(x.status)}</span></div><div class="date"><small>DATE</small><strong>${esc(x.date)}</strong></div>${(() => { const n = daysLeft(x), st = !x.start || x.start <= todayISO(); if (!st && x.start) { const k = Math.round((new Date(x.start + "T00:00:00+09:00") - new Date(todayISO() + "T00:00:00+09:00")) / 864e5); return `<span class="dleft calm">${k === 1 ? "내일 시작" : k + "일 뒤 시작"}</span>` } return n == null ? "" : n === 0 ? `<span class="dleft">오늘 마지막 날</span>` : n <= 14 ? `<span class="dleft">D-${n}</span>` : "" })()}</div>
   <div class="body"><div class="title">${esc(x.title)}</div><div class="venue">${esc(x.venue)}${x.district ? " · " + esc(x.district) : ""}${homeTag(x)}${flagTag(x)}</div>
   <ul class="facts">
    ${x.time ? `<li><i>🕘</i><span>${esc(x.time)}</span></li>` : ""}
@@ -4625,8 +4660,9 @@ function renderEvents(listOverride = null, heading = "오늘·이번 달 추천"
   EV_SHOW.override = listOverride; EV_SHOW.heading = heading;
   const annualHtml = listOverride ? { top: "", bottom: "" } : annualBlock();
   // 지역 대표축제 달력은 기존 일정 화면 상단의 버튼 하나로 바로 열 수 있게 합니다.
-  if (annualHtml.bottom) annualHtml.top = `<div style="margin:4px 0 18px"><button type="button" class="btn" onclick="openRepFestivalCalendar()" style="width:100%;max-width:360px;min-height:46px;text-align:center">🎪 지역별 축제 달력 보기 ▾</button></div>`;
-  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || "<p class='empty'>조건에 맞는 일정이 없습니다.</p>"}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom;
+  // 지역별 축제 달력은 일정 목록 맨 위(필터 바로 아래)에 눈에 띄는 배너로 둡니다. 누르면 달력이 바로 열려요.
+  if (annualHtml.bottom) { annualHtml.top = annualHtml.bottom; annualHtml.bottom = ""; }
+  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${FILTER === "김대중컨벤션센터" ? "🏢 상무지구 김대중컨벤션센터의 박람회·전시·콘서트만 모았어요" : `${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요`}</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || (FILTER === "김대중컨벤션센터" ? "<p class='empty'>지금 김대중컨벤션센터에 잡힌 일정이 없어요. 행사가 등록되면 자동으로 올라와요.</p>" : "<p class='empty'>조건에 맞는 일정이 없어요. 위 필터를 바꿔 보세요.</p>")}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom;
 }
 
 
@@ -4671,7 +4707,7 @@ function annualBlock() {
   window.__REP_FEST_UNDATED = list.filter(({a}) => !window.__REP_FEST_CAL.some(x => norm(x.name) === norm(a.name) && x.district === a.district)).map(({a}) => ({ name: a.name, district: a.district || '', when: a.when || '일정 미정' }));
   const districts = [...new Set([...list.map(({a}) => a.district), ...window.__REP_FEST_CAL.map(x => x.district)].filter(Boolean))];
   const districtButtons = ['전체', ...districts].map((d, i) => `<button type="button" class="repDistrictBtn${i === 0 ? ' active' : ''}" onclick="filterRepFestival(this, '${jsq(d)}')">${esc(d)}</button>`).join('');
-  return { top: "", bottom: `<details class="repFestival" id="repFestival"><summary><span>🎪 <b>지역별 대표·연례축제</b><small>${esc(RNAME())} · ${list.length}개 축제 · 지역별로 찾아보세요</small></span><span class="repOpen">펼쳐보기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="repFestivalSearch"><label for="repFestSearch">🔎 축제 이름 찾기</label><input id="repFestSearch" type="search" placeholder="예: 김치축제, 장미축제, 여수" oninput="repFestivalSearch(this)" autocomplete="off"><button type="button" onclick="repFestivalClearSearch(this)">지우기</button></div><div class="repViewSwitch" aria-label="축제 표시 방식"><button type="button" class="repViewBtn active" data-rep-view="list" onclick="repFestivalView(this, 'list')">☷ 목록 보기</button><button type="button" class="repViewBtn" data-rep-view="calendar" onclick="repFestivalView(this, 'calendar')">▦ 달력 보기</button></div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="repCalendar" hidden><div class="repCalTop"><button type="button" onclick="repCalendarMove(this,-1)" aria-label="이전 달">‹</button><strong class="repCalTitle"></strong><button type="button" onclick="repCalendarMove(this,1)" aria-label="다음 달">›</button></div><div class="repCalGrid"></div><div class="repCalResults" aria-live="polite"></div><div class="repCalHint">● 일정이 확인된 축제 날짜만 표시합니다. 날짜 미정인 연례축제는 목록 보기에서 확인하세요.</div></div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
+  return { top: "", bottom: `<details class="repFestival repFestHero" id="repFestival" ontoggle="repFestToggle(this)"><summary><i class="repHeroIc" aria-hidden="true">🎪</i><span><em>FESTIVAL CALENDAR</em><b>지역별 축제 달력 보기</b><small>${esc(RNAME())} · ${list.length}개 축제 · 날짜·지역별로 한눈에</small></span><span class="repOpen">달력 열기 ▾</span></summary><div class="repFestivalBody"><p class="repFestivalNotice">지역의 주요 연례축제를 모았어요. 모두 지자체가 공식 ‘대표축제’로 지정한 것은 아니에요. 올해 일정이 확정되지 않았다면 예상 시기로만 안내합니다.</p><div class="repDistricts" aria-label="시군구별 축제 선택">${districtButtons}</div><div class="repFestivalSearch"><label for="repFestSearch">🔎 축제 이름 찾기</label><input id="repFestSearch" type="search" placeholder="예: 김치축제, 장미축제, 여수" oninput="repFestivalSearch(this)" autocomplete="off"><button type="button" onclick="repFestivalClearSearch(this)">지우기</button></div><div class="repViewSwitch" aria-label="축제 표시 방식"><button type="button" class="repViewBtn active" data-rep-view="list" onclick="repFestivalView(this, 'list')">☷ 목록 보기</button><button type="button" class="repViewBtn" data-rep-view="calendar" onclick="repFestivalView(this, 'calendar')">▦ 달력 보기</button></div><div class="grid repFestivalGrid">${list.map(card).join('')}</div><div class="repCalendar" hidden><div class="repCalTop"><button type="button" onclick="repCalendarMove(this,-1)" aria-label="이전 달">‹</button><strong class="repCalTitle"></strong><button type="button" onclick="repCalendarMove(this,1)" aria-label="다음 달">›</button></div><div class="repCalGrid"></div><div class="repCalResults" aria-live="polite"></div><div class="repCalHint">● 일정이 확인된 축제 날짜만 표시합니다. 날짜 미정인 연례축제는 목록 보기에서 확인하세요.</div></div><div class="verify" style="margin-top:12px">올해 개최 일정은 각 축제의 공식 안내에서 확인하세요. 발표된 일정은 기존 행사 목록에서도 볼 수 있어요.</div></div></details>` };
 }
 window.openRepFestivalCalendar = () => {
   const root = document.getElementById('repFestival'); if (!root) return;
@@ -4684,6 +4720,18 @@ window.openRepFestivalCalendar = () => {
     const offset = (header ? header.getBoundingClientRect().height : 0) + 12;
     window.scrollTo({ top: Math.max(0, window.scrollY + root.getBoundingClientRect().top - offset), behavior: 'smooth' });
   });
+};
+/* 폰 기준: 배너를 누르면 달력을 바로 열고, 배너를 화면 맨 위로 올려 달력이 한 화면에 들어오게 */
+const repScrollTo = (el, gap = 8) => {
+  if (!el) return;
+  const header = document.querySelector('header.top');
+  const off = (header && getComputedStyle(header).position !== 'static' ? header.getBoundingClientRect().height : 0) + gap;
+  window.scrollTo({ top: Math.max(0, window.scrollY + el.getBoundingClientRect().top - off), behavior: 'smooth' });
+};
+window.repFestToggle = root => {
+  if (!root.open) return;
+  if (!root.__calInit) { root.__calInit = 1; const b = root.querySelector('[data-rep-view=calendar]'); if (b) repFestivalView(b, 'calendar'); }
+  requestAnimationFrame(() => repScrollTo(root));
 };
 window.repFestivalView = (button, view) => {
   const root = button.closest('.repFestival'); if (!root) return;
@@ -4718,7 +4766,7 @@ function renderRepCalendar(root) {
   const blanks = '<span></span>'.repeat(new Date(year,m,1).getDay());
   const cells = Array.from({length:days},(_,i) => {
     const date = fmt(i+1), has = items.some(x => x.start <= date && date <= x.end);
-    return `<button type="button" class="repCalDay${has?' hasFest':''}${root.__repSelected===date?' selected':''}" onclick="repCalendarSelect(this,'${date}')" aria-label="${date}${has?' 축제 있음':''}">${i+1}${has?'<span class="repCalDot"></span>':''}</button>`;
+    return `<button type="button" class="repCalDay${has?' hasFest':''}${date===t?' today':''}${root.__repSelected===date?' selected':''}" onclick="repCalendarSelect(this,'${date}')" aria-label="${date}${has?' 축제 있음':''}">${i+1}${has?'<span class="repCalDot"></span>':''}</button>`;
   }).join('');
   holder.querySelector('.repCalGrid').innerHTML = week + blanks + cells;
   const selected = root.__repSelected;
@@ -4730,15 +4778,18 @@ function renderRepCalendar(root) {
     const unknown = keyword ? undated : [];
     const resultRows = shown.map(x => `<li>${esc(x.name)} · ${esc(x.district)} · ${esc(x.start)} ~ ${esc(x.end)} <button type="button" onclick="repFestivalJump(this,'${jsq(x.start)}')">날짜 보기 ↗</button>${x.eventId ? ` <button type="button" onclick="detail('${jsq(x.eventId)}')">상세 ↗</button>` : ''}</li>`).join('');
     const unknownRows = unknown.map(x => `<li>${esc(x.name)} · ${esc(x.district)} · ${esc(x.when)} (날짜 미정)</li>`).join('');
-    results.innerHTML = `<b>${keyword ? `‘${esc(keyword)}’ 검색` : `${year}년 ${m+1}월`} · ${shown.length + unknown.length}개 축제</b>` + (shown.length || unknown.length ? `<ul>${resultRows}${unknownRows}</ul>` : `<p>${keyword ? '검색 결과가 없습니다. 축제명 일부 또는 지역명으로 다시 검색해 보세요.' : '이 달에 날짜가 확인된 축제가 없습니다. 다른 달로 이동하거나 목록 보기에서 연례축제를 확인하세요.'}</p>`);
+    results.innerHTML = `<b>${keyword ? `‘${esc(keyword)}’ 검색` : `${year}년 ${m+1}월`} · ${shown.length + unknown.length}개 축제</b>` + (shown.length || unknown.length ? `<ul>${resultRows}${unknownRows}</ul>` : `<p>${keyword ? '검색 결과가 없어요. 축제명 일부 또는 지역명으로 다시 검색해 보세요.' : '이 달에 날짜가 확인된 축제가 없어요. 다른 달로 이동하거나 목록 보기에서 연례축제를 확인하세요.'}</p>`);
     return;
   }
-  results.innerHTML = `<b>${esc(selected)} · ${found.length}개 축제</b>` + (found.length ? '<ul>'+ found.map(x => `<li>${esc(x.name)} · ${esc(x.district)}${x.eventId ? ` <button type="button" onclick="detail('${jsq(x.eventId)}')">행사 상세 ↗</button>` : ''}</li>`).join('')+'</ul>' : '<p>이 날짜에 확인된 대표축제 일정이 없습니다.</p>');
+  results.innerHTML = `<b>${esc(selected)} · ${found.length}개 축제</b>` + (found.length ? '<ul>'+ found.map(x => `<li>${esc(x.name)} · ${esc(x.district)}${x.eventId ? ` <button type="button" onclick="detail('${jsq(x.eventId)}')">행사 상세 ↗</button>` : ''}</li>`).join('')+'</ul>' : '<p>이 날짜에 확인된 대표축제 일정이 없어요.</p>');
 }
 window.repCalendarSelect = (button, date) => {
   const root = button.closest('.repFestival'); if (!root) return;
-  root.__repSelected = date;
+  root.__repSelected = root.__repSelected === date ? null : date; // 한 번 더 누르면 선택 해제
   renderRepCalendar(root);
+  // 폰에서는 달력이 화면을 채워 결과가 아래로 밀리므로, 결과가 안 보이면 살짝 내려줍니다
+  const res = root.querySelector('.repCalResults');
+  if (res && root.__repSelected) requestAnimationFrame(() => { const r = res.getBoundingClientRect(); if (r.top > window.innerHeight - 90) window.scrollBy({ top: r.top - window.innerHeight * 0.45, behavior: 'smooth' }); });
 };
 window.repFestivalSearch = input => {
   const root = input.closest('.repFestival'); if (!root) return;
@@ -4783,7 +4834,7 @@ function renderOpenToday(q) {
 }
 
 /* ───────── 사진 커버 (없으면 종류별 일러스트) ───────── */
-const KIND_ART = { "야구장": ["⚾", "#dcebd9", "#f3f9f2"], "실내경기장": ["🏐", "#e2eff5", "#f4f9fb"], "미술관": ["🖼", "#dbe6fb", "#f3f6fd"], "갤러리": ["🎨", "#fde3d6", "#fdf5f1"], "박물관": ["🏺", "#eadff7", "#f8f4fc"], "기념관": ["🕊", "#f6e3da", "#fcf6f2"], "문학관": ["📖", "#e5efe0", "#f6faf3"], "전시관": ["🎨", "#fbe9d3", "#fdf7ef"], "공연장": ["🎻", "#f3e1e6", "#fcf5f7"], "복합문화공간": ["🏛", "#dce8df", "#f4f8f5"], "스포츠": ["⚽", "#dfeedd", "#f5faf4"], "시청행사": ["🎪", "#f6ecd2", "#fcf8ee"], "역사유적": ["⛩", "#efe6d8", "#faf6ef"], "무등산 트레킹": ["⛰", "#dbeadf", "#f2f8f3"], "전시·컨벤션": ["🏢", "#e6e9ef", "#f6f7fa"], "숙소": ["🛏", "#e9e4f2", "#f7f5fb"], "5·18 사적지": ["🕯", "#f3e3e0", "#fbf5f4"], "공원·정원": ["🌳", "#dcebd9", "#f3f9f2"], "동물원·테마파크": ["🦁", "#f7ead0", "#fcf7ec"], "근대문화유산": ["⛪", "#f2e2d6", "#fbf5ef"], "양림 카페": ["☕", "#efe3d3", "#fbf6ef"], "골목·시장": ["🏮", "#fde3c4", "#fdf4e6"], "워터파크": ["🌊", "#d8eefa", "#f0f8fd"], "자연·경관": ["🏞", "#dcebd9", "#f3f9f2"], "체험": ["🧺", "#fbe9d3", "#fdf7ef"], "볼거리": ["📸", "#e6e9ef", "#f6f7fa"], "레포츠": ["🚣", "#d8eefa", "#f0f8fd"], "과학관": ["🔭", "#dbe7f5", "#f2f6fb"] };
+const KIND_ART = { "야구장": ["⚾", "#dcebd9", "#f3f9f2"], "실내경기장": ["🏐", "#e2eff5", "#f4f9fb"], "미술관": ["🎨", "#dbe6fb", "#f3f6fd"], "갤러리": ["🎨", "#fde3d6", "#fdf5f1"], "박물관": ["🏺", "#eadff7", "#f8f4fc"], "기념관": ["🕊", "#f6e3da", "#fcf6f2"], "문학관": ["📖", "#e5efe0", "#f6faf3"], "전시관": ["🎨", "#fbe9d3", "#fdf7ef"], "공연장": ["🎻", "#f3e1e6", "#fcf5f7"], "복합문화공간": ["🏛", "#dce8df", "#f4f8f5"], "스포츠": ["⚽", "#dfeedd", "#f5faf4"], "시청행사": ["🎪", "#f6ecd2", "#fcf8ee"], "역사유적": ["⛩", "#efe6d8", "#faf6ef"], "무등산 트레킹": ["⛰", "#dbeadf", "#f2f8f3"], "전시·컨벤션": ["🏢", "#e6e9ef", "#f6f7fa"], "숙소": ["🛏", "#e9e4f2", "#f7f5fb"], "5·18 사적지": ["🕯", "#f3e3e0", "#fbf5f4"], "공원·정원": ["🌳", "#dcebd9", "#f3f9f2"], "동물원·테마파크": ["🦁", "#f7ead0", "#fcf7ec"], "근대문화유산": ["⛪", "#f2e2d6", "#fbf5ef"], "양림 카페": ["☕", "#efe3d3", "#fbf6ef"], "골목·시장": ["🏮", "#fde3c4", "#fdf4e6"], "워터파크": ["🌊", "#d8eefa", "#f0f8fd"], "자연·경관": ["🏞", "#dcebd9", "#f3f9f2"], "체험": ["🧺", "#fbe9d3", "#fdf7ef"], "볼거리": ["📸", "#e6e9ef", "#f6f7fa"], "레포츠": ["🚣", "#d8eefa", "#f0f8fd"], "과학관": ["🔭", "#dbe7f5", "#f2f6fb"] };
 const FOOD_ART = [["떡갈비", "🥩"], ["한우", "🥩"], ["곱창", "🥩"], ["족발", "🍖"], ["흑염소", "🍲"], ["오리탕", "🍲"], ["국밥", "🍲"], ["보리밥", "🍚"], ["돌솥밥", "🍚"], ["백반", "🍚"], ["한정식", "🍱"], ["초밥", "🍣"], ["회", "🐟"], ["생선", "🐟"], ["낙지", "🐙"], ["꽃게", "🦀"], ["해물", "🦐"], ["칼국수", "🍜"], ["콩국수", "🍜"], ["콩물", "🥛"], ["두부", "🥢"], ["녹두", "🥞"], ["육전", "🥞"], ["태국", "🍜"], ["시장", "🏮"]];
 /* 스포츠 장소는 종목에 맞는 그림으로 (야구장에 축구공이 나오지 않게) */
 function artKind(item, kind) {
@@ -4894,7 +4945,7 @@ const KIDS_SUBS = [
   ["동물원·놀이공원", "🦁", v => v.kind === "동물원·테마파크"],
   ["물놀이", "🌊", v => v.kind === "워터파크"],
   ["공원·숲", "🌳", v => /공원·정원|자연·경관/.test(v.kind || "")],
-  ["미술관·박물관", "🖼", v => /미술관|박물관|전시관|복합문화공간/.test(v.kind || "")],
+  ["미술관·박물관", "🎨", v => /미술관|박물관|전시관|복합문화공간/.test(v.kind || "")],
 ];
 // 아이와 탭에 들어가는 장소
 function isKidsPlace(v) { return v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v) }
@@ -4903,7 +4954,7 @@ const PLACE_GROUPS = [
   ["전체", "✦", () => true],
   ["양림동", "⛪", v => /양림|사직/.test(v.address + v.name) || /근대문화유산|양림 카페/.test(v.kind)],
   ["시장·골목", "🏮", v => v.kind === "골목·시장"],
-  ["미술관·갤러리", "🖼", v => /미술관|갤러리/.test(v.kind)],
+  ["미술관·갤러리", "🎨", v => /미술관|갤러리/.test(v.kind)],
   ["박물관", "🏺", v => /박물관|기념관|문학관|과학관/.test(v.kind)],
   ["도서관", "📚", v => false],      // 도서관은 장소 목록이 아니라 '동네 도서관' 자료(LIBS)를 보여 줌
   ["공연장", "🎻", v => v.kind === "공연장"],
@@ -5002,7 +5053,7 @@ window.showKids = (sub = "전체") => { KIDS_SUB = sub; KIDS_IO = "전체"; KIDS
 // 아이와 행사는 '아이와' 화면 한 곳에서 모두 보여 준다 (일정 화면의 '아이와' 칸은 합쳐서 없앰)
 window.kidsEventsAll = () => { showKids("전체"); setTimeout(() => document.getElementById("kidsEvents")?.scrollIntoView({ behavior: "smooth", block: "start" }), 350) };
 
-/* ───────── 🖼 전시장 · 🏺 박물관 탭 (장소는 하루 두 번 자동 발굴, 전시는 자동 수집돼 붙어요) ───────── */
+/* ───────── 🎨 전시장 · 🏺 박물관 탭 (장소는 하루 두 번 자동 발굴, 전시는 자동 수집돼 붙어요) ───────── */
 const isGallery = v => /미술관|갤러리|전시관/.test(v.kind) || /갤러리|아트폴리곤/.test(v.name) || v.id === "acc";
 const isMuseum = v => /박물관|기념관|과학관|문학관/.test(v.kind) || /박물관|기념관|기록관/.test(v.name);
 const nowAt = (v, t = todayISO()) => eventsAt(v).filter(e => (!e.start || e.start <= t) && (!e.end || e.end >= t));
@@ -5011,7 +5062,7 @@ const VT_GROUPS = {
   galleries: [
     ["전체", "✦", () => true],
     ["지금 전시 중", "🟢", v => nowAt(v).some(e => e.category === "전시")],
-    ["미술관", "🖼", v => v.kind === "미술관"],
+    ["미술관", "🎨", v => v.kind === "미술관"],
     ["갤러리", "🎨", v => v.kind === "갤러리" || /갤러리/.test(v.name)],
     ["전시관·복합", "🏛", v => /전시관|복합문화공간/.test(v.kind)],
     ["대학·백화점", "🎓", v => /대학|교대|신세계|롯데|현대백화점/.test(v.name)],
@@ -5044,8 +5095,8 @@ function renderVenueTab(tab) {
   const autoN = pool.filter(v => v.origin === "auto").length;
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">${gal ? "GALLERIES" : "MUSEUMS"}</span><h2>${gal ? "어디서 전시 볼랑가?" : "박물관 가볼랑가?"}<small>${REGION !== "gj" ? (gal ? `${esc(RNAME())} 미술관·전시관 — 지금 걸린 전시가 자동으로 붙어요` : `${esc(RNAME())} 박물관·과학관·기념관`) : gal ? "시립미술관부터 대학 미술관·백화점 갤러리·골목 갤러리까지 — 지금 걸린 전시가 자동으로 붙어요" : "국립·시립 박물관부터 대학 박물관·기념관·작은 박물관까지"}</small></h2></div><span>${pool.length}곳</span></div>
   <h3 class="sub">${gal ? "지금 볼 수 있는 전시" : "지금 하는 특별전·행사"} ${shows.length}${soon.length ? ` <small style="font-weight:500;color:var(--muted)">· 3주 안에 시작 ${soon.length}</small>` : ""}</h3>
-  ${shows.length ? `<div class="nowGrid">${shows.slice(0, 16).map(e => nowRow(e, happensOn(e, t) || {}, t)).join("")}</div>` : `<div class="nowEmpty">${gal ? "🖼 앱에 등록된 진행 중 전시가 아직 없어요." : "🏺 지금 등록된 특별전·행사가 없어요. 상설전시는 아래 박물관에서 언제든 볼 수 있어요."} 하루 두 번(09시·18시) 자동으로 새 소식을 찾아 붙여요.</div>`}
-  ${soon.length ? `<div class="nowMore"><span>곧 시작해요</span>${soon.slice(0, 8).map(e => `<button onclick="detail('${jsq(e.id)}')">${gal ? "🖼" : "🏺"} ${esc(e.title)} · ${esc(e.start.slice(5).replace("-", "."))}~</button>`).join("")}</div>` : ""}
+  ${shows.length ? `<div class="nowGrid">${shows.slice(0, 16).map(e => nowRow(e, happensOn(e, t) || {}, t)).join("")}</div>` : `<div class="nowEmpty">${gal ? "🎨 앱에 등록된 진행 중 전시가 아직 없어요." : "🏺 지금 등록된 특별전·행사가 없어요. 상설전시는 아래 박물관에서 언제든 볼 수 있어요."} 하루 두 번(09시·18시) 자동으로 새 소식을 찾아 붙여요.</div>`}
+  ${soon.length ? `<div class="nowMore"><span>곧 시작해요</span>${soon.slice(0, 8).map(e => `<button onclick="detail('${jsq(e.id)}')">${gal ? "🎨" : "🏺"} ${esc(e.title)} · ${esc(e.start.slice(5).replace("-", "."))}~</button>`).join("")}</div>` : ""}
   <div class="groupGrid" style="margin-top:18px">${groups.filter(gg => gg[0] === "전체" || gg[0] === st.group || cnt(gg)).map(gg => `<button class="${gg[0] === st.group ? "active" : ""}" onclick="setVT('${tab}','group','${gg[0]}')"><span>${gg[1]}</span>${gg[0]}<small>${cnt(gg)}</small></button>`).join("")}</div>
   <div class="filterBar">
     <select aria-label="구 선택" onchange="setVT('${tab}','gu',this.value)">${DIST_OPTS().map(x => `<option ${x === st.gu ? "selected" : ""} value="${x}">${distLabel(x)}</option>`).join("")}</select>
@@ -5154,7 +5205,7 @@ window.applyPopFilter=()=>{
  });
  const holder=box.querySelector("#popResults"),count=box.querySelector("#popResultsCount");
  if(count)count.textContent=`조건에 맞는 공연 ${arr.length}건 / 전체 ${EVENTS.filter(e=>isPopShow(e)&&(!e.end||e.end>=t)).length}건`;
- if(holder)holder.innerHTML=arr.length?arr.map(window.popConcertRow).join(""):`<div class="popEmpty">조건에 맞는 등록 공연이 없습니다.<br>가수 이름이나 지역을 바꿔보세요. 새로운 공연은 정보가 등록된 후 표시됩니다.</div>`;
+ if(holder)holder.innerHTML=arr.length?arr.map(window.popConcertRow).join(""):`<div class="popEmpty">조건에 맞는 등록 공연이 없어요.<br>가수 이름이나 지역을 바꿔보세요. 새로운 공연은 정보가 등록된 후 표시됩니다.</div>`;
 };
 window.popSearchExample=(word)=>{const input=document.getElementById("popKeyword");if(input){input.value=word;applyPopFilter();}};
 function renderPopShows(){
@@ -5241,7 +5292,7 @@ function renderArtistFollows(){
  const list=EVENTS.filter(e=>isPopShow(e)&&names.some(n=>artistMatchesEvent(e,n))&&(!e.end||e.end>=todayISO())).sort(popSort);
  let updates=[];try{updates=JSON.parse(localStorage.getItem('glm_artist_updates_v1')||'[]')}catch{}
  const updateNote=updates.length?`<article style="background:#fff0dc"><b>🔔 관심 가수 새 공연·예매 변경 ${updates.length}건</b><small>${updates.map(x=>esc(x.title)).join(' · ')}</small><button type="button" onclick="localStorage.removeItem('glm_artist_updates_v1');renderArtistFollows()">확인했어요</button></article>`:'';
- matches.innerHTML=updateNote+(list.length?`<b>🎤 관심 가수 공연 ${list.length}건</b>`+list.slice(0,12).map(e=>`<article><b>${esc(e.title)}</b><small>${esc(e.district||'')} · ${esc(e.start||'일정 확인')} · ${esc(ticketOf(e).status||'예매정보 확인')}</small><button type="button" onclick="detail('${jsq(e.id)}')">상세 보기</button></article>`).join(''):names.length?'<span>현재 등록된 관심 가수 공연이 없습니다. 새 공연 데이터가 수집되면 여기 표시됩니다.</span>':'');
+ matches.innerHTML=updateNote+(list.length?`<b>🎤 관심 가수 공연 ${list.length}건</b>`+list.slice(0,12).map(e=>`<article><b>${esc(e.title)}</b><small>${esc(e.district||'')} · ${esc(e.start||'일정 확인')} · ${esc(ticketOf(e).status||'예매정보 확인')}</small><button type="button" onclick="detail('${jsq(e.id)}')">상세 보기</button></article>`).join(''):names.length?'<span>현재 등록된 관심 가수 공연이 없어요. 새 공연 데이터가 수집되면 여기 표시됩니다.</span>':'');
 }
 function checkPopNotifications(force=false){
  const names=savedArtists();if(!names.length)return;
@@ -5274,7 +5325,7 @@ function renderFood() {
   <div class="mi7">${MI7.map(([e, n, d, q]) => `<button onclick="mi7('${q}')"><em>${e}</em><b>${n}</b><small>${d}</small></button>`).join("")}</div>` : `<div class="nowEmpty">🍲 ${esc(RNAME())} 맛집 자료가 아직 들어오지 않았어요. 그동안은 <a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(REGIONS[REGION].hub + " 맛집")}">${esc(REGIONS[REGION].hub)} 맛집 지도에서 보기 ↗</a></div>`}
   <div class="foodIntro${REGION === "gj" ? "" : " hidden"}">광주광역시가 시민·업계 추천 217곳 중 <b>전문가 평가 + 시민 5,526명 온라인 평가</b>로 고른 <b>'2025 광주맛집' 50곳</b>과, 떡갈비·오리탕·보리밥 음식거리입니다.</div>
   <div class="subchips">${gus.map(g => `<button class="${g === FOOD_GU ? "active" : ""}" onclick="setFoodGu('${g}')">${g}</button>`).join("")}</div>
-  ${paged("renderFood", list, foodCard, "<p class='empty'>조건에 맞는 맛집이 없습니다.</p>")}
+  ${paged("renderFood", list, foodCard, "<p class='empty'>조건에 맞는 맛집이 없어요. 위 조건을 하나 풀어보세요.</p>")}
   <div class="verify" style="margin-top:12px">대표 메뉴는 상호에 드러난 경우만 표시했어요. 메뉴·영업시간·휴무는 '메뉴·영업시간' 버튼으로 최신 정보를 확인하세요. 출처: 광주광역시 2025 광주맛집 발표(2025.3), 한국관광공사 관광정보.<br><b>이렇게 골랐어요</b> · 시가 선정한 맛집과 관광공사에 등록된 음식점만 담고, 별점·리뷰로 순위를 매기지 않아요. 잘못된 정보나 빼야 할 가게는 카드의 ⚠ 정보 수정으로 알려주세요.</div>`;
 }
 window.setFoodGu = g => { FOOD_GU = g; renderFood() };
@@ -5783,7 +5834,7 @@ function initMap() {
     activeTiles.on("tileerror",()=>{
       tileErrors++;
       if(tileErrors>=3 && providerIndex===0){useMapTiles(1,true)}
-      else if(tileErrors>=3 && providerIndex===1){statusEl.textContent="지도 배경을 불러올 수 없습니다. 인터넷 연결을 확인하거나 배경 바꾸기를 눌러주세요."}
+      else if(tileErrors>=3 && providerIndex===1){statusEl.textContent="지도 배경을 불러올 수 없어요. 인터넷 연결을 확인하거나 배경 바꾸기를 눌러주세요."}
     });
   }
   switchEl.onclick=()=>useMapTiles((providerIndex+1)%providers.length);
@@ -5802,7 +5853,7 @@ function drawLayer(k) {
   const g = MAP_LAYERS[k]; g.clearLayers();
   pointsFor(k).forEach(p => {
     if (!p.c) return;
-    const ic = { events: "📅", venues: ({ "미술관": "🖼", "갤러리": "🎨", "기념관": "🕊", "박물관": "🏺", "과학관": "🔭", "공연장": "🎻", "5·18 사적지": "🕯", "공원·정원": "🌳", "무등산 트레킹": "⛰", "동물원·테마파크": "🦁", "스포츠": "⚾", "역사유적": "⛩", "근대문화유산": "⛪", "양림 카페": "☕", "골목·시장": "🏮", "워터파크": "🌊", "자연·경관": "🏞", "체험": "🧺", "볼거리": "📸", "레포츠": "🚣" })[p.x.kind] || "🏛", food: "🍲", cafes: "🐶", cinemas: "🎬", stays: "🛏" }[k];
+    const ic = { events: "📅", venues: ({ "미술관": "🎨", "갤러리": "🎨", "기념관": "🕊", "박물관": "🏺", "과학관": "🔭", "공연장": "🎻", "5·18 사적지": "🕯", "공원·정원": "🌳", "무등산 트레킹": "⛰", "동물원·테마파크": "🦁", "스포츠": "⚾", "역사유적": "⛩", "근대문화유산": "⛪", "양림 카페": "☕", "골목·시장": "🏮", "워터파크": "🌊", "자연·경관": "🏞", "체험": "🧺", "볼거리": "📸", "레포츠": "🚣" })[p.x.kind] || "🏛", food: "🍲", cafes: "🐶", cinemas: "🎬", stays: "🛏" }[k];
     const m = L.marker([p.c.lat, p.c.lng], { icon: L.divIcon({ className: "", html: `<div class="pin" style="--c:${LAYER_DEF[k].color}">${ic}</div>`, iconSize: [34, 34], iconAnchor: [17, 17], popupAnchor: [0, -16] }), title: p.name }).bindPopup(popupHtml(k, p.x) + approxNote(p.x), { maxWidth: 260 });
     m.addTo(g); MARKERS[`${k}:${p.x.id || p.name}`] = m;
   });
@@ -5871,6 +5922,7 @@ let CUR_TAB = "home";   // home = 첫 화면(결정), 나머지는 각 탭 화�
 /* 첫 화면 순서 (행사·일정 앱이니 '오늘 열리는 것'이 먼저)
    ① 나에게 온 소식 → ② 오늘 열리는 것 → ③ 놓치면 끝나요 → ④ 이번 주말 추천 → ⑤ 지금 바로 갈 곳
    → ⑥ 오늘 뭐하지?(조건 추천) → ⑦ 글로 물어보기 → ⑧ 오늘 브리핑 → ⑨ 테마 → ⑩ 문화가 있는 날 → ⑪ 날씨 → ⑫ 하루 코스
+   ※ 오늘 브리핑·테마는 다른 칸과 겹쳐 숨김(CSS). 이번 주말 추천은 평일엔 단독 칸, 토·일엔 '이번 주말' 탭 안에만.
    홈에만 있는 칸에는 homeOnly 표시를 붙여, 다른 탭 화면에서는 숨긴다. */
 function arrangeHome() {
   const main = document.querySelector("main"), stop = document.getElementById("searchView");
@@ -5997,7 +6049,7 @@ const APP_FEATURES = [
   ["📅 전체 일정", "행사·전시·공연 일정 모아 보기", "일정 행사 축제 이번주 주말", () => { clearSearch(); showTab("events") }],
   ["🎼 공연장", "공연장별 공연 보기", "공연장 공연 연극 뮤지컬 클래식", () => { clearSearch(); showTab("stages") }],
   ["🎤 대중공연", "가수·콘서트 찾기", "대중공연 콘서트 가수 팬미팅 티켓", () => { clearSearch(); showTab("popshows") }],
-  ["🖼 전시장", "미술관·갤러리 전시", "전시장 전시 미술관 갤러리", () => { clearSearch(); showTab("galleries") }],
+  ["🎨 전시장", "미술관·갤러리 전시", "전시장 전시 미술관 갤러리", () => { clearSearch(); showTab("galleries") }],
   ["🏛 박물관", "박물관 모아 보기", "박물관 역사", () => { clearSearch(); showTab("museums") }],
   ["🧸 아이와", "아이와 갈 곳·볼 행사·과학 체험", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
   ["🌳 나들이·가볼 곳", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
@@ -6254,7 +6306,7 @@ function aiPlaceCard(v, w) {
   const open = w ? openOn(v, w.days[0]) : openToday(v), now = eventsAt(v).filter(e => activeIn(e, w || whenOf("")));
   return `<article class="aiCard">${v.image ? `<div class="acPic"><div class="ph"${bg(v.image)}></div></div>` : ""}
   <div class="acBody"><div class="acTags"><span>${esc(v.kind)}</span><span>${esc(v.district)}</span>${open === true ? `<span class="on">문 열어요</span>` : open === false ? `<span class="hot">휴관</span>` : ""}${/무료/.test(v.price || "") ? `<span class="free">무료</span>` : ""}</div>
-  <b>${esc(v.name)}</b>${now.length ? `<small>🖼 지금: ${esc(now[0].title)} (${esc(now[0].date)})</small>` : (permanentInfo(v)?.has ? `<small>${permanentInfo(v).has === true ? "🏛" : "🎨"} ${esc(permanentInfo(v).text)}</small>` : "")}<small>${esc(v.desc || v.note || "")}</small>
+  <b>${esc(v.name)}</b>${now.length ? `<small>🎨 지금: ${esc(now[0].title)} (${esc(now[0].date)})</small>` : (permanentInfo(v)?.has ? `<small>${permanentInfo(v).has === true ? "🏛" : "🎨"} ${esc(permanentInfo(v).text)}</small>` : "")}<small>${esc(v.desc || v.note || "")}</small>
   ${v.hours ? `<small>🕘 ${esc(v.hours)}${v.closed ? " · 휴관 " + esc(v.closed) : ""}</small>` : ""}${v.kids ? `<small>👶 ${esc(v.kids)}</small>` : ""}${visitLine(v)}${parkLine(v)}
   <div class="acBtns"><button onclick="aiProfile('${jsq(v.id)}')">자세히</button><button onclick="showOnMap('venue','${jsq(v.id)}')">지도</button></div></div></article>`;
 }
@@ -7060,7 +7112,7 @@ function decisionPlaceType(p){
   if(!p) return "장소";
   const x=p.x||{};
   if(p.kind==='event'){
-    const icon=({전시:'🖼',음악:'🎵',공연:'🎭',축제:'🎪',스포츠:'⚾'})[x.category]||'📅';
+    const icon=({전시:'🎨',음악:'🎵',공연:'🎭',축제:'🎪',스포츠:'⚾'})[x.category]||'📅';
     return `${icon} ${x.category||'일정'}${x.subtype&&x.subtype!==x.category?' · '+x.subtype:''}`;
   }
   if(p.kind==='cafe') return BAKERIES.includes(x) ? '🥐 빵집' : x.pet ? '🐶 반려견 동반 카페' : '☕ 카페';
@@ -7070,7 +7122,7 @@ function decisionPlaceType(p){
   if(p.kind==='cinema') return '🎬 영화관';
   if(p.kind==='venue'){
     const txt=[x.kind,(x.tags||[]).join(' '),x.name].filter(Boolean).join(' ');
-    if(/미술관|갤러리|전시/.test(txt)) return '🖼 미술관·전시장';
+    if(/미술관|갤러리|전시/.test(txt)) return '🎨 미술관·전시장';
     if(/박물관|기념관|과학관/.test(txt)) return '🏺 박물관·문화시설';
     if(/공원|정원|산|숲|산책/.test(txt)) return '🌿 자연·산책';
     if(/시장/.test(txt)) return '🏮 시장';
@@ -7608,14 +7660,14 @@ function weekendPicks() {
   const slots = [
     ["🎪 축제·행사", ev.filter(e => /축제|행사/.test(e.category) && e.subtype !== "교육·체험")],
     ["🎵 공연·음악", ev.filter(e => /공연|음악|스포츠/.test(e.category))],
-    ["🖼 전시", ev.filter(e => e.category === "전시")],
+    ["🎨 전시", ev.filter(e => e.category === "전시")],
     ["✍️ 체험·배움", ev.filter(e => e.subtype === "교육·체험" || (e.tags || []).includes("체험"))],
     ["🌳 바깥 나들이", VENUES.filter(v => /공원|정원|자연|경관|트레킹|골목|시장/.test(v.kind || "") && days.some(d => openOn(v, isoDow(d)) !== false))],
   ];
   const used = new Set(), out = [];
   for (const [label, arr] of slots) { const x = best(arr.filter(a => !used.has(a.id || a.name)))[0]; if (x) { used.add(x.id || x.name); out.push([label, x]) } }
   // 빈 칸은 남은 일정에서 채움
-  for (const x of best(ev.filter(a => !used.has(a.id)), 5)) { if (out.length >= 5) break; used.add(x.id); out.push([x.category === "전시" ? "🖼 전시" : "✨ 이번 주말", x]) }
+  for (const x of best(ev.filter(a => !used.has(a.id)), 5)) { if (out.length >= 5) break; used.add(x.id); out.push([x.category === "전시" ? "🎨 전시" : "✨ 이번 주말", x]) }
   return { days, picks: out.slice(0, 5) };
 }
 function renderWeekend() {
@@ -7886,7 +7938,7 @@ initNav();
   const feeFor=x=>{const t=[x.price,x.fee,x.ticket&&x.ticket.note].filter(Boolean).join(' ');const seats=[...t.matchAll(/[A-Z가-힣]{1,4}석\s*[:·]?\s*(\d{1,3}(?:,\d{3})+|\d{3,6})\s*원/g)].map(m=>+m[1].replace(/,/g,''));return seats.length?Math.min(...seats):decFeeOf(x)};
   const dish=['떡갈비','한정식','보리밥','국밥','육전','오리탕','초밥','낙지','게장','칼국수','회','빵'].find(w=>sentence.includes(w));
   let categories=groups.filter(g=>g[1].test(sentence)).map(g=>g[0]);if(!categories.length)categories=['museum','exhibition','park'];
-  const names={museum:'🏺 박물관·문화시설',exhibition:'🖼 전시',performance:'🎭 공연',food:'🍲 맛집',cafe:'☕ 카페',park:'🌳 산책·공원'};
+  const names={museum:'🏺 박물관·문화시설',exhibition:'🎨 전시',performance:'🎭 공연',food:'🍲 맛집',cafe:'☕ 카페',park:'🌳 산책·공원'};
   const sources=[['venue',ALL.VENUES],['event',ALL.EVENTS],['food',ALL.FOOD],['cafe',ALL.CAFES]];
   const destArea=(picked==='auto'||regionFrom(dst)===r)?dst:'';
   let body=`<div class="detailResultNote"><b>📍 ${esc(origin||'출발지 미입력')} → ${esc(destArea||REGIONS[r].name)}</b> · ${esc(timeLabel)} · ${esc(move)}${budget!==null?' · 예산 '+esc(budgetLabel)+(budget?' (입장료 1인)':''):''}${dish?' · 음식 '+esc(dish):''}<br>방문권역 안의 등록된 장소를 검색했습니다. 출발지와 목적지는 별도로 처리하며, 이동시간·실시간 영업 여부는 지도 및 공식 안내에서 최종 확인해 주세요.</div>`;
@@ -7932,7 +7984,7 @@ initNav();
    { const fresh=arr.filter(o=>!shown.has(o.x)); if(fresh.length)arr=fresh;
    }
    body+=`<div class="detailResultHead">${names[cat]}${bundle&&lastStop&&(cat==='food'||cat==='cafe')?` <small style="font-weight:600">· ${esc(lastStop.name)} 근처</small>`:''}</div>`;
-   if(!arr.length){body+=`<div class="detailResultCard"><small>${budget!==null&&cat!=='food'&&cat!=='cafe'?`예산(${esc(budgetLabel)})에 맞는 곳을 찾지 못했어요. `:''}${isToday?'지금 조건(출발 시각·이동시간·마감 시각)으로 제대로 둘러볼 수 있는 곳이 없어요. 시간이나 지역을 바꿔 보세요.':'해당 조건에 등록된 장소가 없습니다. 다른 지역이나 조건으로 검색해 보세요.'}</small></div>`;continue}
+   if(!arr.length){body+=`<div class="detailResultCard"><small>${budget!==null&&cat!=='food'&&cat!=='cafe'?`예산(${esc(budgetLabel)})에 맞는 곳을 찾지 못했어요. `:''}${isToday?'지금 조건(출발 시각·이동시간·마감 시각)으로 제대로 둘러볼 수 있는 곳이 없어요. 시간이나 지역을 바꿔 보세요.':'해당 조건에 등록된 장소가 없어요. 다른 지역이나 조건으로 검색해 보세요.'}</small></div>`;continue}
    const feeNote=o=>budget===null||!('fee' in o)?'':o.fee==null?' · 💳 요금 확인 필요 (예산 미확인)':o.fee===0?' · 💳 무료':` · 💳 ${o.fee.toLocaleString('ko-KR')}원 (예산 안)`;
    arr.slice(0,3).forEach(o=>{shown.add(o.x);const n=o.fit?(o.fit.note+(o.fit.unsure&&!/확인/.test(o.fit.note)?' · 가기 전 확인':'')):'';body+=card(o.x,(n+feeNote(o)).replace(/^ · /,''));total++});
    if(isToday&&!lastStop&&cat!=='food'&&cat!=='cafe'&&arr[0])lastStop={x:arr[0].x,leave:arr[0].fit.leave,name:arr[0].x.title||arr[0].x.name};
@@ -8193,14 +8245,14 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 @media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 36px))}}
 </style>
 <aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
- <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="빠른 메뉴 펼치기">빠른 메뉴</button>
+ <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="더 보기 메뉴 펼치기">더 보기</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-rightjump="today">📅 오늘 뭐하지</button>
-  
+  <button type="button" data-rightjump="kids">👶 아이와</button>
   <button type="button" data-rightjump="weather">🌤 날씨</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="markets">🛒 시장</button>
   <button type="button" data-rightjump="local">📚 동네도서관</button>
+  <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
 <script id="rightQuickScript">
@@ -8211,8 +8263,8 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
  // 오른쪽 메뉴: 조작 후 약 3초면 펼친 메뉴도 닫히고 손잡이도 현재처럼 숨김
  function hideRail(){clearTimeout(tabTimer);if(rail.classList.contains('isCollapsed'))rail.classList.add('rqHidden')}
  function showRail(ms){rail.classList.remove('rqHidden');clearTimeout(tabTimer);tabTimer=setTimeout(hideRail,ms||3000)}
- function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','빠른 메뉴 펼치기');clearTimeout(timeout);clearTimeout(tabTimer);rail.classList.add('rqHidden')}
- function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','빠른 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,3000)}
+ function close(){rail.classList.add('isCollapsed');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','더 보기 메뉴 펼치기');clearTimeout(timeout);clearTimeout(tabTimer);rail.classList.add('rqHidden')}
+ function open(){rail.classList.remove('isCollapsed','rqHidden');clearTimeout(tabTimer);toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-label','더 보기 메뉴 접기');clearTimeout(timeout);timeout=setTimeout(close,3000)}
  showRail(3000);   // 처음 열 때 3초 보여 줘서 있다는 걸 알림
  let touchAt=0;document.addEventListener('pointerdown',e=>{touchAt=Date.now();if(!rail.contains(e.target)&&rail.classList.contains('isCollapsed')&&e.clientX>innerWidth-70)showRail()},true);   // 화면 오른쪽 끝을 만질 때만 손잡이를 꺼냄 (아무 데나 누를 때마다 나와서 카드를 덮지 않게)
  let lastY=scrollY;addEventListener('scroll',()=>{const d=scrollY-lastY;if(d<-10)showRail();else if(d>6&&Date.now()-touchAt>800)hideRail();lastY=scrollY},{passive:true});
@@ -9409,7 +9461,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     ["food", /맛집|음식|식사|밥|먹|떡갈비|한정식|보리밥|국밥|육전|오리탕|초밥|낙지|게장|칼국수|횟집|짜장|중깐|꼬막/, "🍲 맛집"],
     ["cafe", /카페|커피|디저트|빵집|베이커리/, "☕ 카페"],
     ["museum", /박물관|역사관|기념관|과학관|문학관/, "🏺 박물관"],
-    ["exhibition", /전시|갤러리|미술관|미술|그림|사진전/, "🖼 전시"],
+    ["exhibition", /전시|갤러리|미술관|미술|그림|사진전/, "🎨 전시"],
     ["performance", /공연|콘서트|연극|음악회|뮤지컬|클래식|국악/, "🎭 공연"],
     ["festival", /축제|행사/, "🎪 축제·행사"],
     ["sports", /야구|축구|배구|농구|경기\s*보/, "⚾ 경기"],
@@ -10227,6 +10279,247 @@ html body .rightQuick:not(.isCollapsed) .rightQuickToggle {
  }
  html body #quickDockV3::before,
  html body #quickDockV3::after{content:none!important;display:none!important}
+}
+</style>
+<style id="tidy-1025">
+/* ── 일정 필터칩: 글자가 두 줄로 깨지지 않게 정리 (긴 칩 2개는 두 칸 차지) ── */
+#chips button{white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis}
+#chips button.hidden{display:none!important}
+@media(max-width:759px){
+  #chips{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #chips button{display:flex;align-items:center;justify-content:center;padding:0 4px!important;font-size:11.5px!important}
+  #chips .chipWide{grid-column:span 2}
+  #chips:has([data-filter="김대중컨벤션센터"].hidden) [data-filter="관람가능"]{grid-column:1 / -1}
+}
+
+/* ── 지역별 축제 달력: 일정 목록 맨 위의 눈에 띄는 배너 ── */
+.repFestival.repFestHero{margin:2px 0 22px;border:0;border-radius:20px;background:linear-gradient(135deg,#ff8a3d 0%,#f5a524 55%,#ffcf5c 100%);box-shadow:0 10px 26px rgba(214,110,20,.28);color:#2f1a02}
+.repFestHero>summary{padding:15px 16px!important;gap:12px!important;justify-content:flex-start!important}
+.repFestHero .repHeroIc{flex:0 0 auto;width:50px;height:50px;border-radius:15px;background:rgba(255,255,255,.92);display:grid;place-items:center;font-style:normal;font-size:27px;box-shadow:0 3px 10px rgba(120,60,0,.18)}
+.repFestHero>summary span:nth-child(2){display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.repFestHero>summary em{font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.14em;color:#7a3a00;opacity:.85}
+.repFestHero>summary b{font-size:18px!important;font-weight:900;color:#2a1600;line-height:1.25}
+.repFestHero>summary small{color:#5a3305!important;font-size:12px!important;font-weight:650}
+.repFestHero .repOpen{flex:0 0 auto;background:#2a1600;color:#fff;border-radius:999px;padding:9px 13px;font-size:13px;font-weight:800;white-space:nowrap}
+.repFestHero[open] .repOpen{font-size:0;padding:9px 13px}
+.repFestHero[open] .repOpen:after{font-size:13px}
+.repFestHero .repFestivalBody{background:var(--card,#fff);color:var(--ink,#16261f);margin:0 6px 6px;border-radius:15px;padding:14px 12px 16px}
+.repFestHero .repFestivalSearch{flex-wrap:nowrap}.repFestHero .repFestivalSearch input{font-size:16px!important;min-height:44px}.repFestHero .repFestivalSearch button{min-height:44px;white-space:nowrap}
+.repFestHero .repViewBtn{flex:1}.repFestHero .repCalTop button{min-width:42px;min-height:40px}
+.repFestHero .repCalDay{min-height:44px;font-size:14px}
+.repFestHero .repFestivalNotice{font-size:12px!important;line-height:1.5!important;margin:0 0 10px!important}
+.repFestHero .repDistricts{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:6px;padding-bottom:2px}.repFestHero .repDistricts::-webkit-scrollbar{display:none}.repFestHero .repDistrictBtn{flex:0 0 auto}
+.repFestHero .repCalDay.today{color:#c2410c;font-weight:900;box-shadow:inset 0 0 0 1.5px #f5a524}
+.repFestHero .repCalResults ul{list-style:none;padding:0;margin:8px 0 0}
+.repFestHero .repCalResults li{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 11px;margin:6px 0;border:1px solid var(--line);border-radius:12px;line-height:1.45}
+.repFestHero .repCalResults li button{margin:0;min-height:36px;padding:6px 11px;border-radius:999px;font-weight:700}.repFestHero .repFestivalSearch label{display:none}.repFestHero .repFestivalSearch input{min-width:0}
+@media(max-width:380px){.repFestHero .repHeroIc{width:42px;height:42px;font-size:22px}.repFestHero>summary b{font-size:16px!important}.repFestHero .repOpen{padding:8px 10px;font-size:12px}}
+:root[data-theme="dark"] .repFestHero .repFestivalBody{background:#1b1b1b;color:#eee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .repFestHero .repFestivalBody{background:#1b1b1b;color:#eee}}
+
+/* ── 오늘 날씨 작은 정보 6칸: 같은 크기 타일 3×2 (넓은 화면 6×1) ── */
+.wxTips .wtStats.wtStats6,.wtStats.wtStats6{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;margin:10px 0 2px!important}
+.wtStats6 span{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;min-height:62px;padding:7px 4px!important;border-radius:13px!important;border:1px solid var(--line)!important;background:var(--card,#fff);text-align:center;white-space:nowrap!important;font-size:inherit!important;line-height:1.2!important}
+.wtStats6 span i{font-style:normal;font-size:16px;line-height:1}
+.wtStats6 span small{font-size:10.5px;font-weight:650;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.wtStats6 span b{font-size:14px;font-weight:850;color:var(--ink);overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.wtStats6 span.bad{background:#fff1ec;border-color:#f0b4a6!important}.wtStats6 span.bad b{color:#b2391f}
+.wtStats6 span.good{background:#effaf3;border-color:#bfe0cf!important}.wtStats6 span.good b{color:#1d6b49}
+.wtStats6 span.na b{color:var(--muted);font-size:12px;font-weight:700}
+@media(min-width:760px){.wxTips .wtStats.wtStats6,.wtStats.wtStats6{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
+:root[data-theme="dark"] .wtStats6 span{background:#202020}
+:root[data-theme="dark"] .wtStats6 span.bad{background:#1d1816;border-color:#61433c!important}:root[data-theme="dark"] .wtStats6 span.bad b{color:#f0927c}
+:root[data-theme="dark"] .wtStats6 span.good{background:#161a17;border-color:#3b4b43!important}:root[data-theme="dark"] .wtStats6 span.good b{color:#7ec8a1}
+
+/* ── 폰 기준: 같은 종류의 칩·탭 버튼은 높이를 모두 36px로 통일 (가로 길이는 글자 수대로) ── */
+@media(max-width:899px){
+  html body #regionBar>button,html body .originBar>button,html body .choiceRow>button,html body .themeRow>.themeBtn,
+  html body #chips>button,html body .nowChips>button,html body .seg>button,html body .subchips>button,
+  html body .groupGrid>button,html body .kidsScienceNav>button,html body .popFindExamples>button,
+  html body .repDistricts>.repDistrictBtn,html body .repViewSwitch>.repViewBtn{
+    height:36px!important;min-height:36px!important;max-height:36px!important;
+    padding-top:0!important;padding-bottom:0!important;box-sizing:border-box!important;
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    white-space:nowrap!important;line-height:1.2!important
+  }
+  html body #chips>button,html body .nowChips>button,html body .choiceRow>button,html body .groupGrid>button{display:flex!important}
+  html body #chips>button.hidden{display:none!important}
+  html body .nowShow .nowSeg,html body .nowShow .nowChips{grid-auto-rows:36px!important}
+  html body .nowShow .nowSeg>button,html body .nowShow .nowChips>button{height:36px!important;min-height:36px!important;max-height:36px!important}
+}
+
+/* ── 앞으로 24시간 날씨: 3시간 × 8칸을 한 화면에 (4칸 × 2줄, 옆으로 밀 필요 없음) ── */
+html body .wxTips .wtSlots.wtSlots24,html body .wtSlots.wtSlots24{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;overflow:visible!important;padding:2px 0 4px!important}
+html body .wtSlots24>.wtSlot{min-width:0!important;width:auto!important;padding:6px 1px!important;gap:2px!important}
+html body .wtSlots24>.wtSlot small{font-size:11px!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+html body .wtSlots24>.wtSlot small em{font-size:9.5px!important}
+html body .wtSlots24>.wtSlot.tmr{background:color-mix(in srgb,var(--card,#fff) 88%,#6b7bd6)}
+@media(min-width:760px){html body .wxTips .wtSlots.wtSlots24,html body .wtSlots.wtSlots24{grid-template-columns:repeat(8,minmax(0,1fr))!important}}
+
+/* ── 첫 화면 겹치는 칸 정리 ──
+   '오늘 브리핑'은 '놓치면 끝나요'(오늘 마지막·예매 임박)와 '오늘 열리는 것'(기간 중 일정)과 같은 숫자라 숨김.
+   '오늘의 테마' 버튼은 아래 '글로 물어보기' 버튼과 같은 추천을 실행해서 숨김. */
+html body #dailyBrief,html body #themeStrip{display:none!important}
+
+/* ── '오늘 열리는 것' 카드: 좁은 폰에서 '가봤어요' 버튼이 카드 밖으로 잘리던 문제 ── */
+html body #nowShow .ncBtns{display:grid!important;grid-template-columns:auto 32px auto!important;justify-content:start;gap:4px!important;width:100%;min-width:0}
+html body #nowShow .ncBtns>button{min-width:0!important;width:auto!important;padding-left:7px!important;padding-right:7px!important;font-size:11.5px!important;white-space:nowrap;letter-spacing:-.2px}
+html body #nowShow .ncBtns>button.fav{padding:0!important}
+
+/* ── 이번 주말 5선: 평일엔 단독 칸, 주말엔 '오늘 열리는 것 > 이번 주말' 탭 안에서만 ── */
+html body #weekendPick:not(.wpWeekday):not(.wpInNow){display:none!important}
+html body #nowShow #weekendPick.wpInNow{display:block!important;margin:4px 0 14px!important}
+html body #nowShow #weekendPick.wpInNow .weekendBox{box-shadow:none!important;border:1px solid var(--line);padding:12px!important;border-radius:16px!important}
+html body #nowShow #weekendPick.wpInNow .weekendHead h2{font-size:17px!important}
+
+/* ── 폰 점검 2차: 같은 줄 버튼 높이 맞춤 · 제목 줄바꿈 ── */
+@media(max-width:899px){
+  /* 글로 물어보기 빠른 버튼: 한 줄/두 줄 글자와 상관없이 같은 높이 */
+  html body #quick>button:not(.qToggle){height:54px!important;min-height:54px!important;max-height:54px!important;padding:4px 6px!important;line-height:1.25!important;font-size:12.5px!important;white-space:normal!important;word-break:keep-all!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+  /* 일정 카드 아래 버튼(상세 보기·공식 원문·♡·가봤어요) 높이 통일 */
+  html body .card .actions>.btn,html body .card .actions>button,html body .card .actions>a{height:40px!important;min-height:40px!important;max-height:40px!important;box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding-top:0!important;padding-bottom:0!important}
+  /* '놓치면 끝나요' 제목이 두 줄로 깨지지 않게 설명은 아래로 */
+  html body .deadlineHead{flex-direction:column!important;align-items:flex-start!important;gap:3px!important}
+  html body .deadlineHead b{white-space:nowrap}
+}
+
+/* ════════ 빛고을 밤 · 쪽빛 스킨 (2026-10-25) ════════
+   나주 쪽빛(남색)을 바탕색으로, 홍시(주황)를 누르는 버튼에, 크리밍의 볼터치 분홍과 색종이 색을 반짝임에.
+   과감함은 첫 화면 '빛고을 밤하늘' 한 곳에만. 나머지는 차분하게. */
+:root:not([data-theme="dark"]){
+  --bg:#eef1f6;--paper:#ffffff;--card:#ffffff;
+  --ink:#141b2b;--ink2:#38425a;--muted:#5f6a7d;--line:#dbe1ec;--line2:#e8ecf3;
+  --green:#1f3d73;--green-d:#182f59;--green-l:#e4eaf6;--moss:#3c5c95;
+  --shadow:0 1px 0 rgba(31,61,115,.04),0 10px 28px rgba(31,61,115,.08);--shadow-lg:0 20px 48px rgba(20,36,70,.16);
+  --hong:#ff6a2b;--hong-d:#e2521a;--cheek:#f4a3a8;
+}
+:root{--hong:#ff6a2b;--hong-d:#e2521a;--cheek:#f4a3a8;--bhs:"Black Han Sans",var(--display)}
+:root:not([data-theme="dark"]) body{background:var(--bg)}
+:root:not([data-theme="dark"]) header.top{background:rgba(255,255,255,.92)!important;backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line2)}
+
+/* ── 1. 첫 화면: 색은 원래대로 '달마다 바뀌는 계절색'(applyMonthlyTheme)을 그대로 따름.
+   여기서는 크리밍을 하늘에 띄우고, 큰 제목 글꼴만 바꿈. 아래쪽만 새 바탕색과 이어지게. ── */
+html body .hero{background:linear-gradient(180deg,var(--month-top) 0%,var(--month-mid) 61%,var(--bg) 100%)!important}
+html:root[data-theme="dark"] body .hero{background:linear-gradient(180deg,color-mix(in oklab,var(--month-top) 10%,#161917) 0%,color-mix(in oklab,var(--month-mid) 14%,#161917) 61%,#1a1917 100%)!important}
+:root:not([data-theme="dark"]) .hero .ridges path:nth-child(4){fill:var(--bg)!important}
+html body .heroSkyCream{position:absolute;right:max(14px,calc(50% - 600px));top:96px;width:96px;height:auto;z-index:1;pointer-events:none;
+  filter:drop-shadow(0 6px 14px rgba(60,40,20,.18)) drop-shadow(0 0 1px rgba(0,0,0,.08));animation:creamFloat 6s ease-in-out infinite}
+html:root[data-theme="dark"] body .heroSkyCream{filter:drop-shadow(0 0 16px rgba(255,236,190,.35))}
+@keyframes creamFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@media (prefers-reduced-motion:reduce){html body .heroSkyCream{animation:none}}
+@media(min-width:760px){html body .heroSkyCream{width:130px;top:70px}}
+html body .hero .heroCopy{position:relative;z-index:2}
+html body .hero #greet{font-family:var(--bhs)!important;font-weight:400!important;font-size:clamp(38px,10.4vw,64px)!important;line-height:1.08!important;letter-spacing:-.01em!important;margin:12px 0 10px!important}
+
+/* ── 2. 칸(섹션) 공통: 흰 바탕 · 쪽빛 테두리 · 제목은 먹색 ── */
+:root:not([data-theme="dark"]) .decide,:root:not([data-theme="dark"]) .nowStartBox,:root:not([data-theme="dark"]) .deadlineBox,:root:not([data-theme="dark"]) .todayBox,:root:not([data-theme="dark"]) .weekendBox,:root:not([data-theme="dark"]) .wxTips,:root:not([data-theme="dark"]) .nowShow{border:1px solid var(--line)!important;box-shadow:var(--shadow)!important}
+:root:not([data-theme="dark"]) .sectionHead h2,:root:not([data-theme="dark"]) .nowHead h2,:root:not([data-theme="dark"]) .weekendHead h2,:root:not([data-theme="dark"]) .todayTitle h2,:root:not([data-theme="dark"]) .wxTips .sectionHead h2{color:var(--ink)!important;letter-spacing:-.02em}
+:root:not([data-theme="dark"]) .eyebrow{color:var(--hong-d)!important;letter-spacing:.08em!important}
+
+/* ── 3. 고른 칩·탭은 모두 쪽빛으로 (전에는 초록·금색이 섞여 있었음) ── */
+:root:not([data-theme="dark"]) #chips .active,:root:not([data-theme="dark"]) .subchips .active,:root:not([data-theme="dark"]) .nowShow .nowChips>button.on,:root:not([data-theme="dark"]) .nowShow .nowSeg>button.on,:root:not([data-theme="dark"]) .seg>button.on,:root:not([data-theme="dark"]) .groupGrid>.active,:root:not([data-theme="dark"]) .kidsScienceNav>.selected,:root:not([data-theme="dark"]) .repDistrictBtn.active,:root:not([data-theme="dark"]) .repViewBtn.active,:root:not([data-theme="dark"]) #regionBar>.on{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+:root:not([data-theme="dark"]) .nowShow .nowSeg{background:var(--green-l)!important}
+:root:not([data-theme="dark"]) #chips>button:not(.active),:root:not([data-theme="dark"]) .subchips>button:not(.active),:root:not([data-theme="dark"]) .nowShow .nowChips>button:not(.on){background:#fff!important;border-color:var(--line)!important;color:var(--ink2)!important}
+:root:not([data-theme="dark"]) .choiceRow>button.on{background:var(--hong)!important;border-color:var(--hong)!important;color:#fff!important}
+
+/* ── 4. 누르는 큰 버튼은 홍시색 하나로 ── */
+:root:not([data-theme="dark"]) .decideGo{background:linear-gradient(120deg,var(--hong),#ff9a3c)!important;color:#fff!important;box-shadow:0 10px 22px rgba(255,106,43,.28)!important}
+:root:not([data-theme="dark"]) .aiInput>button{background:var(--hong)!important;color:#fff!important}
+
+/* ── 5. '지금 바로 갈 곳'·'글로 물어보기'도 같은 쪽빛 밤색으로 맞춤 ── */
+html body .nowStartBox{background:linear-gradient(160deg,#1d3a6f,#14284f)!important;border:0!important}
+html body .nowStart .nowPick{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.16)!important}
+html body .nowStart .nowPickNo{background:var(--hong)!important;color:#fff!important}
+html body .nowStart .eyebrow{color:#ffd9a8!important}
+
+/* ── 6. 축제 달력 배너도 홍시색 계열로 통일 ── */
+html body .repFestival.repFestHero{background:linear-gradient(120deg,var(--hong) 0%,#ff9a3c 60%,#ffc35c 100%)!important}
+
+/* ── 7. 카드: 테두리 쪽빛 · 그림자 옅게 ── */
+:root:not([data-theme="dark"]) .card,:root:not([data-theme="dark"]) .listCard,:root:not([data-theme="dark"]) .nowCard{border-color:var(--line)!important;box-shadow:0 1px 0 rgba(31,61,115,.04),0 6px 18px rgba(31,61,115,.06)!important}
+
+/* ── 8. 사진이 없는 칸: 빈 아이콘 대신 '쪽빛 색종이 포스터 + 크리밍' 표지 ──
+   공공자료에 사진이 없거나 사진 주소가 막힌 경우. 종류별로 바탕색만 다르게. */
+html body{--cf:radial-gradient(circle at 16% 20%,rgba(255,211,77,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 84% 16%,rgba(127,224,160,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 70% 58%,rgba(169,155,255,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 26% 74%,rgba(244,163,168,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 48% 36%,rgba(255,255,255,.55) 0 1.5px,transparent 2.5px);
+  --pv-in:linear-gradient(150deg,#2b4d85,#5a7cba);--pv-pl:linear-gradient(150deg,#4f3a86,#8a6bc6);--pv-ho:linear-gradient(150deg,#ff7a35,#ffb45c);--pv-gr:linear-gradient(150deg,#1f7a55,#45b083)}
+html body .card .visual:not(.photo),html body .nowCard .ncPic:not([style]),html body .ph.emptyPhoto,html body .cover.noimg .art{background:var(--cf),var(--pv-in)!important;position:relative;overflow:hidden}
+html body .card .visual.art-음악,html body .card .visual.art-공연,html body .nowCard.mu .ncPic:not([style]),html body .nowCard.pf .ncPic:not([style]){background:var(--cf),var(--pv-pl)!important}
+html body .card .visual.art-축제,html body .nowCard.fe .ncPic:not([style]){background:var(--cf),var(--pv-ho)!important}
+html body .card .visual.art-스포츠{background:var(--cf),var(--pv-gr)!important}
+/* 아이콘은 흰 동그라미 안에 */
+html body .card .visual:not(.photo) .evIcon{inset:auto!important;left:18px!important;top:50%!important;transform:translateY(-50%);width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.94);font-size:34px!important;opacity:1!important;box-shadow:0 6px 16px rgba(10,20,45,.25)}
+html body .nowCard .ncPic:not([style]) .ncIcon{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.94);display:grid!important;place-items:center;font-size:26px!important;box-shadow:0 5px 12px rgba(10,20,45,.25)}
+html body .ph.emptyPhoto span,html body .cover.noimg .art span{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center;font-size:28px;box-shadow:0 5px 12px rgba(10,20,45,.25)}
+html body .ph.emptyPhoto small,html body .cover.noimg .art b{color:rgba(255,255,255,.92)!important;text-shadow:0 1px 6px rgba(10,20,45,.3)}
+/* 크리밍이 오른쪽 아래에서 빼꼼 */
+html body .card .visual:not(.photo):after,html body .nowCard .ncPic:not([style]):after,html body .ph.emptyPhoto:after,html body .cover.noimg .art:after{content:""!important;position:absolute!important;left:auto!important;top:auto!important;right:10px!important;bottom:-8px!important;width:64px!important;height:80px!important;inset:auto 10px -8px auto!important;background:var(--creaming) center bottom/contain no-repeat!important;filter:drop-shadow(0 4px 10px rgba(10,20,45,.3));opacity:1!important;pointer-events:none;transform:rotate(-6deg)}
+html body .nowCard .ncPic:not([style]):after{width:44px!important;height:56px!important;inset:auto 4px -6px auto!important}
+html body .nowCard .ncPic:not([style]) .ncHot{z-index:2}
+
+/* ── 9. 남은 갈색·누런 칸을 쪽빛 톤으로 ── */
+:root:not([data-theme="dark"]) .homeAsk{background:#fff!important;border-color:var(--line)!important;color:var(--ink2)!important}
+:root:not([data-theme="dark"]) .noticeBoard{--nb-bg:#f4f7fc;--nb-bd:#d7e0ef}
+@media(max-width:899px){
+ html body #quickDockV3 .navPeek,html body #quickDockV3:not(.dockDormant) .navPeek,html body #quickDockV3.open .navPeek{background:#1f3d73!important}
+ html body #quickDockV3.dockDormant:not(.open) .navPeek{background:linear-gradient(to bottom,transparent 0 32px,#1f3d73 32px 100%)!important}
+ html body #quickDockV3.open nav.bottom,html body:not(.navExpanded) #quickDockV3.open nav.bottom{background:#1f3d73!important}
+}
+/* 첫 화면 제목: 글꼴이 늦게 와도 굵게 보이도록 */
+html body .hero #greet{font-weight:800!important;font-synthesis:none}
+@media(max-width:759px){
+ html body .heroSkyCream{width:84px;top:122px;right:12px}
+ html body .hero #heroLead{max-width:calc(100% - 92px)!important;-webkit-line-clamp:4!important}
+}
+
+/* ── 10. 마무리 ── */
+/* '더 보기'로 접어 둔 빠른 버튼은 접힌 동안 계속 숨김 (높이 통일 규칙이 덮어쓰지 않게) */
+html body #quick:not(.qOpen)>button.qMore{display:none!important}
+/* 남은 초록·갈색 버튼을 쪽빛으로 */
+:root:not([data-theme="dark"]) .decideAction{background:linear-gradient(135deg,#182f59,#24467f)!important}
+:root:not([data-theme="dark"]) .nowAllBtn{background:var(--green)!important}
+:root:not([data-theme="dark"]) footer.foot2 svg path[fill="#f6f1e7"]{fill:var(--bg)!important}
+/* 사진 없는 표지가 줄줄이 똑같아 보이지 않게 짝수 칸은 크리밍 방향·색종이 위치를 바꿈 */
+html body .grid>.card:nth-child(even) .visual:not(.photo):after,html body .nowGrid>.nowCard:nth-child(even) .ncPic:not([style]):after{transform:scaleX(-1) rotate(-6deg)!important}
+html body .grid>.card:nth-child(even) .visual:not(.photo),html body .nowGrid>.nowCard:nth-child(even) .ncPic:not([style]){background-position:30px 14px,-20px 40px,10px -18px,-24px -10px,14px 22px,0 0!important}
+html body .grid>.card:nth-child(3n) .visual:not(.photo):after,html body .nowGrid>.nowCard:nth-child(3n) .ncPic:not([style]):after{bottom:-14px!important;inset:auto 10px -14px auto!important}
+
+
+
+
+/* 윗부분 크림색 띠 → 흰색 */
+:root:not([data-theme="dark"]) header.top .regionBar,:root:not([data-theme="dark"]) header.top .topSearch,:root:not([data-theme="dark"]) .quickNavIntro{background:rgba(255,255,255,.96)!important}
+:root:not([data-theme="dark"]) .quickNavIntro{border:1px solid var(--line)!important;box-shadow:var(--shadow)!important}
+/* 큰 일정 카드(일정 탭): 아이콘은 가운데, 크리밍은 D-day 배지 위로 */
+html body .card .visual:not(.photo) .evIcon{left:50%!important;top:44%!important;transform:translate(-50%,-50%)!important}
+html body .card .visual:not(.photo):after{width:54px!important;height:68px!important;inset:auto 16px 46px auto!important;transform:rotate(-6deg)!important}
+html body .grid>.card:nth-child(even) .visual:not(.photo):after{transform:scaleX(-1) rotate(-6deg)!important}
+html body .grid>.card:nth-child(3n) .visual:not(.photo):after{inset:auto 16px 46px auto!important}
+
+:root:not([data-theme="dark"]) .homeAsk select,:root:not([data-theme="dark"]) .homeAsk button{border-color:var(--line)!important;background:#fff!important;color:var(--ink2)!important}
+
+
+
+/* ── 11. 빠진 색 정리 · 바닥글 접기 ── */
+:root:not([data-theme="dark"]) .artistForm button,:root:not([data-theme="dark"]) .artistFollow button{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+html body .card .visual .date{background:rgba(20,36,70,.9)!important}
+:root:not([data-theme="dark"]) .kidsScienceNav.kidsTop{background:#fff!important;border-color:var(--line)!important}
+:root:not([data-theme="dark"]) .choiceGroup{background:#f6f8fc!important;border-color:var(--line2)!important}
+:root:not([data-theme="dark"]) header.top label.search{background:#f3f5f9!important;border-color:var(--line)!important}
+/* 바닥글: 긴 출처·저작권 안내는 한 번 눌러서 펼치기 (모든 탭 아래에 매번 길게 나오던 것) */
+.footMore{margin:14px 0 6px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.05)}
+.footMore>summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;padding:12px 14px;font-weight:800;font-size:13.5px;color:#fff}
+.footMore>summary::-webkit-details-marker{display:none}
+.footMore>summary span{font-weight:650;font-size:12px;color:#ffd9a8}
+.footMore>summary span::after{content:' ▾'}
+.footMore[open]>summary span::after{content:' ▴'}
+.footMore>.footList{margin:0;padding:0 14px 12px}
+
+/* ── 12. 메뉴 겹침 정리 (폰·태블릿: 아래 메뉴가 기본) ──
+   아래 메뉴 = 홈·일정·가볼 곳·동네·먹을 곳·지도 / 오른쪽 '더 보기' = 아이와·날씨·대중공연·시장·동네도서관·찜.
+   '필요한 것만 빠르게' 탭 줄은 아래 메뉴와 같아서 폰에서는 없앰 (일정 탭의 종류 필터 칩만 남김). PC는 아래 메뉴가 없으니 그대로. */
+@media(max-width:899px){
+  html body .quickNavIntro .quickNavHead,html body .quickNavIntro .tabs{display:none!important}
+  html body:not([data-tab="events"]) .quickNavIntro{display:none!important}
 }
 </style>
 </body></html>
