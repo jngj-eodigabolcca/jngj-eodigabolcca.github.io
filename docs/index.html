@@ -1532,6 +1532,17 @@ button.repCalDay{cursor:pointer}
 .repCalHint{font-size:.79rem;color:var(--muted,#64706b);margin-top:9px}
 @media(max-width:440px){.repCalendar{padding:7px}.repCalDay{min-height:41px}.repCalTop button{padding:6px 10px}}
 
+
+/* ── 10.26 사진 보고 정리 ── */
+/* 장날 달력: '오늘' 칸이 하루 코스(.today)의 위 여백을 물려받아 혼자 내려앉던 문제 */
+html body .wk div.today{margin-top:0!important;z-index:auto!important}
+/* 분류 버튼(가볼 곳·시장·전시장·박물관·공연): 폰에서는 모두 2칸 · [아이콘 이름 ……… 숫자] 한 줄 */
+@media(max-width:899px){
+  html body .groupGrid,html body .groupGrid.placeGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  html body .groupGrid>button{flex-direction:row!important;justify-content:flex-start!important;gap:7px!important;padding:0 12px!important;border-radius:13px!important;font-size:13.5px!important;min-width:0!important;overflow:hidden!important;overflow-wrap:normal!important}
+  html body .groupGrid>button span{font-size:17px!important;flex:none!important;line-height:1!important}
+  html body .groupGrid>button small{margin-left:auto!important;font-size:12px!important;flex:none!important;white-space:nowrap!important}
+}
 </style><title>오늘, 전남광주 어디로?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
@@ -5650,7 +5661,7 @@ const MK_GROUPS = [
   ["전체", "✦", () => true],
   ["오늘 장 서는 곳", "🟢", v => (v.market.days ? jangOn(v, todayISO()) : true) && !mkClosedOn(v, todayISO())],
   ["읍내 큰 장", "🏘", v => !!v.market.main],
-  ["5일장", "📅", v => !!v.market.days],
+  ["5일장", "🧺", v => !!v.market.days],
   ["상설·관광", "🏮", v => !v.market.days],
   ["야시장", "🌙", v => !!(v.market.nights || []).length || /야시장/.test(v.note || "")],
   ["지하철로", "🚇", v => { const n = nearStation(v); return !!(n && n.d <= SUBWAY_WALK_KM) }],
