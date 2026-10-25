@@ -3253,8 +3253,22 @@ function wxUmbrellaLine(W) {   // 한 줄 요약: 언제 비가 오는지
   return `🌤 ${r.late ? "내일 낮" : "오늘 남은 시간"} 비 소식 없어요`;
 }
 
+/* 날씨 기준 위치: ① 지금 위치·내 동네가 선택한 권역 안이면 그 동네 ② 아니면 권역 대표 도시(광주·순천·목포)
+   날씨 서비스에는 약 5km 단위로 뭉갠 좌표만 보낸다(정확한 위치는 보내지도, 저장하지도 않음). */
+function wxPoint() {
+  const R = REGIONS[REGION];
+  let h = null; try { h = HOME } catch (e) { h = null }
+  try {
+    if (h && h.lat != null && h.lng != null && h.gu && regionOfGu(h.gu) === REGION) {
+      const r = v => Math.round(v * 20) / 20;
+      return { lat: r(h.lat), lng: r(h.lng), label: h.gu, home: true };
+    }
+  } catch (e) {}
+  return { lat: R.wx[0], lng: R.wx[1], label: R.hub, home: false };
+}
 async function loadWeather(force = false) {
-  const cacheKey = `glm_weather2_${REGION}`;
+  const WXP = wxPoint();
+  const cacheKey = `glm_weather3_${REGION}_${WXP.label}`;
   const wxEl = document.getElementById("wx");
   const tipsEl = document.getElementById("wxTips");
   const now = Date.now();
@@ -3289,7 +3303,7 @@ async function loadWeather(force = false) {
       else loadWeather(true);
     };
     if (!WEATHER || force) {
-      wxEl.innerHTML = `🌤 날씨 확인 중…<small>${esc(REGIONS[REGION].hub)} 기준 · 최신 정보 확인 중</small>`;
+      wxEl.innerHTML = `🌤 날씨 확인 중…<small>${esc(wxPoint().label)} 기준 · 최신 정보 확인 중</small>`;
     }
   }
 
@@ -3311,8 +3325,8 @@ async function loadWeather(force = false) {
     return;
   }
 
-  const lat = REGIONS[REGION].wx[0];
-  const lon = REGIONS[REGION].wx[1];
+  const lat = WXP.lat;   // 내 동네·지금 위치가 이 권역 안이면 그곳, 아니면 권역 대표 도시
+  const lon = WXP.lng;
 
   const fullWeatherUrl =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
@@ -3408,7 +3422,7 @@ async function loadWeather(force = false) {
       }
       if (tipsEl) {
         tipsEl.classList.remove("hidden");
-        tipsEl.innerHTML = `<div class="wxFail"><div class="wtBig">🌥</div><div><b>실시간 날씨 연결이 지연되고 있어요</b><span>${esc(REGIONS[REGION].hub)} 날씨를 잠시 뒤 자동으로 다시 확인합니다.</span></div><button class="btn" onclick="loadWeather(true)">↻ 날씨 다시 불러오기</button></div>`;
+        tipsEl.innerHTML = `<div class="wxFail"><div class="wtBig">🌥</div><div><b>실시간 날씨 연결이 지연되고 있어요</b><span>${esc(wxPoint().label)} 날씨를 잠시 뒤 자동으로 다시 확인합니다.</span></div><button class="btn" onclick="loadWeather(true)">↻ 날씨 다시 불러오기</button></div>`;
       }
       scheduleWeatherRetry();
     }
@@ -3497,7 +3511,7 @@ function renderWxTips() {
   const head = R && !snow && rainDay && !rainNow ? `지금은 ${wn[1]}, ${R.ranges[0]} 비 — 우산 챙기쇼잉` : R && rainNow ? "지금 비 와요, 우산 꼭 챙기쇼" : R && R.maybe ? `대체로 괜찮은데 ${R.maybeRanges[0] || "중간에"} 비 올 수도 있어요` : snow ? "눈 오는 날, 따숩게 입고 나가쇼" : rainDay ? "비 소식 있어요, 우산 챙기쇼잉" : W.max >= 31 ? "징허게 더운 날, 시원하게 입으쇼" : W.max <= 3 ? "꽁꽁 추운 날, 단단히 싸매쇼" : clear ? (R && R.late ? "내일 낮은 맑아요, 나들이 가기 딱이여" : "날 좋네잉, 나들이 가기 딱이여") : (R && R.late ? "내일 낮은 무난한 날씨예요" : "무난한 날씨, 편하게 나가쇼");
   el.classList.remove("hidden");
   const B24 = wx24Blocks(W);
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">오늘 날씨 · 외출 준비</span><h2>오늘 날씨 한눈에<small>${esc(REGIONS[REGION].hub)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">오늘 날씨 · 외출 준비</span><h2>오늘 날씨 한눈에<small>${esc(wxPoint().label)} 기준 · ${esc(W.source || "날씨 데이터")} · ${esc(weatherFreshLabel(W))}${W.cached ? " · 최신 연결 재확인 중" : " · 30분마다 자동 갱신"}</small></h2></div><span>${mustN ? `꼭 챙길 것 ${mustN}개` : "챙길 것 없음"}</span></div>
   <div class="wtHead"><div class="wtBig">${wn[0]}</div><div class="wtNow"><b>지금 ${W.now}° · ${esc(wn[1])}</b><span>${esc(head)}${!R && c !== W.code ? ` · 오늘 전체로는 ${esc(w[1])}` : ""}</span></div></div>
   ${B24.length ? `<div class="wtTime wt24"><div class="wtTimeHead"><b>🕘 앞으로 24시간 날씨</b><small>지금부터 내일 이 시간까지 · 3시간 단위</small></div>
    <div class="wtSlots wtSlots24">${B24.map(x => `<div class="wtSlot ${x.st}${x.now ? " now" : ""}${x.tmr ? " tmr" : ""}"><small>${esc(x.label)}<em>${x.a}–${x.b}시</em></small><i>${x.st === "dry" && x.code <= 1 && x.night ? "🌙" : WMO(x.code)[0]}</i><b>${x.tmin === x.tmax ? `${x.tmin}°` : `${x.tmin}~${x.tmax}°`}</b><span>${x.st === "wet" ? `☂️ ${x.pp}%` : x.st === "maybe" ? `🌂 ${x.pp}%` : `비 ${x.pp}%`}</span></div>`).join("")}</div>
@@ -10631,5 +10645,51 @@ html.bigText body .bigTextBtn{background:var(--green,#1f3d73)!important;color:#f
 /* 코스 보내기 버튼 */
 html body .courseShareBtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:44px;margin:12px 0 2px;border-radius:999px;border:0;background:var(--hong,#ff6a2b);color:#fff;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(255,106,43,.25)}
 html body .courseShareBtn:active{transform:translateY(1px)}
+</style>
+
+<script id="weatherFollowsLocation20261025">
+/* 날씨가 '내가 있는 곳'을 따라가게:
+   - 동네를 고르거나 '지금 위치로'를 누르면 바로 그 동네 날씨로 다시 불러옴
+   - 예전에 위치 권한을 허락한 기기라면, 앱을 열 때 조용히 지금 위치를 확인해서
+     다른 권역(예: 광주 → 여수)에 와 있으면 "순천여수권으로 바꿀까요?"라고 한 번 물어봄 (자동으로 바꾸지는 않음) */
+(function(){
+  const reload=()=>{try{loadWeather(true)}catch(e){}};
+  ['setHome','useMyLocation','clearHome'].forEach(fn=>{
+    const orig=window[fn]; if(typeof orig!=='function') return;
+    window[fn]=function(){const r=orig.apply(this,arguments);setTimeout(reload,fn==='useMyLocation'?2500:300);return r};
+  });
+  function nearestGu(me){let best=null;for(const v of (ALL.VENUES||[])){const c=coordOf(v);if(!c||!v.district)continue;const d=km(me,c);if(best==null||d<best[0])best=[d,v.district]}return best}
+  function askSwitch(r,gu){
+    if(document.getElementById('wxMoveAsk')) return;
+    const box=document.createElement('div');box.id='wxMoveAsk';box.setAttribute('role','dialog');
+    box.innerHTML=`<span>📍 지금 <b>${esc(gu)}</b> 근처예요. <b>${esc(REGIONS[r].name)}</b>으로 바꿀까요?</span><div><button type="button" class="yes">바꾸기</button><button type="button" class="no">그대로</button></div>`;
+    box.querySelector('.yes').onclick=()=>{box.remove();try{sessionStorage.setItem('glm_move_asked','1')}catch(e){};setRegion(r)};
+    box.querySelector('.no').onclick=()=>{box.remove();try{sessionStorage.setItem('glm_move_asked','1')}catch(e){}};
+    document.body.appendChild(box);
+  }
+  async function quietCheck(){
+    try{
+      if(!navigator.permissions||!navigator.geolocation) return;
+      const st=await navigator.permissions.query({name:'geolocation'}); if(st.state!=='granted') return;   // 허락한 적 없으면 묻지 않음
+      try{if(sessionStorage.getItem('glm_move_asked'))return}catch(e){}
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const me={lat:pos.coords.latitude,lng:pos.coords.longitude};
+        const best=nearestGu(me); if(!best||best[0]>40) return;          // 전남·광주 밖이면 그대로
+        const gu=best[1], r=regionOfGu(gu);
+        HOME={gu,lat:me.lat,lng:me.lng,src:'gps'};                         // 정확한 좌표는 메모리에서만
+        if(r!==REGION) askSwitch(r,gu); else reload();
+      },()=>{}, {enableHighAccuracy:false,timeout:8000,maximumAge:30*60*1000});
+    }catch(e){}
+  }
+  const go=()=>setTimeout(()=>{ if((ALL.VENUES||[]).length) quietCheck(); else setTimeout(quietCheck,4000) },2500);
+  if(document.readyState==='complete') go(); else window.addEventListener('load',go);
+})();
+</script>
+<style id="weatherFollowsLocation20261025-style">
+#wxMoveAsk{position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:2147483600;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;border-radius:16px;background:#14284f;color:#fff;box-shadow:0 12px 30px rgba(10,20,45,.35);font-size:14px;line-height:1.45}
+#wxMoveAsk div{display:flex;gap:6px;margin-left:auto}
+#wxMoveAsk button{height:38px;padding:0 14px;border-radius:999px;border:0;font-weight:800;font-size:13.5px;cursor:pointer}
+#wxMoveAsk .yes{background:var(--hong,#ff6a2b);color:#fff}
+#wxMoveAsk .no{background:rgba(255,255,255,.14);color:#fff}
 </style>
 </body></html>
