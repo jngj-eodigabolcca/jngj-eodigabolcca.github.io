@@ -4218,13 +4218,200 @@ function tripCoord(x) {
   return cc ? { lat: cc[0], lng: cc[1], approx: true } : null;
 }
 function kmAny(a, b) { const A = tripCoord(a), B = tripCoord(b); return A && B ? km(A, B) : null }
-function tripLegMin(a, b, move) {
+/* 🚦 교통 혼잡도 보정 (요일·시간대·공휴일·연휴 앞뒤·명절·꽃/단풍철·관광지 주변)
+   실시간 교통정보가 아니라 '보통 이 시간엔 이만큼 막힌다'는 어림값이다.
+   · 평일: 출근(7:30~9:30)·퇴근(17:30~19:30) 시내 정체, 연휴 전날 오후~저녁 빠져나가는 차량
+   · 주말·공휴일: 오전 나들이(10~13시), 오후 귀가(15~20시), 연휴 마지막 날 귀가길, 명절은 더 크게
+   · 관광지 주변: 쉬는 날 낮엔 진입·주차 대기 시간을 더함 (그 관광지 철이면 더 길게) */
+let TRIP_DAY = null; // 계획하는 날짜(YYYY-MM-DD). 비어 있으면 오늘
+/* [이름, 위도, 경도, 반경 km, 붐비는 철] */
+const TRIP_HOT = [
+  ["여수 오동도·엑스포", 34.748, 127.762, 2.0, "휴가철|봄꽃철"], ["여수 이순신광장·낭만포차", 34.739, 127.736, 1.5, "휴가철"],
+  ["여수 돌산·향일암", 34.592, 127.802, 2.5, "휴가철"], ["여수 돌산공원·케이블카", 34.731, 127.745, 1.2, "휴가철"],
+  ["순천만국가정원", 34.929, 127.510, 2.0, "봄꽃철|단풍철"], ["순천만습지", 34.886, 127.509, 2.0, "단풍철"],
+  ["낙안읍성", 34.907, 127.341, 1.5, "단풍철"], ["담양 죽녹원·메타세쿼이아길", 35.327, 126.992, 2.5, "단풍철|봄꽃철|휴가철"],
+  ["보성 녹차밭", 34.716, 127.083, 2.0, "봄꽃철"], ["구례 화엄사", 35.256, 127.497, 2.0, "단풍철|봄꽃철"],
+  ["구례 산수유마을", 35.300, 127.464, 2.5, "봄꽃철"], ["광양 매화마을", 35.044, 127.739, 2.5, "봄꽃철"],
+  ["장성 백양사", 35.437, 126.884, 2.5, "단풍철"], ["광주 무등산 증심사", 35.127, 126.996, 1.5, "단풍철"],
+  ["목포 해상케이블카·유달산", 34.786, 126.372, 1.5, "휴가철|봄꽃철"], ["화순 세량지·적벽", 35.007, 126.942, 2.0, "봄꽃철|단풍철"],
+  ["곡성 기차마을", 35.276, 127.297, 1.5, "봄꽃철"], ["광주 챔피언스필드", 35.168, 126.889, 1.2, ""],
+];
+/* 섬·반도·산길이 많은 곳은 직선거리보다 길이 훨씬 돌아간다 */
+const TRIP_DETOUR = { 여수시: 1.5, 고흥군: 1.5, 신안군: 1.6, 완도군: 1.55, 진도군: 1.5, 해남군: 1.45, 구례군: 1.45, 곡성군: 1.45, 장흥군: 1.4, 보성군: 1.4 };
+function tripISOAdd(iso, n) { return new Date(new Date(iso + "T12:00:00+09:00").getTime() + n * 86400e3 + 9 * 3600e3).toISOString().slice(0, 10) }
+function tripNearDistrict(c) {
+  let best = "", bd = 1e9;
+  for (const [k, v] of Object.entries(DISTRICT_CENTER)) { const d = (c.lat - v[0]) ** 2 + ((c.lng - v[1]) * 0.82) ** 2; if (d < bd) { bd = d; best = k } }
+  return best;
+}
+function tripHot(c) { if (!c) return null; for (const h of TRIP_HOT) { const d = km(c, { lat: h[1], lng: h[2] }); if (d != null && d <= h[3]) return h } return null }
+function tripDayInfo(iso) {
+  iso = iso || TRIP_DAY || todayISO();
+  const off = x => { try { return isOff(x) } catch (e) { const w = isoDow(x); return w === 0 || w === 6 } };
+  const hol = (typeof HOLIDAYS !== "undefined" && HOLIDAYS[iso]) || "", nxt = tripISOAdd(iso, 1), prv = tripISOAdd(iso, -1);
+  const H = x => (typeof HOLIDAYS !== "undefined" && HOLIDAYS[x]) || "";
+  const isOffDay = off(iso), md = iso.slice(5);
+  const season = md >= "10-12" && md <= "11-15" ? "단풍철" : md >= "03-15" && md <= "04-20" ? "봄꽃철" : md >= "07-20" && md <= "08-20" ? "휴가철" : "";
+  const myeong = /설날|추석/.test(hol + H(nxt) + H(prv));
+  const longOff = isOffDay && (off(nxt) && off(prv) ? true : (off(nxt) || off(prv)) && !!(hol || H(nxt) || H(prv))); // 사흘 이상 연휴
+  return { iso, dow: isoDow(iso), off: isOffDay, hol, season, myeong, longOff,
+    preOff: !isOffDay && off(nxt),   // 쉬는 날 전날(금요일·연휴 전날)
+    lastOff: isOffDay && !off(nxt) }; // 쉬는 날 마지막 날(일요일·연휴 끝날)
+}
+/* 방향: 광주(가장 큰 도시)에서 멀어지는 길(out)·광주로 돌아오는 길(in)·시내(city)·그 밖(cross)
+   주말 오전엔 나가는 길, 주말 오후엔 돌아오는 길이 막힌다. 평일엔 출근길에 들어오는 길, 퇴근길에 나가는 길 */
+const TRIP_HUB = { lat: 35.1601, lng: 126.8514 };
+function tripDir(A, B, road) {
+  if (!A || !B) return "city";
+  const dA = km(A, TRIP_HUB), dB = km(B, TRIP_HUB);
+  if (road < 8 || (dA < 12 && dB < 12)) return "city";
+  return dB < dA - 3 ? "in" : dB > dA + 3 ? "out" : "cross";
+}
+/* 시간대 경사: a시부터 늘기 시작해 b시에 최대, c시까지 유지, d시에 원래대로 (계단처럼 갑자기 바뀌지 않게) */
+function tripRamp(h, a, b, c, d) { return h <= a || h >= d ? 0 : h < b ? (h - a) / (b - a) : h <= c ? 1 : (d - h) / (d - c) }
+function tripNight(h) { return h >= 23 || h < 5 ? 1 : h >= 21.5 ? (h - 21.5) / 1.5 : h < 6 ? 6 - h : 0 }
+/* ☔ 비: 앱이 받아 둔 시간별 강수량·강수확률(내 동네 날씨)에서 그 날짜·시각 값을 찾음 */
+function tripRainAt(iso, h) {
+  try {
+    if (typeof WEATHER === "undefined" || !WEATHER) return 0;
+    const H = WEATHER.hr, key = `${iso}T${String(Math.floor(h)).padStart(2, "0")}:00`;
+    if (H && Array.isArray(H.t)) {
+      const i = H.t.findIndex(t => String(t).slice(0, 16) === key);
+      if (i >= 0) { const mm = +(H.mm?.[i] || 0), pp = +(H.pp?.[i] || 0); return mm >= 5 ? 2 : mm >= 0.5 || pp >= 70 ? 1 : 0 }
+      return 0;
+    }
+    return iso === todayISO() && typeof wxRainy === "function" && wxRainy() ? 1 : 0;
+  } catch (e) { return 0 }
+}
+/* 🎪⚾ 그날 열리는 축제·경기 장소 (날짜별로 한 번만 계산) */
+const TRIP_EV_CACHE = {};
+function tripEventSpots(iso) {
+  const list = (typeof ALL !== "undefined" && ALL.EVENTS) || [], key = iso + ":" + list.length;
+  if (TRIP_EV_CACHE[key]) return TRIP_EV_CACHE[key];
+  const out = [];
+  for (const e of list) {
+    if (!e || !e.start || e.start > iso || (e.end || e.start) < iso) continue;
+    const sport = e.category === "스포츠" || (typeof SPORTS_LINKS !== "undefined" && SPORTS_LINKS[e.venueId]);
+    const fest = e.category === "축제" && !e.libKey && !/도서관|작은|북\s?토크|강연/.test([e.venue, e.title, e.subtype].join(" "));
+    if (!sport && !fest) continue;
+    const c = tripCoordExact(e); if (!c) continue;
+    const tm = /(\d{1,2}):(\d{2})/.exec(String(e.time || "")), st = tm ? +tm[1] + +tm[2] / 60 : null;
+    const long = !!(e.end && e.end !== e.start);           // 여러 날 하는 축제는 붐빔이 덜 몰림
+    out.push({ name: String(e.title || e.venue || "행사").slice(0, 24), lat: c.lat, lng: c.lng, sport: !!sport, st, long });
+  }
+  return (TRIP_EV_CACHE[key] = out);
+}
+function tripEventNear(iso, h, A, B, off) {
+  let best = null;
+  for (const ev of tripEventSpots(iso)) {
+    const dB = B ? km(B, ev) : null, dA = A ? km(A, ev) : null, near = (dB != null && dB <= 2) || (dA != null && dA <= 1.5);
+    if (!near) continue;
+    let w; // 붐비는 시간대
+    if (ev.sport) w = ev.st != null ? tripRamp(h, ev.st - 2.5, ev.st - 1, ev.st - 0.3, ev.st + 0.5) + tripRamp(h, ev.st + 2.3, ev.st + 2.8, ev.st + 3.6, ev.st + 4.3)
+                                   : off ? tripRamp(h, 11.5, 13, 18, 20) : tripRamp(h, 16, 17.5, 21.5, 22.5);
+    else w = ev.st != null ? tripRamp(h, ev.st - 2, ev.st - 0.5, ev.st + 3, ev.st + 4.5) : tripRamp(h, 10, 11.5, 19.5, 21);
+    const m = Math.round((ev.sport ? 18 : ev.long ? (off ? 12 : 5) : off ? 20 : 10) * Math.min(1, w));
+    if (m >= 3 && (!best || m > best.m)) best = { m, ev };
+  }
+  return best;
+}
+/* at: 출발 시각(자정부터 분). 반환 { f: 운전 시간 배수, cityOnly: 시내 구간에만 적용, add: 더할 분, why: 이유 } */
+function tripTraffic(at, iso, A, B, road) {
+  const D = tripDayInfo(iso), h = ((((at ?? tripNowMin()) % 1440) + 1440) % 1440) / 60, dir = tripDir(A, B, road || 0), long = (road || 0) > 30;
+  let f = 1, fr = 1, add = 0, cityOnly = false; const why = [];
+  const bump = (amp, r, label) => { const v = amp * r; f += v; if (v >= 0.05 && label) why.push(label); return v };
+  const by = o => o[dir] ?? 0;
+  if (D.off) {
+    const W = D.hol ? "휴일" : "주말";
+    bump(0.12, tripRamp(h, 9, 11, 19, 21), `${W} 나들이 차량`);
+    bump(by({ out: 0.18, cross: 0.05, city: 0.03 }), tripRamp(h, 8.5, 10, 12.5, 14), `${W} 오전 나들이 나가는 차량`);
+    bump(by({ in: 0.33, cross: 0.08, city: 0.08 }), tripRamp(h, 14, 15.5, 19, 21), dir === "in" ? `${W} 오후 광주로 돌아오는 차량` : "");
+    if (D.lastOff && dir === "in") bump(D.longOff ? 0.3 : 0.15, tripRamp(h, 13.5, 15, 20, 22), D.longOff ? "연휴 마지막 날 귀가길" : "일요일 귀가길");
+    if (D.longOff && !D.lastOff && dir === "out") bump(0.2, tripRamp(h, 7, 8.5, 12, 13.5), "연휴 나들이길");
+    if (D.season && dir !== "city") bump(0.1, tripRamp(h, 8, 9.5, 17, 18.5), `${D.season} ${W}`);
+    f = Math.min(f, 1.7);
+    if (D.myeong && long) { const m = 1 + 0.8 * tripRamp(h, 6.5, 8.5, 20, 22); if (m > f) { f = m; why.push("명절 연휴 고속도로 정체") } }
+  } else {
+    cityOnly = true;
+    bump(by({ city: 0.4, in: 0.4, out: 0.2, cross: 0.2 }), tripRamp(h, 6.8, 7.8, 8.8, 9.8), "출근길");
+    bump(by({ city: 0.45, out: 0.4, in: 0.2, cross: 0.2 }), tripRamp(h, 16.8, 17.8, 19, 20), "퇴근길");
+    bump(by({ city: 0.1 }), tripRamp(h, 11.7, 12.2, 13, 13.5), "");
+    if (D.preOff && dir !== "in") {   // 시내 밖 구간(국도·고속도로)에 따로 적용
+      const r = tripRamp(h, 14, 15.5, 19.5, 21.5), m = 1 + (D.myeong && long ? 0.9 : 0.35) * r;
+      if (dir === "city") { if (m > f + 0.03) f = m } else fr = m;
+      if (m >= 1.05) why.push(D.myeong ? "명절 귀성길" : D.dow === 5 ? "금요일 저녁 빠져나가는 차량" : "연휴 전날 저녁 빠져나가는 차량");
+    }
+  }
+  if (!cityOnly) fr = f;
+  const nt = 1 - 0.1 * tripNight(h); f *= nt; fr *= nt; // 밤엔 한산
+  /* ☔ 비 오면 전체적으로 느려짐 */
+  const rain = tripRainAt(D.iso, h);
+  if (rain) { const rf = rain === 2 ? 1.25 : 1.12; f *= rf; fr *= rf; why.push(rain === 2 ? "많은 비 예보" : "비 예보") }
+  /* 관광지: 도착하는 쪽이면 진입·주차 대기, 떠나는 쪽이면 빠져나오는 대기 */
+  const hotB = tripHot(B), hotA = hotB ? null : tripHot(A), hot = hotB || hotA;
+  if (hot) {
+    const inSeason = !!(D.season && hot[4] && new RegExp(hot[4]).test(D.season));
+    let m = (D.off ? (inSeason ? 20 : 10) + (D.longOff ? 5 : 0) : (inSeason ? 5 : 0)) * tripRamp(h, 8.5, 10, 16, 17.5);
+    if (hotA) m /= 2; m = Math.round(m);
+    if (m >= 3) { add += m; why.push(`${hot[0]} ${hotB ? "진입·주차" : "빠져나오는"} 대기${inSeason ? `(${D.season})` : ""}`) }
+  }
+  /* 🎪⚾ 그날 축제·경기가 열리는 곳 주변 */
+  const ev = tripEventNear(D.iso, h, A, B, D.off);
+  if (ev) { add += ev.m; why.push(`${ev.ev.sport ? "⚾ 경기" : "🎪 " + ev.ev.name} 주변 혼잡`) }
+  return { f: Math.round(f * 100) / 100, fr: Math.round(fr * 100) / 100, cityOnly, add, why: [...new Set(why)], D, dir, hot, rain, ev };
+}
+/* 도로 위 평소 속도(km/h): 시내 → 국도 → 고속도로 */
+const TRIP_SPD = { 자동차: [25, 55, 85], 대중교통: [16, 30, 60] };
+function tripPlainMin(road, k) {
+  if (k === "도보") return road / 4.5 * 60;
+  const [c, m, f] = TRIP_SPD[k], a = Math.min(road, 8), b = Math.min(Math.max(road - 8, 0), 22), z = Math.max(road - 30, 0);
+  return (a / c + b / m + z / f) * 60;
+}
+function tripLegInfo(a, b, move, at, iso) {
   const A = tripCoord(a), B = tripCoord(b); if (!A || !B) return null;
   const k = tripMoveKey(move), d = km(A, B); if (d == null) return null;
-  const road = d * 1.35, near = Math.min(road, 12), far = Math.max(0, road - 12);
-  let base = near / TRIP_SPEED[k] * 60 + far / TRIP_SPEED_FAR[k] * 60 + (k === "대중교통" ? (far ? 20 : 12) : k === "자동차" ? 8 : 0); // 기다림·갈아타기·주차
+  const pen = Math.max(TRIP_DETOUR[tripNearDistrict(A)] || 0, TRIP_DETOUR[tripNearDistrict(B)] || 0);
+  const det = d < 1.5 ? 1.25 : d > 40 ? (pen ? 1.38 : 1.28) : (pen || 1.35);   // 먼 길은 고속도로라 덜 돌아가고, 섬·반도·산길은 더 돌아감
+  const road = d * det, plain = tripPlainMin(road, k);
+  const hh = (((at ?? tripNowMin()) % 1440) + 1440) % 1440 / 60;
+  const fixed = k === "자동차" ? 5 : k === "대중교통" ? (road > 30 ? 20 : 10) : 0;      // 주차 / 버스 기다림·갈아타기
+  let base, tr = { f: 1, add: 0, why: [], D: tripDayInfo(iso) };
+  if (k === "도보") base = plain;
+  else {
+    tr = tripTraffic(at, iso, A, B, road);
+    const pc = tripPlainMin(Math.min(road, 12), k), slow = pc * (tr.f - 1) + (plain - pc) * (tr.fr - 1); // 늘어나는 시간: 시내 구간 × 시내 배수 + 나머지 × 시외 배수
+    if (k === "자동차") base = plain + slow + fixed + tr.add;
+    else base = plain + slow * 0.6 + fixed + (tr.D.off ? 5 : 0) + (hh >= 21 || hh < 6.5 ? 10 : 0) + Math.round(tr.add * 0.4); // 버스: 전용차로가 있어 정체는 덜, 쉬는 날·밤엔 배차가 김
+  }
   if ((A.approx || B.approx) && d < 3) base = Math.max(base, k === "도보" ? 30 : 25); // 같은 시·군 안인데 정확한 위치를 몰라 중심으로 잰 경우
-  return Math.max(5, Math.round(base / 5) * 5);
+  const r5 = x => Math.max(5, Math.round(x / 5) * 5);
+  return { min: r5(base), usual: r5(plain + fixed), km: Math.round(road * 10) / 10, why: tr.why, f: tr.f };
+}
+function tripLegMin(a, b, move, at, iso) { const r = tripLegInfo(a, b, move, at, iso); return r ? r.min : null }
+/* 화면에 붙일 한 줄: 오늘(그날) 이 시각에 무엇을 반영했는지 */
+function tripTrafficNote(at, iso, move) {
+  if (tripMoveKey(move) === "도보") return "";
+  const D = tripDayInfo(iso), m = at ?? tripNowMin(), h = ((m % 1440) + 1440) % 1440 / 60;
+  const day = D.hol || ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"][D.dow];
+  const t = [];
+  const rain = tripRainAt(D.iso, h);
+  if (rain) t.push(rain === 2 ? "많은 비 예보라 길이 전체적으로 느리고" : "비 예보라 조금 느리고");
+  if (h >= 22 || h < 6) t.push("밤이라 길이 한산한 편");
+  else if (D.off) {
+    if (D.myeong) t.push("명절 연휴라 고속도로·국도가 크게 막히는 날");
+    if (h >= 9.5 && h < 13) t.push("오전엔 나들이 나가는 길이 막히고");
+    else if (h >= 13 && h < 15) t.push("낮엔 시내·관광지 주변이 붐비고");
+    else if (h >= 15 && h < 20) t.push(D.lastOff ? (D.longOff ? "연휴 마지막 날이라 돌아오는 길이 특히 막히고" : "일요일 오후라 광주로 돌아오는 길이 막히고") : "오후엔 돌아오는 차량이 많고");
+    if (D.season) t.push(`${D.season} 주말이라 관광지 진입·주차가 오래 걸려요`);
+    else t.push("관광지 주변은 진입·주차 대기가 있어요");
+  } else {
+    if (h >= 7.5 && h < 9.5) t.push("출근길 시내 정체");
+    else if (h >= 17.5 && h < 19.5) t.push("퇴근길 시내 정체");
+    if (D.preOff && h >= 15 && h < 21) t.push(D.myeong ? "명절 귀성 차량" : D.dow === 5 ? "금요일 저녁 빠져나가는 차량" : "연휴 전날 빠져나가는 차량");
+    if (!t.length) t.push("평일 낮이라 비교적 원활");
+  }
+  if (tripEventSpots(D.iso).length) t.push("그날 축제·경기가 열리는 곳 주변은 더 잡았어요");
+  return `🚦 ${day} ${tripHM(m)} 출발 기준: ${t.join(", ")}. 이걸 반영해 이동시간을 잡았어요.`;
 }
 /* 출발지: ① 문장에 적은 출발지 ② 🏠 내 동네(또는 지금 위치) ③ 고른 권역의 중심 도시 */
 /* 🚩 출발지: 시청 기준으로 고름 (광주·목포·순천·여수). 안 고르면 권역의 대표 시청 */
@@ -4283,7 +4470,7 @@ function tripOriginInfo(opt = {}) {
 }
 function tripFirstLeg(x, opt = {}) {
   const k = tripMoveKey(opt.move || "자동차"), o = tripOriginInfo(opt);
-  const m = o.from ? tripLegMin(o.from, x, opt.move || "자동차") : null;
+  const m = o.from ? tripLegMin(o.from, x, opt.move || "자동차", opt.start ?? opt.at, opt.iso) : null;
   const approx = !tripCoordExact(x);
   return m != null ? { min: m, guess: o.how === "hub", how: o.how, from: o.label, approx } : { min: TRIP_DEFAULT_LEG[k], guess: true, how: "none", from: "", approx: true };
 }
@@ -6399,7 +6586,8 @@ function vStep(id, time, extra = "") {
 function addMoves(steps) { for (let i = 1; i < steps.length; i++) { const a = steps[i - 1].v || steps[i - 1].x, b = steps[i].v || steps[i].x; const d = a && b ? km(a, b) : null; if (d == null) continue;
     if (d <= 1.5) { steps[i].move = `걸어서 ${kmTxt(d)}`; continue }
     // 기본은 자동차, 대중교통 시간도 같이 (버스 기다림·갈아타기 포함한 어림값)
-    const car = tripLegMin(a, b, "자동차"), bus = tripLegMin(a, b, "대중교통");
+    const tm = /^(\d{1,2}):(\d{2})/.exec(String(steps[i - 1].time || steps[i].time || "")), at = tm ? +tm[1] * 60 + +tm[2] : undefined;
+    const car = tripLegMin(a, b, "자동차", at), bus = tripLegMin(a, b, "대중교통", at);
     steps[i].move = `${kmTxt(d)} · 차로 약 ${car}분${bus ? ` · 버스 약 ${bus}분` : ""}` } return steps }
 /* ════════ 여행 일정표: KTX 당일치기 · 1박 2일 · 2박 3일 (자가용·시내도 같은 틀) ════════ */
 function tripMode(s) { return /2박|3일|사흘/.test(s) ? 3 : /1박|2일|이틀/.test(s) ? 2 : 1 }
@@ -6825,8 +7013,8 @@ function recommend(t, forced = null, fixedMeal = null) {
     for (let i = 0; i < out.length; i++) {
       const o = out[i]; if (!o.x || o.link) continue; const k = kindOf(o.x); if (k === "stay") continue;
       let leg;
-      if (prev) { leg = tripLegMin(prev, o.x, s); if (leg == null || (leg > (/자동차|자차|차로/.test(s) ? 60 : 75) && !FOOD.includes(o.x))) { out.splice(i, 1); i--; continue } }
-      else { firstLeg = tripFirstLeg(o.x, { move: s, from: originC, fromLabel: originName }); leg = firstLeg.min }
+      if (prev) { leg = tripLegMin(prev, o.x, s, tt); if (leg == null || (leg > (/자동차|자차|차로/.test(s) ? 60 : 75) && !FOOD.includes(o.x))) { out.splice(i, 1); i--; continue } }
+      else { firstLeg = tripFirstLeg(o.x, { move: s, from: originC, fromLabel: originName, start: tt }); leg = firstLeg.min }
       const r = tripCheck(o.x, k, tt + leg);
       if (!r.ok) { out.splice(i, 1); i--; continue }
       o.sub = `⏰ ${prev ? "이동 약 " + leg + "분 → " : ""}${r.note}${r.unsure && !/확인/.test(r.note) ? " · 가기 전 확인" : ""}${o.sub ? " · " + o.sub : ""}`; tt = r.leave; prev = o.x;
@@ -6988,7 +7176,7 @@ function decisionRoutePicks(selected){
   const plan1=tripPlanPicks([first],selected);
   if(!plan1.picks.length) return [];
   const legCap=DEC_LEG_CAP[tripMoveKey(selected.move)];
-  const fitsAfter=(prev,list,kind)=>!prev.length?[]:list.filter(x=>{ const p=prev[prev.length-1]; if(prev.some(q=>q.x===x||decSameSite(q.x,x))) return false; if(!decCoordOk(x,selected)) return false; const leg=tripLegMin(p.x,x,selected.move); if(leg==null||leg>legCap) return false; const arr=p.plan.leave+leg; if(kind==='food'&&!decMealOk(arr)) return false; return arr<=plan1.end && tripCheck(x,kind,arr,{latest:plan1.end,stay:stayCap}).ok });
+  const fitsAfter=(prev,list,kind)=>!prev.length?[]:list.filter(x=>{ const p=prev[prev.length-1]; if(prev.some(q=>q.x===x||decSameSite(q.x,x))) return false; if(!decCoordOk(x,selected)) return false; const leg=tripLegMin(p.x,x,selected.move,p.plan.leave); if(leg==null||leg>legCap) return false; const arr=p.plan.leave+leg; if(kind==='food'&&!decMealOk(arr)) return false; return arr<=plan1.end && tripCheck(x,kind,arr,{latest:plan1.end,stay:stayCap}).ok });
   let secondPool=fitsAfter(plan1.picks,nearV,'venue'); if(!secondPool.length) secondPool=fitsAfter(plan1.picks,openV,'venue');
   const second=aiDiverse(secondPool,key+":second",1,10)[0];
   const plan2=second?tripPlanPicks([first,wrap('venue',second)],selected):plan1;
@@ -7060,7 +7248,7 @@ function decisionVariedPicks(selected){
       if(pet&&p.kind==='venue'&&!decPetVenueOk(p.x))return null;
       const dist=kmAny(tail.x,p.x);
       if(dist==null||dist>radius)return null;
-      const leg=tripLegMin(tail.x,p.x,selected.move);
+      const leg=tripLegMin(tail.x,p.x,selected.move,last&&last.plan?last.plan.leave:undefined);
       if(leg==null||leg>cap)return null;
       const type=kinds(p);
       if(type==='meal'&&(usedTypes.includes('meal')||!decMealOk(last.plan.leave+leg)))return null;
@@ -7098,7 +7286,7 @@ function tripPlanPicks(list,selected){
   let t=start, end=null;
   for(const p of list.filter(Boolean)){
     const prev=out[out.length-1];
-    const legInfo=prev?{min:tripLegMin(prev.x,p.x,selected.move),guess:false}:tripFirstLeg(p.x,{move:selected.move});
+    const legInfo=prev?{min:tripLegMin(prev.x,p.x,selected.move,t),guess:false}:tripFirstLeg(p.x,{move:selected.move,start:t});
     if(legInfo.min==null) break;
     if(prev && legInfo.min>DEC_LEG_CAP[tripMoveKey(selected.move)]+10) break; // 너무 먼 다음 장소는 빼기
     const arr=t+legInfo.min;
@@ -7129,19 +7317,17 @@ function decisionDetailHtml(picks,sel={}){
     const q = [p.name, tripDistrictOf(x)].filter(Boolean).join(' ');
     const more = k==='event' ? `<button class="btn" onclick="closeModal();setTimeout(()=>detail('${jsq(x.id)}'),80)">자세히</button>` : k==='venue' ? `<button class="btn" onclick="closeModal();setTimeout(()=>aiProfile('${jsq(x.id)}'),80)">자세히</button>` : '';
     return `<li><span>${i+1}</span><div><b>${esc(p.name)}</b><small>${esc(decisionPlaceType(p))}${decisionPlaceArea(p)?' · '+esc(decisionPlaceArea(p)):''}</small><small>${esc(info.filter(Boolean).join(' · '))}</small>${typeof parkLine==='function'&&k!=='event'?parkLine(x):''}<div class="drLinks">${more}<a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(q)}">길찾기 ↗</a></div></div></li>`; };
-  return `<b>📋 코스 장소 정보</b><ol class="course">${picks.map(row).join('')}</ol><p class="pfNote">시간은 지금 출발 기준 어림값이에요. 운영시간·요금은 바뀔 수 있으니 가기 전에 한 번 확인하세요.${pet?' 🐶 공원·산책지의 반려견 동반 규칙(목줄·입장 가능 구역)은 곳마다 달라요. 현장 안내를 꼭 확인하세요.':''}</p>`;
+  return `<b>📋 코스 장소 정보</b><ol class="course">${picks.map(row).join('')}</ol><p class="pfNote">${esc(tripTrafficNote(undefined, undefined, sel.move||"자동차"))} 시간은 지금 출발 기준 어림값이에요. 운영시간·요금은 바뀔 수 있으니 가기 전에 한 번 확인하세요.${pet?' 🐶 공원·산책지의 반려견 동반 규칙(목줄·입장 가능 구역)은 곳마다 달라요. 현장 안내를 꼭 확인하세요.':''}</p>`;
 }
 function coordForDecision(p){
   if(!p) return null;
   if(p.kind==='event') { const v=VENUES.find(v=>v.id===p.x.venueId)||VENUES.find(v=>v.name===p.x.venue); return coordOf(v||p.x); }
   return coordOf(p.x);
 }
-function decisionMoveText(a,b,move){
+function decisionMoveText(a,b,move,at){
   const A=coordForDecision(a),B=coordForDecision(b); if(!A||!B) return move;
-  const d=km(A,B); if(d==null) return move;
-  const speed=/도보/.test(move)?4.5:/자동차/.test(move)?24:16;
-  const min=Math.max(2,Math.round(d/speed*60));
-  return `${move} 약 ${min}분`;
+  const r=tripLegInfo(A,B,move,at); if(!r) return move;
+  return `${move} 약 ${r.min}분${r.min>r.usual+4?` (평소 ${r.usual}분)`:''}`;
 }
 function decisionPlaceType(p){
   if(!p) return "장소";
@@ -8011,8 +8197,8 @@ initNav();
    if(isToday){
      const endMin=startMin+durMin+90;
      arr=arr.map(o=>{const k=kindOfO(o);let r;
-       if(bundle&&lastStop&&(k==='food'||k==='cafe')){const leg=tripLegMin(lastStop.x,o.x,move);r=leg==null?{ok:false}:tripCheck(o.x,k,lastStop.leave+leg);r.legKm=leg??999;if(r.ok)r.note=`${lastStop.name}에서 이동 약 ${leg}분 · ${r.note}`}
-       else {const leg=tripFirstLeg(o.x,{move,from:originC,fromLabel:origin});r=tripCheck(o.x,k,startMin+leg.min,{latest:startMin+leg.min+120});if(r.ok)r.note=`${leg.from?leg.from+'에서 ':''}이동 약 ${leg.min}분 · ${r.note}`}
+       if(bundle&&lastStop&&(k==='food'||k==='cafe')){const leg=tripLegMin(lastStop.x,o.x,move,lastStop.leave);r=leg==null?{ok:false}:tripCheck(o.x,k,lastStop.leave+leg);r.legKm=leg??999;if(r.ok)r.note=`${lastStop.name}에서 이동 약 ${leg}분 · ${r.note}`}
+       else {const leg=tripFirstLeg(o.x,{move,from:originC,fromLabel:origin,start:startMin});r=tripCheck(o.x,k,startMin+leg.min,{latest:startMin+leg.min+120});if(r.ok)r.note=`${leg.from?leg.from+'에서 ':''}이동 약 ${leg.min}분 · ${r.note}`}
        return {...o,fit:r}}).filter(o=>o.fit.ok&&o.fit.arrive<=endMin);
      if(bundle&&lastStop&&(cat==='food'||cat==='cafe'))arr.sort((a,b)=>a.fit.legKm-b.fit.legKm); else arr.sort((a,b)=>(budget!==null&&'fee' in a?(a.fee==null)-(b.fee==null):0)||(a.fit.arrive-b.fit.arrive)||(!!a.fit.unsure-!!b.fit.unsure));
    }
@@ -9684,6 +9870,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
   function plan(q) {
     const p = parse(q);
     p.date = p.dayOff ? new Date(kstNow().getTime() + p.dayOff * 86400e3) : null;
+    p.iso = p.date ? p.date.toISOString().slice(0, 10) : null;
     let originPt = null, originLabel = "";
     if (p.origin) { originPt = tripOriginCoord(p.origin.label) || (p.origin.dist ? areaCenter(p.origin.dist) : null); originLabel = p.origin.label }
     let originHow = p.origin ? "input" : "";
@@ -9698,7 +9885,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
       const tried = [];
       let best = null;
       for (const o of pool) {
-        const leg = prev ? tripLegMin(prev, o.x, p.move) : null;
+        const leg = prev ? tripLegMin(prev, o.x, p.move, t, p.iso) : null;
         if (leg == null) continue;
         if (!st.area && st.cat !== "named" && leg > (p.move === "도보" ? 30 : 60)) continue;   // 지역을 말하지 않았으면 가까운 곳만
         if (p.move === "도보" && !st.areaSaid && st.cat !== "named" && leg > 35) continue;      // 걸어서 다니면 한 구간 35분 안쪽만
@@ -9723,7 +9910,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
       } else {
         // 지역 중심까지 이동 시간으로 도착 시각 어림
         const center = st.area ? areaCenter(st.area) : null;
-        const legC = center && prev ? tripLegMin(prev, center, p.move) : null;
+        const legC = center && prev ? tripLegMin(prev, center, p.move, t, p.iso) : null;
         const arriveGuess = legC != null ? t + legC : null;
         step.ok = false; step.legC = legC; step.arriveGuess = arriveGuess;
         if (st.cat === "arrive") {
@@ -9751,14 +9938,14 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
           // 고치는 방법 2: 음식 종류가 그 지역에 없으면 가장 가까운 곳
           if (!tip && st.cat === "food" && st.dish && !inA.length) {
             const base = (st.area && areaCenter(st.area)) || prev, baseName = st.area ? st.areaLabel : prevName;
-            const near = candidates(st).map(o => ({ o, leg: base ? tripLegMin(base, o.x, p.move) : null })).filter(z => z.leg != null).sort((a, b) => a.leg - b.leg)[0];
+            const near = candidates(st).map(o => ({ o, leg: base ? tripLegMin(base, o.x, p.move, t, p.iso) : null })).filter(z => z.leg != null).sort((a, b) => a.leg - b.leg)[0];
             if (near) tip = `💡 가장 가까운 ${st.dish}집은 ${nameOf(near.o.x)}(${areaOfItem(near.o.x)}, ${baseName}에서 약 ${near.leg}분)이에요.`;
           }
           // 고치는 방법 3: 같은 지역에 비슷한 종류(박물관↔전시, 공연↔축제)가 있으면 대신 갈 곳으로 알려 줌 (몰래 바꾸지는 않음)
           const REL = { museum: "exhibition", exhibition: "museum", performance: "festival", festival: "performance" };
           if (!tip && st.area && REL[st.cat] && legC != null) {
             const alt = candidates({ ...st, cat: REL[st.cat] }).filter(o => inArea(o.x, st.area, st.areaLabel, p.move) && !used.has(placeKey(o.x)))
-              .map(o => { const lg = tripLegMin(prev, o.x, p.move); return lg == null ? null : { o, lg, r: check(o, t + lg, p) } }).filter(z => z && z.r.ok).sort((a, b) => a.r.arrive - b.r.arrive)[0];
+              .map(o => { const lg = tripLegMin(prev, o.x, p.move, t, p.iso); return lg == null ? null : { o, lg, r: check(o, t + lg, p) } }).filter(z => z && z.r.ok).sort((a, b) => a.r.arrive - b.r.arrive)[0];
             if (alt) tip = `💡 대신 ${st.areaLabel}의 ${nameOf(alt.o.x)}(${CAT_NAME[REL[st.cat]].replace(/^\S+\s/, "")})은 ${tripHM(alt.r.arrive)} 도착으로 갈 수 있어요.`;
           }
           // 고치는 방법 4: 같은 종류가 다른 지역엔 있음
@@ -9816,7 +10003,7 @@ body[data-screen="tab"] main.wrap{padding-top:10px}
     });
     if (steps.length > 1) chk.push(`✅ 순서: 앞 장소를 다 보고 나온 시각·위치에서 다음 장소를 확인했어요`);
     h += `<div class="gpSec"><b>☑ 조건 점검</b><ul class="gpCheck">${chk.map(x => `<li>${x}</li>`).join("")}</ul></div>`;
-    h += `<p class="gpNote">이동시간은 직선거리로 어림한 값이에요. 앱에 등록된 장소·일정 안에서만 고르고, 없는 곳을 지어내지 않아요. 운영시간·예매는 가기 전 공식 안내로 확인하세요.</p></div>`;
+    h += `<p class="gpNote">${esc(tripTrafficNote(p.startMin, p.iso, p.move))} 이동시간은 직선거리에 도로가 돌아가는 정도(섬·반도·산길은 더 길게)와 요일·시간대·휴일 정체를 더해 어림한 값이라 실제와 다를 수 있어요. 출발 전 길찾기로 실시간 교통을 확인하세요. 앱에 등록된 장소·일정 안에서만 고르고, 없는 곳을 지어내지 않아요. 운영시간·예매는 가기 전 공식 안내로 확인하세요.</p></div>`;
     $("#answer").innerHTML = h;
   }
 
