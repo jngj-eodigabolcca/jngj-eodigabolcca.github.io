@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" preserveAspectRatio="xMidYMid slice">
+  <rect width="960" height="340" fill="#E6F0E1"/>
+  <circle cx="800" cy="84" r="38" fill="#F7C948"/>
+  <g fill="#FFFFFF" opacity="0.9">
+    <ellipse cx="190" cy="80" rx="52" ry="18"/><ellipse cx="228" cy="68" rx="32" ry="18"/>
+    <ellipse cx="560" cy="60" rx="44" ry="15"/><ellipse cx="592" cy="50" rx="26" ry="15"/>
+  </g>
+  <path d="M0 250 Q240 170 480 240 T960 220 V340 H0Z" fill="#B9D7A8"/>
+  <path d="M0 296 Q300 236 600 286 T960 276 V340 H0Z" fill="#94C083"/>
+  <!-- 나무 -->
+  <g>
+    <rect x="186" y="200" width="14" height="70" fill="#7A5A3E"/><circle cx="193" cy="186" r="40" fill="#5E9E5A"/>
+    <rect x="262" y="214" width="12" height="56" fill="#7A5A3E"/><circle cx="268" cy="204" r="30" fill="#76B26C"/>
+    <rect x="716" y="196" width="14" height="74" fill="#7A5A3E"/><circle cx="723" cy="180" r="44" fill="#5E9E5A"/>
+  </g>
+  <!-- 오솔길 -->
+  <path d="M470 340 C480 300 540 290 520 260" fill="none" stroke="#EADBB8" stroke-width="22" stroke-linecap="round"/>
+  <!-- 벤치 -->
+  <g fill="#9C7A58">
+    <rect x="390" y="262" width="80" height="8" rx="3"/><rect x="390" y="248" width="80" height="6" rx="3"/>
+    <rect x="396" y="270" width="6" height="18"/><rect x="458" y="270" width="6" height="18"/>
+  </g>
+</svg>

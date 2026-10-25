@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" preserveAspectRatio="xMidYMid slice">
+  <rect width="960" height="340" fill="#FCEDE0"/>
+  <rect y="256" width="960" height="84" fill="#E9CFB4"/>
+  <!-- 김 -->
+  <g fill="none" stroke="#D9B99B" stroke-width="6" stroke-linecap="round">
+    <path d="M430 150 C410 125 450 110 430 80"/><path d="M480 140 C460 115 500 100 480 66"/><path d="M530 150 C510 125 550 110 530 80"/>
+  </g>
+  <!-- 그릇 -->
+  <path d="M320 186 A160 100 0 0 0 640 186 Z" fill="#34497E"/>
+  <rect x="440" y="276" width="80" height="12" rx="6" fill="#2A3B66"/>
+  <ellipse cx="480" cy="186" rx="160" ry="24" fill="#F6E7C8"/>
+  <g fill="#E6D2A6"><circle cx="420" cy="182" r="5"/><circle cx="470" cy="190" r="5"/><circle cx="520" cy="180" r="5"/><circle cx="560" cy="188" r="5"/><circle cx="400" cy="190" r="4"/></g>
+  <g fill="#6FAE6A"><ellipse cx="440" cy="178" rx="22" ry="8"/><ellipse cx="530" cy="186" rx="20" ry="7"/></g>
+  <circle cx="492" cy="178" r="13" fill="#F2A13B"/>
+  <!-- 젓가락 -->
+  <g stroke="#9C7A58" stroke-width="8" stroke-linecap="round"><line x1="690" y1="300" x2="830" y2="236"/><line x1="700" y1="316" x2="846" y2="256"/></g>
+  <!-- 반찬 -->
+  <ellipse cx="190" cy="270" rx="64" ry="20" fill="#FFF8EE"/><ellipse cx="190" cy="264" rx="44" ry="12" fill="#E35D4F"/></svg>

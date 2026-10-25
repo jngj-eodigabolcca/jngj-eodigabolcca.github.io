@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="red" width="40" height="10" patternUnits="userSpaceOnUse"><rect width="20" height="10" fill="#E8735A"/><rect x="20" width="20" height="10" fill="#FFF8EE"/></pattern>
+    <pattern id="green" width="40" height="10" patternUnits="userSpaceOnUse"><rect width="20" height="10" fill="#6FAE6A"/><rect x="20" width="20" height="10" fill="#FFF8EE"/></pattern>
+    <pattern id="navy" width="40" height="10" patternUnits="userSpaceOnUse"><rect width="20" height="10" fill="#34497E"/><rect x="20" width="20" height="10" fill="#FFF8EE"/></pattern>
+  </defs>
+  <rect width="960" height="340" fill="#FBF3E4"/>
+  <rect y="272" width="960" height="68" fill="#F1E2C8"/>
+  <!-- 줄 등불 -->
+  <path d="M0 40 Q480 100 960 40" fill="none" stroke="#C9B48F" stroke-width="3"/>
+  <g fill="#F08A3C">
+    <ellipse cx="144" cy="66" rx="11" ry="14"/><ellipse cx="336" cy="78" rx="11" ry="14"/>
+    <ellipse cx="480" cy="81" rx="11" ry="14"/><ellipse cx="624" cy="78" rx="11" ry="14"/>
+    <ellipse cx="816" cy="66" rx="11" ry="14"/>
+  </g>
+  <!-- 가판대 3개 -->
+  <g id="stalls">
+    <g transform="translate(110 0)">
+      <rect x="8" y="120" width="10" height="152" fill="#6B4F38"/><rect x="202" y="120" width="10" height="152" fill="#6B4F38"/>
+      <rect y="118" width="220" height="50" fill="url(#red)" rx="4"/>
+      <g fill="#E8735A"><circle cx="11" cy="168" r="11"/><circle cx="55" cy="168" r="11"/><circle cx="99" cy="168" r="11"/><circle cx="143" cy="168" r="11"/><circle cx="187" cy="168" r="11"/></g>
+      <g fill="#FFF8EE"><circle cx="33" cy="168" r="11"/><circle cx="77" cy="168" r="11"/><circle cx="121" cy="168" r="11"/><circle cx="165" cy="168" r="11"/><circle cx="209" cy="168" r="11"/></g>
+      <rect x="0" y="222" width="220" height="50" fill="#9C7A58" rx="6"/>
+      <g fill="#E35D4F"><circle cx="40" cy="212" r="14"/><circle cx="66" cy="214" r="13"/><circle cx="53" cy="196" r="13"/></g>
+      <g fill="#F2A13B"><circle cx="130" cy="212" r="14"/><circle cx="158" cy="212" r="14"/><circle cx="144" cy="194" r="13"/><circle cx="184" cy="213" r="13"/></g>
+    </g>
+    <g transform="translate(370 0)">
+      <rect x="8" y="120" width="10" height="152" fill="#6B4F38"/><rect x="202" y="120" width="10" height="152" fill="#6B4F38"/>
+      <rect y="118" width="220" height="50" fill="url(#green)" rx="4"/>
+      <g fill="#6FAE6A"><circle cx="11" cy="168" r="11"/><circle cx="55" cy="168" r="11"/><circle cx="99" cy="168" r="11"/><circle cx="143" cy="168" r="11"/><circle cx="187" cy="168" r="11"/></g>
+      <g fill="#FFF8EE"><circle cx="33" cy="168" r="11"/><circle cx="77" cy="168" r="11"/><circle cx="121" cy="168" r="11"/><circle cx="165" cy="168" r="11"/><circle cx="209" cy="168" r="11"/></g>
+      <rect x="0" y="222" width="220" height="50" fill="#9C7A58" rx="6"/>
+      <g fill="#8CC56F"><circle cx="50" cy="204" r="22"/><circle cx="96" cy="206" r="20"/></g>
+      <g fill="#B7DB8F"><circle cx="50" cy="204" r="12"/><circle cx="96" cy="206" r="10"/></g>
+      <g fill="#F4F1E6" stroke="#D8CDB4" stroke-width="2"><ellipse cx="160" cy="210" rx="34" ry="14"/></g>
+      <g fill="#C79A5B"><ellipse cx="150" cy="204" rx="9" ry="6"/><ellipse cx="166" cy="202" rx="9" ry="6"/><ellipse cx="174" cy="210" rx="9" ry="6"/></g>
+    </g>
+    <g transform="translate(630 0)">
+      <rect x="8" y="120" width="10" height="152" fill="#6B4F38"/><rect x="202" y="120" width="10" height="152" fill="#6B4F38"/>
+      <rect y="118" width="220" height="50" fill="url(#navy)" rx="4"/>
+      <g fill="#34497E"><circle cx="11" cy="168" r="11"/><circle cx="55" cy="168" r="11"/><circle cx="99" cy="168" r="11"/><circle cx="143" cy="168" r="11"/><circle cx="187" cy="168" r="11"/></g>
+      <g fill="#FFF8EE"><circle cx="33" cy="168" r="11"/><circle cx="77" cy="168" r="11"/><circle cx="121" cy="168" r="11"/><circle cx="165" cy="168" r="11"/><circle cx="209" cy="168" r="11"/></g>
+      <rect x="0" y="222" width="220" height="50" fill="#9C7A58" rx="6"/>
+      <g fill="#D9A05B"><rect x="30" y="196" width="60" height="26" rx="6"/></g>
+      <g fill="#F5D7A1"><rect x="30" y="196" width="60" height="8" rx="4"/></g>
+      <g fill="#B84A62"><circle cx="130" cy="210" r="12"/><circle cx="152" cy="210" r="12"/><circle cx="174" cy="210" r="12"/><circle cx="141" cy="194" r="12"/><circle cx="163" cy="194" r="12"/></g>
+    </g>
+  </g>
+</svg>

@@ -5078,13 +5078,25 @@ function artKind(item, kind) {
   return kind;
 }
 function shortCredit(c) { c = String(c || "").split("·")[0].trim(); return c.length > 22 ? c.slice(0, 21) + "…" : c }
+/* 사진이 없거나 사진 주소가 깨진 곳: 종류별 기본 일러스트(img/ill/*.svg).
+   어울리는 일러스트가 없는 종류(박물관·미술관 등)는 기존 아이콘 포스터를 그대로 씀 */
+function coverIll(item, kind) {
+  const k = [kind, item.kind, item.category].filter(Boolean).join(" ");
+  if (item.market || /시장|오일장|5일장/.test(k)) return "img/ill/market.svg";
+  if (/공원|정원|자연|경관|트레킹|숲|산책|등산/.test(k)) return "img/ill/outdoor.svg";
+  if (/도서관|문학관|책방|서점/.test(k)) return "img/ill/library.svg";
+  if (/카페|식당|맛집|음식|빵/.test(k)) return "img/ill/food.svg";
+  return "";
+}
 function cover(item, kind) {
   const pic = placeImage(item);
   kind = artKind(item, kind);
+  const ill = coverIll(item, kind);
+  const fb = ill ? `<img class="ill" src="${ill}" alt="" loading="lazy">` : artFallback(kind);
   if (pic && /^(https?:|data:image)/.test(pic)) {
-    return `<div class="cover"><img src="${esc(pic)}" alt="" loading="lazy" onerror="this.style.display='none'"><span class="credit">사진 ${esc(shortCredit(item.imageCredit) || (MAJOR_PHOTO_FALLBACK[item.id] ? "대표 이미지" : ""))}</span>${artFallback(kind)}</div>`;
+    return `<div class="cover">${fb}<img class="pic" src="${esc(pic)}" alt="" loading="lazy" onerror="this.nextElementSibling&&this.nextElementSibling.remove();this.remove()"><span class="credit">사진 ${esc(shortCredit(item.imageCredit) || (MAJOR_PHOTO_FALLBACK[item.id] ? "대표 이미지" : ""))}</span></div>`;
   }
-  return `<div class="cover noimg">${artFallback(kind)}</div>`;
+  return `<div class="cover noimg${ill ? " ill" : ""}">${fb}</div>`;
 }
 function artFallback(kind) { const [ic, a, b] = KIND_ART[kind] || ["✦", "#e8eee9", "#f6f8f6"]; return `<div class="art" style="background:linear-gradient(135deg,${a},${b})"><span>${ic}</span><b>${REGION === "gj" ? "빛고을 광주" : esc(RNAME())}</b></div>` }
 const foodIcon = r => (FOOD_ART.find(([k]) => (r.menu || "").includes(k) || r.name.includes(k)) || [0, "🍽"])[1];
@@ -10676,6 +10688,13 @@ html body .repFestival.repFestHero{background:linear-gradient(120deg,var(--hong)
 html body{--cf:radial-gradient(circle at 16% 20%,rgba(255,211,77,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 84% 16%,rgba(127,224,160,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 70% 58%,rgba(169,155,255,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 26% 74%,rgba(244,163,168,.95) 0 2.5px,transparent 3.5px),radial-gradient(circle at 48% 36%,rgba(255,255,255,.55) 0 1.5px,transparent 2.5px);
   --pv-in:linear-gradient(150deg,#2b4d85,#5a7cba);--pv-pl:linear-gradient(150deg,#4f3a86,#8a6bc6);--pv-ho:linear-gradient(150deg,#ff7a35,#ffb45c);--pv-gr:linear-gradient(150deg,#1f7a55,#45b083)}
 html body .card .visual:not(.photo),html body .nowCard .ncPic:not([style]),html body .ph.emptyPhoto,html body .cover.noimg .art{background:var(--cf),var(--pv-in)!important;position:relative;overflow:hidden}
+/* 사진 없는 표지가 칸을 꽉 채우도록 (위 규칙의 position:relative 때문에 아래쪽이 회색으로 비던 문제) */
+html body .cover.noimg .art{position:absolute;inset:0}
+/* 기본 일러스트 표지 */
+html body .cover img.ill{z-index:0;background:#f4f1ea}
+html body .cover img.pic{z-index:1}
+:root[data-theme="dark"] .cover img.ill{filter:brightness(.72) saturate(.9)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .cover img.ill{filter:brightness(.72) saturate(.9)}}
 html body .card .visual.art-음악,html body .card .visual.art-공연,html body .nowCard.mu .ncPic:not([style]),html body .nowCard.pf .ncPic:not([style]){background:var(--cf),var(--pv-pl)!important}
 html body .card .visual.art-축제,html body .nowCard.fe .ncPic:not([style]){background:var(--cf),var(--pv-ho)!important}
 html body .card .visual.art-스포츠{background:var(--cf),var(--pv-gr)!important}
