@@ -21,6 +21,7 @@
       - 일정 목록 renderEvents() · 축제 달력 annualBlock() · renderRepCalendar()
   · 뒤쪽 작은 <script id=…>   : 오른쪽 '더 보기'(rightQuickScript), 하단 빠른메뉴(quickDockControllerV3), 관리자 점검(#admin) 등
   · 맨 끝 <style id="tidy-1025"> : 2026-10-25 폰 화면 정리(칩 높이 통일·쪽빛 스킨·24시간 날씨·메뉴 겹침 정리 등)
+  · 맨 끝 <script id="bigTextAndCourseShare20261025"> : 글자 크게 보기(가+ 버튼, 기기에 기억) · 짜 준 코스를 카톡 등으로 통째로 보내기
   · 자동 수집: 저장소 scripts/*.py + .github/workflows/update-data.yml (하루 2회, 결과는 docs/data/)
   · 개인정보: 회원가입·서버 저장 없음. 찜·방문 기록은 이용자 기기(localStorage)에만 저장
 -->
@@ -2080,6 +2081,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 </style>
 </head>
 <body data-tab="home" data-screen="home">
+<script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
 <header class="top"><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
@@ -2087,6 +2089,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
     <div><b>오늘, 전남광주 어디로?</b><small>광주·전남 전시·공연·맛집·나들이 한눈에</small></div>
   </div>
   <label class="search"><span>⌕</span><input id="search" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 — 도서관, 동네, 요가, 보리밥"></label>
+  <button id="bigTextToggle" class="darkToggle bigTextBtn" type="button" onclick="toggleBigText()" aria-pressed="false" aria-label="글자 크게 보기" title="글자 크게 보기">가<small>+</small></button>
   <button id="darkToggle" class="darkToggle" type="button" onclick="cycleTheme()" aria-label="화면 밝기 바꾸기">🌓</button>
   <button id="install" class="install hidden">📲 앱 설치</button>
 </div>
@@ -10550,5 +10553,83 @@ html body .cultureSpot .cdBtns>button{border-width:1.5px!important}
 html body .repFestHero .repDistricts{flex-wrap:wrap!important;overflow:visible!important;gap:6px!important}
 /* 오른쪽 '더 보기' 손잡이도 남색으로 */
 :root:not([data-theme="dark"]) .rightQuickToggle{background:rgba(31,61,115,.94)!important}
+</style>
+
+<script id="bigTextAndCourseShare20261025">
+/* ── 글자 크게 보기 (어르신·작은 글씨가 불편한 분) ── */
+(function(){
+  const btn=document.getElementById('bigTextToggle');
+  const sync=()=>{const on=document.documentElement.classList.contains('bigText');if(btn){btn.setAttribute('aria-pressed',String(on));btn.setAttribute('aria-label',on?'글자 원래 크기로':'글자 크게 보기');btn.title=on?'글자 원래 크기로':'글자 크게 보기'}};
+  window.toggleBigText=()=>{const on=document.documentElement.classList.toggle('bigText');try{localStorage.setItem('glm_bigtext',on?'1':'0')}catch(e){}sync();if(typeof toast==='function')toast(on?'글자를 크게 보여드려요':'글자를 원래 크기로 돌렸어요')};
+  sync();
+})();
+/* ── 짜 준 코스를 통째로 가족·친구에게 보내기 (카톡·문자 등) ──
+   '오늘 뭐하지?' 동선(.routePreview)과 하루 코스·데이트 코스(.aiTrip ol.trip)에 버튼을 자동으로 붙인다. */
+(function(){
+  const T=el=>(el?el.textContent:'').replace(/\s+/g,' ').trim();
+  function courseText(box){
+    const lines=[];
+    if(box.classList.contains('routePreview')){
+      lines.push(T(box.querySelector(':scope > b'))||'오늘 코스');
+      const clock=box.querySelector('.tripClock'); if(clock) lines.push(T(clock).replace(/\(위 .*?\)/,'').trim());
+      let n=0;
+      box.querySelectorAll('.routeSteps > .routeStop, .routeSteps > .routeLeg').forEach(el=>{
+        if(el.classList.contains('routeStop')){n++;const nm=T(el.querySelector('b'));const when=T(el.querySelector('.tripWhen')).replace(/^⏰\s*/,'');lines.push(`${n}. ${nm}${when?` — ${when}`:''}`)}
+        else{const leg=T(el.querySelector(':scope > span:last-child'));if(leg)lines.push(`   ↓ ${leg}`)}
+      });
+      if(!n) return '';
+    }else{
+      const head=box.querySelector('.alHead b'); let title=head?head.cloneNode(true):null;
+      if(title){title.querySelectorAll('.creamingTransport').forEach(x=>x.remove())}
+      lines.push(T(title)||'오늘 코스');
+      const where=T(box.querySelector('.alHead > span')); if(where) lines.push('📍 '+where);
+      let n=0;
+      box.querySelectorAll('ol.trip > li').forEach(li=>{const tm=T(li.querySelector('time'));const nm=T(li.querySelector('b'));if(!nm)return;n++;lines.push(`${tm?tm+' ':''}${nm}`)});
+      if(!n) return '';
+    }
+    lines.push('※ 운영시간·휴관은 가기 전에 한 번 더 확인하세요');
+    return lines.join('\n');
+  }
+  async function send(box){
+    const text=courseText(box); if(!text) return;
+    const url=(typeof SITE_URL!=='undefined'?SITE_URL:location.href.split('#')[0]);
+    const title=text.split('\n')[0];
+    try{ if(navigator.share){ await navigator.share({title,text,url}); return } }catch(e){ if(e&&e.name==='AbortError') return }
+    try{ await navigator.clipboard.writeText(text+'\n'+url); if(typeof toast==='function') toast('코스를 복사했어요. 카톡에 붙여넣기 하세요.') }
+    catch{ prompt('아래 내용을 복사해서 보내세요', text+'\n'+url) }
+  }
+  function attach(root){
+    (root||document).querySelectorAll('.routePreview, .aiTrip').forEach(box=>{
+      if(box.dataset.shareAttached) return;
+      const ok=box.classList.contains('routePreview')?box.querySelector('.routeStop'):box.querySelector('ol.trip > li b');
+      if(!ok) return;
+      box.dataset.shareAttached='1';
+      const b=document.createElement('button'); b.type='button'; b.className='courseShareBtn';
+      b.innerHTML='📤 이 코스 가족·친구에게 보내기';
+      b.addEventListener('click',e=>{e.stopPropagation();send(box)});
+      box.appendChild(b);
+    });
+  }
+  const mo=new MutationObserver(ms=>{for(const m of ms){if(m.addedNodes.length){attach(m.target.nodeType===1?m.target:document);}}});
+  const start=()=>{['answer','modalContent'].forEach(id=>{const el=document.getElementById(id);if(el){mo.observe(el,{childList:true,subtree:true});attach(el)}})};
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+  window.__courseText=courseText;
+})();
+</script>
+<style id="bigTextAndCourseShare20261025-style">
+/* 글자 크게: 본문 영역만 1.15배 (위쪽 머리글·아래 메뉴는 그대로) */
+html.bigText body main, html.bigText body #hero, html.bigText body footer.foot2, html.bigText body .homeOnly.wrap, html.bigText body #modal .modalBox{zoom:1.15}
+html body .bigTextBtn{margin-left:auto!important;font-weight:900;font-size:15px!important;letter-spacing:-.5px}
+html body .bigTextBtn{display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;padding:0!important}
+html body .bigTextBtn small{font-size:10px;font-weight:900;margin-left:1px;position:relative;top:-4px}
+/* 첫 화면: 인사말이 길어도 크리밍과 겹치지 않게 제목·설명 폭을 크리밍만큼 비움 */
+@media(max-width:759px){html body .hero #greet,html body .hero #heroLead{max-width:calc(100% - 92px)!important}html body .heroSkyCream{top:104px!important}}
+html body .bigTextBtn + .darkToggle{margin-left:6px!important}
+/* 큰 글씨여도 첫 화면 큰 제목은 원래 크기 정도로 (이미 충분히 큼) */
+html.bigText body .hero #greet{font-size:clamp(33px,9vw,56px)!important}
+html.bigText body .bigTextBtn{background:var(--green,#1f3d73)!important;color:#fff!important;border-color:var(--green,#1f3d73)!important}
+/* 코스 보내기 버튼 */
+html body .courseShareBtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:44px;margin:12px 0 2px;border-radius:999px;border:0;background:var(--hong,#ff6a2b);color:#fff;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 6px 16px rgba(255,106,43,.25)}
+html body .courseShareBtn:active{transform:translateY(1px)}
 </style>
 </body></html>
