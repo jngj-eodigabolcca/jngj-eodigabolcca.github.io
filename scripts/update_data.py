@@ -11,7 +11,7 @@
 """
 
 from __future__ import annotations
-import html, os, json, re, time, urllib.error, urllib.parse, urllib.request
+import csv, hashlib, io, html, os, json, re, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -820,6 +820,135 @@ def culture_events():
     return out
 
 
+
+# ───────── 공공데이터포털 표준데이터 (CSV): 전국문화축제 · 전국공연행사정보 ─────────
+# 시·군·구가 직접 올리는 작은 동네 축제·행사를 보강한다. 표준데이터 API 신청이 막혀 있어 CSV 파일로 받는다.
+# 사용법: 공공데이터포털에서 「전국문화축제표준데이터」, 「전국공연행사정보표준데이터」 CSV를 내려받아
+#         저장소 맨 바깥(또는 raw/ 폴더)에 올리면, 하루 2번 자동 실행 때 광주·전남 것만 골라 일정에 더해요.
+#         (파일 이름은 상관없음 · 첫 줄 열 이름으로 알아봄 · 새 파일을 올리면 가장 최근 것을 씀)
+STD_NOTE = ""
+STD_WINDOW_DAYS = 60          # 오늘부터 이 기간 안에 열리거나 진행 중인 것만
+
+def _std_csv_files(must_have):
+    files = []
+    for d in (ROOT / "raw", ROOT):
+        if d.exists():
+            files += sorted(d.glob("*.csv"))
+    found = []
+    for f in files:
+        raw = f.read_bytes()
+        text = None
+        for enc in ("utf-8-sig", "cp949", "euc-kr"):
+            try:
+                text = raw.decode(enc); break
+            except UnicodeDecodeError:
+                continue
+        if not text:
+            continue
+        head = text.split("\n", 1)[0]
+        if all(m in head for m in must_have):
+            found.append((f.stat().st_mtime, f.name, text))
+    found.sort(reverse=True)
+    return found[0] if found else None
+
+def _std_pick(row, *names):
+    for n in names:
+        v = (row.get(n) or "").strip()
+        if v:
+            return v
+    return ""
+
+def _std_date(v):
+    v = (v or "").strip()
+    m = re.match(r"(\d{4})[-./]?(\d{1,2})[-./]?(\d{1,2})", v)
+    if not m:
+        return None
+    try:
+        return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3))).strftime("%Y-%m-%d")
+    except ValueError:
+        return None
+
+def _std_category(title, desc, festival):
+    t = f"{title} {desc}"
+    if re.search(r"전시|展|미술|사진전|갤러리", title):
+        return "전시", "전시"
+    if festival or re.search(r"축제|페스티벌|문화제|한마당", title):
+        return "축제", "지역 축제"
+    if re.search(r"콘서트|음악회|연주회|오케스트라|국악|버스킹|공연|뮤지컬|연극|무용", t):
+        return "공연", "지역 공연"
+    return "축제", "지역 행사"
+
+def std_csv_events():
+    """표준데이터 CSV 두 종류를 읽어 광주·전남의 가까운 일정만 앱 일정 형식으로 바꾼다."""
+    global STD_NOTE
+    out, notes = [], []
+    today = NOW.date()
+    until = (today + timedelta(days=STD_WINDOW_DAYS)).isoformat()
+    kinds = [
+        ("문화축제", ("축제명", "축제시작일자"), True,
+         dict(title=("축제명",), place=("개최장소",), start=("축제시작일자",), end=("축제종료일자",), desc=("축제내용",),
+              org=("주관기관명", "주최기관명"), phone=("전화번호", "주관기관전화번호"), url=("홈페이지주소", "관련정보"),
+              addr=("소재지도로명주소", "소재지지번주소"), lat=("위도",), lng=("경도",), time=(), price=(), provider=("제공기관명",))),
+        ("공연행사", ("행사명", "행사시작일자"), False,
+         dict(title=("행사명",), place=("장소", "행사장소", "개최장소"), start=("행사시작일자",), end=("행사종료일자",),
+              desc=("행사내용",), org=("주관기관", "주관기관명", "주최기관", "주최기관명"), phone=("전화번호",),
+              url=("홈페이지주소",), addr=("소재지도로명주소", "소재지지번주소"), lat=("위도",), lng=("경도",),
+              time=("행사시작시각",), price=("요금정보", "관람요금"), provider=("제공기관명",))),
+    ]
+    for label, must, festival, col in kinds:
+        got = _std_csv_files(must)
+        if not got:
+            notes.append(f"{label} CSV 없음")
+            continue
+        _, fname, text = got
+        n_in = 0
+        for r in csv.DictReader(io.StringIO(text)):
+            r = {(k or "").strip(): (v or "") for k, v in r.items()}
+            title = clean_api_text(_std_pick(r, *col["title"]))
+            start = _std_date(_std_pick(r, *col["start"]))
+            end = _std_date(_std_pick(r, *col["end"])) or start
+            if not title or not start:
+                continue
+            addr = _std_pick(r, *col["addr"])
+            place = clean_api_text(_std_pick(r, *col["place"]))
+            provider = _std_pick(r, *col["provider"])
+            if not in_region(" ".join([addr, provider, place])):
+                continue
+            if end < today.isoformat() or start > until:
+                continue
+            if RECRUIT_RE.search(title):
+                continue
+            desc = clean_api_text(_std_pick(r, *col["desc"]))
+            cat, sub = _std_category(title, desc, festival)
+            district = district_from_addr(addr) or district_hint(title, place) or ""
+            price = clean_api_text(_std_pick(r, *col["price"])) if col["price"] else ""
+            tm = _std_pick(r, *col["time"]) if col["time"] else ""
+            uid = hashlib.sha1(f"{label}|{title}|{start}|{place}".encode("utf-8")).hexdigest()[:12]
+            link = extract_api_url(_std_pick(r, *col["url"]))
+            out.append({
+                "id": f"std-{uid}",
+                "category": cat, "subtype": sub, "title": title,
+                "venue": place or provider, "venueId": match_venue(place, addr),
+                "district": district, "address": addr,
+                "date": f"{start} ~ {end}".strip(" ~"),
+                "time": tm or "시간은 공식 원문에서 확인",
+                "price": price or ("무료" if re.search(r"무료", desc) else "가격은 공식 원문에서 확인"),
+                "contact": _std_pick(r, *col["phone"]),
+                "description": desc[:400],
+                "status": "예정" if start > TODAY_ISO else "진행중",
+                "start": start, "end": end, "image": "",
+                "lat": to_float(_std_pick(r, *col["lat"])), "lng": to_float(_std_pick(r, *col["lng"])),
+                "source": f"공공데이터포털 {label} 표준데이터" + (f" ({provider})" if provider else ""),
+                "url": link or "https://www.data.go.kr/",
+                "origin": "auto", "api": "stdevents", "verified": TODAY_ISO,
+                "tags": [t for t in dict.fromkeys([cat, sub, region_tag(district) if district else "",
+                         "무료" if re.search(r"무료", price + " " + desc) else ""]) if t],
+            })
+            n_in += 1
+        notes.append(f"{label} {n_in}건 ({fname})")
+    STD_NOTE = " · ".join(notes)
+    return out
+
 KOPIS_BASE = "http://www.kopis.or.kr/openApi/restful"
 KOPIS_MUSIC = ("대중음악", "서양음악(클래식)", "한국음악(국악)", "클래식", "국악")
 
@@ -1241,6 +1370,7 @@ def main():
         ("kopis", "KOPIS 공연", kopis_performances),
         ("culture", "문화정보원 전시·체험", culture_events),
         ("gma", "광주시립미술관 전시", gma_exhibitions),
+        ("stdevents", "공공데이터 표준(축제·공연행사)", std_csv_events),
     ]:
         if source_id == "kopis":
             last = old_meta.get("kopis_last_try")
@@ -1262,7 +1392,8 @@ def main():
             log(f"✔ {source_name} {len(rows)}건 ({int(time.time() - t0)}초)")
             api_events.extend(rows)
             statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(rows),
-                             "message": "정상 수집" + (f" ({CULTURE_MODE})" if source_id == "culture" and CULTURE_MODE else "")})
+                             "message": "정상 수집" + (f" ({CULTURE_MODE})" if source_id == "culture" and CULTURE_MODE else "")
+                                        + (f" ({STD_NOTE})" if source_id == "stdevents" and STD_NOTE else "")})
         except Exception as e:
             # 한 곳이 실패하면 그 출처의 지난번 자료를 그대로 유지
             kept = [p for p in previous if p.get("api") == source_id or p.get("origin") == source_id]
