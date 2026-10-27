@@ -10789,6 +10789,9 @@ html body .cultureSpot .cdBtns{display:flex!important;flex-wrap:wrap;gap:8px!imp
 html body .cultureSpot .cdBtns>a,html body .cultureSpot .cdBtns>button{height:44px!important;min-height:44px!important;max-height:44px!important;box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:0 16px!important;margin:0!important;border-radius:999px!important;font-size:13.5px!important;font-weight:800!important;line-height:1!important;white-space:nowrap!important;flex:1 1 auto;min-width:0}
 html body .cultureSpot .cdBtns>button{border-width:1.5px!important}
 :root:not([data-theme="dark"]) .cultureSpot .cultureDay .cdBtns>a{background:var(--green)!important}
+/* 문화가 있는 날 카드: 버튼 글자가 배경색에 묻히지 않게 (남색 배경 + 보라 글자 → 안 보였음) */
+:root:not([data-theme="dark"]) .cultureSpot .cultureDay .cdBtns>a{color:#fff!important}
+:root:not([data-theme="dark"]) .cultureSpot .cultureDay.hot .cdBtns>a,:root:not([data-theme="dark"]) .cultureSpot .cultureDay.warm .cdBtns>a{background:#fff!important;color:#5b21b6!important}
 /* 축제 달력 지역 버튼: 옆으로 숨지 않게 여러 줄로 */
 html body .repFestHero .repDistricts{flex-wrap:wrap!important;overflow:visible!important;gap:6px!important}
 /* 오른쪽 '더 보기' 손잡이도 남색으로 */
