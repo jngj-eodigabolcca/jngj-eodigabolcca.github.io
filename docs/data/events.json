@@ -109,7 +109,7 @@
     "imageCredit": "한국관광공사 · 대표 이미지"
   },
   {
-    "detailAt": "2026-10-20",
+    "detailAt": "2026-10-28",
     "id": "tour-3488655",
     "apiId": "3488655",
     "category": "축제",
@@ -140,7 +140,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "광주"
@@ -202,7 +202,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "행사",
       "교육·체험",
@@ -236,7 +236,7 @@
     "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "행사",
       "교육·체험",
@@ -245,7 +245,7 @@
     ]
   },
   {
-    "detailAt": "2026-10-20",
+    "detailAt": "2026-10-28",
     "id": "tour-3478890",
     "apiId": "3478890",
     "category": "축제",
@@ -276,14 +276,14 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "jeonil245",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "광주"
     ]
   },
   {
-    "detailAt": "2026-10-20",
+    "detailAt": "2026-10-28",
     "id": "tour-2865136",
     "apiId": "2865136",
     "category": "축제",
@@ -314,7 +314,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "광주"
@@ -417,7 +417,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -450,7 +450,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남"
@@ -482,7 +482,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -515,7 +515,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -548,7 +548,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&boardId=ART_001&seq=1966136&movePage=1&recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -693,7 +693,7 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -726,7 +726,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주"
@@ -843,7 +843,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -936,7 +936,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -1045,7 +1045,7 @@
     "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&bid=0315&act=view&list_no=1234&mid=a70501000000&bid=0315&nPage=1&b_list=10&orderby=&dept_code=&tag=&step_yn=&list_no=1234&act=view&_csrf=751522b5-510b-4051-aefe-38319efb4426&cg_code=C01&keyField=&keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -1475,7 +1475,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -1548,7 +1548,7 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -1826,7 +1826,7 @@
     "url": "https://blog.naver.com/kr_gallery/224442490830",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "전남",
@@ -1921,7 +1921,7 @@
     "url": "https://www.acc.go.kr/main/event.do?PID=030609&action=Read&bnkey=EM_0000010065",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "전시",
       "광주",
@@ -2411,7 +2411,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "전남"
@@ -2478,44 +2478,6 @@
     "source": "영암군청년센터 발표 · 내외일보 2026.10.16",
     "url": "https://www.naewoeilbo.com/news/articleView.html?idxno=2433249",
     "origin": "manual"
-  },
-  {
-    "detailAt": "2026-10-21",
-    "id": "tour-2039752",
-    "apiId": "2039752",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "월출산 국화축제",
-    "venue": "월출산 기찬랜드",
-    "district": "영암군",
-    "address": "전남광주통합특별시 영암군 영암읍 기찬랜드로 19-10",
-    "date": "2026-10-30 ~ 2026-11-15",
-    "time": "10:00~18:00",
-    "price": "무료",
-    "age": "",
-    "program": "1. 국화 전시 - 국화 23종·20만여 점 및 국화 조형물 전시 2. 볼거리 - 월출산 기찬랜드 일원 꽃길과 억새 포토존 운영 3. 판매 행사 - 운영부스, 영암 농특산물 판매관 운영",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "영암군",
-    "status": "예정",
-    "start": "2026-10-30",
-    "end": "2026-11-15",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/50/4121450_image2_1.jpg",
-    "lat": 34.7919316346,
-    "lng": 126.6855988347,
-    "contact": "061-470-2259",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-10-27",
-    "tags": [
-      "축제",
-      "전남"
-    ]
   },
   {
     "id": "mp-haenam-minam-2026",
@@ -2883,7 +2845,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "전남"
@@ -3048,7 +3010,7 @@
     "url": "",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "공연",
       "연극",
@@ -3892,7 +3854,7 @@
     "url": "https://yeongam.moonhwain.kr:447/rsvc/rsv_pm.html?vwClsPidx=1&only=0",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -3999,6 +3961,39 @@
       "공연",
       "뮤지컬",
       "전남"
+    ]
+  },
+  {
+    "detailAt": "2026-10-28",
+    "id": "culture-404558",
+    "apiId": "404558",
+    "category": "음악",
+    "subtype": "음악/콘서트",
+    "title": "[전남 광주] 전남광주통합특별시립교향악단 체임버 시리즈 VII ‘Souvenir’",
+    "venue": "광주예술의전당",
+    "venueId": "artcenter",
+    "district": "북구",
+    "address": "전남광주통합특별시 북구 북문대로 60 광주예술의전당",
+    "date": "2026-11-11 ~ 2026-11-11",
+    "time": "시간은 공식 원문에서 확인",
+    "price": "전석 10,000원",
+    "contact": "062-524-5086",
+    "description": "",
+    "status": "예정",
+    "start": "2026-11-11",
+    "end": "2026-11-11",
+    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102421244383455.jpg",
+    "lat": 35.17820701521892,
+    "lng": 126.88143572402265,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://ticket.yes24.com/Perf/60504",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-10-28",
+    "tags": [
+      "음악",
+      "음악/콘서트",
+      "광주"
     ]
   },
   {
@@ -4725,7 +4720,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-27",
+    "verified": "2026-10-28",
     "tags": [
       "축제",
       "전남"
