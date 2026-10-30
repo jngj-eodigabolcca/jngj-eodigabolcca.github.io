@@ -140,7 +140,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "광주"
@@ -174,7 +174,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-29",
@@ -202,7 +202,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "행사",
       "교육·체험",
@@ -236,7 +236,7 @@
     "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "행사",
       "교육·체험",
@@ -276,7 +276,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "jeonil245",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "광주"
@@ -314,7 +314,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "광주"
@@ -417,7 +417,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
@@ -450,7 +450,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남"
@@ -482,7 +482,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2296",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
@@ -515,7 +515,7 @@
     "url": "https://www.yeongam.go.kr/home/haart/display_info/show/2295",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
@@ -548,7 +548,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&boardId=ART_001&seq=1966136&movePage=1&recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
@@ -618,7 +618,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "id": "ys-island-expo-2026",
@@ -668,7 +668,7 @@
     "aliases": "여수세계섬박람회 여수섬박람회 섬박람회 2026 여수 국제 섬 박람회"
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "culture-398725",
     "apiId": "398725",
     "category": "전시",
@@ -693,7 +693,7 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -726,7 +726,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주"
@@ -818,7 +818,7 @@
     "imageCredit": "한국관광공사 VISITKOREA · 대표 이미지"
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "culture-396664",
     "apiId": "396664",
     "category": "전시",
@@ -843,7 +843,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -878,7 +878,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "id": "gma-953",
@@ -908,7 +908,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-29",
@@ -936,7 +936,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -1045,7 +1045,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009927",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -1078,7 +1078,7 @@
     "url": "https://bukgu.gwangju.kr/board.es?mid=a70501000000&bid=0315&act=view&list_no=1234&mid=a70501000000&bid=0315&nPage=1&b_list=10&orderby=&dept_code=&tag=&step_yn=&list_no=1234&act=view&_csrf=751522b5-510b-4051-aefe-38319efb4426&cg_code=C01&keyField=&keyWord=",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -1508,7 +1508,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -1556,7 +1556,7 @@
     }
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "culture-401602",
     "apiId": "401602",
     "category": "전시",
@@ -1581,56 +1581,12 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
       "무료"
     ]
-  },
-  {
-    "time": "매주 목요일 19:30 (8일 가곡 · 15일 고흐 인문학 · 22일 오페라 · 29일 렉처콘서트)",
-    "price": "예매 시 확인",
-    "discount": "",
-    "group": "",
-    "child": "7세 이상",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "",
-    "accessibility": "",
-    "reservation": "전화 사전예약 또는 당일 현장구매(잔여석)",
-    "contact": "광주문화재단 빛고을시민문화관",
-    "status": "진행중",
-    "verified": "2026-10-03",
-    "origin": "manual",
-    "tags": [
-      "음악",
-      "공연"
-    ],
-    "id": "thursday-concert-2026-10",
-    "category": "음악",
-    "subtype": "클래식·융합",
-    "title": "광주문화재단 2026 목요콘서트 (10월)",
-    "venue": "빛고을아트스페이스 5층 소공연장 (빛고을시민문화관 단지)",
-    "district": "남구",
-    "address": "광주광역시 남구 천변좌로338번길 7",
-    "date": "10.08 — 10.29",
-    "start": "2026-10-08",
-    "end": "2026-10-29",
-    "verify": "일정·장소·예약방법 확인 · 가격 미확인",
-    "source": "중부뉴스통신 (광주문화재단 발표)",
-    "url": "https://www.jungbunews.com/news/articleView.html?idxno=2737501",
-    "ticket": {
-      "status": "관람가능",
-      "note": "전화예약 또는 현장구매 (잔여석)",
-      "checked": "2026-10-03"
-    },
-    "lat": 35.1478895,
-    "lng": 126.9086598,
-    "venueId": "bitgoeul",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/05/3366705_image2_1.jpg",
-    "imageCredit": "한국관광공사 · 대표 이미지"
   },
   {
     "detailAt": "2026-10-22",
@@ -1798,7 +1754,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "category": "행사",
@@ -1859,7 +1815,7 @@
     "url": "https://blog.naver.com/kr_gallery/224442490830",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "전남",
@@ -1924,7 +1880,7 @@
     "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjExhibit.php?pageID=artmuse0209000000&action=view&exhiCd=002&exhiTp=N&lang=KOR&eSeq=961",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -1957,7 +1913,7 @@
     "url": "https://www.acc.go.kr/main/event.do?PID=030609&action=Read&bnkey=EM_0000010065",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "전시",
       "광주",
@@ -2105,114 +2061,6 @@
     "origin": "manual"
   },
   {
-    "time": "PO 3차전 10.28(수) 18:30 · 4차전 10.29(목) 18:30 (4차전은 시리즈가 안 끝났을 때만)",
-    "price": "예매처에서 좌석별 확인",
-    "discount": "",
-    "group": "",
-    "child": "",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "",
-    "accessibility": "",
-    "reservation": "KBO 포스트시즌 예매 공지 확인",
-    "contact": "",
-    "status": "예정",
-    "verified": "2026-10-21",
-    "origin": "manual",
-    "tags": [
-      "스포츠",
-      "야구",
-      "가족"
-    ],
-    "district": "북구",
-    "address": "광주광역시 북구 서림로 10",
-    "id": "kia-postseason-2026",
-    "category": "스포츠",
-    "subtype": "프로야구",
-    "title": "KIA 타이거즈 플레이오프 광주 홈경기 (vs 삼성)",
-    "venue": "광주-기아 챔피언스필드",
-    "date": "10.28 — 10.29",
-    "start": "2026-10-28",
-    "end": "2026-10-29",
-    "verify": "KIA가 준플레이오프에서 LG를 3승으로 꺾고 플레이오프 진출 · 1·2·5차전은 대구, 3·4차전이 광주",
-    "source": "이투데이 (플레이오프 대진·예매 일정)",
-    "url": "https://www.etoday.co.kr/news/view/2638080",
-    "ticket": {
-      "status": "예매예정",
-      "note": "3·4차전 예매 10.22(목) 14:00·15:00 NOL 티켓 오픈 · 1인 4매",
-      "checked": "2026-10-21",
-      "link": "https://nol.yanolja.com/ticket",
-      "linkName": "NOL 티켓"
-    },
-    "venueId": "champions",
-    "image": ""
-  },
-  {
-    "detailAt": "2026-10-22",
-    "id": "kopis-PF302698",
-    "apiId": "PF302698",
-    "category": "음악",
-    "subtype": "한국음악(국악)",
-    "title": "숲속음악대 덩따쿵 [완도]",
-    "venue": "완도문화예술의전당",
-    "venueId": null,
-    "district": "완도군",
-    "address": "전남광주통합특별시 완도군 완도읍 개포로159번길 55",
-    "date": "2026-10-29 ~ 2026-10-29",
-    "time": "목요일(15:00,19:00)",
-    "price": "전석 10,000원",
-    "age": "만 3세 이상",
-    "cast": "장지연, 이세나, 윤이나, 정승희, 유태겸",
-    "runtime": "45분",
-    "status": "공연중",
-    "start": "2026-10-29",
-    "end": "2026-10-29",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302698_261007_131518.jpg",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "http://www.ticketlink.co.kr/product/66045",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-10-29",
-    "tags": [
-      "공연",
-      "한국음악(국악)",
-      "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-10-29",
-    "id": "kopis-PF302742",
-    "apiId": "PF302742",
-    "category": "공연",
-    "subtype": "연극",
-    "title": "최진사댁 셋째딸 신랑찾기 [장흥]",
-    "venue": "장흥문화예술회관",
-    "venueId": null,
-    "district": "장흥군",
-    "address": "전남광주통합특별시 장흥군 장흥읍 읍성로 96",
-    "date": "2026-10-29 ~ 2026-10-29",
-    "time": "목요일(19:00)",
-    "price": "전석 10,000원",
-    "age": "전체 관람가",
-    "cast": "",
-    "runtime": "1시간 30분",
-    "status": "공연중",
-    "start": "2026-10-29",
-    "end": "2026-10-29",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302742_261007_145734.png",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "http://www.ticketlink.co.kr/product/66072",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-10-29",
-    "tags": [
-      "공연",
-      "연극",
-      "전남"
-    ]
-  },
-  {
     "id": "daein-night-20261030",
     "category": "축제",
     "subtype": "야시장",
@@ -2320,7 +2168,7 @@
     ]
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "tour-2559006",
     "apiId": "2559006",
     "category": "축제",
@@ -2338,7 +2186,7 @@
     "parking": "",
     "spendtime": "",
     "sponsor": "목포시",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-10-30",
     "end": "2026-11-01",
     "image": "https://tong.visitkorea.or.kr/cms/resource/17/4122717_image2_1.jpg",
@@ -2351,7 +2199,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "전남"
@@ -2785,7 +2633,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "전남"
@@ -2849,7 +2697,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-29"
+      "checked": "2026-10-30"
     },
     "id": "gtcc-saturday-2026-10-31",
     "date": "10.31 — 10.31",
@@ -2858,7 +2706,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-22",
@@ -2925,7 +2773,7 @@
     ]
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "culture-402968",
     "apiId": "402968",
     "category": "공연",
@@ -2934,11 +2782,11 @@
     "venue": "미로센터 [광주] 미로극장1관(신관)",
     "venueId": null,
     "district": "동구",
-    "address": "",
+    "address": "전남광주통합특별시 동구 중앙로196번길 15-12 미로센터1층",
     "date": "2026-10-31 ~ 2026-10-31",
     "time": "시간은 공식 원문에서 확인",
-    "price": "가격은 공식 원문에서 확인",
-    "contact": "",
+    "price": "전석 20,000원",
+    "contact": "062-514-4328",
     "description": "",
     "status": "예정",
     "start": "2026-10-31",
@@ -2947,10 +2795,10 @@
     "lat": 35.150051542673,
     "lng": 126.917885975555,
     "source": "한국문화정보원 문화정보",
-    "url": "",
+    "url": "https://www.ticketlink.co.kr/product/66002",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "공연",
       "연극",
@@ -3693,7 +3541,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-29"
+      "checked": "2026-10-30"
     },
     "id": "gtcc-saturday-2026-11-07",
     "date": "11.07 — 11.07",
@@ -3702,7 +3550,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-22",
@@ -3801,7 +3649,7 @@
     ]
   },
   {
-    "detailAt": "2026-10-22",
+    "detailAt": "2026-10-30",
     "id": "culture-402880",
     "apiId": "402880",
     "category": "음악",
@@ -3826,7 +3674,7 @@
     "url": "https://yeongam.moonhwain.kr:447/rsvc/rsv_pm.html?vwClsPidx=1&only=0",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -3961,7 +3809,7 @@
     "url": "https://ticket.yes24.com/Perf/60504",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -4361,7 +4209,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-29"
+      "checked": "2026-10-30"
     },
     "id": "gtcc-saturday-2026-11-14",
     "date": "11.14 — 11.14",
@@ -4370,7 +4218,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-22",
@@ -4692,7 +4540,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-10-29",
+    "verified": "2026-10-30",
     "tags": [
       "축제",
       "전남"
@@ -5022,7 +4870,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-29"
+      "checked": "2026-10-30"
     },
     "id": "gtcc-saturday-2026-11-21",
     "date": "11.21 — 11.21",
@@ -5031,7 +4879,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "id": "perf-7dda3f72",
@@ -5461,7 +5309,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-10-29"
+      "checked": "2026-10-30"
     },
     "id": "gtcc-saturday-2026-11-28",
     "date": "11.28 — 11.28",
@@ -5470,7 +5318,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "detailAt": "2026-10-24",
@@ -6285,7 +6133,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-10-29"
+    "verified": "2026-10-30"
   },
   {
     "id": "perf-236c9991",
