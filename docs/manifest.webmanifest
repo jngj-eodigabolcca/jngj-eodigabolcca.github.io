@@ -1,6 +1,6 @@
 {
-  "name": "오늘, 전남광주 어디로?",
-  "short_name": "오늘어디로",
+  "name": "오늘, 전남광주 어디가볼까?",
+  "short_name": "오늘어디가볼까",
   "description": "광주·전남 동네에서 오늘 바로 즐길 전시·공연·축제·도서관·강좌를 한눈에",
   "lang": "ko",
   "start_url": "./?source=app",
