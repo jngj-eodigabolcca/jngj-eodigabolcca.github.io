@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
-  오늘, 전남광주 어디로? (오늘어디로)
-  © 2026 오늘, 전남광주 어디로? All rights reserved.
+  오늘, 전남광주 어디가볼까? (어디가볼까)
+  © 2026 오늘, 전남광주 어디가볼까? All rights reserved.
   이 파일의 화면 구성·코드·문구·편집 데이터는 저작권법으로 보호됩니다.
   허락 없이 복제·수정·재배포하거나 다른 서비스에 쓸 수 없습니다. (LICENSE 참고)
   크리밍 캐릭터의 저작권 등록 여부는 등록증 등 증빙으로 별도 확인해야 합니다.
@@ -29,16 +29,16 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="오늘어디로">
-<meta name="author" content="오늘, 전남광주 어디로?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디로? All rights reserved.">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="어디가볼까">
+<meta name="author" content="오늘, 전남광주 어디가볼까?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디가볼까? All rights reserved.">
 <meta name="description" content="공공기관 문화·생활 정보를 자동으로 모아 전남광주 시민의 오늘 하루를 안내하는 앱. 전시·공연·축제·장날, 도서관과 동네 강좌를 권역별로 한눈에.">
 <!-- 카카오톡·페이스북·문자 공유 미리보기 (주소가 바뀌면 아래 3곳의 주소도 바꾸세요) -->
 <link rel="canonical" href="https://jngj-eodigabolcca.github.io/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="오늘어디로"><meta property="og:locale" content="ko_KR">
+<meta property="og:type" content="website"><meta property="og:site_name" content="어디가볼까"><meta property="og:locale" content="ko_KR">
 <meta property="og:url" content="https://jngj-eodigabolcca.github.io/">
-<meta property="og:title" content="오늘, 전남광주 어디로?">
+<meta property="og:title" content="오늘, 전남광주 어디가볼까?">
 <meta property="og:description" content="공공기관 문화·생활 정보를 자동으로 모아 광주·순천여수·무안목포 시민의 오늘 하루를 안내해요. 전시·공연·축제·장날, 도서관·동네 강좌까지 크리밍이 골라드려요.">
-<meta property="og:image" content="https://jngj-eodigabolcca.github.io/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="오늘, 전남광주 어디로? — 전시·공연·축제·맛집을 한눈에">
+<meta property="og:image" content="https://jngj-eodigabolcca.github.io/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="오늘, 전남광주 어디가볼까? — 전시·공연·축제·맛집을 한눈에">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://jngj-eodigabolcca.github.io/og-image.jpg">
 <link rel="manifest" href="manifest.webmanifest?v=2">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png?v=2">
@@ -47,7 +47,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
 <style>
-/* ════════ 오늘, 전남광주 어디로? — 무등산 초록 · 빛고을 금빛 · 한지 바탕 ════════ */
+/* ════════ 오늘, 전남광주 어디가볼까? — 무등산 초록 · 빛고을 금빛 · 한지 바탕 ════════ */
 :root{
   --bg:#f6f1e7;--paper:#fffdf9;--card:#ffffff;--ink:#16261f;--ink2:#3d4d45;--muted:#6f7b74;--line:#e5ddcf;--line2:#efe9de;
   --green:#0f766e;--green-d:#134e4a;--green-l:#e0f2ef;--moss:#3f8f7f;
@@ -1543,7 +1543,7 @@ html body .wk div.today{margin-top:0!important;z-index:auto!important}
   html body .groupGrid>button span{font-size:17px!important;flex:none!important;line-height:1!important}
   html body .groupGrid>button small{margin-left:auto!important;font-size:12px!important;flex:none!important;white-space:nowrap!important}
 }
-</style><title>오늘, 전남광주 어디로?</title>
+</style><title>오늘, 전남광주 어디가볼까?</title>
 <style>
 .bakery .foodIcon{font-size:34px;display:flex;align-items:center;justify-content:center;min-width:72px;background:linear-gradient(145deg,#fff3d9,#f5dfb7);border-radius:16px}
 @media(max-width:720px){.bakery .foodIcon{min-width:58px;font-size:28px}}
@@ -2097,6 +2097,7 @@ body.navExpanded nav#bottomNav{display:flex!important;visibility:visible!importa
 mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='3'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E") center/contain no-repeat}
 .pin .calIc{width:17px;height:17px;color:#c2410c}
 </style>
+<style>.brand .brandLong{display:none}@media (min-width:560px){.brand .brandLong{display:inline}}</style>
 </head>
 <body data-tab="home" data-screen="home">
 <script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
@@ -2104,7 +2105,7 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
 <header class="top"><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
     <div class="logo"><img src="favicon-64.png?v=2" alt="" aria-hidden="true"></div>
-    <div><b>오늘, 전남광주 어디로?</b><small>광주·전남 전시·공연·맛집·나들이 한눈에</small></div>
+    <div><b><span class="brandLong">오늘, 전남광주 </span>어디가볼까?</b><small>광주·전남 전시·공연·맛집·나들이 한눈에</small></div>
   </div>
   <label class="search"><span>⌕</span><input id="search" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 — 도서관, 동네, 요가, 보리밥"></label>
   <button id="bigTextToggle" class="darkToggle bigTextBtn" type="button" onclick="toggleBigText()" aria-pressed="false" aria-label="글자 크게 보기" title="글자 크게 보기">가<small>+</small></button>
@@ -2319,7 +2320,7 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디로?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디로? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터 디자인의 권리 관계 및 등록 여부는 관련 증빙자료로 확인해야 합니다. 사용·재배포에는 권리자의 허락이 필요할 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디가볼까? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터 디자인의 권리 관계 및 등록 여부는 관련 증빙자료로 확인해야 합니다. 사용·재배포에는 권리자의 허락이 필요할 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
 
 <nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events"><i class="calIc" aria-hidden="true"></i><span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="food">🍽<span>먹을 곳</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
@@ -6002,7 +6003,7 @@ function renderFavs() {
 /* 찜 옮기기: 로그인 없이 링크 하나로 (#fav=…) — 받는 쪽은 기존 찜에 '합쳐요'(지우지 않음) */
 window.shareFavs = async () => {
   const url = location.origin + location.pathname + "#fav=" + encodeURIComponent(FAVS.join(","));
-  try { if (navigator.share) { await navigator.share({ title: "오늘, 전남광주 어디로? 찜 목록", url }); return } } catch (e) { if (e && e.name === "AbortError") return }
+  try { if (navigator.share) { await navigator.share({ title: "오늘, 전남광주 어디가볼까? 찜 목록", url }); return } } catch (e) { if (e && e.name === "AbortError") return }
   try { await navigator.clipboard.writeText(url); toast("📋 찜 목록 링크를 복사했어요. 새 휴대폰에서 열어 주세요.") }
   catch { prompt("아래 링크를 복사해 새 휴대폰에서 열어 주세요", url) }
 };
@@ -7436,7 +7437,7 @@ function initDecisionMiniMap(picks){
     const modal=document.getElementById('modal');
     if(answer && mc && modal){
       mc.innerHTML=`<div class="decisionResult">
-        <div class="drHead"><div class="appResultHint">오늘어디로가 방금 고른 코스</div><span class="eyebrow">TODAY PICK</span><h3>오늘은 이렇게 가보세요.</h3><p style="margin:0;color:var(--muted);font-size:14px">${wideOk ? `${esc(RNAME())}을 우선으로 보고, 조건상 먼 권역까지 갈 수 있는 경우에만 범위를 넓혀요.` : `${esc(RNAME())} 안에서만, 고른 조건과 오늘 이용 가능한 정보를 기준으로 추렸어요.`} 모바일에서는 이 화면이 앱 결과 페이지처럼 열립니다.</p></div>
+        <div class="drHead"><div class="appResultHint">어디가볼까가 방금 골라준 코스</div><span class="eyebrow">TODAY PICK</span><h3>오늘은 이렇게 가보세요.</h3><p style="margin:0;color:var(--muted);font-size:14px">${wideOk ? `${esc(RNAME())}을 우선으로 보고, 조건상 먼 권역까지 갈 수 있는 경우에만 범위를 넓혀요.` : `${esc(RNAME())} 안에서만, 고른 조건과 오늘 이용 가능한 정보를 기준으로 추렸어요.`} 모바일에서는 이 화면이 앱 결과 페이지처럼 열립니다.</p></div>
         <div class="creamingGuide"><img class="creamingMascot" src="${CREAMING_SRC}" alt="크리밍"><div class="creamingBubble"><b>크리밍이 골라봤어요!</b>${esc(selected.time)} 동안 ${esc(selected.move)}로 이동하기 좋은 코스를 먼저 묶었어요. 아래에서 이동 순서도 같이 확인해보세요.</div></div>
         <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>🎟 입장료 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
         <div class="decisionExplain"><b>왜 이 코스를 추천했어요?</b><div class="chipsWhy">${reasons.map(r=>`<span>✓ ${esc(r)}</span>`).join('')}</div></div>
@@ -8026,7 +8027,7 @@ window.closeModal = (fromHistory = false) => { if (!$("#modal").classList.contai
 let dp; window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); dp = e; $("#install").classList.remove("hidden") }); $("#install").onclick = async () => { if (dp) { dp.prompt(); await dp.userChoice; dp = null; $("#install").classList.add("hidden") } };
 /* 아이폰은 설치 버튼이 없어서 안내로 대신 */
 (() => { const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = window.navigator.standalone || matchMedia("(display-mode: standalone)").matches;
-  if (ios && !standalone && location.protocol.startsWith("http") && !window.__PC__) { const b = $("#install"); b.classList.remove("hidden"); b.textContent = "📲 홈 화면에 추가"; b.onclick = () => alert("아이폰에서 앱처럼 쓰기\n\n① 아래 공유 버튼(□↑)을 누르고\n② '홈 화면에 추가'를 누르면 끝!\n\n바탕화면에 '오늘어디로' 아이콘이 생겨요.") } })();
+  if (ios && !standalone && location.protocol.startsWith("http") && !window.__PC__) { const b = $("#install"); b.classList.remove("hidden"); b.textContent = "📲 홈 화면에 추가"; b.onclick = () => alert("아이폰에서 앱처럼 쓰기\n\n① 아래 공유 버튼(□↑)을 누르고\n② '홈 화면에 추가'를 누르면 끝!\n\n바탕화면에 '어디가볼까' 아이콘이 생겨요.") } })();
 
 /* 📲 홈 화면에 추가 안내 — 두 번째 방문부터 한 번, 닫으면 30일 동안 안 보임. 이미 설치했으면 안 보임.
    카카오톡·네이버·인스타 안에서 열었으면 '브라우저로 열기'부터 안내 */
@@ -8266,7 +8267,7 @@ initNav();
 
 <div class="manualOverlay" id="userManual" hidden onclick="if(event.target===this)closeUserManual()">
  <section class="manualPanel" role="dialog" aria-modal="true" aria-labelledby="manualTitle" tabindex="-1">
-  <div class="manualTop"><div><small>오늘, 전남광주 어디로?</small><h2 id="manualTitle">📖 앱 사용설명서</h2><p>처음 이용하는 분도 쉽게 찾을 수 있도록 정리했어요.</p></div><button type="button" class="manualClose" onclick="closeUserManual()" aria-label="설명서 닫기">×</button></div>
+  <div class="manualTop"><div><small>오늘, 전남광주 어디가볼까?</small><h2 id="manualTitle">📖 앱 사용설명서</h2><p>처음 이용하는 분도 쉽게 찾을 수 있도록 정리했어요.</p></div><button type="button" class="manualClose" onclick="closeUserManual()" aria-label="설명서 닫기">×</button></div>
   <div class="manualIntro"><b>이 앱은 무엇인가요?</b><div>여러 공공기관에 흩어진 문화·생활 정보를 자동으로 모아, 전남광주 시민이 오늘 무엇을 할지 한곳에서 정할 수 있게 돕는 지역 생활 여가 안내 앱입니다. 전시·공연·축제·장날 일정, 도서관과 동네 강좌를 권역별로 보여 주고, 날씨와 요일에 맞는 하루 코스를 추천해요.</div></div>
   <div class="manualNote"><b>↗ 빠른실행키 이용 안내</b><div>화면 오른쪽과 하단의 접힌 손잡이를 누르면 빠른 메뉴가 펼쳐져요. 펼쳐진 아이콘을 누르면 해당 기능으로 이동합니다. 약 3초 동안 조작하지 않으면 자동으로 접히며, 손잡이를 다시 누르면 언제든 다시 펼칠 수 있어요. 오른쪽은 '오늘 뭐하지·날씨·대중공연·시장·동네도서관' 등 주요 기능, 하단은 화면 이동용 빠른 메뉴로 이용해 보세요. 기기 화면 크기에 따라 표시 위치는 다를 수 있습니다.</div></div>
   <h3>주요 기능</h3>
