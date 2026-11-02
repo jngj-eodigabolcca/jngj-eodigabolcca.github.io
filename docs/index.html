@@ -68,7 +68,7 @@ img{max-width:100%}
 /* ── 상단 바 ── */
 .top{position:sticky;top:0;z-index:40;background:rgba(255,248,236,.9);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);border-bottom:1px solid rgba(29,75,57,.1)}
 .topIn{display:flex;align-items:center;gap:14px;height:62px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;cursor:pointer}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.brand img{-webkit-user-drag:none;pointer-events:none}
 .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#ef5b3c,#f5a524);display:grid;place-items:center;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12)}
 .logo svg{width:28px;height:28px}
 .brand b{display:block;font-family:var(--display);font-weight:400;font-size:23px;letter-spacing:-.01em;color:#1d2a3a;line-height:1.05}
@@ -8064,7 +8064,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.65 (10.22)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.66 (11.02)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -8610,6 +8610,15 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
   }
   function boot(){ if(location.hash!=="#admin")return; let n=0; const w=setInterval(()=>{ if((ALL.VENUES||[]).length||++n>40){clearInterval(w);try{run()}catch(e){console.error(e)}} },250) }
   window.addEventListener("hashchange",boot); window.addEventListener("load",boot); boot();
+  /* 설치한 앱(주소창 없음)용 숨은 입구: 맨 위 제목을 2초 꾹 누르면 열림. 짧게 누르면 예전처럼 맨 위로 */
+  (function(){
+    const b=document.querySelector("header.top .brand"); if(!b)return;
+    let t=null, fired=false; const cancel=()=>{clearTimeout(t);t=null};
+    b.addEventListener("pointerdown",()=>{fired=false;cancel();t=setTimeout(()=>{fired=true;t=null;try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}if(location.hash==="#admin")boot();else location.hash="#admin"},2000)});
+    ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,cancel));
+    b.addEventListener("click",e=>{if(fired){e.preventDefault();e.stopImmediatePropagation();fired=false}},true);
+    b.addEventListener("contextmenu",e=>e.preventDefault());
+  })();
 })();
 </script>
 <style>#adminCheck{position:fixed;inset:0;z-index:9999;background:rgba(10,20,18,.55);overflow:auto;padding:16px}#adminCheck .dcBox{background:#fff;color:#1d2b26;max-width:760px;margin:0 auto;border-radius:18px;padding:16px}#adminCheck .dcHead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}#adminCheck .dcHead small{flex:1;color:#5b6a64}#adminCheck .dcHead button{border:0;background:#eef3f1;border-radius:10px;padding:8px 12px;font-weight:700}.adminTbl{width:100%;border-collapse:collapse;font-size:13px}.adminTbl th,.adminTbl td{padding:8px 6px;border-top:1px solid #e6ece9;text-align:left;vertical-align:top}.adminTbl th{font-size:11.5px;color:#7a8781;border-top:0}.adminTbl td:first-child{width:24px}.adminFoot{font-size:12px;color:#5b6a64;margin-top:10px}</style>
