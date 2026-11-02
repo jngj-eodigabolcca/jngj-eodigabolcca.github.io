@@ -2601,8 +2601,10 @@ function visitLine(v) {
   const out = [];
   const stay = stayOf(v);
   if (stay) out.push(`⏱ 보통 ${stay}${/(안팎|쯤|정도)$/.test(stay) ? "" : "쯤"} 머물러요 (앱 추정)`);
-  const open = openToday(v), hrs = v.hours || "";
-  if (open === false) out.push("오늘은 휴관이에요");
+  const open = openToday(v), hrs = v.hours || "", sea = seasonOf(v);
+  if (sea && sea.ended) out.push("🗓 올해 운영이 끝났어요 · 내년 여름에 다시 열어요");
+  else if (sea && sea.notYet) out.push(`🗓 ${+sea.start.slice(5, 7)}.${+sea.start.slice(8)}부터 열어요`);
+  else if (open === false) out.push("오늘은 휴관이에요");
   else if (!/상시|상이|공연|기간/.test(hrs)) {
     const off = isOff(todayISO());
     let seg = hrs;
@@ -4170,7 +4172,19 @@ function needsBadge(x) {
 /* 오늘(한국시간) 문 여는지: 휴관일 문구에 오늘 요일이 있으면 휴관 */
 const DAY_KO = ["일", "월", "화", "수", "목", "금", "토"];
 function kstNow() { return new Date(Date.now() + 9 * 3600e3) }
+/* 여름 한정 시설: hours 에 "2026년 7.18~8.17" 처럼 기간이 적혀 있으면 그 기간 밖엔 '아이와'·장소 목록에서 숨김(검색엔 표시)
+   · 끝났으면 ended, 시작이 30일보다 멀면 far → 내년엔 날짜만 새로 적으면 다시 나타남 */
+function seasonOf(v) {
+  const m = String((v && v.hours) || "").match(/(\d{4})\s*년\s*(\d{1,2})\.\s*(\d{1,2})\s*[~–-]\s*(?:(\d{4})\s*년\s*)?(\d{1,2})\.\s*(\d{1,2})/);
+  if (!m) return null;
+  const p = n => String(n).padStart(2, "0"), y2 = m[4] || m[1];
+  const start = `${m[1]}-${p(m[2])}-${p(m[3])}`, end = `${y2}-${p(m[5])}-${p(m[6])}`, t = todayISO();
+  const soon = new Date(Date.parse(t + "T00:00:00Z") + 30 * 864e5).toISOString().slice(0, 10);
+  return { start, end, ended: t > end, notYet: t < start, far: start > soon };
+}
+function seasonOff(v) { const s = seasonOf(v); return !!(s && (s.ended || s.far)) }
 function openToday(v) {
+  { const s = seasonOf(v); if (s && (s.ended || s.notYet)) return false; }
   if (!/미술관|갤러리|박물관|과학관|기념관|전시관|문학관|복합문화공간|역사유적|5·18|공원|동물원/.test(v.kind) || /상시/.test(v.hours || "")) return null; // 행사·경기장은 판정 안 함
   return !closedWeekdays(v.closed, todayISO()).includes(DAY_KO[kstNow().getUTCDay()]);
 }
@@ -5203,7 +5217,7 @@ const KIDS_SUBS = [
   ["미술관·박물관", "🎨", v => /미술관|박물관|전시관|복합문화공간/.test(v.kind || "")],
 ];
 // 아이와 탭에 들어가는 장소
-function isKidsPlace(v) { return v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v) }
+function isKidsPlace(v) { if (seasonOff(v)) return false; return v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v) }
 let KIDS_SUB = "전체", KIDS_IO = "전체", KIDS_GU = "전체", KIDS_OPEN = false;
 const PLACE_GROUPS = [
   ["전체", "✦", () => true],
@@ -5235,7 +5249,7 @@ function placeFilter(v) {
   const io = PLACE_IO === "전체" || (v.inout || "").includes(PLACE_IO);
   const gu = PLACE_GU === "전체" || v.district === PLACE_GU;
   const open = !PLACE_OPEN || openToday(v) !== false;
-  return g(v) && io && gu && open;
+  return g(v) && io && gu && open && !seasonOff(v);
 }
 function renderPlaces() {
   const sp = PLACE_SPECIAL[PLACE_GROUP], isLib = PLACE_GROUP === "도서관";
@@ -8064,7 +8078,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.66 (11.02)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.67 (11.02)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
