@@ -952,11 +952,22 @@ def std_csv_events():
 KOPIS_BASE = "http://www.kopis.or.kr/openApi/restful"
 KOPIS_MUSIC = ("대중음악", "서양음악(클래식)", "한국음악(국악)", "클래식", "국악")
 
+_KOPIS_BLOCKED = []      # 이번 실행 중 한 번이라도 차단되면 더 묻지 않는다(차단이 길어지지 않게)
+
 def kopis_xml(path, **params):
-    time.sleep(0.5)          # KOPIS 는 짧은 시간에 많이 물으면 차단(Request Blocked)한다 → 천천히
+    if _KOPIS_BLOCKED:
+        raise RuntimeError(f"KOPIS 차단 중이라 더 묻지 않음 ({_KOPIS_BLOCKED[0]})")
+    time.sleep(1.5)          # KOPIS 는 짧은 시간에 많이 물으면 차단(Request Blocked)한다 → 천천히
     params["service"] = KOPIS_KEY
     url = f"{KOPIS_BASE}/{path}?" + urllib.parse.urlencode(params)
-    root = ET.fromstring(http_get(url))
+    try:
+        raw = http_get(url)
+    except RuntimeError as e:
+        if "Blocked" in str(e) or "HTTP 429" in str(e):
+            _KOPIS_BLOCKED.append(str(e)[:120])
+            log("  ⚠ KOPIS 가 요청을 막음 → 이번 실행에선 KOPIS 를 더 묻지 않음")
+        raise
+    root = ET.fromstring(raw)
     err = root.findtext(".//returncode") or root.findtext(".//errmsg")
     if err and not root.findall(".//db"):
         raise RuntimeError(f"KOPIS 오류: {err}")
@@ -1378,11 +1389,22 @@ def main():
                 gap = (NOW - datetime.fromisoformat(last)).total_seconds() / 3600 if last else 99
             except ValueError:
                 gap = 99
-            if gap < KOPIS_GAP_H and os.environ.get("KOPIS_FORCE") != "1":
+            last_ok = old_meta.get("kopis_last_ok")
+            failed_last = bool(last) and last_ok != last      # 지난 시도가 실패였으면
+            try:
+                ok_gap = (NOW - datetime.fromisoformat(last_ok)).total_seconds() / 3600 if last_ok else None
+            except ValueError:
+                ok_gap = None
+            gap_limit = 6 if failed_last else KOPIS_GAP_H     # 아침에 실패했으면 저녁(18:10)에 한 번 더 시도
+            if gap < gap_limit and os.environ.get("KOPIS_FORCE") != "1":
                 kept = [p for p in previous if p.get("api") == "kopis" or p.get("origin") == "kopis"]
                 api_events.extend(kept)
-                statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(kept),
-                                 "message": f"하루 한 번만 받아요 · {int(gap)}시간 전 자료 {len(kept)}건 사용"})
+                age_txt = f"{int(ok_gap)}시간 전" if ok_gap is not None else "지난번"
+                if failed_last:
+                    st = {"ok": False, "message": f"지난 수집 실패 · 다음 실행 때 다시 시도 · {age_txt} 자료 {len(kept)}건 사용"}
+                else:
+                    st = {"ok": True, "message": f"하루 한 번만 받아요 · {age_txt} 자료 {len(kept)}건 사용"}
+                statuses.append({"id": source_id, "name": source_name, "count": len(kept), **st})
                 log(f"⏭ {source_name}: {gap:.1f}시간 전에 물어봐서 이번엔 건너뜀 (차단 방지)")
                 continue
             old_meta["kopis_last_try"] = NOW.isoformat(timespec="seconds")
@@ -1391,6 +1413,8 @@ def main():
             rows = fn()
             log(f"✔ {source_name} {len(rows)}건 ({int(time.time() - t0)}초)")
             api_events.extend(rows)
+            if source_id == "kopis":
+                old_meta["kopis_last_ok"] = old_meta.get("kopis_last_try")
             statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(rows),
                              "message": "정상 수집" + (f" ({CULTURE_MODE})" if source_id == "culture" and CULTURE_MODE else "")
                                         + (f" ({STD_NOTE})" if source_id == "stdevents" and STD_NOTE else "")})
@@ -1419,7 +1443,7 @@ def main():
         "events_count": len(merged),
         "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
     }
-    for k in ("local", "place_fill", "kopis_last_try"):   # 다른 수집기가 남긴 기록은 유지
+    for k in ("local", "place_fill", "kopis_last_try", "kopis_last_ok"):   # 다른 수집기가 남긴 기록은 유지
         if k in old_meta:
             meta[k] = old_meta[k]
     write_json(OUT_META, meta)
