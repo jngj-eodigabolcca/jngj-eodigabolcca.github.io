@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T13:53:11+09:00",
+  "updated_at": "2026-11-03T14:02:25+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -95,7 +95,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-03T13:55:24+09:00",
+      "fetched_at": "2026-11-03T14:05:10+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -131,7 +131,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 297,
-      "fetched_at": "2026-11-03T13:55:24+09:00",
+      "fetched_at": "2026-11-03T14:05:10+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -164,7 +164,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-03T13:55:27+09:00",
+    "checked_at": "2026-11-03T14:05:13+09:00",
     "tourapi_calls": 5,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -207,12 +207,13 @@
       }
     }
   },
-  "kopis_last_try": "2026-11-03T13:53:11+09:00",
+  "kopis_last_try": "2026-11-03T14:02:25+09:00",
+  "kopis_last_ok": "2026-11-03T14:02:25+09:00",
   "pet_places": {
     "ok": true,
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-11-03T13:55:26+09:00"
+    "checked_at": "2026-11-03T14:05:12+09:00"
   }
 }
