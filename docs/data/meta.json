@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03T14:02:25+09:00",
+  "updated_at": "2026-11-03T18:55:51+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -12,9 +12,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 85,
       "ok": true,
-      "count": 97,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 4시간 전 자료 85건 사용"
     },
     {
       "id": "culture",
@@ -49,9 +49,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 85,
       "ok": true,
-      "count": 97,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 4시간 전 자료 85건 사용"
     },
     {
       "id": "culture",
@@ -95,7 +95,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-03T14:05:10+09:00",
+      "fetched_at": "2026-11-03T18:57:06+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -131,7 +131,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 297,
-      "fetched_at": "2026-11-03T14:05:10+09:00",
+      "fetched_at": "2026-11-03T18:57:06+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -164,7 +164,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-03T14:05:13+09:00",
+    "checked_at": "2026-11-03T18:57:09+09:00",
     "tourapi_calls": 5,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -214,6 +214,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-11-03T14:05:12+09:00"
+    "checked_at": "2026-11-03T18:57:08+09:00"
   }
 }
