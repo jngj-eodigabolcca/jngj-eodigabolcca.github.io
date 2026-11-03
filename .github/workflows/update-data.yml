@@ -2,6 +2,11 @@ name: 일정 자동 업데이트
 
 on:
   workflow_dispatch:
+    inputs:
+      kopis_force:
+        description: "KOPIS 공연을 지금 다시 받기 (하루 한 번 규칙 무시 · 자주 쓰면 차단될 수 있어요)"
+        type: boolean
+        default: false
   schedule:
     # 한국시간 09:10 / 18:10
     - cron: "10 0,9 * * *"
@@ -35,6 +40,7 @@ jobs:
         env:
           DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
           KOPIS_API_KEY: ${{ secrets.KOPIS_API_KEY }}
+          KOPIS_FORCE: ${{ inputs.kopis_force && '1' || '0' }}
         run: python scripts/update_data.py
 
       - name: 동네 강좌·도서관 수집 (주 1회)
