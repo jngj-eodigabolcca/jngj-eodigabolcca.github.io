@@ -1390,7 +1390,8 @@ def main():
             except ValueError:
                 gap = 99
             last_ok = old_meta.get("kopis_last_ok")
-            failed_last = bool(last) and last_ok != last      # 지난 시도가 실패였으면
+            failed_last = any(x.get("id") == "kopis" and not x.get("ok", True)   # 지난번 상태가 실패였으면
+                              for x in old_meta.get("sources", []))
             try:
                 ok_gap = (NOW - datetime.fromisoformat(last_ok)).total_seconds() / 3600 if last_ok else None
             except ValueError:
