@@ -5294,7 +5294,7 @@ function kidsEvRow(x) {
 function renderKidsQuick() {
   const el = document.getElementById("kidsQuickSub"); if (!el) return;
   const ev = EVENTS.filter(isKidsEvent).length, pl = VENUES.filter(isKidsPlace).length;
-  el.innerHTML = `<i>🎈 행사 <em>${ev}</em></i><i>📍 갈 곳 <em>${pl}</em>곳</i>`;
+  el.innerHTML = `<i>🎈 행사 <em>${ev}</em></i><i>📍 갈 곳 <em>${pl}곳</em></i>`;
 }
 function renderKids() {
   renderKidsQuick();
@@ -10944,5 +10944,19 @@ html body .courseShareBtn:active{transform:translateY(1px)}
 #wxMoveAsk button{height:38px;padding:0 14px;border-radius:999px;border:0;font-weight:800;font-size:13.5px;cursor:pointer}
 #wxMoveAsk .yes{background:var(--hong,#ff6a2b);color:#fff}
 #wxMoveAsk .no{background:rgba(255,255,255,.14);color:#fff}
+</style>
+<style id="heroCountsInline20261104">
+/* 숫자 칸 정리: '이름 숫자'를 한 줄로 (행사 9 · 갈 곳 24곳 · 오늘 열리는 것 32 · 일정 95) */
+html body .concertQuickAccess .kidsQuickHome .kqChips{display:grid!important;grid-template-columns:repeat(2,max-content);gap:6px!important;flex-wrap:nowrap!important}
+html body .concertQuickAccess .kidsQuickHome .kqChips i{display:inline-flex!important;align-items:baseline;gap:4px;white-space:nowrap!important;padding:4px 10px!important;font-size:13px!important;line-height:1.2}
+html body .concertQuickAccess .kidsQuickHome .kqChips i em{font-size:15px;font-weight:900}
+html body .heroStats .heroNow .heroNowPair{display:inline-flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:center!important;gap:6px!important;flex:1 1 50%!important}
+html body .heroStats .heroNow .heroNowPair>span{order:0}html body .heroStats .heroNow .heroNowPair>strong{order:1}
+html body .heroStats .heroNow .heroNowPair+.heroNowPair{margin-left:0!important;padding-left:0!important}
+html body .heroStats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+html body .heroStats button:not(.heroNow){flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:7px!important;min-height:50px!important;height:50px!important;padding:0 8px!important;border-radius:14px!important}
+html body .heroStats button:not(.heroNow) span{order:0;font-size:13.5px!important;white-space:nowrap!important;line-height:1!important}
+html body .heroStats button:not(.heroNow) strong{order:1;font-size:21px!important;line-height:1!important}
+@media(min-width:760px){html body .heroStats{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 </style>
 </body></html>
