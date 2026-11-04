@@ -10950,6 +10950,12 @@ html body .courseShareBtn:active{transform:translateY(1px)}
 html body .concertQuickAccess .kidsQuickHome .kqChips{display:grid!important;grid-template-columns:repeat(2,max-content);gap:6px!important;flex-wrap:nowrap!important}
 html body .concertQuickAccess .kidsQuickHome .kqChips i{display:inline-flex!important;align-items:baseline;gap:4px;white-space:nowrap!important;padding:4px 10px!important;font-size:13px!important;line-height:1.2}
 html body .concertQuickAccess .kidsQuickHome .kqChips i em{font-size:15px;font-weight:900}
+/* 좁은 화면에서 '갈 곳' 칩이 '보기 ›' 아래로 파고들지 않게: 가운데 칸만 줄어들고, 자리가 모자라면 칩이 다음 줄로 */
+html body .concertQuickAccess .kidsQuickHome{grid-template-columns:auto minmax(0,1fr) auto!important}
+html body .concertQuickAccess .kidsQuickHome .kqText{min-width:0!important}
+html body .concertQuickAccess .kidsQuickHome .kqChips{display:flex!important;flex-wrap:wrap!important;gap:5px 6px!important}
+html body .concertQuickAccess .kidsQuickHome .kqGo{position:relative;z-index:1}
+@media(max-width:400px){html body .concertQuickAccess .kidsQuickHome .kqChips i{padding:3px 8px!important;font-size:12px!important}html body .concertQuickAccess .kidsQuickHome .kqChips i em{font-size:13.5px}html body .concertQuickAccess .kidsQuickHome .kqGo{padding:6px 9px!important;font-size:12.5px!important}}
 html body .heroStats .heroNow .heroNowPair{display:inline-flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:center!important;gap:6px!important;flex:1 1 50%!important}
 html body .heroStats .heroNow .heroNowPair>span{order:0}html body .heroStats .heroNow .heroNowPair>strong{order:1}
 html body .heroStats .heroNow .heroNowPair+.heroNowPair{margin-left:0!important;padding-left:0!important}
