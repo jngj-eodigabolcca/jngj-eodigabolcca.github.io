@@ -10965,4 +10965,26 @@ html body .heroStats button:not(.heroNow) span{order:0;font-size:13.5px!importan
 html body .heroStats button:not(.heroNow) strong{order:1;font-size:21px!important;line-height:1!important}
 @media(min-width:760px){html body .heroStats{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 </style>
+<style id="tidy-1105">
+/* 권역 탭: 광주권 왼쪽 끝 · 순천여수권 가운데 · 무안목포권 오른쪽 끝 */
+html body #regionBar{justify-content:space-between!important;gap:8px!important;overflow:visible!important}
+html body #regionBar>button{flex:1 1 0!important;min-width:0!important;justify-content:center!important}
+@media(min-width:900px){html body #regionBar>button{flex:0 1 220px!important}}
+/* 아이랑 어디 갈까? : 1줄 [제목 …… 보기 ›] · 2줄 [행사][갈 곳] 같은 폭으로 한 줄 */
+html body .concertQuickAccess .kidsQuickHome{grid-template-columns:auto minmax(0,1fr) auto!important;grid-template-areas:"ic ti go" "ic ch ch"!important;row-gap:8px!important;column-gap:12px!important;align-items:center!important}
+html body .concertQuickAccess .kidsQuickHome .kqIcon{grid-area:ic}
+html body .concertQuickAccess .kidsQuickHome .kqText{display:contents!important}
+html body .concertQuickAccess .kidsQuickHome .kqTitle{grid-area:ti;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .concertQuickAccess .kidsQuickHome .kqGo{grid-area:go;justify-self:end}
+html body .concertQuickAccess .kidsQuickHome .kqChips{grid-area:ch;display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;flex-wrap:nowrap!important}
+html body .concertQuickAccess .kidsQuickHome .kqChips i{justify-content:center!important;white-space:nowrap!important}
+/* 오늘 열리는 것 · 일정 · 가볼 곳 · 맛집 · 멍카페: 칸을 낮고 작게 */
+html body .heroStats{gap:6px!important;margin-top:14px!important}
+html body .heroStats .heroNow{min-height:40px!important;height:40px!important;padding:0 10px!important;border-radius:12px!important}
+html body .heroStats .heroNow strong{font-size:17px!important}
+html body .heroStats .heroNow span{font-size:12px!important}
+html body .heroStats button:not(.heroNow){min-height:40px!important;height:40px!important;border-radius:12px!important;gap:6px!important}
+html body .heroStats button:not(.heroNow) strong{font-size:17px!important}
+html body .heroStats button:not(.heroNow) span{font-size:12px!important}
+</style>
 </body></html>
