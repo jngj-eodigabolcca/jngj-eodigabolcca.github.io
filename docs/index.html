@@ -5496,16 +5496,17 @@ const KIDS_SUBS = [
 // 아이와 탭에 들어가는 장소
 function isKidsPlace(v) { if (seasonOff(v)) return false; return v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v) }
 let KIDS_SUB = "전체", KIDS_IO = "전체", KIDS_GU = "전체", KIDS_OPEN = false;
+const isYangnimPlace = v => /양림|사직/.test((v.address || "") + (v.name || "")) || /근대문화유산|양림 카페/.test(v.kind || "");
 const PLACE_GROUPS = [
   ["전체", "✦", () => true],
-  ["양림동", "⛪", v => /양림|사직/.test(v.address + v.name) || /근대문화유산|양림 카페/.test(v.kind)],
+  ["양림동", "⛪", v => isYangnimPlace(v)],
   ["시장·골목", "🏮", v => v.kind === "골목·시장"],
   ["미술관·갤러리", "🎨", v => /미술관|갤러리/.test(v.kind)],
   ["박물관", "🏺", v => /박물관|기념관|문학관|과학관/.test(v.kind)],
   ["도서관", "📚", v => false],      // 도서관은 장소 목록이 아니라 '동네 도서관' 자료(LIBS)를 보여 줌
   ["공연장", "🎻", v => v.kind === "공연장"],
   ["전시관·컨벤션", "🎨", v => /전시관|전시·컨벤션|복합문화공간/.test(v.kind)],
-  ["역사 유적·5·18", "🏯", v => isHistorySite(v)],
+  ["역사 유적·5·18", "🏯", v => isHistorySite(v) && !(REGION === "gj" && isYangnimPlace(v))],   // 양림동은 따로 칸이 있어 겹치지 않게
   ["산책", "🚶", v => !!v.walk],
   ["공원·정원", "🌳", v => v.kind === "공원·정원"],
   ["자연·경관", "🏞", v => v.kind === "자연·경관"],
