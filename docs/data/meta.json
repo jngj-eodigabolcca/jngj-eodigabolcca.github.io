@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05T10:00:25+09:00",
+  "updated_at": "2026-11-05T19:01:46+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -12,16 +12,16 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 95,
       "ok": true,
-      "count": 107,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 9시간 전 자료 95건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 35,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -49,16 +49,16 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 95,
       "ok": true,
-      "count": 107,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 9시간 전 자료 95건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 35,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -95,7 +95,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-05T10:04:13+09:00",
+      "fetched_at": "2026-11-05T19:02:54+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -131,7 +131,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 294,
-      "fetched_at": "2026-11-05T10:04:13+09:00",
+      "fetched_at": "2026-11-05T19:02:54+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -164,7 +164,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-05T10:04:15+09:00",
+    "checked_at": "2026-11-05T19:02:57+09:00",
     "tourapi_calls": 4,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -214,6 +214,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-11-05T10:04:14+09:00"
+    "checked_at": "2026-11-05T19:02:56+09:00"
   }
 }
