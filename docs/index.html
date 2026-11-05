@@ -11392,4 +11392,14 @@ html body .nowStartHead p{white-space:nowrap!important;font-size:min(13.5px,calc
  html body #quick>button:not(.qToggle){font-size:12px!important}
 }
 </style>
+<style id="wx24NoOverlap-1105">
+/* 앞으로 24시간 날씨: 예전 규칙(칸 최소 폭 72~76px)이 남아 좁은 폰에서 칸이 서로 겹치던 것 → 칸 폭을 열에 맞춤 */
+html body .wxTips .wtSlots.wtSlots24{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important;padding:2px 0 4px!important}
+html body .wxTips .wtSlots.wtSlots24>.wtSlot{flex:none!important;min-width:0!important;width:auto!important;max-width:100%!important;box-sizing:border-box!important;overflow:hidden!important;padding:6px 2px!important}
+html body .wxTips .wtSlots.wtSlots24>.wtSlot>*{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .wxTips .wtSlots.wtSlots24>.wtSlot b{font-size:clamp(11px,3.2vw,14px)!important}
+html body .wxTips .wtSlots.wtSlots24>.wtSlot small{font-size:clamp(10px,2.9vw,12px)!important}
+html body .wxTips .wtSlots.wtSlots24>.wtSlot small em{font-size:clamp(9px,2.6vw,11px)!important}
+@media(min-width:760px){html body .wxTips .wtSlots.wtSlots24{grid-template-columns:repeat(8,minmax(0,1fr))!important}}
+</style>
 </body></html>
