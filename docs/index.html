@@ -6511,7 +6511,7 @@ const searchNear = (place, what) => `https://map.naver.com/p/search/${encodeURIC
 /* 이름으로 바로 찾기: '하정웅', '수목원'처럼 장소 이름 일부가 들어 있으면 그곳을 우선 */
 function namedPlace(s) {
   const words = s.replace(/[^\p{L}\p{N}·\s]/gu, " ").split(/\s+/).filter(w => w.length >= 2);
-  const stop = /^(보고|가고|먹고|싶어|오늘|내일|광주|코스|추천|하고|같이|그리고|근처|주변|아이|아이와|데이트|맛집|카페|영화|비|오는|날|실내|야외|무료|가족|미술관|박물관|공원|정원|공연|전시|산책|산책하고|갔다가|무등산|등산|등산하고|처음|역사|걷기|5·18|오월|민주|축제|구경|콘서트|가수|야구|경기|1박|2일|ktx|타고)$/;
+  const stop = /^(보고|가고|먹고|싶어|오늘|내일|광주|코스|추천|하고|같이|그리고|근처|주변|아이|아이와|데이트|맛집|카페|영화|비|오는|날|실내|야외|무료|가족|미술관|박물관|공원|정원|공연|전시|산책|산책하고|갔다가|무등산|등산|등산하고|처음|역사|유적|유적지|역사유적|사적|사적지|문화유산|문화재|걷기|5·18|오월|민주|축제|구경|콘서트|가수|야구|경기|1박|2일|ktx|타고)$/;
   for (const w of words) {
     if (stop.test(w)) continue;
     const v = VENUES.find(v => norm(v.name).includes(norm(w)) || (v.aliases || []).some(a => norm(a).includes(norm(w))));
