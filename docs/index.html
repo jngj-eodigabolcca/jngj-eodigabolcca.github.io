@@ -3943,9 +3943,33 @@ const nowKind = e => e.category === "전시" ? "ex" : /음악|공연/.test(e.cat
 const NK = { ex: ["🎨", "전시회"], mu: ["🎵", "음악회·공연"], fe: ["🎪", "축제·행사"], sp: ["🏟", "경기"], mk: ["🏮", "장날"] };
 const NOW_CATS = [["전체", null], ["전시", "ex"], ["공연·음악", "mu"], ["축제·행사", "fe"], ["장날", "mk"]];
 /** 그 날짜들에 실제로 열리는 일정 + 장 서는 시장 */
+/* 같은 날·같은 장소·같은 시각에 제목이 겹치는 공연은 한 번만 (KOPIS·기관 누리집에서 같은 공연이 두 번 들어오는 경우) */
+const SHOW_GENERIC = /^(정기연주회|연주회|정기공연|기획공연|특별공연|공연|콘서트|음악회|교향악단|시립교향악단|광주시립교향악단|오케스트라|합창단|시립합창단|리사이틀|독주회|초청|기념|제\d+회|\d+회|the|and|with|in|광주|전남|목포|여수|순천)$/i;
+const hhmmSet = t => new Set((String(t || "").match(/\d{1,2}:\d{2}/g) || []).map(x => x.padStart(5, "0")));
+function sameShowOn(a, b, ha, hb) {
+  const vcore = x => norm([x.venue, x.place].filter(Boolean).join(" ")).replace(/국립아시아문화전당|아시아문화전당|acc/g, "acc").replace(/(대극장|소극장|중극장|공연장|콘서트홀|아트홀|홀)$/, "");
+  const va = vcore(a), vb = vcore(b);
+  if (a.venueId && b.venueId && a.venueId !== b.venueId) return false;
+  if (va && vb && !(va === vb || va.includes(vb) || vb.includes(va))) return false;
+  if (!va && !vb && !a.venueId) return false;
+  const ta = hhmmSet((ha && ha.when) || a.time), tb = hhmmSet((hb && hb.when) || b.time);
+  if (ta.size && tb.size && ![...ta].some(x => tb.has(x))) return false;   // 시각이 다르면 다른 회차
+  const ca = titleCore(a.title), cb = titleCore(b.title);
+  if (ca.length >= 3 && cb.length >= 3 && (ca === cb || ca.includes(cb) || cb.includes(ca))) return true;
+  if (sameWordsTitle(a.title, b.title)) return true;
+  const wa = titleTokens(a.title).filter(w => !SHOW_GENERIC.test(w)), wb = titleTokens(b.title).filter(w => !SHOW_GENERIC.test(w));
+  return wa.some(w => wb.some(x => x === w || (w.length >= 3 && (x.includes(w) || w.includes(x)))));
+}
+const showRank = e => (e.image ? 2 : 0) + (e.origin === "manual" ? 1 : 0) + (ticketOf(e).link ? 1 : 0);
 function nowItems(dates) {
   const out = [];
-  dates.forEach(iso => EVENTS.forEach(e => { if (out.some(o => o.e === e)) return; const h = happensOn(e, iso); if (h) out.push({ k: nowKind(e), e, h, iso }) }));
+  dates.forEach(iso => EVENTS.forEach(e => {
+    if (out.some(o => o.e === e)) return;
+    const h = happensOn(e, iso); if (!h) return;
+    const dup = /음악|공연/.test(e.category || "") && out.find(o => o.e && o.iso === iso && /음악|공연/.test(o.e.category || "") && sameShowOn(o.e, e, o.h, h));
+    if (dup) { if (showRank(e) > showRank(dup.e)) { dup.e = e; dup.h = h } return }
+    out.push({ k: nowKind(e), e, h, iso });
+  }));
   const mks = VENUES.filter(v => v.market);
   dates.forEach(iso => mks.forEach(v => { if (out.some(o => o.v === v)) return; const nt = nightOn(v, iso); if (jangOn(v, iso) || nt) out.push({ k: "mk", v, iso, night: nt }) }));
   return out;
@@ -7977,7 +8001,7 @@ function dedupeEvents(list) {
       // 회차/개별 공연을 오인 삭제하지 않도록, 날짜가 명확하고 다르면 합치지 않는다.
       if (e.start && k.start && e.end && k.end && (e.start !== k.start || e.end !== k.end)) return false;
       // 날짜가 같은 별개 회차는 유지한다.
-      if (e.start && k.start && e.start === k.start && e.time && k.time && e.time !== k.time && /\d{1,2}[:시]\d{0,2}/.test(e.time) && /\d{1,2}[:시]\d{0,2}/.test(k.time)) return false;
+      if (e.start && k.start && e.start === k.start) { const ta = (String(e.time || "").match(/\d{1,2}:\d{2}/g) || []).map(x => x.padStart(5, "0")), tb = (String(k.time || "").match(/\d{1,2}:\d{2}/g) || []).map(x => x.padStart(5, "0")); if (ta.length && tb.length && !ta.some(x => tb.includes(x))) return false }   // 시각 표기만 다르면(19:30 / 목 19:30) 같은 공연
       const s1 = e.start || "0000", e1 = e.end || "9999", s2 = k.start || "0000", e2 = k.end || "9999";
       return s1 <= e2 && s2 <= e1;              // 기간이 겹침
     });
@@ -8438,7 +8462,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.72 (11.05)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.73 (11.05)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -11402,5 +11426,10 @@ html body .wxTips .wtSlots.wtSlots24>.wtSlot b{font-size:clamp(11px,3.2vw,14px)!
 html body .wxTips .wtSlots.wtSlots24>.wtSlot small{font-size:clamp(10px,2.9vw,12px)!important}
 html body .wxTips .wtSlots.wtSlots24>.wtSlot small em{font-size:clamp(9px,2.6vw,11px)!important}
 @media(min-width:760px){html body .wxTips .wtSlots.wtSlots24{grid-template-columns:repeat(8,minmax(0,1fr))!important}}
+</style>
+<style id="nowAllBtnTwoLines-1105">
+/* 전체 일정 보기: 1줄 [달력 전체 일정 보기] · 2줄 바로 아래 [전시·공연·축제 필터로 찾기 ›] */
+html body .nowAllBtn{flex-wrap:wrap!important;row-gap:3px!important;column-gap:6px!important;white-space:nowrap!important;padding:11px 12px!important;line-height:1.25!important}
+html body .nowAllBtn>span{flex:0 0 100%!important;text-align:center!important;white-space:nowrap!important;font-size:12.5px!important}
 </style>
 </body></html>
