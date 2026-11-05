@@ -2274,7 +2274,7 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
   <div class="aiLeft">
     <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-        <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
+        <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>🏯 역사 유적</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>시장 구경하고 먹방</button><button>무등산 등산하고 보리밥</button><button>5·18 역사 걷기</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
 </div>
@@ -6893,6 +6893,7 @@ function recommend(t, forced = null, fixedMeal = null) {
   const s = t.toLowerCase(), out = [];
   const rainyDate = hasRainIntent(s) || (WEATHER && wxRainy());
   if (!forced && /빵지순례|빵집|베이커리|제과점|빵\s*투어/.test(s)) return bakeryListAI(s);
+  if (!forced && /역사\s*유적|유적지?|사적지|역사\s*탐방/.test(s) && !/5·18|518|오월|코스|하루|맛집|카페|밥|먹|데이트|보고|그리고|\+|ktx|기차/.test(s)) return historyList(s);
   if (!forced) {
     if (/태백산맥|벌교|문학길/.test(s)) { if (REGION !== "ys") setRegion("ys"); return dateCourse("taebaek") }
     if (REGION !== "gj" && KTX_REGION[REGION] && /ktx|srt|기차|열차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|여행 코스|일정 짜/.test(s) && !/5·18|518|양림|무등산|송정|충장|acc|비엔날레/.test(s)) return itinerary(s);
@@ -7093,6 +7094,21 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (!tripHead && firstX) { const o0 = tripOriginInfo({}); if (o0.label) tripHead = `🚩 ${o0.label}에서 출발 기준` }
   const head = [rain ? "☔ 실내 위주" : outdoor ? "🌤 야외 위주" : "", firstX && tripDistrictOf(firstX) ? `${tripDistrictOf(firstX)} 일대 코스` : ""].filter(Boolean).join(" · ");
   $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener noreferrer" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
+}
+/* 🏯 역사 유적: 세 권역 모두 같은 방식 — 한 곳만 무작위로 뽑지 않고, 오늘 갈 수 있는 곳을 가까운 순으로 모두 보여준다 */
+function historyList(s) {
+  const start = tripStartFromText(s) ?? tripNowMin(), move = tripMoveKey(s), d = DAY_KO[kstNow().getUTCDay()];
+  const rows = VENUES.filter(v => isHistorySite(v) && !seasonOff(v)).map(v => ({ v, r: tripFitsFrom(v, "venue", { start, move }) }));
+  const ok = rows.filter(x => x.r.ok).sort((a, b) => (a.r.leg - b.r.leg) || (!!a.r.unsure - !!b.r.unsure));
+  const no = rows.filter(x => !x.r.ok).sort((a, b) => (a.r.leg ?? 999) - (b.r.leg ?? 999));
+  const o = tripOriginInfo({ move });
+  const row = (x, good) => `<article class="aiCard">${x.v.image ? `<div class="acPic"><div class="ph"${bg(x.v.image)}></div></div>` : ""}<div class="acBody"><div class="acTags"><span>${esc(x.v.district || "")}</span>${good ? `<span class="on">오늘 갈 수 있어요</span>` : `<span class="hot">오늘은 어려워요</span>`}${/무료/.test(x.v.price || "") ? `<span class="free">무료</span>` : ""}</div><b>${esc(x.v.name)}</b><small>${good ? `🚗 ${esc(o.label || "출발지")}에서 약 ${x.r.leg}분 · ⏰ ${esc(x.r.note)}${x.r.unsure && !/확인/.test(x.r.note) ? " · 가기 전 확인" : ""}` : `❌ ${esc(x.r.why || "운영 정보 확인 필요")}`}</small>${x.v.hours ? `<small>🕘 ${esc(x.v.hours)}${x.v.closed ? " · 휴관 " + esc(x.v.closed) : ""}</small>` : ""}<div class="acBtns"><button onclick="aiProfile('${jsq(x.v.id)}')">자세히</button>${good ? `<button onclick="$('#aiq').value='${jsq(x.v.name)} 보고 맛집 카페';recommend('${jsq(x.v.name)} 보고 맛집 카페')">코스로 짜기</button>` : ""}</div></div></article>`;
+  $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🏯 오늘(${d}) ${esc(RNAME())} 역사 유적</b><span>${ok.length}/${rows.length}곳</span></div>
+   <p class="pfNote">🚩 ${esc(o.label || "출발지")}에서 ${tripHM(start)} 출발 기준 · 가까운 곳부터 · 도착해서 충분히 둘러볼 수 있는 곳만 '갈 수 있어요'로 표시했어요. 출발지는 위 '어디서 출발해요?'에서 바꿀 수 있어요.</p>
+   ${ok.length ? `<div class="acGrid">${ok.map(x => row(x, true)).join("")}</div>` : `<p class="pfNone">지금 출발해서 오늘 제대로 둘러볼 수 있는 곳이 없어요. 아래 '오늘은 어려운 곳'의 이유를 보고 내일 일찍 가 보세요.</p>`}
+   ${no.length ? `<details class="histNo"><summary>오늘은 어려운 곳 ${no.length} (이유 보기)</summary><div class="acGrid">${no.map(x => row(x, false)).join("")}</div></details>` : ""}
+   <p class="pfNote"><button class="btn" onclick="showTab('places');setPlace('group','역사 유적·5·18')">🏯 가볼 곳 탭에서 역사 유적 전체 보기 →</button></p></div>`;
+  scrollAI();
 }
 function petList(s) {
   const gu = (s.match(/(동구|서구|남구|북구|광산구)/) || [])[1], big = /대형|큰|마당|야외/.test(s);
@@ -7764,7 +7780,7 @@ function isHistorySite(v) {
 const HISTORY_ADD = [
   { id: "hist-mokpo-modern", name: "목포근대역사관 1관 (구 목포일본영사관)", kind: "역사유적", district: "목포시", address: "전남 목포시 영산로29번길 6", inout: "실내·야외", aliases: ["근대역사관"], desc: "1900년에 지은 붉은 벽돌 옛 일본영사관 건물. 개항기 목포의 모습을 보여 줘요. 근처 2관(옛 동양척식주식회사)과 원도심 근대 골목을 함께 걷기 좋아요." },
   { id: "hist-muan-choui", name: "초의선사 유적지", kind: "역사유적", district: "무안군", address: "전남 무안군 삼향읍 초의길 30", phone: "061-285-0300", hours: "09:00–18:00 (입장마감 17:00)", closed: "월요일 · 1월 1일 · 설·추석", price: "무료", inout: "실내·야외", aliases: ["초의선사"], desc: "우리 차(茶) 문화를 다시 일으킨 조선 승려 초의선사의 생가와 기념관, 차 체험 시설이 모인 곳이에요." },
-  { id: "hist-sinan-whanki", name: "김환기 고택 (신안 안좌도)", kind: "역사유적", district: "신안군", address: "전남 신안군 안좌면 읍동리", hours: "상시 개방 (외관)", price: "무료", inout: "야외", aliases: ["김환기 고택"], desc: "한국 추상미술의 선구자 김환기가 태어나 자란 집(국가등록문화유산). 퍼플섬 가는 길의 안좌도에 있어요. 주소는 마을 단위라 길찾기로 확인하세요." },
+  { id: "hist-sinan-whanki", lat: 34.729, lng: 126.144, approx: true, name: "김환기 고택 (신안 안좌도)", kind: "역사유적", district: "신안군", address: "전남 신안군 안좌면 읍동리", hours: "상시 개방 (외관)", price: "무료", inout: "야외", aliases: ["김환기 고택"], desc: "한국 추상미술의 선구자 김환기가 태어나 자란 집(국가등록문화유산). 퍼플섬 가는 길의 안좌도에 있어요. 주소는 마을 단위라 길찾기로 확인하세요." },
   { id: "hist-yeongam-wangin", name: "왕인박사유적지", kind: "역사유적", district: "영암군", address: "전남 영암군 군서면 왕인로 440", hours: "야외 상시 · 전시관 09:00–18:00", closed: "연중무휴", price: "어른 1,000원 · 청소년 800원 · 어린이 500원 (7세 이하·65세 이상·영암군민 무료)", inout: "실내·야외", aliases: ["왕인박사"], desc: "백제 학자 왕인박사가 태어난 곳으로 전해지는 유적지. 봄엔 벚꽃길이 유명해요." },
   { id: "hist-haenam-nogudang", name: "고산 윤선도 유적지 (녹우당)", kind: "역사유적", district: "해남군", address: "전남 해남군 해남읍 녹우당길 135", hours: "09:00–18:00 (입장마감 17:00)", closed: "월요일", price: "무료 (주차 무료)", inout: "실내·야외", aliases: ["녹우당", "윤선도 유적지"], desc: "어부사시사를 지은 고산 윤선도 집안의 옛집 녹우당과 유물전시관. 비자나무숲 산책로도 있어요." },
   { id: "hist-haenam-myeongnyang", name: "명량대첩해전사 기념전시관 (우수영 울돌목)", kind: "역사유적", district: "해남군", address: "전남 해남군 문내면 관광레저로 12", hours: "09:00–17:30", closed: "연중무휴", price: "무료 (4D 영상관 1,000원)", inout: "실내·야외", aliases: ["우수영", "울돌목", "명량"], desc: "이순신 장군이 12척으로 왜선을 막은 명량해전의 바다 울돌목 바로 앞. 해남 우수영 쪽에서 물살을 보고 전시관을 둘러봐요." },
@@ -8145,7 +8161,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.71 (11.05)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.72 (11.05)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -11033,6 +11049,7 @@ html body .heroStats button:not(.heroNow) strong{order:1;font-size:21px!importan
 @media(min-width:760px){html body .heroStats{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 </style>
 <style id="tidy-1105">
+.histNo{margin:10px 0}.histNo>summary{cursor:pointer;font-weight:800;padding:8px 0;color:#ffd9a8}
 /* 권역 탭: 광주권 왼쪽 끝 · 순천여수권 가운데 · 무안목포권 오른쪽 끝 */
 html body #regionBar{justify-content:space-between!important;gap:8px!important;overflow:visible!important}
 html body #regionBar>button{flex:1 1 0!important;min-width:0!important;justify-content:center!important}
