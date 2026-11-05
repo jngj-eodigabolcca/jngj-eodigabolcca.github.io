@@ -46,6 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
 <style>
 /* ════════ 오늘, 전남광주 어디가볼까? — 무등산 초록 · 빛고을 금빛 · 한지 바탕 ════════ */
 :root{
@@ -2099,6 +2100,268 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
 </style>
 <style>.brand .brandLong{display:none}@media (min-width:560px){.brand .brandLong{display:inline}}.outsideGrid{gap:8px!important}.outsideCard{text-decoration:none;color:inherit}.outsideCard .listMain{padding:12px 14px!important}
 </style>
+<script>/* 히어로 문구 생성기 (headline.js) */
+/**
+ * 어디가볼까? — 히어로 문구 생성기
+ * 시간대 · 계절 · 날씨 · 요일 · 지역에 맞춰 전라도 말투 문구를 골라줍니다.
+ *
+ * 사용법:
+ *   const h = pickHeadline({ weather: 'rain', temp: 14, region: 'suncheon' });
+ *   h.top    → "오늘은 촉촉허니"
+ *   h.accent → "박물관 가볼랑가?"
+ *
+ * weather 값: 'clear' | 'cloudy' | 'rain' | 'snow' | 'dust' | 'windy' | 'hot' | 'cold'
+ *   (temp를 넘기면 30℃ 이상은 hot, 2℃ 이하는 cold가 자동으로 붙어요)
+ * region 값: 'gwangju' | 'suncheon' | 'mokpo'
+ * time/season/date 를 직접 넘기면 테스트용으로 덮어씁니다.
+ *
+ * 조건 필드: time, season (배열 가능), weather, day('weekday'|'weekend'), region
+ * out: true → 야외 활동 문구라서 비·눈·미세먼지 날엔 빠짐
+ */
+(function (global) {
+  const HEADLINES = [
+    // ── 비 ──────────────────────────────
+    { weather: 'rain', top: '오늘은 촉촉허니', accent: '박물관 가볼랑가?' },
+    { weather: 'rain', top: '비 오는 날엔 워메', accent: '전시관이 딱이여' },
+    { weather: 'rain', top: '빗소리 들음서', accent: '책 한 권 어쩌요?' },
+    { weather: 'rain', top: '우산 챙겼능가?', accent: '카페 창가 자리 좋제' },
+    { weather: 'rain', top: '비가 추적추적', accent: '실내서 놀아불자' },
+    { weather: 'rain', top: '오늘은 젖지 말고', accent: '지붕 있는 데로 가소' },
+    { weather: 'rain', time: ['lunch', 'evening'], top: '비 오는 날엔', accent: '뜨끈한 국밥 한 그릇' },
+    { weather: 'rain', time: ['lunch', 'evening'], top: '빗소리엔 역시', accent: '파전에 막걸리제' },
+    { weather: 'rain', season: 'summer', top: '장맛비 겁나 오네', accent: '오늘은 실내 데이트' },
+    { weather: 'rain', season: 'autumn', top: '가을비 촉촉허니', accent: '미술관 한 바퀴 어쩌요?' },
+    { weather: 'rain', time: 'night', top: '비 오는 밤엔', accent: '포장마차 생각나제?' },
+
+    // ── 눈 ──────────────────────────────
+    { weather: 'snow', top: '워메, 눈 온다잉', accent: '따순 데로 가불자' },
+    { weather: 'snow', top: '눈 오는 날엔', accent: '창 넓은 카페 어쩌요?' },
+    { weather: 'snow', top: '길 미끄렁께', accent: '가까운 데만 댕기소' },
+    { weather: 'snow', time: 'night', top: '눈 내리는 밤', accent: '군고구마 생각나제?' },
+
+    // ── 맑음 ─────────────────────────────
+    { weather: 'clear', top: '하늘이 징하게 맑네', accent: '정원 한 바퀴 돌아볼랑가?' },
+    { weather: 'clear', top: '날씨 오지다잉', accent: '오늘은 나가야 쓰것네' },
+    { weather: 'clear', top: '이런 날 집에 있으믄', accent: '아까와서 안 되제' },
+    { weather: 'clear', season: 'autumn', top: '가을 하늘 높다잉', accent: '갈대밭 걸어보소' },
+    { weather: 'clear', season: 'spring', top: '볕이 솔찬히 좋네', accent: '꽃구경 가불자' },
+    { weather: 'clear', season: 'winter', top: '겨울 볕이 따숩네', accent: '양지바른 데 산책 어쩌요?' },
+    { weather: 'clear', time: 'evening', top: '노을 이쁘겄네', accent: '바닷가로 가볼랑가?' },
+    { weather: 'clear', time: 'night', top: '별 보기 좋은 밤', accent: '야경 산책 어쩌요?' },
+    { weather: 'clear', day: 'weekend', top: '주말에 날씨까지', accent: '이건 나가란 소리여' },
+
+    // ── 흐림 ─────────────────────────────
+    { weather: 'cloudy', top: '꾸물꾸물허니', accent: '전시 하나 보고 갈랑가?' },
+    { weather: 'cloudy', top: '해가 숨어부렀네', accent: '시장 구경 가보드라고' },
+    { weather: 'cloudy', top: '흐린 날엔', accent: '조용한 도서관이 좋제' },
+    { weather: 'cloudy', top: '볕은 없어도', accent: '걷기엔 딱 좋당께' },
+
+    // ── 더위 ─────────────────────────────
+    { weather: 'hot', top: '아따 덥다잉', accent: '시원한 데로 피신허자' },
+    { weather: 'hot', top: '푹푹 찌네잉', accent: '계곡물에 발 담가불까?' },
+    { weather: 'hot', top: '땀이 삐질삐질', accent: '팥빙수 한 그릇 어쩌요' },
+    { weather: 'hot', top: '이 더위엔', accent: '에어컨 빵빵한 데가 최고여' },
+
+    // ── 추위 ─────────────────────────────
+    { weather: 'cold', top: '오메 춥다잉', accent: '따순 국물 땡기제?' },
+    { weather: 'cold', top: '손 시렵제?', accent: '온천 가서 녹여불자' },
+    { weather: 'cold', top: '바람이 매섭네', accent: '실내 체험 어쩌요?' },
+    { weather: 'cold', top: '꽁꽁 싸매고', accent: '찜질방 가불까?' },
+
+    // ── 미세먼지 ───────────────────────────
+    { weather: 'dust', top: '공기가 쪼까 탁허네', accent: '오늘은 실내서 놀자' },
+    { weather: 'dust', top: '먼지 많은 날엔', accent: '박물관이 최고여' },
+    { weather: 'dust', top: '마스크 챙겼능가?', accent: '쇼핑몰 구경 어쩌요' },
+
+    // ── 바람 ─────────────────────────────
+    { weather: 'windy', top: '바람 겁나 부네', accent: '모자 꽉 잡고 댕기소' },
+    { weather: 'windy', top: '바람이 씽씽', accent: '오늘은 아늑한 카페로' },
+
+    // ── 시간대 ────────────────────────────
+    { time: 'dawn', top: '잠 안 오는 새벽', accent: '내일 갈 데 골라볼랑가?' },
+    { time: 'dawn', top: '부지런도 허네', accent: '일출 보러 가볼랑가?', out: true },
+    { time: 'dawn', top: '새벽 감성이여', accent: '조용히 찜만 해두소' },
+
+    { time: 'morning', top: '좋은 아침이여~', accent: '오늘은 어디 가볼랑가?' },
+    { time: 'morning', top: '아침 공기 좋네잉', accent: '공원 한 바퀴 돌아불자', out: true },
+    { time: 'morning', top: '일찍 일어났능가?', accent: '한적할 때 가봐야제' },
+    { time: 'morning', top: '모닝커피 한 잔', accent: '동네 카페 어쩌요?' },
+    { time: 'morning', top: '오늘 하루도', accent: '쪼까 설레게 시작혀보자' },
+
+    { time: 'lunch', top: '배꼽시계 울린다잉', accent: '보리밥 한 그릇 어쩌요?' },
+    { time: 'lunch', top: '점심 뭐 묵을랑가?', accent: '동네 맛집 골라줄게' },
+    { time: 'lunch', top: '밥심이 최고여', accent: '백반집 가보드라고' },
+    { time: 'lunch', top: '점심 묵고', accent: '소화 산책 한 바퀴' },
+
+    { time: 'afternoon', top: '나른한 오후엔', accent: '카페서 쉬어가소' },
+    { time: 'afternoon', top: '오후가 길다잉', accent: '전시 하나 보고 갈랑가?' },
+    { time: 'afternoon', top: '졸음 쏟아지제?', accent: '바람 쐬러 나가불자', out: true },
+    { time: 'afternoon', top: '당 떨어졌능가?', accent: '빵집 순례 어쩌요' },
+
+    { time: 'evening', top: '퇴근했능가?', accent: '요가 한 판 어쩌요?' },
+    { time: 'evening', top: '해 질 녘엔', accent: '노을 맛집 가볼랑가?', out: true },
+    { time: 'evening', top: '저녁 뭐 묵제?', accent: '시장 골목 가보소' },
+    { time: 'evening', top: '오늘 하루 고생혔네', accent: '맛난 거 묵으러 가불자' },
+
+    { time: 'night', top: '밤이 깊었네잉', accent: '야경 보러 가불자', out: true },
+    { time: 'night', top: '출출허제?', accent: '야식 골목 어쩌요' },
+    { time: 'night', top: '오늘도 수고했당께', accent: '내일 갈 데 찜해두소' },
+    { time: 'night', top: '잠이 안 오믄', accent: '심야 책방 가볼랑가?' },
+
+    // ── 계절 ─────────────────────────────
+    { season: 'spring', top: '봄바람 살랑살랑', accent: '꽃길 걸어보소잉', out: true },
+    { season: 'spring', top: '꽃 피었당께', accent: '꽃놀이 가불자', out: true },
+    { season: 'spring', top: '봄나물 철이여', accent: '산채비빔밥 어쩌요?' },
+    { season: 'summer', top: '여름이 왔당께', accent: '바다가 부른다잉', out: true },
+    { season: 'summer', top: '한여름 밤엔', accent: '야시장 구경 어쩌요?' },
+    { season: 'summer', top: '수박 한 통 들고', accent: '평상에 앉아볼랑가?' },
+    { season: 'autumn', top: '단풍 들었당께', accent: '산책길 걸어볼랑가?', out: true },
+    { season: 'autumn', top: '가을 타능가?', accent: '책 한 권 읽어보소' },
+    { season: 'autumn', top: '전어 굽는 냄새', accent: '집 나간 입맛 돌아오제' },
+    { season: 'autumn', top: '선선허니 좋네', accent: '걷기 딱 좋은 날이여' },
+    { season: 'winter', top: '겨울이 왔당께', accent: '꼬막 철이여' },
+    { season: 'winter', top: '귤 까묵기 좋은 날', accent: '뜨끈한 데 가볼랑가?' },
+    { season: 'winter', top: '연말이 다가온께', accent: '불빛 축제 보러 갈랑가?' },
+
+    // ── 감성 한 스푼 (반전·낭만) ──────────────────
+    // 비
+    { weather: 'rain', top: '비 오믄 가끔은', accent: '비 맞아도 좋제?' },
+    { weather: 'rain', top: '우산 없이 쪼까', accent: '빗길 걸어볼랑가?' },
+    { weather: 'rain', top: '빗소리가 좋아서', accent: '창밖만 봐도 좋네잉' },
+    { weather: 'rain', top: '비 그치믄', accent: '무지개 뜰랑가 몰라' },
+    // 눈
+    { weather: 'snow', top: '오늘 눈 온께', accent: '겁나 낭만적이네잉' },
+    { weather: 'snow', top: '첫눈 왔당께', accent: '보고픈 사람 불러보소' },
+    { weather: 'snow', top: '하얗게 쌓였네잉', accent: '눈사람 맹글러 가불자' },
+    { weather: 'snow', top: '눈 밟는 소리', accent: '뽀드득 좋제?' },
+    // 쨍쨍
+    { weather: 'hot', top: '해가 쨍쨍허니', accent: '나가는 건 무리여' },
+    { weather: 'hot', top: '볕이 겁나 따갑네', accent: '오늘은 그늘로만 댕기소' },
+    { weather: 'clear', season: 'summer', top: '해가 너무 쨍쨍혀서', accent: '실내가 살길이여' },
+    { weather: 'clear', season: 'summer', top: '선크림 발랐능가?', accent: '모자도 꼭 쓰소잉' },
+    // 봄볕
+    { season: 'spring', top: '봄볕이 따숩네', accent: '나도 볕 쬐러 가야쓰것다', out: true },
+    { season: 'spring', top: '봄볕 아까운께', accent: '쪼까라도 걸어보소', out: true },
+    { weather: 'clear', season: 'spring', top: '봄볕 쬐기 딱이여', accent: '벤치에 앉아볼랑가?' },
+    { season: 'spring', top: '봄인디 방에만?', accent: '창문이라도 열어보소' },
+    // 단풍
+    { season: 'autumn', top: '가을은 뭐니뭐니혀도', accent: '단풍구경이 최곤디', out: true },
+    { season: 'autumn', top: '울긋불긋 물들었네', accent: '알록달록 보러 가불자', out: true },
+    { season: 'autumn', top: '낙엽 바스락바스락', accent: '걷기만 혀도 좋제', out: true },
+    { weather: 'rain', season: 'autumn', top: '비에 젖은 단풍', accent: '더 진허니 이쁘네' },
+
+    // ── 요일 ─────────────────────────────
+    { day: 'weekend', top: '주말인디 집에만?', accent: '쪼까 나가보소잉' },
+    { day: 'weekend', top: '주말이여~', accent: '멀리 한번 가불자' },
+    { day: 'weekend', top: '늦잠 잤능가?', accent: '브런치 맛집 어쩌요' },
+    { day: 'weekday', top: '평일이라 한적허니', accent: '가고팠던 데 가볼랑가?' },
+    { day: 'weekday', top: '평일 땡땡이', accent: '쪼까만 혀볼까?' },
+
+    // ── 지역 ─────────────────────────────
+    { region: 'suncheon', season: 'autumn', top: '갈대가 춤추네', accent: '순천만 가볼랑가?', out: true },
+    { region: 'suncheon', top: '순천 왔으믄', accent: '정원은 보고 가야제', out: true },
+    { region: 'suncheon', time: 'night', top: '여수 밤바다', accent: '걸어볼랑가?', out: true },
+    { region: 'suncheon', season: 'winter', top: '벌교 꼬막', accent: '제철이랑께' },
+    { region: 'gwangju', top: '광주 왔으믄', accent: '떡갈비는 묵어야제' },
+    { region: 'gwangju', top: '동명동 골목', accent: '카페 투어 어쩌요?' },
+    { region: 'gwangju', season: 'autumn', top: '무등산 단풍', accent: '보러 가볼랑가?', out: true },
+    { region: 'mokpo', top: '목포 왔으믄', accent: '낙지 한 접시 해야제' },
+    { region: 'mokpo', time: 'evening', top: '갓바위 노을', accent: '보러 가볼랑가?', out: true },
+    { region: 'mokpo', top: '근대 골목 따라', accent: '시간여행 어쩌요?' },
+
+    // ── 언제나 (바닥 깔개) ─────────────────────
+    { top: '오늘은 어디로', accent: '가볼랑가?' },
+    { top: '심심허제?', accent: '요 근처 둘러보소' },
+    { top: '거시기, 오늘은', accent: '안 가본 데 가볼까?' },
+    { top: '동네 한 바퀴', accent: '돌아볼랑가?' },
+    { top: '뭐 헐지 모르겄으믄', accent: '여기서 골라보소' },
+  ];
+
+  const BAD_WEATHER = ['rain', 'snow', 'dust'];
+
+  function timeSlot(h) {
+    if (h < 6) return 'dawn';
+    if (h < 11) return 'morning';
+    if (h < 14) return 'lunch';
+    if (h < 18) return 'afternoon';
+    if (h < 21) return 'evening';
+    return 'night';
+  }
+
+  function seasonOf(month) {
+    if (month >= 3 && month <= 5) return 'spring';
+    if (month >= 6 && month <= 8) return 'summer';
+    if (month >= 9 && month <= 11) return 'autumn';
+    return 'winter';
+  }
+
+  function buildContext(o = {}) {
+    const d = o.date || new Date();
+    const weathers = new Set();
+    if (o.weather) weathers.add(o.weather);
+    if (typeof o.temp === 'number') {
+      if (o.temp >= 30) weathers.add('hot');
+      if (o.temp <= 2) weathers.add('cold');
+    }
+    const dow = d.getDay();
+    return {
+      time: o.time || timeSlot(d.getHours()),
+      season: o.season || seasonOf(d.getMonth() + 1),
+      weathers,
+      day: o.day || (dow === 0 || dow === 6 ? 'weekend' : 'weekday'),
+      region: o.region || null,
+    };
+  }
+
+  const has = (field, value) => [].concat(field).includes(value);
+
+  function matches(p, c) {
+    if (p.time && !has(p.time, c.time)) return false;
+    if (p.season && !has(p.season, c.season)) return false;
+    if (p.weather && !c.weathers.has(p.weather)) return false;
+    if (p.day && p.day !== c.day) return false;
+    if (p.region && p.region !== c.region) return false;
+    if (p.out && [...c.weathers].some((w) => BAD_WEATHER.includes(w))) return false;
+    return true;
+  }
+
+  // 조건이 구체적일수록 더 자주 뽑히지만, 다른 문구도 섞여 나오게 가중치 랜덤
+  function weight(p) {
+    return 1 + (p.weather ? 3 : 0) + (p.region ? 2 : 0) + (p.time ? 1.5 : 0) + (p.season ? 1 : 0) + (p.day ? 1 : 0);
+  }
+
+  const RECENT_KEY = 'eodiga_headline_recent';
+  function readRecent() {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { return []; }
+  }
+  function remember(id) {
+    try {
+      const list = [id, ...readRecent().filter((x) => x !== id)].slice(0, 8);
+      localStorage.setItem(RECENT_KEY, JSON.stringify(list));
+    } catch (e) { /* 저장 안 돼도 문제 없음 */ }
+  }
+
+  function pickHeadline(opts = {}) {
+    const ctx = buildContext(opts);
+    let pool = HEADLINES.filter((p) => matches(p, ctx));
+    const recent = readRecent();
+    const fresh = pool.filter((p) => !recent.includes(p.top + '|' + p.accent));
+    if (fresh.length) pool = fresh; // 최근 8개는 되도록 안 겹치게
+
+    const total = pool.reduce((s, p) => s + weight(p), 0);
+    let x = Math.random() * total;
+    let chosen = pool[pool.length - 1];
+    for (const p of pool) { x -= weight(p); if (x <= 0) { chosen = p; break; } }
+
+    remember(chosen.top + '|' + chosen.accent);
+    return { top: chosen.top, accent: chosen.accent, context: ctx };
+  }
+
+  global.pickHeadline = pickHeadline;
+  global.HEADLINES = HEADLINES;
+  if (typeof module !== 'undefined' && module.exports) module.exports = { pickHeadline, HEADLINES };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
 </head>
 <body data-tab="home" data-screen="home">
 <script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
@@ -4080,6 +4343,19 @@ function renderToday() {
   const goPool = weatherKind === "rainLater" ? ["비 올 때는 실내 위주로 골라보장께"] : weatherGo.length ? weatherGo : goBase;
   const gKey = [REGION, part, TODAY_SEED, weatherKind, WEATHER ? (WEATHER.cur ?? WEATHER.code ?? "") : "no-weather"].join("|"), GP = window.__GREET_PICK || (window.__GREET_PICK = {});
   if (!GP[gKey]) { const hi = hiPool.length ? hiPool : (GREET_HI[part] || [RNAME()]), go = goPool.length ? goPool : ((GREET_GO[REGION] || GREET_GO.gj).morning || [RNAME()]); GP[gKey] = [hi[Math.floor(Math.random() * hi.length)], go[Math.floor(Math.random() * go.length)]] }
+  // 새 문구(headline.js)와 섞기: 처음 고를 때만, 60% 확률로 새 문구 사용
+  if (!GP[gKey].mix && typeof window.pickHeadline === "function") { try {
+    GP[gKey].mix = 1;
+    if (Math.random() < 0.6) {
+      const wc = WEATHER ? Number(WEATHER.cur ?? WEATHER.code) : NaN;
+      const wk = weatherKind === "rain" ? ((wc >= 71 && wc <= 77) || wc === 85 || wc === 86 ? "snow" : "rain")
+        : weatherKind === "hot" || weatherKind === "cold" ? weatherKind
+        : weatherKind === "rainLater" ? undefined
+        : wc <= 1 ? "clear" : wc <= 48 ? "cloudy" : undefined;
+      const hl = window.pickHeadline({ weather: wk, temp: WEATHER ? Number(WEATHER.now) : undefined, region: { gj: "gwangju", ys: "suncheon", mp: "mokpo" }[REGION] });
+      GP[gKey] = Object.assign([hl.top, hl.accent], { mix: 1 });
+    }
+  } catch (e) {} }
   const greet = GP[gKey];
   $("#greet").innerHTML = `${esc(greet[0])}<br><em>${esc(greet[1])}</em>`;
   $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : cultureInfo().state === "today" ? "🎫 문화가 있는 날" : RNAME()}</span>`;
@@ -11070,5 +11346,9 @@ html body .heroStats .heroNow span{font-size:12px!important}
 html body .heroStats button:not(.heroNow){min-height:40px!important;height:40px!important;border-radius:12px!important;gap:6px!important}
 html body .heroStats button:not(.heroNow) strong{font-size:17px!important}
 html body .heroStats button:not(.heroNow) span{font-size:12px!important}
+</style>
+<style>
+/* 히어로 제목: 딱딱한 굵은 글꼴 → 둥근 주아체, 크기 약 70% */
+html body .hero .heroCopy h1#greet{font-family:"Jua",var(--display)!important;font-weight:400!important;font-synthesis:none;font-size:clamp(27px,7.6vw,46px)!important;line-height:1.3!important;letter-spacing:-.005em!important;word-break:keep-all}
 </style>
 </body></html>
