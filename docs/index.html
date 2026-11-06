@@ -4136,6 +4136,10 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
   ];
 
   const BAD_WEATHER = ['rain', 'snow', 'dust'];
+  // 해 진 뒤엔 낮에만 어울리는 문구(볕·하늘·노을·'나가야' 등)를 빼요. 밤 7시에 '날씨 오지다잉, 나가야 쓰것네'가 뜨던 문제.
+  const DAY_WORDS = /볕|햇|하늘|해가|해 질|노을|일출|아침|점심|오후|선크림|양산|그늘|살갗|피부가 타|쨍쨍|이글이글|나가야|나가란|집에 있으믄|날씨 오지|정원 한 바퀴|꽃구경|꽃놀이|꽃길|단풍구경|갈대밭|드라이브|땡땡이|금빛|알록달록/;
+  // 달별 대략적인 해 지는 시각(광주 기준, 시 단위)
+  const SUNSET = [17.7, 18.1, 18.6, 19.0, 19.4, 19.7, 19.7, 19.3, 18.7, 18.1, 17.5, 17.4];
 
   function timeSlot(h) {
     if (h < 6) return 'dawn';
@@ -4168,6 +4172,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
       weathers,
       day: o.day || (dow === 0 || dow === 6 ? 'weekend' : 'weekday'),
       region: o.region || null,
+      dark: typeof o.dark === 'boolean' ? o.dark : (d.getHours() + d.getMinutes() / 60 >= SUNSET[d.getMonth()] - 0.3 || d.getHours() < 6),
     };
   }
 
@@ -4180,6 +4185,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
     if (p.day && p.day !== c.day) return false;
     if (p.region && p.region !== c.region) return false;
     if (p.out && [...c.weathers].some((w) => BAD_WEATHER.includes(w))) return false;
+    if (c.dark && DAY_WORDS.test(p.top + ' ' + p.accent)) return false;
     return true;
   }
 
@@ -4275,7 +4281,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
     <div class="photoCard">
       <div class="slides" id="slides"></div>
       <div class="fx" id="heroFx" aria-hidden="true"></div>
-      <div class="wx" id="wx" role="button" tabindex="0" onclick="document.querySelector('#wxTips').scrollIntoView({behavior:'smooth'})" title="오늘 날씨·옷차림·챙길 것 보기">날씨 불러오는 중…</div>
+      <div class="wx" id="wx" role="button" tabindex="0" onclick="window.goWeatherTab&&goWeatherTab()" title="오늘 날씨·옷차림·챙길 것 보기" aria-label="날씨 자세히 보기">날씨 불러오는 중…</div>
       <div class="slideCap"><span id="slideDesc" aria-live="polite"></span><span id="slideName"></span><div class="dots" id="dots"></div></div>
     </div>
   </div>
@@ -4402,7 +4408,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
         <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>🏯 역사 유적</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>🏮 전통시장 구경</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
-  <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</small></div></div></div>
+  <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<span class="crEx"><br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</span></small></div></div></div>
 </div>
 </section>
 
@@ -5466,10 +5472,7 @@ async function loadWeather(force = false) {
   } catch { cached = null; }
 
   if (wxEl) {
-    wxEl.onclick = () => {
-      if (WEATHER) document.querySelector('#wxTips')?.scrollIntoView({behavior:'smooth'});
-      else loadWeather(true);
-    };
+    wxEl.onclick = () => window.goWeatherTab();
     if (!WEATHER || force) {
       wxEl.innerHTML = `🌤 날씨 확인 중…<small>${esc(wxPoint().label)} 기준 · 최신 정보 확인 중</small>`;
     }
@@ -8428,6 +8431,17 @@ function showTab(tab, fromHistory = false) {
 }
 /* 홈에 있는 칸(오늘 열리는 것·날씨 등)으로 가야 할 때: 다른 탭에 있으면 먼저 홈으로 */
 window.ensureHome = () => { if (CUR_TAB !== "home") showTab("home") };
+/* 사진 위 날씨를 누르면: 숨겨진 날씨 칸(#wxTips)을 펼치고 그 자리로 이동.
+   (예전엔 숨긴 칸으로 scrollIntoView만 해서 눌러도 아무 일이 없었음) — 오른쪽 빠른 메뉴 '🌤 날씨'와 같은 동작 */
+window.goWeatherTab = () => {
+  ensureHome();
+  const el = document.getElementById("wxTips");
+  if (el) el.classList.remove("hidden");
+  if (!WEATHER) loadWeather(true); else if (typeof renderWxTips === "function") renderWxTips();
+  try { window.goatcounter?.count?.({ path: "사진날씨-누름", title: "사진 위 날씨 → 날씨 칸", event: true }); } catch (e) {}
+  const go = () => { const t = document.getElementById("wxTips"); if (!t) return; const hh = document.querySelector("header.top")?.offsetHeight || 0; window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - hh - 10), behavior: "instant" }) };
+  [60, 350, 800].forEach(ms => setTimeout(go, ms));
+};
 function goDecision(){
   ensureHome();
   document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x.dataset.jump==="decide"));
@@ -11879,4 +11893,42 @@ document.addEventListener("keydown",function(e){
   e.preventDefault();el.click();
 });
 </script>
+<style id="fixes20261107">
+/* ── 2026-11-07 화면 다듬기 ── 되돌리려면 이 style 블록만 지우면 됨 */
+
+/* ① 사진 위 날씨: 상자 없이 글씨만, 두 줄로. 그림자로 어떤 사진에서도 읽히게. 누르면 날씨 칸으로 이동(기존 그대로) */
+html body .hero .photoCard #wx{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  padding:0!important;gap:1px!important;overflow:visible!important;max-height:none!important;
+  color:#fff!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.65),0 0 10px rgba(0,0,0,.45),0 0 2px rgba(0,0,0,.5)!important;
+}
+html body .hero .photoCard #wx *{color:#fff!important;background:transparent!important}
+html body .hero .photoCard #wx .wxTop b{font-size:19px!important;font-weight:850!important}
+html body .hero .photoCard #wx .wxMeta{font-size:12.5px!important;font-weight:650!important;opacity:.95;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important}
+html body .hero .photoCard #wx .wxMeta ~ .wxMeta,
+html body .hero .photoCard #wx .wxHint,
+html body .hero .photoCard #wx .wxWear{display:none!important}
+html body .hero .photoCard #wx{cursor:pointer}
+html body .hero .photoCard #wx::after{content:"👆 누르면 날씨탭으로 가요 ›";display:block;margin-top:3px;font-size:11.5px;font-weight:750;opacity:.95;white-space:nowrap}
+html body .hero .photoCard #wx:active{opacity:.75}
+/* 글씨 뒤쪽 사진을 조금 더 어둡게(밝은 하늘 사진 대비) — 기존 아래쪽 그늘을 살짝 진하게 */
+html body .hero .photoCard:after{height:45%!important;background:linear-gradient(transparent,rgba(0,0,0,.5))!important}
+
+/* ② '글로 물어보기' 안내 칸: 폰에서 낮게 (예시 문장은 위 버튼들과 같아서 숨김) */
+@media(max-width:899px){
+  html body #aiBox #answer{min-height:0!important;padding:12px 14px!important}
+  html body #aiBox #answer .creamingState{min-height:0!important;gap:10px!important;justify-content:flex-start!important}
+  html body #aiBox #answer .creamingState img{width:44px!important;height:56px!important}
+  html body #aiBox #answer .creamingState b{font-size:15px!important;line-height:1.4!important}
+  html body #aiBox #answer .creamingState small{font-size:13px!important;line-height:1.45!important}
+  html body #aiBox #answer .crEx{display:none}
+}
+
+/* ③ 겹침: '지금 바로 갈 곳' 다음에 오는 '.first' 칸(오늘 열리는 것 등)은 위로 끌어올리지 않음
+   (기존 #decideNow ~ .first 규칙은 #decideNow가 없거나 순서가 바뀌면 안 먹던 문제) */
+html body main .nowStart ~ .first,
+html body main #decideNow ~ .first{margin-top:20px!important}
+</style>
 </body></html>
