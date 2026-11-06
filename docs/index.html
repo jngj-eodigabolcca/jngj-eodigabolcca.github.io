@@ -5036,7 +5036,8 @@ function renderRegionBar() {
   const db = document.getElementById("dateBadge"); if (db && db.lastElementChild && /광주광역시|권$/.test(db.lastElementChild.textContent)) db.lastElementChild.textContent = R.name;
 }
 function renderAll() {
-  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—";   // 자료를 못 불러와 0이면 고장처럼 보이지 않게 — if ($("#libNum")) $("#libNum").textContent = LIBS.length || "—"; if ($("#foodNum")) $("#foodNum").textContent = (FOOD.length + BAKERIES.length + CAFES.length) || "—";
+  // 자료를 못 불러와 0이면 고장처럼 보이지 않게 — 로 표시
+  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—"; if ($("#libNum")) $("#libNum").textContent = LIBS.length || "—"; if ($("#foodNum")) $("#foodNum").textContent = (FOOD.length + BAKERIES.length + CAFES.length) || "—";
   renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
   renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); try { if (typeof renderSeason === "function") renderSeason() } catch (e) {} renderFavs(); renderGallery();
 }
@@ -10359,7 +10360,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.78 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.79 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
