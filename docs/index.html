@@ -11726,4 +11726,122 @@ html[data-theme="dark"] body .hero .heroStats button:not(.heroNow) strong,html[d
   var p=document.getElementById("heroLead"); if(p && window.MutationObserver) new MutationObserver(lead).observe(p,{childList:true});
 })();
 </script>
+<!-- ── #onlyNowNight20261106 : '지금만 되는 것' 칸 + 저녁엔 첫 화면 버튼이 '오늘 밤' 모드로 ──
+  · 지금만: 아래 ONLY_NOW 달력(평년 기준 어림값)에서 오늘 기간 안인 것 + 45일 안에 시작하는 것을 남은 날짜순으로 보여줌.
+    단풍·벚꽃은 계절 명소 칸(seasonPickScript)이 맡으니 여기 넣지 않고, 그 칸이 보일 땐 바로가기만 붙임.
+  · 밤: 새 내용 없음. 17시~새벽 4시엔 #impact20261106 의 첫 화면 버튼이 기존 runTheme('night')(야간 나들이)를 부름.
+  · 이 블록만 지우면 원래대로.
+-->
+<style id="onlyNowNight20261106">
+#onlyNow .onBadge{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:800;vertical-align:middle;background:#fff1e6;color:#d9531e}
+#onlyNow .onBadge.hot{background:#ff5a1f;color:#fff}
+#onlyNow .onBadge.soon{background:#e8eef7;color:#33507a}
+#onlyNow .onLink{display:block;width:100%;margin-top:10px;padding:12px 14px;border:1px dashed #f0b48a;border-radius:14px;background:transparent;color:#c2541c;font-weight:800;font-size:14px;text-align:left;cursor:pointer}
+:root[data-theme="dark"] #onlyNow .onBadge{background:#3a2a20;color:#ffb36b}
+:root[data-theme="dark"] #onlyNow .onBadge.soon{background:#24303f;color:#bcd0ea}
+:root[data-theme="dark"] #onlyNow .onLink{color:#ffb36b;border-color:#6b4a33}
+html body .hero .impactGo.night{background:linear-gradient(135deg,#1f2d55,#3b3f8f);box-shadow:0 10px 24px rgba(31,45,85,.4)}
+</style>
+<script id="onlyNowNight20261106Script">
+(function(){
+  /* [이름, 지도 검색어, 지역(시군), 권역 gj/ys/mp, 시작 MM-DD, 끝 MM-DD, 아이콘, 한 줄 소개, 팁]
+     끝이 시작보다 앞이면 해를 넘기는 기간(예: 11-01 ~ 03-15). 날짜는 평년 기준 어림값이라 '방문 전 확인'을 늘 붙임. */
+  var ONLY_NOW = [
+    ["순천만 은빛 갈대", "순천만습지", "순천시", "ys", "10-15", "11-30", "🌾", "갈대밭이 은빛으로 제일 빛날 때", "해 질 녘 용산전망대가 명당"],
+    ["순천만 흑두루미", "순천만습지", "순천시", "ys", "11-01", "03-15", "🕊", "겨울 철새 흑두루미가 날아와 머무는 철", "아침 일찍 · 소리 내지 말고 멀리서"],
+    ["벌교 꼬막", "벌교 꼬막거리", "보성군", "ys", "11-01", "03-31", "🦪", "꼬막이 제일 차오르는 겨울 한철", "꼬막정식 한 상이면 끝"],
+    ["가을 세발낙지", "목포 낙지", "목포·무안", "mp", "09-01", "11-30", "🐙", "남도 갯벌 낙지가 맛 오르는 가을", "탕탕이·연포탕으로"],
+    ["무등산 서석대 상고대", "무등산 서석대", "광주 동구", "gj", "12-15", "02-20", "❄️", "정상 능선에 서리꽃이 피는 한겨울", "아이젠 필수 · 해 지기 전 하산"],
+    ["해넘이·해맞이", "해남 땅끝마을", "해남군", "mp", "12-28", "01-01", "🌅", "한 해 끝과 시작을 땅끝에서", "새벽엔 많이 추워요 · 차 막힘 주의"],
+    ["여수 오동도 동백", "오동도", "여수시", "ys", "01-10", "03-20", "🌺", "바다 옆 동백숲이 붉게 피는 철", "방파제 길은 걸어서 15분쯤"],
+    ["광양 매화마을", "광양 매화마을", "광양시", "ys", "03-05", "03-25", "🌼", "섬진강 언덕이 하얀 매화로 덮일 때", "축제 기간엔 이른 아침에"],
+    ["구례 산수유마을", "구례 산수유마을", "구례군", "ys", "03-05", "03-31", "💛", "돌담길 따라 노란 산수유가 피는 봄", "매화마을과 하루 코스로"],
+    ["보성 녹차밭 첫물", "보성 대한다원", "보성군", "ys", "04-15", "05-20", "🍵", "차밭이 제일 연한 연둣빛일 때", "계단 많아요 · 편한 신발"],
+    ["함평 나비", "함평엑스포공원", "함평군", "mp", "04-25", "05-06", "🦋", "봄에만 열리는 나비 세상", "축제 날짜는 해마다 달라요"],
+    ["무안 회산백련지 연꽃", "회산백련지", "무안군", "mp", "07-10", "08-20", "🪷", "넓은 저수지가 하얀 연꽃으로 가득", "한낮보다 아침이 시원하고 예뻐요"],
+    ["영광 불갑사 꽃무릇", "불갑사", "영광군", "mp", "09-10", "09-30", "🌹", "숲 바닥이 붉은 꽃무릇으로 물드는 철", "절정은 짧아요 · 사진 먼저 확인"]
+  ];
+  var DAY = 864e5;
+  function kstToday(){ var d=new Date(Date.now()+9*3600e3); return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()); }
+  function at(y,md){ return Date.UTC(y,+md.slice(0,2)-1,+md.slice(3)); }
+  // 오늘 기준으로 가장 가까운 (진행 중이거나 다음) 기간 [시작, 끝]
+  function windowOf(from,to,t){
+    var y=new Date(t).getUTCFullYear(), wrap=to<from;
+    for (var k=-1;k<=1;k++){ var s=at(y+k,from), e=at(y+k+(wrap?1:0),to); if (t<=e) return [s,e]; }
+    return [at(y+1,from), at(y+1+(wrap?1:0),to)];
+  }
+  function h(v){ return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]}); }
+  function curRegion(){ try { return REGION } catch(e){ return "gj" } }
+  function mmdd(t){ var d=new Date(t); return (d.getUTCMonth()+1)+"/"+d.getUTCDate(); }
+
+  function render(){
+    var el=document.getElementById("onlyNow"); if(!el) return;
+    var t=kstToday(), reg=curRegion();
+    var list=ONLY_NOW.map(function(x){
+      var w=windowOf(x[4],x[5],t), on=t>=w[0];
+      return {x:x, on:on, left:Math.round((w[1]-t)/DAY), until:Math.round((w[0]-t)/DAY), end:w[1], start:w[0]};
+    }).filter(function(o){ return o.on || o.until<=45; })
+      .sort(function(a,b){ return (b.on-a.on) || (a.on ? a.left-b.left : a.until-b.until) || ((a.x[3]===reg?0:1)-(b.x[3]===reg?0:1)); });
+    var season=document.getElementById("seasonPick"), sh=season && !season.hidden && season.innerHTML.trim();
+    if(!list.length && !sh){ el.hidden=true; el.innerHTML=""; return; }
+    el.hidden=false;
+    var items=list.map(function(o){
+      var x=o.x, badge = o.on
+        ? '<span class="onBadge'+(o.left<=14?' hot':'')+'">'+(o.left===0?'오늘까지':'D-'+o.left)+'</span>'
+        : '<span class="onBadge soon">'+o.until+'일 뒤 시작</span>';
+      var when = o.on ? mmdd(o.end)+'까지 · 놓치면 내년' : mmdd(o.start)+'부터';
+      return '<button class="weekendItem" type="button" data-q="'+h(x[1])+'"><span class="wNo">'+x[6]+'</span><span>'
+        +'<span class="wTag">'+h(x[2])+' · '+when+'</span><b>'+h(x[0])+badge+'</b><small>'+h(x[7])+'</small>'
+        +'<span class="spTip">💡 '+h(x[8])+' · 📍 지도 보기</span></span></button>';
+    }).join("");
+    var link = sh ? '<button type="button" class="onLink" data-jump="seasonPick">'+(season.classList.contains("spring")?"🌸 벚꽃":"🍁 단풍")+' 명소는 아래 계절 명소 칸에서 →</button>' : '';
+    el.innerHTML='<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">ONLY NOW</span>'
+      +'<h2>⏳ 지금 아니면 1년 기다려야 해요</h2><small>전남광주 제철·철새·꽃 · 기간은 평년 기준 어림값이라 가기 전에 확인해 주세요</small></div></div>'
+      +'<div class="weekendList">'+items+'</div>'+link+'</div>';
+  }
+  document.addEventListener("click",function(e){
+    var b=e.target.closest && e.target.closest("#onlyNow [data-q], #onlyNow [data-jump]"); if(!b) return;
+    if(b.dataset.jump){ var s=document.getElementById(b.dataset.jump); if(s) s.scrollIntoView({behavior:"smooth",block:"start"}); return; }
+    window.open("https://map.naver.com/p/search/"+encodeURIComponent(b.dataset.q),"_blank","noopener");
+  });
+
+  // 자리: '오늘 뭐하지?' 바로 아래. arrangeHome()이 홈 칸 순서를 다시 짜도 그 뒤에 다시 붙임.
+  function place(){
+    var main=document.querySelector("main"), d=document.getElementById("decideNow"); if(!main||!d) return;
+    var el=document.getElementById("onlyNow");
+    if(!el){ el=document.createElement("section"); el.id="onlyNow"; el.className="weekendPick onlyNow homeOnly"; el.setAttribute("aria-label","지금만 되는 것"); }
+    var after=d; var ai=document.getElementById("aiBox"); ai=ai&&ai.closest("section");
+    if(ai && ai.parentNode===main && d.nextElementSibling===ai) after=ai;   // '글로 물어보기'가 바로 붙어 있으면 그 아래
+    if(after.nextElementSibling!==el) after.insertAdjacentElement("afterend",el);
+    render();
+  }
+  if (typeof window.arrangeHome==="function"){
+    var orig=window.arrangeHome;
+    window.arrangeHome=function(){ var r=orig.apply(this,arguments); try{ place() }catch(e){ console.warn("[onlyNow]",e) } return r; };
+  }
+  if (typeof window.renderSeason==="function"){
+    var rs=window.renderSeason;
+    window.renderSeason=function(){ var r=rs.apply(this,arguments); try{ render() }catch(e){} return r; };
+  }
+
+  // 밤 모드: 첫 화면 큰 버튼만 바꿈 (새 내용 없음 · 기존 '야간 나들이' 추천을 부름)
+  function nightMode(){
+    var b=document.querySelector(".hero .impactGo"); if(!b) return;
+    var hr=new Date(Date.now()+9*3600e3).getUTCHours(), night = hr>=17 || hr<4;
+    if (night===b.classList.contains("night") && b.dataset.set) return;
+    b.dataset.set="1"; b.classList.toggle("night",night);
+    if (night){
+      b.innerHTML='🌙 오늘 밤 코스 골라줘 <small>해 져도 놀 데 있당께</small>';
+      b.onclick=function(){ if (typeof window.runTheme==="function") window.runTheme("night"); else { var t=document.querySelector('.themeBtn[data-theme="night"]'); if(t) t.click(); } };
+    } else {
+      b.innerHTML='✨ 오늘 코스 골라줘 <small>조건 4개면 끝</small>';
+      b.onclick=function(){ var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
+    }
+  }
+  function run(){ try{ place() }catch(e){ console.warn("[onlyNow]",e) } nightMode(); }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
+  window.addEventListener("load",function(){ setTimeout(run,1500); });
+  setInterval(function(){ nightMode(); render(); },60000);   // 권역을 바꾸거나 저녁 5시가 되면 따라 바뀜
+})();
+</script>
 </body></html>
