@@ -3933,6 +3933,10 @@ html body .foldBar small{flex:none;font-size:13px;font-weight:700;color:var(--mu
 :root[data-theme="dark"] body .foldBar{background:#1c1f26;border-color:#323844}
 /* 첫 화면 설명 글: 4줄 제한 풀기 — 폰 글꼴이 크면 '동선으…'처럼 잘리던 문제 */
 html body .hero #heroLead,html body #heroLead{-webkit-line-clamp:unset!important;line-clamp:unset!important;display:block!important;overflow:visible!important;max-height:none!important;text-overflow:clip!important}
+/* 작은도서관·무인 대출기: 공공도서관과 구분되게 연한 카드 + 점선 */
+html body .libSmall .listCard{background:var(--paper,#fffdf9)!important;border:1px dashed #d6d9e0!important;box-shadow:none!important}
+html body .libSmallHead .libTitle{color:var(--muted,#5f6675)}
+:root[data-theme="dark"] body .libSmall .listCard{background:#181b21!important;border-color:#3a404c!important}
 /* 동네 생활 · 동네 도서관: 1줄 제목, 2줄 '오늘 N곳 운영 · 무료로…' — 각각 한 줄로 */
 html body h3.libHead{display:block!important}
 html body h3.libHead .libTitle{display:block;white-space:nowrap}
@@ -5035,14 +5039,14 @@ function renderRegionBar() {
   if (ey && ld) { ey.dataset.gj ||= ey.textContent; ld.dataset.gj ||= ld.innerHTML; ey.textContent = HL[REGION] ? HL[REGION][0] : ey.dataset.gj; ld.innerHTML = HL[REGION] ? HL[REGION][1] : ld.dataset.gj }
   const db = document.getElementById("dateBadge"); if (db && db.lastElementChild && /광주광역시|권$/.test(db.lastElementChild.textContent)) db.lastElementChild.textContent = R.name;
 }
-/* 홈 '동네 도서관' 칸: '동네도서관' 화면 머리글('오늘 N곳 운영')과 같은 기준 — 고른 동네 + 오늘 운영 중 (2026-11-06) */
+/* 홈 '동네 도서관' 칸: '동네도서관' 화면 머리글('오늘 N곳 운영')과 같은 기준 — 고른 동네 + 공공·어린이 도서관 + 오늘 운영 중 (2026-11-06) */
 function updateLibTile() {
   const el = document.getElementById("libNum"); if (!el) return;
   let n = LIBS.length, d = "강좌·책 읽기 좋은 곳";
   try {
     const g = LOCAL_GU !== "전체" && REGIONS[REGION].districts.includes(LOCAL_GU) ? LOCAL_GU : "전체";
-    n = LIBS.filter(x => g === "전체" || x.district === g).filter(l => { const st = libToday(l); return st.open !== false && !st.done }).length;
-    d = (g === "전체" ? "" : g + " · ") + "오늘 운영 중";
+    n = LIBS.filter(x => (g === "전체" || x.district === g) && isMainLib(x)).filter(l => { const st = libToday(l); return st.open !== false && !st.done }).length;
+    d = (g === "전체" ? "" : g + " · ") + "공공 · 오늘 운영";
   } catch (e) {}
   el.textContent = LIBS.length ? n : "—";
   const de = document.getElementById("libDesc"); if (de) de.textContent = d;
@@ -8087,7 +8091,8 @@ function renderLocal() {
   if (LOCAL_GU !== "전체" && !REGIONS[REGION].districts.includes(LOCAL_GU)) LOCAL_GU = "전체";
   const gu = x => LOCAL_GU === "전체" || x.district === LOCAL_GU;
   const libs = sortHome(LIBS.filter(gu)).map(l => [l, libToday(l)]).sort((a, b) => libTier(a[0]) - libTier(b[0]) || libBooks(b[0]) - libBooks(a[0]));
-  const openLibs = libs.filter(([, s]) => s.open !== false && !s.done);
+  const mainLibs = libs.filter(([l]) => isMainLib(l)), smallLibs = libs.filter(([l]) => !isMainLib(l));
+  const openLibs = mainLibs.filter(([, s]) => s.open !== false && !s.done);
   const evening = p => /^(1[89]|2\d):/.test(p.time || "");
   const weekend = p => /토|일|주말/.test(p.days || "");
   let progs = PROGRAMS.filter(gu).filter(p => !p.end || p.end >= t);
@@ -8126,7 +8131,8 @@ function renderLocal() {
   <div class="grid">${localEvents.slice(0, 6).map(eventCard).join("") || `<p class="empty">해당 조건으로 등록된 행사가 없어요. 다른 동네나 분류를 선택하거나 ‘일정’ 탭에서 전체 행사를 확인해 주세요.</p>`}</div>
   ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
   <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
-  ${LIBS.length ? `<h3 class="sub libHead" style="margin-top:16px"><span class="libTitle">📚 동네 도서관</span><small class="libSub" style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${libs.length > 6 ? `<p class="emptyNote">그 밖에 ${libs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}` : ""}
+  ${LIBS.length ? `<h3 class="sub libHead" style="margin-top:16px"><span class="libTitle">📚 동네 도서관</span><small class="libSub" style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${mainLibs.slice(0, 6).map(([l]) => libCard(l)).join("") || `<p class="empty">이 동네엔 공공·어린이 도서관 자료가 없어요. 아래 작은도서관을 살펴보세요.</p>`}</div>${mainLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${mainLibs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}
+   ${smallLibs.length ? `<h3 class="sub libHead libSmallHead" style="margin-top:20px"><span class="libTitle">🏠 작은도서관 · 무인 대출기</span><small class="libSub" style="font-weight:500;color:var(--muted)">${smallLibs.length}곳 · 가기 전에 운영 여부 확인</small></h3><div class="grid libSmall">${smallLibs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${smallLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${smallLibs.length - 6}곳 — 아파트·주민센터·종교시설 안 작은 공간이 많아요. 동네를 선택하면 가까운 곳부터 볼 수 있어요.</p>` : ""}` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
   <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
   <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
@@ -10157,6 +10163,8 @@ function homeTag(x) {
 /* 도서관 정렬: 큰 곳부터 (공공·전문 → 어린이 → 작은도서관 → 스마트도서관(무인 대출기) · 같은 종류면 책 많은 곳 먼저) */
 const libTier = l => /스마트도서관|무인|책\s*자판기/.test(l.name || "") ? 3 : /공공|전문/.test(l.type || "") ? 0 : /어린이/.test(l.type || "") ? 1 : /작은/.test(l.type || "") ? 2 : 1;
 const libBooks = l => +String(l.books || "").replace(/\D/g, "") || 0;
+/* 공공·어린이 도서관인지 (작은도서관·스마트도서관(무인 대출기)이 아니면) — 홈 숫자와 '동네 도서관' 머리글은 이것만 셈 (2026-11-06) */
+const isMainLib = l => libTier(l) !== 3 && !/작은/.test(l.type || "") && !/작은도서관/.test(l.name || "");
 const sortLibs = list => list.map((x, i) => [x, i]).sort((a, b) => libTier(a[0]) - libTier(b[0]) || libBooks(b[0]) - libBooks(a[0]) || a[1] - b[1]).map(a => a[0]);
 function sortHome(list) {
   if (!HOME) return list;
@@ -10381,7 +10389,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.81 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.82 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
