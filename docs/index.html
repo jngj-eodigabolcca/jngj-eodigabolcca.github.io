@@ -2250,6 +2250,48 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
     { season: 'autumn', top: '낙엽 바스락바스락', accent: '걷기만 혀도 좋제', out: true },
     { weather: 'rain', season: 'autumn', top: '비에 젖은 단풍', accent: '더 진허니 이쁘네' },
 
+    // ── 오감 한 스푼 (살갗·냄새·맛·소리) ─────────────
+    // 살이 에이는 추위
+    { weather: 'cold', top: '살이 에이네잉', accent: '뜨끈한 데로 숨어불자' },
+    { weather: 'cold', top: '귀 떨어지겄네', accent: '목도리 칭칭 감고 가소' },
+    { weather: 'cold', top: '콧김이 하얗게 나네', accent: '호떡 하나 물고 갈랑가?' },
+    { weather: 'cold', top: '뼛속까지 시리당께', accent: '온천물에 몸 담가불자' },
+    { weather: 'cold', time: 'night', top: '살이 에이는 밤', accent: '군밤 냄새 따라가보소' },
+    { season: 'winter', top: '입김 호호 부는 날', accent: '붕어빵 사 묵으러 가불자' },
+    { season: 'winter', top: '손끝이 아리아리', accent: '따순 찻집 어쩌요?' },
+    { season: 'winter', top: '군고구마 냄새', accent: '골목 어디서 나는디?' },
+    // 피부가 타는 더위
+    { weather: 'hot', top: '피부가 타불겄네', accent: '오늘은 실내가 살길이여' },
+    { weather: 'hot', top: '아스팔트가 이글이글', accent: '시원한 박물관 어쩌요?' },
+    { weather: 'hot', top: '숨이 턱 막히제?', accent: '냉면 한 그릇 땡겨불자' },
+    { weather: 'hot', top: '목덜미가 따끔따끔', accent: '그늘로만 댕기소잉' },
+    { weather: 'clear', season: 'summer', top: '살갗이 익어불겄네', accent: '양산 꼭 챙기소잉' },
+    { season: 'summer', top: '매미가 맴맴', accent: '계곡 가서 발 담가불까?', out: true },
+    { season: 'summer', top: '수박 쪼개는 소리', accent: '여름 맛 제대로여' },
+    { season: 'summer', time: 'night', top: '풀벌레 우는 밤', accent: '강변 산책 어쩌요?', out: true },
+    // 봄꽃 냄새
+    { season: 'spring', top: '꽃냄새가 솔솔', accent: '코끝이 간질간질허네', out: true },
+    { season: 'spring', top: '바람에 꽃내음', accent: '따라 걸어볼랑가?', out: true },
+    { season: 'spring', top: '벚꽃잎이 흩날리네', accent: '꽃비 맞으러 가불자', out: true },
+    { season: 'spring', top: '흙냄새 폴폴 나네', accent: '봄 냄새 맡으러 가소', out: true },
+    { season: 'spring', top: '쑥 향이 진허니', accent: '쑥떡 한 입 어쩌요?' },
+    { weather: 'rain', season: 'spring', top: '봄비에 흙냄새', accent: '창 열고 맡아보소' },
+    { region: 'suncheon', season: 'spring', top: '매화 향이 솔솔', accent: '광양 매화마을 어쩌요?', out: true },
+    // 가을 과일·가을 냄새
+    { season: 'autumn', top: '홍시가 말랑말랑', accent: '달큰허니 맛나겄네' },
+    { season: 'autumn', top: '감이 주렁주렁', accent: '시골길 드라이브 어쩌요?', out: true },
+    { season: 'autumn', top: '햇사과 아삭아삭', accent: '과일 장 구경 가불자' },
+    { season: 'autumn', top: '배 깎아 묵기 좋은 날', accent: '시장 가서 골라보소' },
+    { season: 'autumn', top: '고구마 굽는 냄새', accent: '그냥 못 지나가제' },
+    { season: 'autumn', top: '바람에 가을 냄새', accent: '코끝이 서늘허네' },
+    { season: 'autumn', top: '은행잎이 노랗게', accent: '길이 금빛이여', out: true },
+    { season: 'autumn', top: '아침저녁 코끝이 찡', accent: '겉옷 하나 챙기소' },
+    { region: 'gwangju', season: 'autumn', top: '무등산 억새 은빛', accent: '바람 소리 들으러 갈랑가?', out: true },
+    { region: 'suncheon', season: 'autumn', top: '갈대가 서걱서걱', accent: '그 소리 들으러 가불자', out: true },
+    { region: 'mokpo', season: 'autumn', top: '바닷바람 짭조름', accent: '유달산 올라볼랑가?', out: true },
+    // 비 냄새
+    { weather: 'rain', top: '비 냄새 나는 날', accent: '창가 자리 맡아불자' },
+
     // ── 요일 ─────────────────────────────
     { day: 'weekend', top: '주말인디 집에만?', accent: '쪼까 나가보소잉' },
     { day: 'weekend', top: '주말이여~', accent: '멀리 한번 가불자' },
@@ -2402,11 +2444,15 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
         <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="creaming.webp" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
       </div>
+      <div class="statsHead">
+        <h2 class="statsTitle"><span id="statsRegion" class="statsRegion">광주권</span>엔 요런 게 있당께</h2>
+        <p class="statsSub">탭해서 바로 둘러보기</p>
+      </div>
       <div class="heroStats">
-        <button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span></button>
-        <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span></button>
-        <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>맛집</span></button>
-        <button onclick="showTab('cafes')"><strong id="cafeNum">—</strong><span>멍카페</span></button>
+        <button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span><small class="statDesc">전시·공연·축제</small></button>
+        <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span><small class="statDesc">산책·전시·체험</small></button>
+        <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>맛집</span><small class="statDesc">현지인 단골집</small></button>
+        <button onclick="showTab('cafes')"><strong id="cafeNum">—</strong><span>멍카페</span><small class="statDesc">댕댕이랑 같이 가요</small></button>
       </div>
 
       
@@ -3115,6 +3161,7 @@ const RW = () => REGIONS[REGION].name.replace(/권$/, "");
 const DIST_OPTS = () => ["전체", ...REGIONS[REGION].districts];
 const distLabel = x => x === "전체" ? "모든 지역" : x;
 function applyRegion() {
+  try { const sr = document.getElementById("statsRegion"); if (sr) { sr.textContent = REGIONS[REGION].name; sr.dataset.r = REGION } } catch (e) {}
   EVENTS = ALL.EVENTS.filter(inRegion); VENUES = ALL.VENUES.filter(inRegion); FOOD = ALL.FOOD.filter(inRegion); BAKERIES = ALL.BAKERIES.filter(inRegion);
   CAFES = ALL.CAFES.filter(inRegion); CINEMAS = ALL.CINEMAS.filter(inRegion); STAYS = ALL.STAYS.filter(inRegion);
   PROGRAMS = (ALL.PROGRAMS || []).filter(inRegion); LIBS = (ALL.LIBS || []).filter(inRegion);
@@ -11450,6 +11497,18 @@ html body .nowAllBtn>span{flex:0 0 100%!important;text-align:center!important;wh
 :where(:root[data-theme="dark"]) .seasonPick .spBadge.peak{background:#43251c;color:#ff9f86}
 :where(:root[data-theme="dark"]) .seasonPick .spBadge.soon{background:#1d3530;color:#7fd0bc}
 :where(:root[data-theme="dark"]) .seasonPick .spBadge.late{background:#2e2a22;color:#c9b894}
+</style>
+<style id="statsHead-1106">
+/* 일정·가볼 곳·맛집·멍카페 카드 위 제목 */
+html body .statsHead{margin:18px 4px 0}
+html body .statsHead .statsTitle{margin:0;font-family:"Jua",var(--display);font-weight:400;font-size:19px;line-height:1.35;color:var(--ink);letter-spacing:-.005em;word-break:keep-all}
+html body .statsHead .statsSub{margin:2px 0 0;font-size:12.5px;font-weight:600;color:var(--muted)}
+html body .statsHead .statsRegion{color:#2e9b4f}
+html body .statsHead .statsRegion[data-r="ys"]{color:#2f6fdf}
+html body .statsHead .statsRegion[data-r="mp"]{color:#e8661f}
+html body .statsHead + .heroStats{margin-top:10px!important}
+html body .heroStats button:not(.heroNow){flex-wrap:wrap!important;height:auto!important;min-height:58px!important;padding:8px 8px!important;row-gap:2px!important;align-content:center!important}
+html body .heroStats button:not(.heroNow) .statDesc{order:2;flex-basis:100%;display:block;text-align:center;font-size:11px;font-weight:500;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 <script id="seasonPickScript">
 /* 🍁🌸 계절 명소: 단풍철(10/12~11/20)엔 단풍 명소, 봄꽃철(3/15~4/20)엔 벚꽃 명소를 홈에 띄운다.
