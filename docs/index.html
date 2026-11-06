@@ -11685,4 +11685,45 @@ window.renderSeason = renderSeason;
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();
 </script>
+<!-- ── #impact20261106 : 첫 화면 임팩트 (기능 추가 없음, 이 블록만 지우면 원래대로) ──
+  1) 첫 화면에 '오늘 코스 골라줘' 버튼을 바로 올림 (아래 '오늘 뭐하지?'로 내려가서 누르는 것과 같음)
+  2) 놀 거리 숫자를 크게 — "이만큼 있다"가 한눈에
+  3) 폰에서 첫 화면 설명은 굵은 한 줄만, 동네 고르기 줄은 얇게
+-->
+<style id="impact20261106">
+html body .hero .impactGo{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;margin:14px 0 16px;padding:17px 20px;border:0;border-radius:18px;background:linear-gradient(135deg,#ff6a2b,#ff9a3c);color:#fff;font-size:19px;font-weight:800;letter-spacing:-.01em;box-shadow:0 10px 24px rgba(255,106,43,.35);cursor:pointer;transition:transform .15s}
+html body .hero .impactGo:active{transform:scale(.97)}
+html body .hero .impactGo small{font-size:13px;font-weight:600;opacity:.9}
+html body .hero .heroStats button:not(.heroNow) strong,html body .hero .heroStats strong{font-size:30px!important;line-height:1.05!important;color:#ff6a2b!important;font-weight:900!important}
+html body .hero .heroStats button{padding-top:12px!important;padding-bottom:12px!important}
+html[data-theme="dark"] body .hero .heroStats button:not(.heroNow) strong,html[data-theme="dark"] body .hero .heroStats strong{color:#ffb36b!important}
+@media (max-width:640px){
+  html body .hero #heroLead{font-size:15px!important}
+  html body .hero #heroLead > :not(b){display:none}
+  html body .hero #heroLead b{display:block}
+  html body #homeBar .homeAsk{display:flex;flex-wrap:nowrap;align-items:center;gap:6px;overflow-x:auto;font-size:12.5px;padding:8px 10px!important;white-space:nowrap;scrollbar-width:none}
+  html body #homeBar .homeAsk::-webkit-scrollbar{display:none}
+  html body #homeBar .homeAsk select,html body #homeBar .homeAsk button{flex:0 0 auto;min-height:34px!important;padding:4px 10px!important;font-size:12.5px!important}
+}
+</style>
+<script id="impact20261106Script">
+(function(){
+  function lead(){
+    // 폰에서 굵은 첫 문장만 남기려고, 뒤 설명을 span으로 감쌈 (heroLead를 앱이 다시 그려도 매번 다시 적용)
+    var p=document.getElementById("heroLead"); if(!p) return;
+    p.childNodes.forEach(function(n){ if(n.nodeType===3 && n.textContent.trim()){ var s=document.createElement("span"); s.textContent=n.textContent; p.replaceChild(s,n); } });
+  }
+  function go(){
+    if(document.querySelector(".hero .impactGo")) return;
+    var anchor=document.getElementById("heroUpdated")||document.getElementById("heroLead"); if(!anchor) return;
+    var b=document.createElement("button"); b.type="button"; b.className="impactGo";
+    b.innerHTML='✨ 오늘 코스 골라줘 <small>조건 4개면 끝</small>';
+    b.onclick=function(){ var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
+    anchor.insertAdjacentElement("afterend",b);
+  }
+  function run(){ lead(); go(); }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
+  var p=document.getElementById("heroLead"); if(p && window.MutationObserver) new MutationObserver(lead).observe(p,{childList:true});
+})();
+</script>
 </body></html>
