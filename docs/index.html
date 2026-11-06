@@ -4295,7 +4295,7 @@ html body[data-tab="food"] #foodQuick,html body[data-tab="bakeries"] #foodQuick,
       <div class="heroStats">
         <button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span><small class="statDesc">전시·공연·축제</small></button>
         <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span><small class="statDesc">산책·전시·체험</small></button>
-        <button onclick="showTab('local')"><strong id="libNum">—</strong><span>동네 도서관</span><small class="statDesc">강좌·책 읽기 좋은 곳</small></button>
+        <button onclick="document.querySelector('[data-rightjump=local]') ? document.querySelector('[data-rightjump=local]').click() : showTab('local')"><strong id="libNum">—</strong><span>동네 도서관</span><small class="statDesc" id="libDesc">강좌·책 읽기 좋은 곳</small></button>
         <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>먹을 곳</span><small class="statDesc">나들이 길 한 끼·카페</small></button>
       </div>
 
@@ -5035,9 +5035,21 @@ function renderRegionBar() {
   if (ey && ld) { ey.dataset.gj ||= ey.textContent; ld.dataset.gj ||= ld.innerHTML; ey.textContent = HL[REGION] ? HL[REGION][0] : ey.dataset.gj; ld.innerHTML = HL[REGION] ? HL[REGION][1] : ld.dataset.gj }
   const db = document.getElementById("dateBadge"); if (db && db.lastElementChild && /광주광역시|권$/.test(db.lastElementChild.textContent)) db.lastElementChild.textContent = R.name;
 }
+/* 홈 '동네 도서관' 칸: '동네도서관' 화면 머리글('오늘 N곳 운영')과 같은 기준 — 고른 동네 + 오늘 운영 중 (2026-11-06) */
+function updateLibTile() {
+  const el = document.getElementById("libNum"); if (!el) return;
+  let n = LIBS.length, d = "강좌·책 읽기 좋은 곳";
+  try {
+    const g = LOCAL_GU !== "전체" && REGIONS[REGION].districts.includes(LOCAL_GU) ? LOCAL_GU : "전체";
+    n = LIBS.filter(x => g === "전체" || x.district === g).filter(l => { const st = libToday(l); return st.open !== false && !st.done }).length;
+    d = (g === "전체" ? "" : g + " · ") + "오늘 운영 중";
+  } catch (e) {}
+  el.textContent = LIBS.length ? n : "—";
+  const de = document.getElementById("libDesc"); if (de) de.textContent = d;
+}
 function renderAll() {
   // 자료를 못 불러와 0이면 고장처럼 보이지 않게 — 로 표시
-  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—"; if ($("#libNum")) $("#libNum").textContent = LIBS.length || "—"; if ($("#foodNum")) $("#foodNum").textContent = (FOOD.length + BAKERIES.length + CAFES.length) || "—";
+  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—"; updateLibTile(); if ($("#foodNum")) $("#foodNum").textContent = (FOOD.length + BAKERIES.length + CAFES.length) || "—";
   renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
   renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); try { if (typeof renderSeason === "function") renderSeason() } catch (e) {} renderFavs(); renderGallery();
 }
@@ -7993,7 +8005,7 @@ let LOCAL_EVENT_F = "전체";
 window.setLocalEventF = f => { LOCAL_EVENT_F = f; renderLocal() };
 let LOCAL_F = "전체", LOCAL_GU = (store.get("glm_home", null) || {}).gu || "전체";
 window.setLocalF = f => { LOCAL_F = f; renderLocal() };
-window.setLocalGu = g => { LOCAL_GU = g; renderLocal() };
+window.setLocalGu = g => { LOCAL_GU = g; renderLocal(); updateLibTile() };
 function libToday(l, iso = todayISO()) {
   const dow = new Date(Date.parse(iso + "T12:00:00+09:00")).getUTCDay(), Dk = DAY_KO[dow];
   const c = l.closed || "", holi = HOLIDAYS[iso];
@@ -10360,7 +10372,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.79 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.80 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
