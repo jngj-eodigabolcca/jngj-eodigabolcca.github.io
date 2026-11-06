@@ -4296,7 +4296,7 @@ html body[data-tab="food"] #foodQuick,html body[data-tab="bakeries"] #foodQuick,
         <button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span><small class="statDesc">전시·공연·축제</small></button>
         <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span><small class="statDesc">산책·전시·체험</small></button>
         <button onclick="document.querySelector('[data-rightjump=local]') ? document.querySelector('[data-rightjump=local]').click() : showTab('local')"><strong id="libNum">—</strong><span>동네 도서관</span><small class="statDesc" id="libDesc">강좌·책 읽기 좋은 곳</small></button>
-        <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>먹을 곳</span><small class="statDesc">나들이 길 한 끼·카페</small></button>
+        <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>먹을 곳</span><small class="statDesc" id="foodDesc">나들이 길 한 끼</small></button>
       </div>
 
       
@@ -5047,9 +5047,18 @@ function updateLibTile() {
   el.textContent = LIBS.length ? n : "—";
   const de = document.getElementById("libDesc"); if (de) de.textContent = d;
 }
+/* 홈 '먹을 곳' 칸: 눌렀을 때 나오는 '먹을 곳' 화면 머리글(N곳)과 같은 기준 — 그 화면에서 고른 구 기준 맛집 수 (2026-11-06)
+   식당은 영업시간이 수집되지 않아 '오늘 운영 중'으로는 세지 않음 */
+function updateFoodTile() {
+  const el = document.getElementById("foodNum"); if (!el) return;
+  const g = FOOD_GU !== "전체" && FOOD.some(f => f.district === FOOD_GU) ? FOOD_GU : "전체";
+  const n = FOOD.filter(r => g === "전체" || r.district === g).length;
+  el.textContent = FOOD.length ? n : "—";
+  const de = document.getElementById("foodDesc"); if (de) de.textContent = (g === "전체" ? "" : g + " · ") + "나들이 길 한 끼";
+}
 function renderAll() {
   // 자료를 못 불러와 0이면 고장처럼 보이지 않게 — 로 표시
-  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—"; updateLibTile(); if ($("#foodNum")) $("#foodNum").textContent = (FOOD.length + BAKERIES.length + CAFES.length) || "—";
+  $("#eventNum").textContent = EVENTS.length || "—"; $("#placeNum").textContent = VENUES.length || "—"; updateLibTile(); updateFoodTile();
   renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
   renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); try { if (typeof renderSeason === "function") renderSeason() } catch (e) {} renderFavs(); renderGallery();
 }
@@ -7805,7 +7814,7 @@ function renderFood() {
   ${paged("renderFood", list, foodCard, "<p class='empty'>조건에 맞는 맛집이 없어요. 위 조건을 하나 풀어보세요.</p>")}
   <div class="verify" style="margin-top:12px">대표 메뉴는 상호에 드러난 경우만 표시했어요. 메뉴·영업시간·휴무는 '메뉴·영업시간' 버튼으로 최신 정보를 확인하세요. 출처: 광주광역시 2025 광주맛집 발표(2025.3), 한국관광공사 관광정보.<br><b>이렇게 골랐어요</b> · 시가 선정한 맛집과 관광공사에 등록된 음식점만 담고, 별점·리뷰로 순위를 매기지 않아요. 잘못된 정보나 빼야 할 가게는 카드의 ⚠ 정보 수정으로 알려주세요.</div>`;
 }
-window.setFoodGu = g => { FOOD_GU = g; renderFood() };
+window.setFoodGu = g => { FOOD_GU = g; renderFood(); updateFoodTile() };
 const MI7 = [["🥩", "송정떡갈비", "다진 갈비를 치대 구운 송정역 앞 명물", "떡갈비"], ["🍲", "오리탕", "들깨 듬뿍, 미나리 얹어 먹는 유동 오리탕거리", "오리탕"], ["🍚", "무등산 보리밥", "산에서 내려와 나물 비벼 먹는 한 그릇", "보리밥"], ["🥞", "광주 육전", "얇게 저민 한우에 계란옷, 바로 부쳐 주는 전", "육전"], ["🍱", "남도 한정식", "상다리 휘어지는 남도 한 상", "한정식"], ["🥬", "광주 김치", "김치축제가 열리는 김치의 도시", "김치"], ["🍙", "오월 주먹밥", "1980년 5월, 시민들이 나눠 먹던 나눔의 밥", "주먹밥"]];
 window.mi7 = q => { const hit = FOOD.some(f => (f.menu + f.name).includes(q)) || VENUES.some(v => v.name.includes(q)) || EVENTS.some(e => e.title.includes(q)); if (hit) { $("#search").value = q; renderSearch() } else window.open(mapLink("광주 " + q), "_blank", "noopener,noreferrer") };
 
@@ -10372,7 +10381,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.80 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.81 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
