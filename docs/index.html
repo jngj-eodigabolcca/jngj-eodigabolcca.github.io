@@ -7038,6 +7038,7 @@ function renderNowStart(refresh=false) {
   const rot=unique.length ? unique.slice(NOWSTART_SHIFT%unique.length).concat(unique.slice(0,NOWSTART_SHIFT%unique.length)) : [];
   const picks=rot.slice(0,3); window.NOW_PICK_IDS=new Set(picks.map(p=>p.x.id).filter(Boolean));
   const nN=document.getElementById('nowStartN'); if(nN) nN.textContent=picks.length||0;
+  { const lead=nN&&nN.parentElement; if(lead){ lead.dataset.orig ||= lead.innerHTML; if(!picks.length) lead.textContent='지금 나서서 제대로 볼 수 있는 곳을 아직 못 찾았어요.'; else if(!document.getElementById('nowStartN')||!lead.contains(document.getElementById('nowStartN'))){ lead.innerHTML=lead.dataset.orig; document.getElementById('nowStartN').textContent=picks.length; } } }
   if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 가볼 곳·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
   const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'가볼 곳');
   const name=p=>p.kind==='event'?p.x.title:p.x.name;
@@ -10661,7 +10662,8 @@ window.openArtistFollowQuick=function(){
 </script>
 <script id="homeDietScript">
 (function(){
-  const LIMIT = 9;
+  // 폰에서는 6개만 먼저 (2칸씩 3줄), PC는 9개
+  const LIMIT = (window.matchMedia && matchMedia('(max-width:899px)').matches) ? 6 : 9;
   function collapseQuick() {
     const q = document.getElementById("quick"); if (!q) return;
     q.querySelector(".qToggle")?.remove(); q.classList.remove("qOpen");
@@ -11935,9 +11937,61 @@ html body .hero .photoCard:after{height:45%!important;background:linear-gradient
   html body #aiBox #answer .crEx{display:none}
 }
 
+/* ④ 고른 버튼(누구와·얼마나·이동 등)과 '추천' 버튼: 주황 바탕 위 흰 글씨가 흐려서(대비 2.9) 주황을 조금 진하게 (대비 4.5) */
+:root:not([data-theme="x"]) body .choiceRow>button.on.on,html body #aiBox #ask{background:#cf4a10!important;border-color:#cf4a10!important;color:#fff!important}
+
+/* ⑤ 작은 누름 칸 키우기: '근처 주차장 ↗'(높이 17px), 알림 닫기 ✕(폭 18px) */
+html body .pkLine a{display:inline-block;padding:7px 4px;margin:-7px -4px}
+html body .nbX{min-width:40px!important;min-height:40px!important}
+
+/* ⑥ 큰 글씨 모드에서 '…'로 잘리던 글은 줄바꿈해서 다 보이게 */
+html.bigText body #onlyNow .weekendHead small,html.bigText body .ncTime{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+
 /* ③ 겹침: '지금 바로 갈 곳' 다음에 오는 '.first' 칸(오늘 열리는 것 등)은 위로 끌어올리지 않음
    (기존 #decideNow ~ .first 규칙은 #decideNow가 없거나 순서가 바뀌면 안 먹던 문제) */
 html body main .nowStart ~ .first,
 html body main #decideNow ~ .first{margin-top:20px!important}
+</style>
+<style id="tidyRows20261107">
+/* ── 2026-11-07 버튼 묶음 정리 · 옆으로 밀어야 보이던 줄 없애기 ── 되돌리려면 이 style 블록만 지우면 됨 */
+
+/* ① 카드 아래 버튼(앱 지도에서·네이버 지도·홈페이지 / ♡·가봤어요·공유·정보 수정)
+   예전: 하트가 오른쪽으로 밀려 줄이 들쭉날쭉, 버튼이 큼
+   지금: 윗줄 = 길찾기·누리집 버튼, 아랫줄 = ♡·가봤어요·공유·정보 수정. 줄마다 꽉 차게 같은 높이로 */
+html body .btnRow{display:flex!important;flex-wrap:wrap!important;gap:6px!important;align-items:stretch!important}
+html body .btnRow:has(>.fav)::before{content:"";order:1;flex:0 0 100%;height:0;margin:-3px 0}
+html body .btnRow>*{order:0;flex:1 1 auto!important;justify-content:center!important;text-align:center;
+  min-height:38px!important;height:auto!important;padding:6px 9px!important;margin:0!important;
+  font-size:13px!important;line-height:1.2!important;border-radius:10px!important;box-sizing:border-box}
+html body .btnRow>.fav,html body .btnRow>.fav~*{order:2}
+html body .btnRow>.fav{flex:0 0 44px!important;padding:6px 0!important;font-size:16px!important}
+/* 큰 글씨 모드: 아랫줄 4개(♡·가봤어요·공유·정보 수정)가 한 줄에 들어가게 안쪽 여백만 줄임 */
+html.bigText body .btnRow>*{padding:6px 5px!important}
+html.bigText body .btnRow>.fav{flex-basis:38px!important}
+/* 행사 카드 아래 버튼(🍽 코스·♡·가봤어요)도 같은 크기로 */
+html body .ncBtns{display:flex!important;flex-wrap:wrap!important;gap:6px!important}
+html body .ncBtns>*{flex:1 1 auto!important;min-height:36px!important;justify-content:center!important;margin:0!important}
+html body .ncBtns>.fav{flex:0 0 42px!important}
+
+@media(max-width:899px){
+/* ② 옆으로 밀던 줄 → 줄바꿈해서 한 화면에 다 보이게 */
+html body .choiceRow,html body .subchips,html body .themeRow,html body .regionBar,html body .tabs,
+html body .repDistricts,html body .repFestHero .repDistricts,html body .routeSteps,html body .modal.decisionMode .drChoices,
+html body #homeBar .homeAsk,html body #aiBox #quick{
+  flex-wrap:wrap!important;overflow-x:visible!important;overflow:visible!important;white-space:normal!important;
+  -webkit-mask-image:none!important;mask-image:none!important;scroll-snap-type:none!important}
+html body .subchips>*,html body .themeRow>*,html body .tabs>*,html body .repDistricts>*,html body #aiBox #quick>button:not(.qToggle){flex:0 0 auto!important}
+/* '글로 물어보기' 예시 버튼: 원래 있던 '＋ 더 보기'(9개 넘으면 접힘)를 그대로 쓰고, 펼친 버튼은 줄바꿈 */
+html body .regionBar{justify-content:center}
+/* 동네 고르기 줄: 안내 한 줄 + 고르기·현재 위치·나중에 */
+html body #homeBar .homeAsk{row-gap:8px!important}
+html body #homeBar .homeAsk>b{flex:1 0 100%}
+html body #homeBar .homeAsk select{flex:1 1 120px;min-height:36px}
+/* 장날 달력 7칸: 옆으로 밀던 칸 → 요일별 한 줄씩 목록 */
+html body .wk{display:flex!important;flex-direction:column!important;gap:6px!important;overflow:visible!important;margin:0 0 16px!important;padding:0!important}
+html body .wk div{flex:none!important;min-height:0!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;padding:8px 10px!important;gap:5px!important}
+html body .wk div>b{flex:0 0 52px}
+html body .wk div i{margin:0 0 0 auto!important}
+}
 </style>
 </body></html>
