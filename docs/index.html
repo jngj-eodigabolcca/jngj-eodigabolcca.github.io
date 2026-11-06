@@ -4229,6 +4229,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 </head>
 <body data-tab="home" data-screen="home">
 <script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
+<script>/* 사진 위 날씨 "누르면 날씨탭으로 가요" 안내: 한 번 눌러봤으면 이 기기에선 숨김 */try{if(localStorage.getItem("wx_hint_seen")==="1")document.documentElement.classList.add("wxHintSeen")}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
 <header class="top"><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
@@ -4404,7 +4405,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 <section class="block">
 <div class="ai" id="aiBox">
   <div class="aiLeft">
-    <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요.</small></div></div>
+    <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
         <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>🏯 역사 유적</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>🏮 전통시장 구경</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
   </div>
@@ -4996,9 +4997,9 @@ function renderRegionBar() {
     ys: ["순천·여수·광양 · 남해안 오늘의 순천여수권", "<b>정원과 바다, 전시·공연·축제를 한 번에.</b> 순천의 정원·원도심부터 여수의 바다·야경, 광양·보성·구례까지 오늘 움직이기 좋은 코스로 골라드려요."],
     mp: ["목포·무안·신안 · 서남해 오늘의 무안목포권", "<b>목포 원도심과 서남해 바다, 오늘 즐길 곳을 한눈에.</b> 목포·무안·신안부터 해남·진도·완도까지 시간과 이동 조건에 맞춰 무리 없는 코스로 골라드려요."]
   };
-  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."],
-    ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."],
-    mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "위 버튼 대신 하고 싶은 걸 적거나 아래 버튼을 눌러보쇼. 위에서 고른 결과도 여기 나와요."] }[REGION];
+  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."],
+    ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."],
+    mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."] }[REGION];
   const an = document.getElementById("aiName"), as = document.getElementById("aiSub"), aq = document.getElementById("aiq");
   if (an) an.textContent = guideTitle() || CUR[0]; if (as) as.textContent = CUR[2]; if (aq) aq.placeholder = CUR[1];
   const mt = document.getElementById("mapTitle"); if (mt && mt.firstChild) mt.firstChild.textContent = `${RW()} 지도`;
@@ -8434,6 +8435,8 @@ window.ensureHome = () => { if (CUR_TAB !== "home") showTab("home") };
 /* 사진 위 날씨를 누르면: 숨겨진 날씨 칸(#wxTips)을 펼치고 그 자리로 이동.
    (예전엔 숨긴 칸으로 scrollIntoView만 해서 눌러도 아무 일이 없었음) — 오른쪽 빠른 메뉴 '🌤 날씨'와 같은 동작 */
 window.goWeatherTab = () => {
+  try { localStorage.setItem("wx_hint_seen", "1"); } catch (e) {}
+  document.documentElement.classList.add("wxHintSeen");
   ensureHome();
   const el = document.getElementById("wxTips");
   if (el) el.classList.remove("hidden");
@@ -11913,6 +11916,12 @@ html body .hero .photoCard #wx .wxWear{display:none!important}
 html body .hero .photoCard #wx{cursor:pointer}
 html body .hero .photoCard #wx::after{content:"👆 누르면 날씨탭으로 가요 ›";display:block;margin-top:3px;font-size:11.5px;font-weight:750;opacity:.95;white-space:nowrap}
 html body .hero .photoCard #wx:active{opacity:.75}
+html.wxHintSeen body .hero .photoCard #wx::after{display:none!important}
+/* 가+ 큰 글씨 모드: 사진 위 날씨도 같이 크게 (오른쪽 장소 이름과 안 겹치게 폭은 63% 그대로) */
+html.bigText body .hero .photoCard #wx .wxTop b{font-size:22px!important}
+html.bigText body .hero .photoCard #wx .wxTop .wxNow{font-size:16px!important}
+html.bigText body .hero .photoCard #wx .wxMeta{font-size:15px!important}
+html.bigText body .hero .photoCard #wx::after{font-size:13.5px!important}
 /* 글씨 뒤쪽 사진을 조금 더 어둡게(밝은 하늘 사진 대비) — 기존 아래쪽 그늘을 살짝 진하게 */
 html body .hero .photoCard:after{height:45%!important;background:linear-gradient(transparent,rgba(0,0,0,.5))!important}
 
