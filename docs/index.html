@@ -2472,7 +2472,7 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
   <div class="decide">
     <div class="decideTop">
       <div class="decisionHeroRow">
-        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2><span class="dhLead">오늘 뭐하지?</span> 조건 몇 개만 고르면 바로 골라드려요.</h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 다양한 코스로 묶습니다.</p></div>
+        <div class="decisionHeroText"><span class="decisionKicker">✨ 오늘의 핵심 기능</span><span class="eyebrow">DECIDE NOW</span><h2><span class="dhLead">오늘 뭐하지?</span> <span class="dhSub">조건 몇 개만 고르면 바로 골라드려요.</span></h2><p>검색보다 결정이 먼저. 오늘 실제 이용 가능한 일정과 장소를 시간·예산·이동 조건에 맞춰 다양한 코스로 묶습니다.</p></div>
         <div class="heroCreaming" aria-hidden="true">
           <div class="heroCreamingCard">
             <span class="heroCreamingBubble">크리밍이 같이 찾아볼게요</span>
@@ -6260,7 +6260,7 @@ function renderLocal() {
   <div class="grid">${localEvents.slice(0, 6).map(eventCard).join("") || `<p class="empty">해당 조건으로 등록된 행사가 없어요. 다른 동네나 분류를 선택하거나 ‘일정’ 탭에서 전체 행사를 확인해 주세요.</p>`}</div>
   ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
   <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
-  ${LIBS.length ? `<h3 class="sub" style="margin-top:16px">📚 동네 도서관 <small style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${libs.length > 6 ? `<p class="emptyNote">그 밖에 ${libs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}` : ""}
+  ${LIBS.length ? `<h3 class="sub libHead" style="margin-top:16px"><span class="libTitle">📚 동네 도서관</span><small class="libSub" style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${libs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${libs.length > 6 ? `<p class="emptyNote">그 밖에 ${libs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
   <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
   <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
@@ -8515,7 +8515,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.74 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.76 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -11579,6 +11579,15 @@ window.renderSeason = renderSeason;
 </script>
 
 <style id="notFoodApp20261106">
+/* 첫 화면 설명 글: 4줄 제한 풀기 — 폰 글꼴이 크면 '동선으…'처럼 잘리던 문제 */
+html body .hero #heroLead,html body #heroLead{-webkit-line-clamp:unset!important;line-clamp:unset!important;display:block!important;overflow:visible!important;max-height:none!important;text-overflow:clip!important}
+/* 동네 생활 · 동네 도서관: 1줄 제목, 2줄 '오늘 N곳 운영 · 무료로…' — 각각 한 줄로 */
+html body h3.libHead{display:block!important}
+html body h3.libHead .libTitle{display:block;white-space:nowrap}
+html body h3.libHead .libSub{display:block!important;margin:3px 0 0!important;white-space:nowrap;letter-spacing:-.02em;font-size:min(14px,calc((100vw - 48px) / 23))!important}
+html.bigText body h3.libHead .libSub{white-space:normal;font-size:15px!important}
+html body #decideNow h2 .dhSub{display:inline-block;white-space:nowrap;letter-spacing:-.02em;font-size:min(1em,calc((100vw - 64px) / 15.6))}
+html.bigText body #decideNow h2 .dhSub{white-space:normal;font-size:1em}   /* 글자 크게 보기: 줄이지 않고 크게 (넘치면 줄바꿈) */   /* '조건 몇 개만…' 늘 한 줄 (좁은 폰·글자 크게 보기에서도) */
 /* 2026-11-06: 먹을 곳은 지우지 않고 '나들이에 곁들이는 정보'로 위치만 낮춤
    - 맛집·빵집·반려견 카페 묶음 줄은 먹을 곳 계열 화면 위에서만 보임 (홈에서는 숨김 그대로) */
 html body[data-tab="food"] #foodQuick,html body[data-tab="bakeries"] #foodQuick,html body[data-tab="cafes"] #foodQuick{display:block!important;margin:4px 0 10px!important}
