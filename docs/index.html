@@ -3947,6 +3947,28 @@ html.bigText body #decideNow h2 .dhSub{white-space:normal;font-size:1em}   /* �
 /* 2026-11-06: 먹을 곳은 지우지 않고 '나들이에 곁들이는 정보'로 위치만 낮춤
    - 맛집·빵집·반려견 카페 묶음 줄은 먹을 곳 계열 화면 위에서만 보임 (홈에서는 숨김 그대로) */
 html body[data-tab="food"] #foodQuick,html body[data-tab="bakeries"] #foodQuick,html body[data-tab="cafes"] #foodQuick{display:block!important;margin:4px 0 10px!important}
+
+/* ── 2026-11-06: 첫 화면 버튼 세로 줄이기 ──
+   '오늘 밤 코스 골라줘'와 일정·가볼 곳·동네 도서관·먹을 곳 칸이 위아래 여백(14px·12px)이 겹쳐 너무 길었음 */
+html body .hero .impactGo{padding-top:9px!important;padding-bottom:9px!important;min-height:44px!important;line-height:1.2!important}
+html body .hero .heroStats button:not(.heroNow){
+  height:auto!important;min-height:44px!important;padding-top:6px!important;padding-bottom:6px!important;
+  line-height:1.15!important}
+html body .hero .heroStats button:not(.heroNow) .statDesc{line-height:1.15!important;margin-top:0!important}
+
+/* ── 2026-11-06: '조건 몇 개만 고르면 바로 골라드려요.' 어느 화면·글자 크게 보기에서도 한 줄 ──
+   글자 칸(.decisionHeroText) 너비를 기준으로 글씨 크기를 줄여 맞춤 (예전엔 화면 너비 기준이라 PC·글자 크게에서 줄바꿈) */
+html body #decideNow .decisionHeroRow{flex:1 1 auto;min-width:0;width:100%}
+html body #decideNow .decisionHeroText{container-type:inline-size;min-width:0}
+html body #decideNow h2 .dhSub,html.bigText body #decideNow h2 .dhSub{
+  display:inline-block!important;white-space:nowrap!important;max-width:100%;
+  letter-spacing:-.03em;font-size:min(1em,calc(100cqi / 16.2))!important}
+
+/* ── 2026-11-06: 대중가수 공연 위쪽 요약 칩을 누를 수 있는 버튼으로 ── */
+html body .popStats button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 11px;font-size:12.5px;font-weight:700;color:inherit;cursor:pointer;min-height:32px;line-height:1.2;font-family:inherit}
+html body .popStats button:hover{background:rgba(255,255,255,.22)}
+html body .popStats button.on{background:#fff;color:#4a2346;border-color:#fff}
+html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </style>
 <script>/* 히어로 문구 생성기 (headline.js) */
 /**
@@ -7693,6 +7715,7 @@ window.applyPopFilter=()=>{
   if(POP_FILTER.status==="매진"&&!/매진/.test(st))return false;
   return true;
  });
+ box.querySelectorAll(".popStats [data-pop-status]").forEach(b=>{const on=b.dataset.popStatus===POP_FILTER.status;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")});
  const holder=box.querySelector("#popResults"),count=box.querySelector("#popResultsCount");
  if(count)count.textContent=`조건에 맞는 공연 ${arr.length}건 / 전체 ${EVENTS.filter(e=>isPopShow(e)&&(!e.end||e.end>=t)).length}건`;
  if(holder)holder.innerHTML=arr.length?arr.map(window.popConcertRow).join(""):`<div class="popEmpty">조건에 맞는 등록 공연이 없어요.<br>가수 이름이나 지역을 바꿔보세요. 새로운 공연은 정보가 등록된 후 표시됩니다.</div>`;
@@ -7727,7 +7750,7 @@ function renderPopShows(){
   window.popConcertRow=row;
   el.innerHTML=`<div class="popHero">
     <div class="popHeroTop"><div><span class="eyebrow" style="color:#ffd6a4">POPULAR CONCERTS</span><h2>🎤 대중가수 공연</h2><p>${esc(RNAME())}에서 발표된 콘서트를 공연일보다 <b>티켓 오픈 정보 중심</b>으로 먼저 보여줘요. 새 공연 데이터가 들어오면 이 탭에 즉시 나타납니다.</p></div><button class="popAlarm ${alarmOn?"on":""}" onclick="togglePopAlarm()">${alarmOn?"🔔 새 공연 알림 켜짐":"🔕 새 공연 알림 켜기"}</button></div>
-    <div class="popStats"><span>전체 ${list.length}건</span><span>오픈 예정 ${openSoon}</span><span>예매 중 ${onSale}</span><span>매진 ${sold}</span></div>
+    <div class="popStats" role="group" aria-label="예매 상태로 보기"><button type="button" data-pop-status="전체" onclick="popStatJump('전체')">전체 ${list.length}건</button><button type="button" data-pop-status="오픈 예정" onclick="popStatJump('오픈 예정')">오픈 예정 ${openSoon}</button><button type="button" data-pop-status="예매 중" onclick="popStatJump('예매 중')">예매 중 ${onSale}</button><button type="button" data-pop-status="매진" onclick="popStatJump('매진')">매진 ${sold}</button></div>
   </div>
   <div class="popSearchPanel"><b style="display:block;margin-bottom:9px;color:var(--green-d)">🔎 원하는 가수·공연 쉽게 찾기</b>
     <div class="popSearchLine"><input id="popKeyword" aria-label="가수 이름이나 콘서트 제목" placeholder="가수 이름 또는 콘서트 제목" value="${esc(POP_FILTER.term)}" oninput="applyPopFilter()" onkeydown="if(event.key==='Enter')applyPopFilter()">
@@ -7744,6 +7767,16 @@ function renderPopShows(){
   applyPopFilter();
   renderArtistFollows();
 }
+/* 위쪽 요약(전체·오픈 예정·예매 중·매진)을 누르면 그 상태의 공연 목록으로 바로 이동 (2026-11-06)
+   숫자는 지역·검색어와 상관없는 전체 기준이라, 누를 때 검색어·지역은 비워서 숫자와 목록 개수를 맞춤 */
+window.popStatJump=(status)=>{
+  const box=document.getElementById("popshowsView"); if(!box) return;
+  const kw=box.querySelector("#popKeyword"), ar=box.querySelector("#popArea"), st=box.querySelector("#popStatus");
+  if(kw) kw.value=""; if(ar) ar.value="전체"; if(st) st.value=status;
+  applyPopFilter();
+  const target=box.querySelector("#popResults")||box.querySelector("#popResultsCount");
+  if(target){ const h=document.querySelector("header.top")?.getBoundingClientRect().height||0; target.style.scrollMarginTop=(Math.round(h)+14)+"px"; target.scrollIntoView({behavior:"smooth",block:"start"}); }
+};
 window.togglePopAlarm=async()=>{
   const cur=localStorage.getItem("glm_pop_alarm")==="1";
   if(cur){localStorage.setItem("glm_pop_alarm","0");renderPopShows();return;}
