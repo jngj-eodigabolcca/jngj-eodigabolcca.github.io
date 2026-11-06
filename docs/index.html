@@ -2508,6 +2508,8 @@ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='
 
 <section class="weekendPick" id="weekendPick" aria-label="이번 주말 뭐 하지"></section>
 
+<section class="seasonPick" id="seasonPick" aria-label="계절 명소" hidden></section>
+
 <section class="dailyBrief" id="dailyBrief">
   <div class="dailyBriefBox">
     <div class="dailyBriefHead">
@@ -3145,7 +3147,7 @@ function renderRegionBar() {
 function renderAll() {
   $("#eventNum").textContent = EVENTS.length; $("#placeNum").textContent = VENUES.length; $("#foodNum").textContent = FOOD.length; $("#cafeNum").textContent = CAFES.length;
   renderRegionBar(); renderHomeBar(); renderQuick(); renderOriginBars();
-  renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); renderFavs(); renderGallery();
+  renderMeta(); try { renderNoticeBoard() } catch (e) {} renderNowStart(); renderNowShow(); renderToday(); renderEvents(); renderPlaces(); renderKids(); renderStages(); renderPopShows(); renderDailyBrief(); renderDeadlineRush(); renderDecisionWeather(); renderVenueTab("galleries"); renderVenueTab("museums"); renderFood(); renderBakeries(); renderMarkets(); renderStays(); renderCinemas(); renderCafes(); renderLocal(); renderWeekend(); try { if (typeof renderSeason === "function") renderSeason() } catch (e) {} renderFavs(); renderGallery();
 }
 window.setRegion = r => {
   if (!REGIONS[r] || r === REGION) return;
@@ -4587,7 +4589,7 @@ function tripDayInfo(iso) {
   const hol = (typeof HOLIDAYS !== "undefined" && HOLIDAYS[iso]) || "", nxt = tripISOAdd(iso, 1), prv = tripISOAdd(iso, -1);
   const H = x => (typeof HOLIDAYS !== "undefined" && HOLIDAYS[x]) || "";
   const isOffDay = off(iso), md = iso.slice(5);
-  const season = md >= "10-12" && md <= "11-15" ? "단풍철" : md >= "03-15" && md <= "04-20" ? "봄꽃철" : md >= "07-20" && md <= "08-20" ? "휴가철" : "";
+  const season = md >= "10-12" && md <= "11-20" ? "단풍철" : md >= "03-15" && md <= "04-20" ? "봄꽃철" : md >= "07-20" && md <= "08-20" ? "휴가철" : "";
   const myeong = /설날|추석/.test(hol + H(nxt) + H(prv));
   const longOff = isOffDay && (off(nxt) && off(prv) ? true : (off(nxt) || off(prv)) && !!(hol || H(nxt) || H(prv))); // 사흘 이상 연휴
   return { iso, dow: isoDow(iso), off: isOffDay, hol, season, myeong, longOff,
@@ -6499,7 +6501,7 @@ function arrangeHome() {
   const main = document.querySelector("main"), stop = document.getElementById("searchView");
   if (!main || !stop || stop.parentNode !== main) return;
   const ai = document.getElementById("aiBox")?.closest("section");
-  const ids = ["noticeBoard", "nowShow", "deadlineRush", "weekendPick", "nowStart", "decideNow", "AI", "dailyBrief", "themeStrip", "cultureSpot", "wxTips", "today", "regionNote", "noRun", "foodQuick", "updated"];
+  const ids = ["noticeBoard", "nowShow", "deadlineRush", "weekendPick", "seasonPick", "nowStart", "decideNow", "AI", "dailyBrief", "themeStrip", "cultureSpot", "wxTips", "today", "regionNote", "noRun", "foodQuick", "updated"];
   const q = main.querySelector(":scope > .quickNavIntro");
   if (q && main.firstElementChild !== q) main.insertBefore(q, main.firstElementChild);   // PC 위쪽 탭·일정 필터는 늘 맨 위
   ids.forEach(id => { const el = id === "AI" ? ai : document.getElementById(id); if (el && el.parentNode === main) main.insertBefore(el, stop) });
@@ -11432,4 +11434,81 @@ html body .wxTips .wtSlots.wtSlots24>.wtSlot small em{font-size:clamp(9px,2.6vw,
 html body .nowAllBtn{flex-wrap:wrap!important;row-gap:3px!important;column-gap:6px!important;white-space:nowrap!important;padding:11px 12px!important;line-height:1.25!important}
 html body .nowAllBtn>span{flex:0 0 100%!important;text-align:center!important;white-space:nowrap!important;font-size:12.5px!important}
 </style>
+<style id="seasonPickStyle">
+.seasonPick{margin:18px 0}
+.seasonPick .wNo{font-size:15px}
+.seasonPick.spring .wNo{background:#ffe3ea;color:#c2456b}
+.seasonPick.autumn .wNo{background:#ffe6d2;color:#b8541c}
+.seasonPick .spBadge{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:10.5px;font-weight:800;vertical-align:1px}
+.seasonPick .spBadge.peak{background:#ffe1d6;color:#c0391b}
+.seasonPick .spBadge.soon{background:#e6f2ee;color:#2f7d6b}
+.seasonPick .spBadge.late{background:#f1ece2;color:#7a6a4f}
+.seasonPick .spTip{display:block;margin-top:3px;font-size:11.5px;color:var(--ink2,#555)}
+.seasonPick .spNote{margin:10px 2px 0;font-size:11.5px;color:var(--muted)}
+:where(:root[data-theme="dark"]) .seasonPick.spring .wNo{background:#3a2229;color:#f3a3b9}
+:where(:root[data-theme="dark"]) .seasonPick.autumn .wNo{background:#3a2a1d;color:#f0a979}
+:where(:root[data-theme="dark"]) .seasonPick .spBadge.peak{background:#43251c;color:#ff9f86}
+:where(:root[data-theme="dark"]) .seasonPick .spBadge.soon{background:#1d3530;color:#7fd0bc}
+:where(:root[data-theme="dark"]) .seasonPick .spBadge.late{background:#2e2a22;color:#c9b894}
+</style>
+<script id="seasonPickScript">
+/* 🍁🌸 계절 명소: 단풍철(10/12~11/20)엔 단풍 명소, 봄꽃철(3/15~4/20)엔 벚꽃 명소를 홈에 띄운다.
+   시즌이 아니면 칸이 통째로 사라진다. 절정 날짜는 평년 기준 어림값이라 '방문 전 확인'을 늘 붙인다.
+   [이름, 위도, 경도, 지역, 절정 시작(MM-DD), 절정 끝(MM-DD), 한 줄 소개, 팁] */
+const SEASON_SPOTS = {
+  autumn: {
+    from: "10-12", to: "11-20", icon: "🍁", title: "단풍 명소", eyebrow: "AUTUMN LEAVES",
+    spots: [
+      ["장성 백양사", 35.437, 126.884, "장성군", "10-28", "11-10", "쌍계루 앞 연못에 비친 애기단풍이 유명해요", "주말엔 오전 일찍 · 주차 대기 길어요"],
+      ["무등산 증심사", 35.127, 126.996, "광주 동구", "10-25", "11-08", "광주 시내에서 가장 가까운 단풍 산책길", "증심사 입구까지 버스로도 가요"],
+      ["구례 피아골", 35.258, 127.592, "구례군", "10-22", "11-05", "지리산 대표 단풍 계곡, 붉은 계곡길", "계곡 산책만 해도 충분해요"],
+      ["구례 화엄사", 35.256, 127.497, "구례군", "10-30", "11-12", "지리산 자락 고찰과 단풍이 함께", "피아골과 하루 코스로 묶기 좋아요"],
+      ["담양 메타세쿼이아길", 35.326, 127.001, "담양군", "11-05", "11-20", "갈색으로 물드는 메타세쿼이아 가로수길", "죽녹원·관방제림과 같이 둘러봐요"],
+      ["해남 대흥사", 34.476, 126.617, "해남군", "11-05", "11-18", "남도에서 늦게까지 단풍이 남는 곳", "11월 중순에 가기 좋아요"],
+    ],
+  },
+  spring: {
+    from: "03-15", to: "04-20", icon: "🌸", title: "벚꽃 명소", eyebrow: "CHERRY BLOSSOM",
+    spots: [
+      ["구례 섬진강 벚꽃길", 35.190, 127.560, "구례군", "03-27", "04-05", "섬진강을 따라 이어지는 벚꽃 드라이브길", "주말엔 차가 많이 막혀요"],
+      ["영암 왕인박사유적지", 34.776, 126.661, "영암군", "03-30", "04-08", "백리 벚꽃길로 이어지는 영암 대표 벚꽃 명소", "월출산을 배경으로 사진 찍기 좋아요"],
+      ["광주 중외공원", 35.183, 126.888, "광주 북구", "03-30", "04-07", "비엔날레·박물관 주변 벚꽃 산책길", "시내라 가볍게 다녀오기 좋아요"],
+      ["광주 운천저수지", 35.146, 126.859, "광주 서구", "03-30", "04-07", "도심 저수지를 한 바퀴 두르는 벚꽃길", "지하철 운천역에서 걸어서 가요"],
+      ["화순 세량지", 35.007, 126.942, "화순군", "04-03", "04-15", "산벚꽃과 새벽 물안개가 비치는 저수지", "해 뜰 무렵이 가장 예뻐요"],
+    ],
+  },
+};
+function seasonNow(iso) {
+  const md = (iso || todayISO()).slice(5);
+  for (const [k, s] of Object.entries(SEASON_SPOTS)) if (md >= s.from && md <= s.to) return [k, s];
+  return null;
+}
+function renderSeason() {
+  const el = document.getElementById("seasonPick"); if (!el) return;
+  const cur = seasonNow();
+  if (!cur) { el.innerHTML = ""; el.hidden = true; el.classList.remove("spring", "autumn"); return }
+  const [key, S] = cur, md = todayISO().slice(5);
+  const state = sp => md < sp[4] ? "soon" : md > sp[5] ? "late" : "peak";
+  const order = { peak: 0, soon: 1, late: 2 };
+  const dist = sp => { try { return homeKm({ lat: sp[1], lng: sp[2] }) } catch (e) { return null } };
+  const list = SEASON_SPOTS[key].spots.map(sp => ({ sp, st: state(sp), d: dist(sp) }))
+    .sort((a, b) => order[a.st] - order[b.st] || ((a.d ?? 1e9) - (b.d ?? 1e9)) || a.sp[4].localeCompare(b.sp[4]));
+  const lab = { peak: "🔥 지금 절정", soon: "곧 물들어요", late: "막바지" };
+  if (key === "spring") lab.soon = "곧 피어요";
+  const mmdd = s => `${+s.slice(0, 2)}/${+s.slice(3)}`;
+  const kmTag = d => d == null ? "" : ` · 🏠 ${d.toFixed(d < 10 ? 1 : 0)}km`;
+  el.hidden = false;
+  el.classList.remove("spring", "autumn"); el.classList.add(key);
+  el.innerHTML = `<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">${S.eyebrow}</span><h2>${S.icon} 지금 가기 좋은 ${S.title}</h2><small>전남광주 · 절정 시기는 평년 기준 예상이에요${typeof HOME !== "undefined" && HOME ? " · 가까운 곳부터" : ""}</small></div></div>
+    <div class="weekendList">${list.map(({ sp, st, d }) => `<button class="weekendItem" type="button" onclick="window.open(mapLink('${jsq(sp[0])}'),'_blank','noopener')"><span class="wNo">${S.icon}</span><span><span class="wTag">${esc(sp[3])} · 절정 ${mmdd(sp[4])}~${mmdd(sp[5])}</span><b>${esc(sp[0])}<span class="spBadge ${st}">${lab[st]}</span></b><small>${esc(sp[6])}${kmTag(d)}</small><span class="spTip">💡 ${esc(sp[7])} · 📍 지도 보기</span></span></button>`).join("")}</div>
+    <p class="spNote">날씨에 따라 며칠씩 달라질 수 있어요. 가기 전에 최근 사진과 날씨를 확인해 보세요.</p></div>`;
+}
+window.renderSeason = renderSeason;
+(function () {
+  const go = () => { try { renderSeason() } catch (e) { console.warn("[season]", e) } };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go); else go();
+  // 내 위치(HOME)를 나중에 정하면 거리순으로 다시 그림
+  window.addEventListener("load", () => setTimeout(go, 1200));
+})();
+</script>
 </body></html>
