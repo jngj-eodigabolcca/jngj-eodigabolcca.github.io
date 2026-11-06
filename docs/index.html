@@ -11794,9 +11794,9 @@ html body .hero .impactGo.night{background:linear-gradient(135deg,#1f2d55,#3b3f8
         +'<span class="wTag">'+h(x[2])+' · '+when+'</span><b>'+h(x[0])+badge+'</b><small>'+h(x[7])+'</small>'
         +'<span class="spTip">💡 '+h(x[8])+' · 📍 지도 보기</span></span></button>';
     }).join("");
-    var link = sh ? '<button type="button" class="onLink" data-jump="seasonPick">'+(season.classList.contains("spring")?"🌸 벚꽃":"🍁 단풍")+' 명소는 아래 계절 명소 칸에서 →</button>' : '';
+    var link = sh ? '<button type="button" class="onLink" data-jump="seasonPick">'+(season.classList.contains("spring")?"🌸 벚꽃":"🍁 단풍")+' 명소도 지금이 절정이에요 →</button>' : '';
     el.innerHTML='<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">ONLY NOW</span>'
-      +'<h2>⏳ 지금 아니면 1년 기다려야 해요</h2><small>전남광주 제철·철새·꽃 · 기간은 평년 기준 어림값이라 가기 전에 확인해 주세요</small></div></div>'
+      +'<h2>⏳ 지금 아니면 1년 기다려야 해요</h2><small>제철·철새·꽃 · 평년 기준이라 가기 전에 확인해 주세요</small></div></div>'
       +'<div class="weekendList">'+items+'</div>'+link+'</div>';
   }
   document.addEventListener("click",function(e){
@@ -11842,6 +11842,70 @@ html body .hero .impactGo.night{background:linear-gradient(135deg,#1f2d55,#3b3f8
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
   window.addEventListener("load",function(){ setTimeout(run,1500); });
   setInterval(function(){ nightMode(); render(); },60000);   // 권역을 바꾸거나 저녁 5시가 되면 따라 바뀜
+})();
+</script>
+<!-- ── #fit20261106 : 크기 다듬기 (큰 글씨 모드에서도 어색하지 않게) ──
+  · 첫 화면: '오늘 코스 골라줘' 버튼·놀 거리 숫자를 한 단계 작게 (큰 글씨 모드면 앱이 1.15배 키우니 그만큼 덜 키움)
+  · 아이랑 어디 갈까?: 제목 한 줄 · 설명 한 줄. 'N곳'은 위쪽 오른쪽으로 빼서 제목 자리를 넓힘. 폰에선 설명 앞 '크리밍이랑 손잡고 ·' 생략
+-->
+<style id="fit20261106">
+html body .hero .impactGo{font-size:17px;padding:14px 18px;margin:12px 0 14px;border-radius:16px}
+html body .hero .impactGo small{font-size:12.5px}
+html body .hero .heroStats button:not(.heroNow) strong,html body .hero .heroStats strong{font-size:24px!important}
+html.bigText body .hero .heroStats button:not(.heroNow) strong,html.bigText body .hero .heroStats strong{font-size:21px!important}
+html.bigText body .hero .impactGo{font-size:16px}
+
+#kidsView > .sectionHead{position:relative}
+#kidsView > .sectionHead > div{min-width:0;flex:1 1 auto}
+#kidsView .kidsHeadTitle{white-space:nowrap}
+#kidsView .kidsHeadTitle small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:6px}
+@media (max-width:640px){
+  #kidsView > .sectionHead > span{position:absolute;top:0;right:0;padding:4px 12px!important;font-size:14px!important;min-height:0!important}
+  #kidsView .kidsHeadTitle{font-size:clamp(20px,6.2vw,30px)!important;line-height:1.2!important}
+  #kidsView .kidsHeadTitle .creamingHead.kidsDuo--family{width:2.3em}
+  #kidsView .kidsHeadTitle small{font-size:13.5px!important}
+  #kidsView .kidsHeadTitle small .kidsSubLead{display:none}
+}
+
+/* ── 2차 정리: 줄바꿈·버튼 높이·글씨 크기 맞춤 ── */
+/* 지금만 칸: 계절 명소 칸과 같은 글씨 크기 */
+#onlyNow .spTip{display:block;margin-top:3px;font-size:11.5px;color:var(--ink2,#555)}
+#onlyNow .onBadge{white-space:nowrap;font-size:11.5px}
+#onlyNow .weekendHead h2{white-space:nowrap;font-size:clamp(17px,5vw,20px)!important}
+#onlyNow .weekendHead small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#onlyNow .onLink{font-size:13px;padding:10px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 첫 화면 큰 버튼: 폰에선 한 줄 (작은 글씨는 넓은 화면에서만) */
+html body .hero .impactGo{white-space:nowrap}
+@media (max-width:420px){ html body .hero .impactGo small{display:none} }
+/* 글로 물어보기 빠른 버튼: 두 줄로 꺾이던 54px 칸 → 글자 길이만큼의 한 줄 알약 */
+html body #quick{display:flex!important;flex-wrap:wrap!important;gap:6px!important}
+html body #quick>button:not(.qToggle){flex:0 0 auto!important;width:auto!important;height:36px!important;min-height:36px!important;max-height:36px!important;padding:0 12px!important;white-space:nowrap!important;line-height:36px!important;font-size:12.5px!important}
+html body #quick>button.qToggle{flex:1 0 100%!important;height:38px!important;min-height:38px!important}
+html body #quick:not(.qOpen)>button.qMore{display:none!important}
+/* 접힌 칸 제목 줄: 한 줄 */
+html body .foldBar{min-height:0!important;padding-top:12px!important;padding-bottom:12px!important}
+html body .foldBar > span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;font-size:15px!important}
+
+#onlyNow .weekendHead > div{min-width:0;flex:1 1 auto}
+@media (max-width:640px){
+  /* 소제목 옆 작은 설명(예: '향후 30일 이내 예정 행사 · 0건'): 제목 옆에 끼어 두 줄로 꺾이던 것 → 제목 아래 한 줄 */
+  html body main h3.sub{flex-wrap:wrap!important}
+  html body main h3.sub > small{display:block!important;flex:1 0 100%!important;width:100%;margin:3px 0 0!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;font-size:13px!important}
+  /* 큰 글씨 모드: 첫 화면 인사말은 이미 1.15배 커지니 보통 크기 규칙으로 (5줄로 늘어지던 것) */
+  html.bigText body .hero #greet{font-size:clamp(26px,7.4vw,44px)!important}
+}
+</style>
+<script id="fit20261106Script">
+(function(){
+  // '크리밍이랑 손잡고 · ' 부분만 따로 감싸서 폰에선 숨김 (renderKids가 다시 그릴 때마다 다시 적용)
+  function wrap(){
+    var sm=document.querySelector("#kidsView .kidsHeadTitle small"); if(!sm || sm.querySelector(".kidsSubLead")) return;
+    var t=sm.textContent, k=t.indexOf(" · "); if(k<0) return;
+    sm.innerHTML='<span class="kidsSubLead"></span>'; sm.firstChild.textContent=t.slice(0,k+3); sm.appendChild(document.createTextNode(t.slice(k+3)));
+  }
+  var v=document.getElementById("kidsView");
+  if(v && window.MutationObserver) new MutationObserver(wrap).observe(v,{childList:true});
+  wrap();
 })();
 </script>
 </body></html>
