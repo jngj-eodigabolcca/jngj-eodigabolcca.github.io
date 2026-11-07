@@ -11994,4 +11994,59 @@ html body .wk div>b{flex:0 0 52px}
 html body .wk div i{margin:0 0 0 auto!important}
 }
 </style>
+<style id="sizeSystem20261107">
+/* ── 2026-11-07 버튼·탭 크기 통일 ──────────────────────────────
+   크기를 4단계로만 씀 (글자 크게 보기를 켜면 화면이 1.15배라 그만큼 커짐)
+   · 큰 버튼  (오늘 코스 골라줘·추천·전체 일정 보기) : 높이 46 · 글자 15 · 모서리 14
+   · 보통 버튼(지도·공유·상세 보기·알림 받기 등)      : 높이 38 · 글자 13 · 모서리 10
+   · 고르는 칩(누구와·구·전시/공연·예시 질문 등)      : 높이 34 · 글자 13 · 동그란 끝
+   · 접는 칸 머리(이번 주말 추천 ▾ 등)                : 높이 46 · 글자 15
+   되돌리려면 이 style 블록만 지우면 됨 */
+
+/* 큰 버튼 */
+html body .decideAction>button.decideGo:not(#_):not(#_),html body .heroCopy>button.impactGo:not(#_):not(#_),html body #nowShow>button.nowAllBtn:not(#_):not(#_),html body .aiInput>button:not(#_):not(#_){min-height:46px!important;height:46px!important;font-size:15px!important;font-weight:800!important;border-radius:14px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;line-height:1.2!important}
+html body .heroCopy>button.impactGo:not(#_):not(#_){height:auto!important;padding-top:8px!important;padding-bottom:8px!important}
+
+/* 보통 버튼 */
+html body .btn:not(#_):not(#_),html body .miniBtn:not(#_):not(#_),html body .actions>button:not(#_):not(#_),html body .actions>a:not(#_):not(#_),html body .nowEmpty>.btn:not(#_):not(#_),html body .mapTools>button:not(#_):not(#_),html body .cdBtns>button:not(#_):not(#_),html body .popHeroTop>button.popAlarm:not(#_):not(#_),html body .artistForm>button:not(#_):not(#_),html body .popSearchLine>button:not(#_):not(#_),html body .weekendBox>button.onLink:not(#_):not(#_),html body .nbLine>button:not(.nbX):not(#_):not(#_),html body .mapSourceTools>button:not(#_):not(#_),html body .footerManual>button.manualLaunch:not(#_):not(#_),html body .footerManual>button.reviewLaunch:not(#_):not(#_){min-height:38px!important;font-size:13px!important;font-weight:700!important;border-radius:10px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;line-height:1.2!important;
+  padding-top:6px!important;padding-bottom:6px!important;box-sizing:border-box!important}
+html body .actions>button.fav:not(#_):not(#_),html body .btnRow>button.fav:not(#_):not(#_),html body .ncBtns>button.fav:not(#_):not(#_){font-size:16px!important}
+/* 행사 카드 아래 작은 버튼(🍽 코스 짜기·가봤어요)도 보통 버튼 크기로 */
+html body .ncBtns>button:not(#_):not(#_){min-height:36px!important;font-size:12.5px!important;font-weight:700!important;border-radius:10px!important}
+
+/* 고르는 칩: 줄바꿈되는 줄 */
+html body #aiBox #quick>button:not(.qToggle):not(#_):not(#_),html body .subchips>button:not(#_):not(#_),html body .popFindExamples>button:not(#_):not(#_),html body .popStats>button:not(#_):not(#_),html body .homeAsk>button:not(#_):not(#_),html body .homeAsk>select:not(#_):not(#_),html body .kidsScienceNav>button:not(#_):not(#_),html body .foodQuickBtns>button:not(#_):not(#_),html body .nowStartFoot>button.nowRefresh:not(#_):not(#_),html body .filterBar>select:not(#_):not(#_),html body .popSearchLine>select:not(#_):not(#_){height:34px!important;min-height:34px!important;max-height:none!important;padding:0 12px!important;font-size:13px!important;font-weight:700!important;
+  border-radius:999px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;line-height:1!important;box-sizing:border-box!important}
+html body .homeAsk>select:not(#_):not(#_),html body .filterBar>select:not(#_):not(#_),html body .popSearchLine>select:not(#_):not(#_){padding-right:28px!important}
+/* 고르는 칩: 칸에 맞춰 놓인 줄(누구와·얼마나·출발 구·오늘/내일/주말·전체/전시) — 칸 배치는 그대로, 높이·글자만 맞춤 */
+html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_),html body .groupGrid>button:not(#_):not(#_),html body .seg>button:not(#_):not(#_){height:34px!important;min-height:34px!important;font-size:12.5px!important;font-weight:700!important;line-height:1.1!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;box-sizing:border-box!important;white-space:nowrap!important}
+html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_){border-radius:999px!important}
+html body .seg:not(#_):not(#_){padding:3px!important;border-radius:12px!important}
+html body .seg>button:not(#_):not(#_){border-radius:9px!important;font-size:13px!important}
+/* 칩 줄 간격 통일 */
+html body #aiBox #quick:not(#_):not(#_),html body .subchips:not(#_):not(#_),html body .popFindExamples:not(#_):not(#_),html body .popStats:not(#_):not(#_),html body .homeAsk:not(#_):not(#_),html body .kidsScienceNav:not(#_):not(#_),html body .foodQuickBtns:not(#_):not(#_){gap:6px!important;align-items:center!important;justify-content:flex-start!important}
+html body #aiBox #quick>button.qToggle:not(#_):not(#_){height:34px!important;min-height:34px!important;font-size:12.5px!important;border-radius:999px!important}
+
+/* 접는 칸 머리 */
+html body button.foldBar:not(#_):not(#_){min-height:46px!important;height:46px!important;padding:0 16px!important;font-size:15px!important;border-radius:14px!important;align-items:center!important}
+
+/* 위쪽 권역 버튼(광주권·순천여수권·무안목포권): 3개를 같은 폭으로 가운데 정렬 */
+html body #regionBar:not(#_):not(#_){display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:6px!important}
+html body #regionBar>button:not(#_):not(#_){height:36px!important;font-size:13px!important;font-weight:800!important;border-radius:999px!important;justify-content:center!important;padding:0 6px!important;min-width:0!important}
+
+/* 일정 카드 아래 버튼(상세 보기·공식 원문 / ♡·가봤어요)도 지도 버튼과 같은 두 줄 정리 */
+html body .actions:not(#_):not(#_){display:flex!important;flex-wrap:wrap!important;gap:6px!important;align-items:stretch!important}
+html body .actions:has(>.fav):not(#_):not(#_)::before{content:"";order:1;flex:0 0 100%;height:0;margin:-3px 0}
+html body .actions>*:not(#_):not(#_){order:0;flex:1 1 auto!important;margin:0!important;height:auto!important}
+html body .actions>.fav:not(#_):not(#_),html body .actions>.fav~*:not(#_):not(#_){order:2}
+html body .actions>.fav:not(#_):not(#_){flex:0 0 44px!important;padding:6px 0!important}
+/* 동네 고르기: 고르는 칸 한 줄 + '지금 위치로·나중에' 한 줄 */
+html body #homeBar .homeAsk>select:not(#_):not(#_){flex:1 1 100%!important;justify-content:flex-start!important}
+html body #homeBar .homeAsk>button:not(#_):not(#_){flex:1 1 0!important}
+/* 큰 글씨 모드: 3칸짜리 종류 칩 글씨가 칸 끝에 닿지 않게 */
+html.bigText body .nowChips>button:not(#_):not(#_),html.bigText body #chips>button:not(#_):not(#_){font-size:12px!important;letter-spacing:-.2px}
+</style>
 </body></html>
