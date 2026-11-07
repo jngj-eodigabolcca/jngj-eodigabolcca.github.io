@@ -1,26 +1,26 @@
 {
-  "updated_at": "2026-11-06T19:02:04+09:00",
+  "updated_at": "2026-11-07T14:49:40+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "count": 97,
       "ok": true,
-      "message": "하루 한 번만 받아요 · 8시간 전 자료 97건 사용"
+      "count": 112,
+      "message": "정상 수집"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 38,
+      "count": 37,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -43,21 +43,21 @@
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 9,
+      "count": 10,
       "message": "정상 수집"
     },
     {
       "id": "kopis",
       "name": "KOPIS 공연",
-      "count": 97,
       "ok": true,
-      "message": "하루 한 번만 받아요 · 8시간 전 자료 97건 사용"
+      "count": 112,
+      "message": "정상 수집"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 38,
+      "count": 37,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -76,26 +76,26 @@
     }
   ],
   "counts": {
-    "total": 165,
-    "auto": 126,
+    "total": 170,
+    "auto": 131,
     "manual": 39
   },
   "manual_count": 97,
-  "events_count": 165,
+  "events_count": 170,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "local": {
     "holidays": {
       "name": "공휴일",
       "ok": true,
       "count": 46,
-      "fetched_at": "2026-11-01T10:04:06+09:00",
+      "fetched_at": "2026-11-07T14:53:42+09:00",
       "fields": []
     },
     "libraries": {
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-06T19:03:33+09:00",
+      "fetched_at": "2026-11-07T14:53:42+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -131,7 +131,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 292,
-      "fetched_at": "2026-11-06T19:03:33+09:00",
+      "fetched_at": "2026-11-07T14:53:42+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -164,9 +164,9 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-06T19:03:35+09:00",
-    "tourapi_calls": 14,
-    "osm_lookups": 5,
+    "checked_at": "2026-11-07T14:53:58+09:00",
+    "tourapi_calls": 6,
+    "osm_lookups": 2,
     "wiki_lookups": 0,
     "unfinished": false,
     "lists": {
@@ -178,11 +178,11 @@
         "with_image": 249
       },
       "restaurants": {
-        "total": 352,
-        "with_coords": 310,
+        "total": 336,
+        "with_coords": 294,
         "coords_filled": 33,
-        "hours_filled": 292,
-        "with_image": 222
+        "hours_filled": 276,
+        "with_image": 206
       },
       "bakeries": {
         "total": 15,
@@ -207,13 +207,13 @@
       }
     }
   },
-  "kopis_last_try": "2026-11-06T10:03:55+09:00",
-  "kopis_last_ok": "2026-11-06T10:03:55+09:00",
+  "kopis_last_try": "2026-11-07T14:49:40+09:00",
+  "kopis_last_ok": "2026-11-07T14:49:40+09:00",
   "pet_places": {
     "ok": true,
     "count": 1,
     "api_calls": 1,
     "scanned": 71,
-    "checked_at": "2026-11-06T19:03:34+09:00"
+    "checked_at": "2026-11-07T14:53:57+09:00"
   }
 }

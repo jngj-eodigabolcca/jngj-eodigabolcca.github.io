@@ -108,7 +108,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "축제",
       "광주"
@@ -142,7 +142,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "id": "gma-939",
@@ -172,7 +172,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-06",
@@ -200,7 +200,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "행사",
       "교육·체험",
@@ -234,7 +234,7 @@
     "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "행사",
       "교육·체험",
@@ -274,7 +274,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "jeonil245",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "축제",
       "광주"
@@ -312,7 +312,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "축제",
       "광주"
@@ -343,7 +343,7 @@
     "url": "http://www.ticketlink.co.kr/product/63225",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -376,7 +376,7 @@
     "url": "https://www.damyangcf.or.kr/user/board/view/board_cd/4070/wr_no/288/board_cd/4070",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "전남",
@@ -409,7 +409,7 @@
     "url": "https://artmuseum.jeonnam.go.kr/www/9?dspySeq=237",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "전남"
@@ -441,7 +441,7 @@
     "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart19&boardId=ART_001&seq=1966136&movePage=1&recordCnt=12",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "전남",
@@ -511,10 +511,10 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
-    "detailAt": "2026-10-30",
+    "detailAt": "2026-11-07",
     "id": "culture-398725",
     "apiId": "398725",
     "category": "전시",
@@ -539,7 +539,7 @@
     "url": "http://lkh-artmuseum.com/default/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -572,7 +572,7 @@
     "url": "https://www.gwangjubiennale.org/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주"
@@ -623,7 +623,7 @@
     "imageCredit": "한국관광공사 VISITKOREA · 대표 이미지"
   },
   {
-    "detailAt": "2026-10-30",
+    "detailAt": "2026-11-07",
     "id": "culture-396664",
     "apiId": "396664",
     "category": "전시",
@@ -648,7 +648,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009929",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -683,7 +683,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "id": "gma-953",
@@ -713,7 +713,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-06",
@@ -741,7 +741,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009930",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -810,7 +810,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009927",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -889,7 +889,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -937,7 +937,7 @@
     }
   },
   {
-    "detailAt": "2026-10-30",
+    "detailAt": "2026-11-07",
     "id": "culture-401602",
     "apiId": "401602",
     "category": "전시",
@@ -962,7 +962,7 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "전남",
@@ -994,7 +994,7 @@
     "url": "http://www.ticketlink.co.kr/product/65469",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -1069,7 +1069,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1275112",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1101,7 +1101,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1398583",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
@@ -1135,7 +1135,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "category": "행사",
@@ -1198,7 +1198,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-04",
@@ -1226,7 +1226,7 @@
     "url": "https://www.acc.go.kr/main/event.do?PID=030609&action=Read&bnkey=EM_0000010065",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "전시",
       "광주",
@@ -1328,7 +1328,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/263658",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1360,7 +1360,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305424",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1440,43 +1440,11 @@
     "url": "http://www.ticketlink.co.kr/product/65230",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
       "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-10-31",
-    "id": "kopis-PF302336",
-    "apiId": "PF302336",
-    "category": "음악",
-    "subtype": "서양음악(클래식)",
-    "title": "베토벤 교향곡 9번 합창: 조화의 서 [전남광주]",
-    "venue": "전남광주통합특별시 예술의전당 (구. 광주예술의전당)",
-    "venueId": "artcenter",
-    "district": "북구",
-    "address": "전남광주통합특별시 북구 북문대로 60 (운암동)",
-    "date": "2026-11-06 ~ 2026-11-06",
-    "time": "금요일(19:30)",
-    "price": "R석 30,000원, S석 20,000원, A석 10,000원",
-    "age": "만 6세 이상",
-    "cast": "박인욱, 황유순, 윤상아, 백민아, 김요한, 공병우 등",
-    "runtime": "2시간",
-    "status": "공연중",
-    "start": "2026-11-06",
-    "end": "2026-11-06",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302336_261002_130245.jpg",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "https://booking.naver.com/booking/12/bizes/1748448",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-11-06",
-    "tags": [
-      "공연",
-      "서양음악(클래식)",
-      "광주"
     ]
   },
   {
@@ -1496,7 +1464,7 @@
     "age": "만 3세 이상",
     "cast": "최석원, 송정수, 서현진, 박선민",
     "runtime": "45분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-08",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF303324_261014_144848.png",
@@ -1504,7 +1472,7 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/440",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -1528,7 +1496,7 @@
     "age": "만 6세 이상",
     "cast": "김병무, 박새별, 김하은, 김현빈, 박예준, 박지원, 박하진 등",
     "runtime": "1시간 40분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-08",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF303556_261016_120921.png",
@@ -1536,7 +1504,7 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/438",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1632,7 +1600,7 @@
     "age": "만 6세 이상",
     "cast": "김단비, 이혜미, 김도영, 배진혁, 이병찬, 조준서, 김경헌 등",
     "runtime": "1시간",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302962_261012_143633.jpg",
@@ -1640,7 +1608,7 @@
     "url": "http://www.ticketlink.co.kr/product/66082",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -1664,7 +1632,7 @@
     "age": "전체 관람가",
     "cast": "김윤아",
     "runtime": "1시간 10분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF304618_261027_150204.jpg",
@@ -1672,7 +1640,7 @@
     "url": "https://ticket.melon.com/performance/index.htm?prodId=214168",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -1696,7 +1664,7 @@
     "age": "전체 관람가",
     "cast": "강민지, 정주리, 임세미, 전지혜, 조주선, 왕기석",
     "runtime": "1시간 20분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF303821_261019_162330.jpg",
@@ -1704,7 +1672,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39562",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -1728,7 +1696,7 @@
     "age": "만 7세 이상",
     "cast": "송영훈, 최진석 등",
     "runtime": "1시간 40분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF300484_260909_140211.jpg",
@@ -1736,7 +1704,7 @@
     "url": "http://www.ticketlink.co.kr/product/65451",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1760,7 +1728,7 @@
     "age": "만 4세 이상",
     "cast": "박관우, 최솔지, 이준구, 박은비, 김경훈, 최시몬, 강주신 등",
     "runtime": "2시간 15분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF303763_261019_142907.jpg",
@@ -1768,7 +1736,7 @@
     "url": "http://www.ticketlink.co.kr/product/66365",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -1792,7 +1760,7 @@
     "age": "전체 관람가",
     "cast": "",
     "runtime": "50분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF299889_260902_132138.jpg",
@@ -1800,7 +1768,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1721652",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1824,7 +1792,7 @@
     "age": "12개월 이상",
     "cast": "",
     "runtime": "1시간 10분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-08",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF301210_260917_140040.gif",
@@ -1832,7 +1800,7 @@
     "url": "http://www.ticketlink.co.kr/product/65681",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1867,7 +1835,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-06"
+      "checked": "2026-11-07"
     },
     "id": "gtcc-saturday-2026-11-07",
     "date": "11.07 — 11.07",
@@ -1876,7 +1844,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-10-31",
@@ -1895,7 +1863,7 @@
     "age": "만 7세 이상",
     "cast": "신연석, 정호석, 구제창, 강대화, 박희권, 하장호, 김영실 등",
     "runtime": "1시간 30분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302492_261006_125335.jpg",
@@ -1903,7 +1871,7 @@
     "url": "http://www.ticketlink.co.kr/product/65914",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1927,7 +1895,7 @@
     "age": "만 7세 이상",
     "cast": "진채영, 김혜린, 이예린, 현해린, 김수연, 김한비, 변재민 등",
     "runtime": "1시간 10분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF301913_260929_101510.gif",
@@ -1935,7 +1903,7 @@
     "url": "http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=26013709",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "복합",
@@ -1959,7 +1927,7 @@
     "age": "만 7세 이상",
     "cast": "오단해, 서진실, 최순호, 김수유, 이효주, 이준, 이유철 등",
     "runtime": "1시간 20분",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF299809_261021_102151.jpg",
@@ -1967,7 +1935,7 @@
     "url": "http://yeongam.moonhwain.kr/rsvc/rsv_pm.html?b_id=yeongam&p_idx=16",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -1975,7 +1943,7 @@
     ]
   },
   {
-    "detailAt": "2026-10-30",
+    "detailAt": "2026-11-07",
     "id": "culture-402880",
     "apiId": "402880",
     "category": "음악",
@@ -1990,7 +1958,7 @@
     "price": "일반 : 10,000원 군민 : 5,000원(50%할인) ※ 영암군민 할인 예매자는 신분증 등 주소 확인이 가능한 증빙서류를 지참하여 주시기 바랍니다.",
     "contact": "(재)영암문화관광재단 061-471-9094",
     "description": "",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-11-07",
     "end": "2026-11-07",
     "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202610/7bbdde5aa74e4293953fed9ed8293cee.png",
@@ -2000,7 +1968,7 @@
     "url": "https://yeongam.moonhwain.kr:447/rsvc/rsv_pm.html?vwClsPidx=1&only=0",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -2070,7 +2038,7 @@
     "url": "http://www.ticketlink.co.kr/product/65075",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2102,7 +2070,7 @@
     "url": "http://www.ticketlink.co.kr/product/66389",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2134,7 +2102,7 @@
     "url": "http://jsac.moonhwain.net/rsvc/rsv_pm.html?b_id=jsac&p_idx=195",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2167,7 +2135,7 @@
     "url": "https://ticket.yes24.com/Perf/60504",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -2199,7 +2167,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304502",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2231,7 +2199,7 @@
     "url": "https://muanculture.moonhwain.net:451/rsvc/rsv_pm.html?b_id=muanculture&vwClsPidx=",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2263,7 +2231,7 @@
     "url": "http://www.ticketlink.co.kr/product/66717",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -2295,7 +2263,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304474",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -2334,7 +2302,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "yangdong-market",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "축제",
       "광주"
@@ -2405,7 +2373,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304418",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -2438,7 +2406,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39566",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -2504,7 +2472,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39566",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -2536,10 +2504,42 @@
     "url": "http://www.ticketlink.co.kr/product/64702",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
+      "전남"
+    ]
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "kopis-PF305645",
+    "apiId": "PF305645",
+    "category": "공연",
+    "subtype": "서커스/마술",
+    "title": "더 매직 서커스 [장성]",
+    "venue": "장성문화예술회관",
+    "venueId": null,
+    "district": "장성군",
+    "address": "전남광주통합특별시 장성군 장성읍 문화로 110",
+    "date": "2026-11-14 ~ 2026-11-14",
+    "time": "토요일(11:00,15:00)",
+    "price": "전석 4,000원",
+    "age": "24개월 이상",
+    "cast": "",
+    "runtime": "",
+    "status": "공연예정",
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF305645_261106_111346.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "http://jsac.moonhwain.net/rsvc/rsv_pm.html?b_id=jsac&p_idx=196",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-07",
+    "tags": [
+      "공연",
+      "서커스/마술",
       "전남"
     ]
   },
@@ -2568,7 +2568,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305265",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -2612,6 +2612,44 @@
     "imageCredit": "한국관광공사 · 대표 이미지"
   },
   {
+    "detailAt": "2026-11-07",
+    "id": "tour-4147845",
+    "apiId": "4147845",
+    "category": "축제",
+    "subtype": "관광공사 행사",
+    "title": "순천 올랑가 일일마켓",
+    "venue": "순천 별미길 일대",
+    "district": "순천시",
+    "address": "전남광주통합특별시 순천시 별미길 18 (남내동)",
+    "date": "2026-11-14 ~ 2026-11-14",
+    "time": "11:00~18:00",
+    "price": "무료",
+    "age": "",
+    "program": "- 주요 프로그램 : 로컬희망창업 3기 오픈 기념 현판 수여식 / 원도심 상점가 구매금액별 페이백 이벤트 - 부대 행사 및 프로그램 : 원도심 점포 방문 온라인 스탬프투어 / 버스킹·외국인 등 문화공연 / 럭키드로우 경품 추첨 / 창업점포 QR 보물찾기 / 달고나 만들기·네잎클로버 키링 만들기·볼펜 꾸미기 체험 / 타임편지 작성 체험 / 로컬희망창업 3기 신규 창업점포 홍보존 / 원도심 상인회 및 국가별 먹거리 홍보존",
+    "booking": "",
+    "parking": "",
+    "spendtime": "",
+    "sponsor": "순천시, (재)순천시상권활성화재단",
+    "status": "예정",
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/46/4147846_image2_1.jpg",
+    "lat": 34.9536637379,
+    "lng": 127.4851328015,
+    "contact": "070-4902-8266",
+    "description": "",
+    "source": "한국관광공사 TourAPI",
+    "url": "",
+    "origin": "auto",
+    "api": "tourapi",
+    "venueId": null,
+    "verified": "2026-11-07",
+    "tags": [
+      "축제",
+      "전남"
+    ]
+  },
+  {
     "detailAt": "2026-11-01",
     "id": "kopis-PF304093",
     "apiId": "PF304093",
@@ -2636,7 +2674,7 @@
     "url": "http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=26015228",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -2668,7 +2706,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1644155",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
@@ -2700,7 +2738,7 @@
     "url": "http://gjah.moonhwain.kr/rsvc/rsv_pm.html?b_id=gjah&p_idx=8",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2735,7 +2773,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-06"
+      "checked": "2026-11-07"
     },
     "id": "gtcc-saturday-2026-11-14",
     "date": "11.14 — 11.14",
@@ -2744,7 +2782,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-10-31",
@@ -2771,7 +2809,7 @@
     "url": "http://www.ticketlink.co.kr/product/66408",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2803,7 +2841,7 @@
     "url": "http://www.ticketlink.co.kr/product/66576",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -2835,7 +2873,7 @@
     "url": "http://www.ticketlink.co.kr/product/66645",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2867,7 +2905,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1741121",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -2899,7 +2937,7 @@
     "url": "http://www.ticketlink.co.kr/product/66409",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2931,7 +2969,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/840121",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
@@ -2963,7 +3001,7 @@
     "url": "http://www.ticketlink.co.kr/product/64703",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -2995,7 +3033,7 @@
     "url": "http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=26008616",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3027,7 +3065,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1760568",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3059,7 +3097,7 @@
     "url": "https://booking.naver.com/booking/5/bizes/1751848",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3091,7 +3129,7 @@
     "url": "https://ticket.yes24.com/Perf/60614",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3123,48 +3161,10 @@
     "url": "https://booking.naver.com/booking/12/bizes/619928",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
-      "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-11-06",
-    "id": "tour-3301415",
-    "apiId": "3301415",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "무안 YD 페스티벌",
-    "venue": "남악중앙공원",
-    "district": "무안군",
-    "address": "전남광주통합특별시 무안군 삼향읍 대죽서로16번길 16",
-    "date": "2026-11-20 ~ 2026-11-22",
-    "time": "공식 상세 확인",
-    "price": "공식 상세 확인",
-    "age": "",
-    "program": "",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "",
-    "status": "예정",
-    "start": "2026-11-20",
-    "end": "2026-11-22",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/08/4131308_image2_1.JPG",
-    "lat": 34.8111428583,
-    "lng": 126.4628109019,
-    "contact": "061-450-5474",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-11-06",
-    "tags": [
-      "축제",
       "전남"
     ]
   },
@@ -3233,7 +3233,7 @@
     "url": "http://www.ticketlink.co.kr/product/66413",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -3265,7 +3265,7 @@
     "url": "http://www.ticketlink.co.kr/product/65697",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3297,7 +3297,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39568",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3329,7 +3329,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305250",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -3361,7 +3361,7 @@
     "url": "https://ticket.melon.com/performance/index.htm?prodId=213987",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -3393,7 +3393,7 @@
     "url": "http://www.ticketlink.co.kr/product/65913",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3425,7 +3425,7 @@
     "url": "http://www.ticketlink.co.kr/product/65143",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3457,7 +3457,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1751357",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3489,7 +3489,7 @@
     "url": "http://www.ticketlink.co.kr/product/66141",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -3524,7 +3524,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-06"
+      "checked": "2026-11-07"
     },
     "id": "gtcc-saturday-2026-11-21",
     "date": "11.21 — 11.21",
@@ -3533,7 +3533,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-04",
@@ -3560,7 +3560,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305398",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3629,7 +3629,7 @@
     "url": "http://www.ticketlink.co.kr/product/66146",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3694,7 +3694,7 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/404",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3768,7 +3768,7 @@
     "url": "http://www.ticketlink.co.kr/product/64425",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3800,7 +3800,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/263658",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3832,7 +3832,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304473",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -3864,7 +3864,7 @@
     "url": "http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=26015622",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3896,7 +3896,7 @@
     "url": "http://www.ticketlink.co.kr/product/66567",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3928,10 +3928,42 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/426",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
+      "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "kopis-PF305642",
+    "apiId": "PF305642",
+    "category": "음악",
+    "subtype": "한국음악(국악)",
+    "title": "심청이 [전남 광주]",
+    "venue": "광주서구문화센터",
+    "venueId": null,
+    "district": "서구",
+    "address": "전남광주통합특별시 서구 마재로 3 (금호동)",
+    "date": "2026-11-27 ~ 2026-11-27",
+    "time": "금요일(19:00)",
+    "price": "전석 20,000원",
+    "age": "전체 관람가",
+    "cast": "신혜인, 김형욱, 이태영, 김완호, 김유빈, 임정민, 배성진 등",
+    "runtime": "1시간 30분",
+    "status": "공연예정",
+    "start": "2026-11-27",
+    "end": "2026-11-27",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF305642_261106_110639.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://booking.naver.com/booking/12/bizes/1771365",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-07",
+    "tags": [
+      "공연",
+      "한국음악(국악)",
       "광주"
     ]
   },
@@ -3960,7 +3992,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39570",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3992,7 +4024,7 @@
     "url": "http://www.ticketlink.co.kr/product/66605",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4024,7 +4056,7 @@
     "url": "http://www.ticketlink.co.kr/product/65712",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -4091,7 +4123,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-06"
+      "checked": "2026-11-07"
     },
     "id": "gtcc-saturday-2026-11-28",
     "date": "11.28 — 11.28",
@@ -4100,7 +4132,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-01",
@@ -4127,7 +4159,7 @@
     "url": "http://www.ticketlink.co.kr/product/65832",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4159,7 +4191,7 @@
     "url": "http://www.ticketlink.co.kr/product/65724",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -4224,7 +4256,7 @@
     "url": "http://www.ticketlink.co.kr/product/65739",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -4256,7 +4288,7 @@
     "url": "https://www.acc.go.kr/main/event.do?PID=0302&action=Read&bnkey=EM_0000010265",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "복합",
@@ -4368,7 +4400,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000010276",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -4400,7 +4432,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300005",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -4432,7 +4464,7 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/442",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -4497,7 +4529,7 @@
     "url": "http://www.ticketlink.co.kr/product/65424",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -4529,7 +4561,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1740675",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4561,10 +4593,42 @@
     "url": "https://booking.naver.com/booking/12/bizes/1744942",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
+      "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "kopis-PF305634",
+    "apiId": "PF305634",
+    "category": "공연",
+    "subtype": "연극",
+    "title": "오백에 삼십 [전남광주]",
+    "venue": "전남광주통합특별시 예술의전당 (구. 광주예술의전당)",
+    "venueId": "artcenter",
+    "district": "북구",
+    "address": "전남광주통합특별시 북구 북문대로 60 (운암동)",
+    "date": "2026-12-05 ~ 2026-12-05",
+    "time": "토요일(14:00,17:00)",
+    "price": "전석 10,000원",
+    "age": "만 7세 이상",
+    "cast": "우두연, 문예지, 이주영, 최지수, 박경원, 원예린",
+    "runtime": "1시간 40분",
+    "status": "공연예정",
+    "start": "2026-12-05",
+    "end": "2026-12-05",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF305634_261106_104012.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://ticket.yes24.com/Perf/60937",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-07",
+    "tags": [
+      "공연",
+      "연극",
       "광주"
     ]
   },
@@ -4593,7 +4657,7 @@
     "url": "https://www.ticketlink.co.kr/product/65494",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4625,7 +4689,7 @@
     "url": "http://yeongam.moonhwain.kr/rsvc/rsv_pm.html?b_id=yeongam&p_idx=17",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4657,7 +4721,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1740669",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
@@ -4689,7 +4753,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1720827",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4721,7 +4785,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304407",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -4784,7 +4848,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1753711",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4816,7 +4880,7 @@
     "url": "http://www.ticketlink.co.kr/product/65599",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4848,7 +4912,7 @@
     "url": "http://www.ticketlink.co.kr/product/64546",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서커스/마술",
@@ -4880,7 +4944,7 @@
     "url": "https://ticket.melon.com/performance/index.htm?prodId=214048",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "대중음악",
@@ -4912,7 +4976,7 @@
     "url": "http://www.ticketlink.co.kr/product/64892",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4944,7 +5008,7 @@
     "url": "http://www.ticketlink.co.kr/product/66119",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4976,7 +5040,7 @@
     "url": "https://ticket.yes24.com/Perf/60897",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -5008,7 +5072,7 @@
     "url": "http://www.ticketlink.co.kr/product/65871",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -5043,7 +5107,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-06"
+    "verified": "2026-11-07"
   },
   {
     "detailAt": "2026-11-04",
@@ -5070,11 +5134,43 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305244",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "한국음악(국악)",
       "전남"
+    ]
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "kopis-PF305668",
+    "apiId": "PF305668",
+    "category": "공연",
+    "subtype": "연극",
+    "title": "수상한PT샵 [광주]",
+    "venue": "광주아트홀",
+    "venueId": null,
+    "district": "동구",
+    "address": "전남광주통합특별시 동구 중앙로160번길 22 (황금동)",
+    "date": "2026-12-18 ~ 2026-12-27",
+    "time": "화요일 ~ 금요일(19:30), 토요일(14:00,18:00), 일요일(14:00)",
+    "price": "특별석 99,000원, R석 88,000원, S석 77,000원",
+    "age": "만 19세 이상",
+    "cast": "",
+    "runtime": "1시간 20분",
+    "status": "공연예정",
+    "start": "2026-12-18",
+    "end": "2026-12-27",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF305668_261106_130838.png",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "http://www.ticketlink.co.kr/product/66796",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-07",
+    "tags": [
+      "공연",
+      "연극",
+      "광주"
     ]
   },
   {
@@ -5102,7 +5198,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000010174",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -5134,7 +5230,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF299866",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5166,7 +5262,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301623",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5198,7 +5294,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304288",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5230,7 +5326,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305246",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "연극",
@@ -5298,10 +5394,42 @@
     "url": "https://booking.naver.com/booking/12/bizes/1762223",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-06",
+    "verified": "2026-11-07",
     "tags": [
       "공연",
       "서양음악(클래식)",
+      "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "kopis-PF293691",
+    "apiId": "PF293691",
+    "category": "공연",
+    "subtype": "연극",
+    "title": "라이어 3탄: 튀어 [광주]",
+    "venue": "5.18기념문화센터",
+    "venueId": "518center",
+    "district": "서구",
+    "address": "전남광주통합특별시 서구 내방로 152 (쌍촌동)",
+    "date": "2026-12-22 ~ 2026-12-27",
+    "time": "화요일 ~ 목요일(19:30), 토요일(14:00,18:00), 일요일(14:00), HOL(14:00,18:00)",
+    "price": "R석 49,000원",
+    "age": "만 7세 이상",
+    "cast": "",
+    "runtime": "1시간 40분",
+    "status": "공연예정",
+    "start": "2026-12-22",
+    "end": "2026-12-27",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF293691_260615_123015.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://www.ticketlink.co.kr/product/63785",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-07",
+    "tags": [
+      "공연",
+      "연극",
       "광주"
     ]
   },
@@ -5497,6 +5625,44 @@
       "note": "공식 일정 발표 전",
       "checked": "2026-10-12"
     }
+  },
+  {
+    "detailAt": "2026-11-07",
+    "id": "tour-2614198",
+    "apiId": "2614198",
+    "category": "축제",
+    "subtype": "관광공사 행사",
+    "title": "2027 ACE Fair",
+    "venue": "김대중컨벤션센터",
+    "district": "서구",
+    "address": "전남광주통합특별시 서구 상무누리로 30",
+    "date": "2027-09-23 ~ 2027-09-26",
+    "time": "10:00~17:00",
+    "price": "[현장등록] - 성인 10,000원 - 청소년 5,000원 - 어린이/경로(65세이상)/장애인/유공자 무료[단체참관]- 사무국 문의",
+    "age": "전 연령",
+    "program": "- 메인 프로그램 : 문화콘텐츠 전시회 - 부대 행사 및 프로그램 : 라이선싱 수출 상담회 / 학술행사 / 크리에이터·아티스트가 참여하는 무대 이벤트 / 일러스트레이션페어 / 쥬씨 페스티벌 / 세모귀 마켓 / 보드게임존 / 버블쇼 등",
+    "booking": "",
+    "parking": "",
+    "spendtime": "",
+    "sponsor": "문화체육관광부, 전남광주통합특별시",
+    "status": "예정",
+    "start": "2027-09-23",
+    "end": "2027-09-26",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4147834_image2_1.jpg",
+    "lat": 35.1468884464,
+    "lng": 126.8405217823,
+    "contact": "062-611-2242",
+    "description": "",
+    "source": "한국관광공사 TourAPI",
+    "url": "",
+    "origin": "auto",
+    "api": "tourapi",
+    "venueId": "kdj",
+    "verified": "2026-11-07",
+    "tags": [
+      "축제",
+      "광주"
+    ]
   },
   {
     "id": "gma-permanent",
