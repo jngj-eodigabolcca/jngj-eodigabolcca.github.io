@@ -4407,7 +4407,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
   <div class="aiLeft">
     <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-        <div class="quick" id="quick"><button>비 오는 날 실내</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>축제 뭐 있어?</button><button>🏯 역사 유적</button><button>아이와 무료로</button><button>이번 주말 공연</button><button data-go="local">📚 동네 도서관·강좌</button><button>강아지랑 카페</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>🏮 전통시장 구경</button><button>양림동 데이트</button><button>박물관 + 맛집</button><button>비엔날레 + 카페</button><button>🥐 빵지순례</button><button>떡갈비 먹고 영화</button><button class="ktx">🚄 기차 타고 당일치기</button><button>🚗 자가용 하루 코스</button><button>🛏 하루 더 머문다면 1박</button></div>
+        <div class="quick" id="quick"><button>비 오는 날 실내</button><button>아이와 무료로</button><button>이번 주말 공연</button><button>축제 뭐 있어?</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>박물관 + 맛집</button><button>양림동 데이트</button><button>빵지순례</button><button>전통시장 구경</button><button>역사 유적</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>비엔날레 + 카페</button><button>떡갈비 먹고 영화</button><button>강아지랑 카페</button><button data-go="local">📚 동네 도서관·강좌</button><button class="ktx trip">🚄 기차 타고 당일치기</button><button class="trip">🚗 자가용 하루 코스</button><button class="trip">🛏 하루 더 머문다면 1박</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<span class="crEx"><br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</span></small></div></div></div>
 </div>
@@ -5056,7 +5056,7 @@ function renderQuick() {
   const q = document.getElementById("quick"); if (!q) return;
   if (!QUICK_GJ) QUICK_GJ = q.innerHTML;
   // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 12개, 순천여수권 15개 · 기차 당일치기·자가용 하루·하루 더 머문다면 포함)
-  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "🥐 빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 기차 타고 당일치기", "🚗 자가용 하루 코스", "🛏 하루 더 머문다면 1박"].map(t => `<button><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
+  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 기차 타고 당일치기", "🚗 자가용 하루 코스", "🛏 하루 더 머문다면 1박"].map(t => `<button${/^(🚄|🚗|🛏)/u.test(t) ? ' class="trip"' : ""}><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
@@ -10671,7 +10671,7 @@ window.openArtistFollowQuick=function(){
     bs.forEach((b, i) => b.classList.toggle("qMore", i >= LIMIT));
     const extra = bs.length - LIMIT; if (extra <= 0) return;
     const t = document.createElement("button"); t.type = "button"; t.className = "qToggle";
-    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ 더 보기 (${extra}개 · 기차 당일치기 코스 포함)`;
+    const label = () => q.classList.contains("qOpen") ? "접기 ▴" : `＋ ${extra}개 더 보기`;
     t.textContent = label();
     t.onclick = e => { e.stopPropagation(); q.classList.toggle("qOpen"); t.textContent = label() };
     q.appendChild(t);
@@ -12048,5 +12048,19 @@ html body #homeBar .homeAsk>select:not(#_):not(#_){flex:1 1 100%!important;justi
 html body #homeBar .homeAsk>button:not(#_):not(#_){flex:1 1 0!important}
 /* 큰 글씨 모드: 3칸짜리 종류 칩 글씨가 칸 끝에 닿지 않게 */
 html.bigText body .nowChips>button:not(#_):not(#_),html.bigText body #chips>button:not(#_):not(#_){font-size:12px!important;letter-spacing:-.2px}
+</style>
+<style id="aiTidy20261108">
+/* ── 2026-11-08 '글로 물어보기' 정리 ── 되돌리려면 이 style 블록만 지우면 됨
+   ① 검색창: 62px → 50px (위쪽 검색창 44px와 비슷하게), '추천' 버튼은 칸 안에 꽉 차게
+   ② '더 보기': 버튼 크기 통일 규칙이 숨김을 덮어써서 다 보이는데도 '더 보기'가 떠 있던 문제 → 다시 접힘
+   ③ '더 보기' 버튼: 줄 전체 점선 칸 → 다른 칩과 같은 크기로 줄 끝에
+   ④ 기차·자가용·1박(멀리 가는 코스)은 같은 색으로 묶음 */
+html body #aiBox .aiInput:not(#_):not(#_){height:50px!important;padding:4px!important;border-radius:14px!important;align-items:stretch!important;box-sizing:border-box!important}
+html body #aiBox .aiInput>input:not(#_):not(#_){padding:0 12px!important;font-size:15px!important;height:auto!important}
+html body #aiBox .aiInput>button:not(#_):not(#_){height:auto!important;min-height:0!important;padding:0 18px!important;border-radius:10px!important;font-size:14.5px!important}
+@media(max-width:899px){html body #aiBox .aiInput>input:not(#_):not(#_){font-size:16px!important}}
+html body #aiBox #quick:not(.qOpen)>button.qMore:not(#_):not(#_):not(#_){display:none!important}
+html body #aiBox #quick>button.qToggle:not(#_):not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 14px!important;border:1px dashed rgba(255,255,255,.45)!important;color:#fff!important;font-weight:800!important}
+html body #aiBox #quick>button.trip:not(#_):not(#_){background:rgba(80,160,205,.28)!important;border-color:rgba(120,190,230,.55)!important}
 </style>
 </body></html>
