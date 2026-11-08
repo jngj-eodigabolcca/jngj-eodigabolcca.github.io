@@ -5125,6 +5125,9 @@ async function load() {
   const VENUE_FIX = { "citizen-forest": { address: "광주 북구 추암로 190", image: "https://tong.visitkorea.or.kr/cms/resource/03/3514703_image2_1.jpg", imageCredit: "한국관광공사" }, "jeungsimsa": { address: "광주 동구 증심사길 177", image: './jeungsimsa.webp', imageCredit: "한국관광공사(대체 사진)" }, "trail-jungmeori": { image: "https://tong.visitkorea.or.kr/cms/resource/82/2716382_image2_1.jpg", imageCredit: "한국관광공사" } };
   V0 = (V0 || []).map(v => VENUE_FIX[v.id] ? { ...v, ...VENUE_FIX[v.id] } : v)
     .map(v => /인근|대체|다른 장소/.test(v.imageCredit || "") ? { ...v, image: "", imageCredit: "" } : v);
+  // 이름으로 사진 바로잡기 (2026-11-09): 서버 사진이 외부에서 막히거나 '인근 대표 이미지'로 지워진 곳은 한국관광공사 공식 사진으로
+  const NAME_PIC_FIX = [[/백수\s*해안/, "https://tong.visitkorea.or.kr/cms/resource/04/4057304_image2_1.jpg"]];
+  V0 = V0.map(v => { const f = NAME_PIC_FIX.find(([re]) => re.test(v.name || "")); return f ? { ...v, image: f[1], imageCredit: "한국관광공사" } : v });
   V0 = attachPetInfo(applyHistoryBoost(applyKidsMuseumBoost(V0)), PET0);
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
@@ -5224,7 +5227,9 @@ function renderHeroPics() {
 }
 window.goSlide = i => {
   const fs = [...document.querySelectorAll("#slides figure")]; if (!fs.length) return;
-  SLIDE = (i + fs.length) % fs.length;
+  const n = fs.length; let k0 = ((i % n) + n) % n;
+  if (fs.some(f => !f.classList.contains("dead"))) for (let t = 0; t < n && fs[k0].classList.contains("dead"); t++) k0 = (k0 + 1) % n;   // 안 열린 사진은 건너뜀
+  SLIDE = k0;
   fs.forEach((f, k) => f.classList.toggle("on", k === SLIDE));
   document.querySelectorAll("#dots i").forEach((d, k) => d.classList.toggle("on", k === SLIDE));
   $("#slideName").textContent = "📍 " + (fs[SLIDE].dataset.cap || "");
@@ -5757,6 +5762,16 @@ window.heroImgFail = img => {
   if (step === 0 && raw && img.src !== raw) {
     img.dataset.step = "1";
     img.src = raw;
+    return;
+  }
+  // 2026-11-09: 사진이 끝내 안 열리면 다른 장소 사진을 엉뚱한 이름 밑에 띄우지 않고, 그 장은 건너뛴다
+  const fig = img.closest("figure"), all = [...document.querySelectorAll("#slides figure")];
+  if (fig && all.some(f => f !== fig && !f.classList.contains("dead"))) {
+    img.dataset.step = "3";
+    fig.classList.add("dead");
+    const k = all.indexOf(fig), dot = document.querySelectorAll("#dots i")[k];
+    if (dot) dot.classList.add("dead");
+    if (k === SLIDE) goSlide(SLIDE + 1);
     return;
   }
   const stable = heroStableFallback();
@@ -12166,4 +12181,126 @@ html body #aiBox .aiInput>input:not(#_):not(#_):not(#_){padding:0 10px!important
 html body #aiBox .aiInput>button:not(#_):not(#_):not(#_){padding:0 14px!important;border-radius:9px!important;font-size:14px!important}
 @media(max-width:899px){html body #aiBox .aiInput>input:not(#_):not(#_):not(#_){font-size:16px!important}}
 </style>
+<!-- ── #whenTabs20261109 : 홈 '언제 열려?' 탭 (오늘 · 내일 · 이번 주말) ──
+  · 탭마다 그날 실제로 열리는 일정(happensOn)만, 앞의 3개만 보이고 나머지는 '더 보기'로 접어 둠
+  · 순서: 그날 하루만 / 곧 끝남 → 무료 → 우리 동네에서 가까운 곳
+  · 자리: '오늘 뭐하지?' 바로 아래. arrangeHome()·renderAll() 이 다시 그려도 따라 붙음
+  · 백수해안도로 등 히어로 사진: 안 열리는 사진은 건너뜀 (heroImgFail·goSlide)
+-->
+<style id="whenTabs20261109">
+#slides figure.dead,#dots i.dead{display:none!important}
+.whenTabs{margin:16px 0}
+.whenTabs .wtBox{background:var(--card,#fff);border:1px solid var(--line2,#e6e0d4);border-radius:var(--r,20px);box-shadow:var(--shadow,none);padding:16px}
+.whenTabs .wtHead{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.whenTabs .wtHead h2{margin:0;font-size:19px}
+.whenTabs .wtHead small{display:block;color:var(--muted,#6b6b6b);font-size:12.5px;font-weight:600}
+.whenTabs .wtTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--line2,#efe9de);padding:4px;border-radius:14px;margin-bottom:10px}
+.whenTabs .wtTabs button{border:0;background:transparent;border-radius:11px;padding:9px 4px;font-weight:800;font-size:14.5px;color:var(--muted,#555);cursor:pointer;min-height:var(--tap,44px);line-height:1.2}
+.whenTabs .wtTabs button small{display:block;font-size:11px;font-weight:700;opacity:.8}
+.whenTabs .wtTabs button.on{background:var(--card,#fff);color:var(--green,#2f6f5e);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.whenTabs .wtTabs button em{font-style:normal;font-size:11px;margin-left:3px;opacity:.75}
+.whenTabs .wtList{display:grid;gap:8px}
+.whenTabs .wtItem{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:1px solid var(--line2,#e6e0d4);background:var(--card,#fff);border-radius:14px;padding:10px 12px;cursor:pointer;color:inherit;font:inherit}
+.whenTabs .wtItem .wtIc{flex:0 0 30px;height:30px;border-radius:50%;background:var(--gold-l,#fdf0cf);display:grid;place-items:center;font-size:15px}
+.whenTabs .wtItem b{display:block;font-size:14.5px;line-height:1.35}
+.whenTabs .wtItem small{display:block;color:var(--muted,#6b6b6b);font-size:12px;margin-top:2px}
+.whenTabs .wtTag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:4px;background:var(--line2,#efe9de);color:var(--green,#2f6f5e)}
+.whenTabs .wtTag.hot{background:#fde3dc;color:#b2432b}
+.whenTabs .wtMore{display:none;gap:8px}
+.whenTabs .wtBox.open .wtMore{display:grid}
+.whenTabs .wtFoot{display:flex;gap:8px;margin-top:10px}
+.whenTabs .wtFoot button{flex:1;border:1px solid var(--line2,#e6e0d4);background:transparent;border-radius:12px;padding:10px;font-weight:800;font-size:13.5px;color:var(--green,#2f6f5e);cursor:pointer;min-height:var(--tap,44px)}
+.whenTabs .wtEmpty{padding:16px 8px;text-align:center;color:var(--muted,#6b6b6b);font-size:13.5px}
+</style>
+<script id="whenTabsJs20261109">
+(function(){
+  var TAB = "today", OPEN = false, SHOW = 3;
+  var CAT_IC = {"전시":"🎨","공연":"🎭","음악":"🎵","콘서트":"🎤","축제":"🎪","행사":"🎪","스포츠":"⚾"};
+  function days(){
+    var t = todayISO();
+    return { today:[t], tomorrow:[isoPlus(1)], weekend: weekendDays() };
+  }
+  function lab(d){ return (+d.slice(5,7)) + "/" + (+d.slice(8)) + "(" + DAYC[isoDow(d)] + ")" }
+  function pick(ds){
+    var out = [];
+    (EVENTS || []).forEach(function(e){
+      var st = ticketOf(e).status; if (st === "매진" || st === "종료") return;
+      var on = ds.map(function(d){ return [d, happensOn(e, d)] }).filter(function(p){ return p[1] });
+      if (!on.length) return;
+      out.push({ e:e, on:on });
+    });
+    var last = ds[ds.length-1];
+    var isFree = function(x){ return /무료/.test((x.price||"") + (x.discount||"") + (x.tags||[]).join(" ")) };
+    var score = function(o){
+      var e = o.e, s = 0;
+      if (e.start && e.start === e.end) s -= 4;                 // 그날 하루만
+      else if (e.end && e.end <= addDaysISO(last, 3)) s -= 3;   // 곧 끝남
+      if (isFree(e)) s -= 2;
+      if (o.on.some(function(p){ return p[1].sure })) s -= 1;
+      if (e.image) s -= .3;
+      var km = typeof homeKm === "function" ? homeKm(e) : null; if (km != null) s += Math.min(km, 25) / 6;
+      return s + seeded((ds[0]||"") + (e.id || e.title)) * .8;
+    };
+    return out.map(function(o){ return [score(o), o] }).sort(function(a,b){ return a[0]-b[0] }).map(function(a){ return a[1] });
+  }
+  function item(o, ds){
+    var e = o.e, ic = CAT_IC[e.category] || "✨";
+    var tags = [];
+    if (e.start && e.start === e.end) tags.push('<span class="wtTag hot">하루만</span>');
+    else if (e.end && e.end <= addDaysISO(ds[ds.length-1], 3)) tags.push('<span class="wtTag hot">~' + esc(e.end.slice(5).replace("-", ".")) + ' 끝</span>');
+    if (/무료/.test((e.price||"") + (e.discount||"") + (e.tags||[]).join(" "))) tags.push('<span class="wtTag">무료</span>');
+    var when = o.on[0][1].when || "";
+    if (ds.length > 1) when = (o.on.length === ds.length ? o.on.map(function(p){ return DAYC[isoDow(p[0])] }).join("·") : DAYC[isoDow(o.on[0][0])]) + (when && !/확인/.test(when) ? " " + when : "");
+    else if (/확인/.test(when)) when = "";
+    var ht = ""; try { ht = typeof homeTag === "function" ? homeTag(e) : "" } catch(_){}
+    return '<button class="wtItem" type="button" onclick="detail(\'' + jsq(e.id) + '\')"><span class="wtIc" aria-hidden="true">' + ic + '</span><span><b>' + tags.join("") + esc(e.title) + '</b><small>' + esc([e.venue, when].filter(Boolean).join(" · ")) + ht + '</small></span></button>';
+  }
+  function render(){
+    var el = document.getElementById("whenTabs"); if (!el || typeof EVENTS === "undefined") return;
+    var D = days(), lists = { today: pick(D.today), tomorrow: pick(D.tomorrow), weekend: pick(D.weekend) };
+    var names = { today:"오늘", tomorrow:"내일", weekend:"이번 주말" };
+    var sub = { today: lab(D.today[0]), tomorrow: lab(D.tomorrow[0]), weekend: D.weekend.map(lab).join("~") };
+    var cur = lists[TAB], ds = D[TAB];
+    var head = cur.slice(0, SHOW).map(function(o){ return item(o, ds) }).join("");
+    var rest = cur.slice(SHOW);
+    var restHtml = rest.length ? '<div class="wtMore" id="wtMore">' + rest.map(function(o){ return item(o, ds) }).join("") + '</div>' : "";
+    var foot = '<div class="wtFoot">'
+      + (rest.length ? '<button type="button" data-wt="fold" aria-expanded="' + OPEN + '" aria-controls="wtMore">' + (OPEN ? "접기 ▲" : "＋ " + rest.length + "개 더 보기") + '</button>' : "")
+      + '<button type="button" data-wt="all">일정 전체 보기 ›</button></div>';
+    el.innerHTML = '<div class="wtBox' + (OPEN ? " open" : "") + '"><div class="wtHead"><div><h2>🗓 언제 갈까?</h2><small>' + esc(typeof RNAME === "function" ? RNAME() : "") + ' · 그날 실제로 열리는 것만 골랐어요</small></div></div>'
+      + '<div class="wtTabs" role="tablist">' + ["today","tomorrow","weekend"].map(function(k){
+          return '<button type="button" role="tab" data-wt-tab="' + k + '" aria-selected="' + (k === TAB) + '" class="' + (k === TAB ? "on" : "") + '">' + names[k] + '<em>' + lists[k].length + '</em><small>' + esc(sub[k]) + '</small></button>';
+        }).join("") + '</div>'
+      + '<div class="wtList" role="tabpanel">' + (head || '<div class="wtEmpty">' + names[TAB] + '은 열리는 일정이 아직 없어요.<br>가볼 곳에서 골라보는 건 어떠세요?</div>') + restHtml + '</div>'
+      + foot + '</div>';
+  }
+  document.addEventListener("click", function(ev){
+    var t = ev.target.closest && ev.target.closest("#whenTabs [data-wt-tab], #whenTabs [data-wt]"); if (!t) return;
+    if (t.dataset.wtTab){ TAB = t.dataset.wtTab; OPEN = false; render(); return }
+    if (t.dataset.wt === "fold"){ OPEN = !OPEN; render(); if (!OPEN) document.getElementById("whenTabs").scrollIntoView({ behavior:"smooth", block:"nearest" }); return }
+    if (t.dataset.wt === "all"){ if (typeof showTab === "function") showTab("events") }
+  });
+  function place(){
+    var main = document.querySelector("main"), d = document.getElementById("decideNow"); if (!main || !d) return;
+    var el = document.getElementById("whenTabs");
+    if (!el){ el = document.createElement("section"); el.id = "whenTabs"; el.className = "whenTabs homeOnly"; el.setAttribute("aria-label", "오늘 · 내일 · 이번 주말 열리는 일정"); }
+    var after = d, ai = document.getElementById("aiBox"); ai = ai && ai.closest("section");
+    if (ai && ai.parentNode === main && d.nextElementSibling === ai) after = ai;
+    if (after.nextElementSibling !== el) after.insertAdjacentElement("afterend", el);
+    render();
+  }
+  if (typeof window.arrangeHome === "function"){
+    var oa = window.arrangeHome;
+    window.arrangeHome = function(){ var r = oa.apply(this, arguments); try { place() } catch(e){ console.warn("[whenTabs]", e) } return r };
+  }
+  if (typeof window.renderAll === "function"){
+    var orr = window.renderAll;
+    window.renderAll = function(){ var r = orr.apply(this, arguments); try { render() } catch(e){ console.warn("[whenTabs]", e) } return r };
+  }
+  function run(){ try { place() } catch(e){ console.warn("[whenTabs]", e) } }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
+  window.addEventListener("load", function(){ setTimeout(run, 1500) });
+  var lastDay = ""; setInterval(function(){ var t = todayISO(); if (t !== lastDay){ lastDay = t; try { render() } catch(e){} } }, 60000);   // 자정 넘으면 오늘·내일이 바뀜
+})();
+</script>
 </body></html>
