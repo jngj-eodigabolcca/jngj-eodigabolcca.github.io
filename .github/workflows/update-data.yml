@@ -8,8 +8,11 @@ on:
         type: boolean
         default: false
   schedule:
-    # 한국시간 09:10 / 18:10
+    # 한국시간 09:10 / 18:10 (기본)
     - cron: "10 0,9 * * *"
+    # 한국시간 11:40 / 20:40 (예비) — GitHub 예약 실행이 늦거나 건너뛰었을 때 따라잡기용.
+    # 이미 최근에 업데이트됐으면 아래 '최근 업데이트 확인'에서 바로 끝나요.
+    - cron: "40 2,11 * * *"
 
 permissions:
   contents: write
@@ -21,7 +24,47 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # 예약 실행일 때만: 마지막 업데이트가 4시간 이내면 이번 실행은 건너뜀
+  # (기본 실행이 늦게 돌았거나 예비 실행이 이미 따라잡은 경우 같은 일을 두 번 하지 않게)
+  # 손으로 '실행'을 누르면 항상 돌아요.
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - name: meta.json 만 가져오기
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: docs/data/meta.json
+          sparse-checkout-cone-mode: false
+
+      - name: 최근 업데이트 확인
+        id: check
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          run = "true"
+          if os.environ["EVENT"] == "schedule":
+              try:
+                  t = datetime.fromisoformat(json.load(open("docs/data/meta.json"))["updated_at"])
+                  hours = (datetime.now(timezone.utc) - t).total_seconds() / 3600
+                  print(f"마지막 업데이트: {hours:.1f}시간 전")
+                  if hours < 4:
+                      run = "false"
+                      print("4시간 이내에 이미 업데이트됨 → 이번 예약 실행은 건너뜁니다.")
+              except Exception as e:
+                  print(f"meta.json 확인 실패({e}) → 그냥 업데이트합니다.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"run={run}\n")
+          PY
+
   update:
+    needs: check
+    if: needs.check.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
