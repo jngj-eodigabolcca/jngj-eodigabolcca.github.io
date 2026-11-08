@@ -4405,7 +4405,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 <section class="block">
 <div class="ai" id="aiBox">
   <div class="aiLeft">
-    <div class="aiHead"><span>✨</span><div><b id="aiName">✏️ 글로 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
+    <div class="aiHead"><img class="js-creaming-src aiCream" alt="" aria-hidden="true" onerror="this.style.display='none'"><div><b id="aiName">크리밍한테 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
         <div class="quick" id="quick"><button>비 오는 날 실내</button><button>아이와 무료로</button><button>이번 주말 공연</button><button>축제 뭐 있어?</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>박물관 + 맛집</button><button>양림동 데이트</button><button>빵지순례</button><button>전통시장 구경</button><button>역사 유적</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>비엔날레 + 카페</button><button>떡갈비 먹고 영화</button><button>강아지랑 카페</button><button data-go="local">📚 동네 도서관·강좌</button><button class="ktx trip">🚄 기차 타고 당일치기</button><button class="trip">🚗 자가용 하루 코스</button><button class="trip">🛏 하루 더 머문다면 1박</button></div>
   </div>
@@ -6659,7 +6659,7 @@ const WALK_ORIGINS = { gj: ["ACC·충장로 (도심)", 35.1460, 126.9193], "mp-m
 let ORIGIN = (() => { try { const v = JSON.parse(localStorage.getItem("glm_origin")); return ORIGINS[v] ? v : null } catch (e) { return null } })();
 function originKey() { return (ORIGIN && ORIGIN_REGION[ORIGIN] === REGION ? ORIGIN : null) || REGION_ORIGIN[REGION] || "gj" }
 function guideTitle() {
-  return "✏️ 글로 물어보기"
+  return "크리밍한테 물어보기"
 }
 function renderOriginBars() {
   const an = document.getElementById("aiName"); if (an && guideTitle()) an.textContent = guideTitle();
@@ -12062,5 +12062,96 @@ html body #aiBox .aiInput>button:not(#_):not(#_){height:auto!important;min-heigh
 html body #aiBox #quick:not(.qOpen)>button.qMore:not(#_):not(#_):not(#_){display:none!important}
 html body #aiBox #quick>button.qToggle:not(#_):not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 14px!important;border:1px dashed rgba(255,255,255,.45)!important;color:#fff!important;font-weight:800!important}
 html body #aiBox #quick>button.trip:not(#_):not(#_){background:rgba(80,160,205,.28)!important;border-color:rgba(120,190,230,.55)!important}
+</style>
+<style id="tidySpace20261108">
+/* ── 2026-11-08 간격·크기·탭 정리 ── 되돌리려면 이 style 블록만 지우면 됨 (겹침 없게 음수 여백은 안 씀) */
+
+/* ① 첫 화면 칸 사이 간격: 12~34px로 들쭉날쭉 → 폰 14px · PC 18px로 통일 */
+html body main > .homeOnly:not(#decideNow):not(#_){margin-top:14px!important;margin-bottom:0!important}
+html body main > #decideNow:not(#_){margin-bottom:0!important}
+html body main > #updated:not(#_){margin-top:10px!important}
+@media(min-width:900px){html body main > .homeOnly:not(#decideNow):not(#_){margin-top:18px!important}}
+
+/* ② 탭 화면 맨 위 제목 앞 빈칸 줄임 (폰 22→12, PC 30→18), 필터 줄 아래도 조금 */
+html body main .view > .sectionHead:first-child:not(#_){margin-top:12px!important;margin-bottom:10px!important}
+@media(min-width:900px){html body main .view > .sectionHead:first-child:not(#_){margin-top:18px!important;margin-bottom:14px!important}}
+html body #placesView > .filterBar:not(#_){margin-bottom:12px!important}
+
+/* ③ 바닥(푸터): 위쪽 빈칸 줄이고, 개인정보·라이선스 링크는 한 줄에 나란히 */
+html body footer.foot2:not(#_){margin-top:20px!important;padding-top:50px!important}
+html body footer.foot2 > svg:not(#_){height:40px!important}
+html body main.wrap:not(#_){padding-bottom:16px!important}
+html body .footerManual:not(#_){display:flex!important;flex-wrap:wrap!important;gap:8px!important;margin-bottom:18px!important}
+html body .footerManual>button:not(#_):not(#_){margin:0!important}
+html body .footerManual>.manualLaunch:not(#_):not(#_),html body .footerManual>.reviewLaunch:not(#_):not(#_){flex:1 0 100%!important}
+html body .footerManual>.privacyLink:not(#_):not(#_){flex:1 1 0!important;min-height:34px!important;font-size:12.5px!important;padding:4px 6px!important;white-space:nowrap}
+
+/* ④ PC 위쪽 권역 버튼: '📍 권역' 글자 때문에 무안목포권만 아랫줄로 떨어지던 것 → 한 줄 */
+@media(min-width:760px){
+  html body #regionBar:not(#_):not(#_){grid-template-columns:auto repeat(3,minmax(0,200px))!important;justify-content:center!important;align-items:center!important}
+  html body #regionBar>span{white-space:nowrap;padding-right:4px}
+}
+
+/* ⑤ PC '사는 동네를 고르면': 화면 끝까지 늘어난 고르기 칸·버튼 → 한 줄 */
+@media(min-width:760px){
+  html body #homeBar .homeAsk:not(#_):not(#_){display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:8px!important}
+  html body #homeBar .homeAsk>b:not(#_):not(#_){flex:0 0 auto!important}
+  html body #homeBar .homeAsk>select:not(#_):not(#_){flex:0 0 220px!important;margin-left:auto!important}
+  html body #homeBar .homeAsk>button:not(#_):not(#_){flex:0 0 auto!important;padding:0 16px!important}
+}
+
+/* ⑥ '전체 일정 보기' 버튼: 높이 46에 두 줄이 들어가 아랫글이 잘리던 것 → 한 줄로 */
+html body #nowShow>button.nowAllBtn:not(#_):not(#_){height:auto!important;min-height:46px!important;flex-wrap:wrap!important;column-gap:8px!important;row-gap:0!important;padding:8px 14px!important}
+html body #nowShow>button.nowAllBtn>span:not(#_){font-size:12px!important;font-weight:650!important;opacity:.85;margin:0!important;display:inline!important}
+
+/* ⑦ 가볼 곳·무대 등 종류 버튼(전체·역사 유적…): PC에서 34px 칸에 세로로 쌓여 글자가 넘치던 것 → 글자 길이만큼 가로 칩 */
+html body .groupGrid:not(#_):not(#_){display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-bottom:10px!important}
+html body .groupGrid>button:not(#_):not(#_){flex:0 0 auto!important;flex-direction:row!important;width:auto!important;padding:0 12px!important;gap:5px!important;border-radius:999px!important;font-size:13px!important}
+html body .groupGrid>button span:not(#_){font-size:15px!important;line-height:1!important}
+html body .groupGrid>button small:not(#_){margin-left:2px!important;font-size:11.5px!important}
+
+/* ⑧ 폰 일정 탭 위 종류 칩 10개: 4칸 격자에 넓은 칸이 섞여 들쭉날쭉 → 글자 길이만큼 줄바꿈 */
+@media(max-width:899px){
+  html body #chips:not(#_):not(#_){display:flex!important;flex-wrap:wrap!important;gap:6px!important}
+  html body #chips>button:not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 12px!important;grid-column:auto!important}
+}
+
+/* ⑨ '지금 바로 갈 곳' 카드: 번호·이름이 카드마다 높이가 달랐던 것 → 위에 맞춤 */
+html body .nowPick:not(#_){display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;text-align:left!important}
+html body .nowPickTop:not(#_){display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px}
+/* ⑩ 일정 카드 아래 버튼 줄: 오른쪽으로 밀려 왼쪽에 빈칸이 생기던 것 → 카드 폭에 맞춤 */
+html body .card .foot>.actions:not(#_):not(#_){margin-left:0!important;flex:1 1 100%!important;width:100%!important}
+</style>
+<style id="aiCompact20261108">
+/* ── 2026-11-08 '글로 물어보기' 칸 작게 ── 되돌리려면 이 style 블록만 지우면 됨
+   · 아직 아무것도 안 물었을 때 비어 있는 큰 안내 칸(크리밍이 골라드릴게요)은 숨김 → 물어보면 그때 나타남
+   · PC: 왼쪽 400px + 오른쪽 빈 칸 두 덩어리 → 한 덩어리 (제목 → 검색창 → 예시 버튼 → 답)
+   · 제목 24→19px, 바깥 여백 30→20px, PC 노란 ✨ 상자 빼기 */
+html body #aiBox.ai:not(#_){display:block!important;padding:18px 16px!important;border-radius:22px!important}
+html body #aiBox .aiLeft:not(#_){display:grid!important;gap:10px!important}
+html body #aiBox .aiHead:not(#_){gap:0!important}
+html body #aiBox .aiHead>span:not(#_){display:none!important}
+html body #aiBox .aiHead b:not(#_){font-size:19px!important;line-height:1.25!important}
+html body #aiBox .aiHead small:not(#_){font-size:13px!important;margin-top:2px!important;line-height:1.45!important}
+html body #aiBox #answer:not(#_){margin-top:12px!important;min-height:0!important}
+html body #aiBox #answer:has(>.creamingState:not(.loading):only-child):not(#_){display:none!important}
+html body #aiBox #answer:empty:not(#_){display:none!important}
+@media(min-width:900px){
+  html body #aiBox.ai:not(#_){padding:20px 24px!important}
+  html body #aiBox .aiInput:not(#_):not(#_){max-width:720px}
+  html body #aiBox #answer:not(#_){padding:16px 18px!important}
+}
+</style>
+<style id="aiCream20261108">
+/* 크리밍한테 물어보기: 제목 글씨를 다른 칸 제목(지금 아니면 1년 기다려야 해요 등)과 같은 크기로, 왼쪽에 제목 두 줄 높이만 한 크리밍 */
+html body #aiBox .aiHead:not(#_){display:flex!important;align-items:center!important;gap:10px!important}
+html body #aiBox .aiHead>img.aiCream:not(#_){display:block;height:44px;width:auto;max-width:52px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+html body #aiBox .aiHead b:not(#_){font-size:19.5px!important;font-weight:700!important;white-space:nowrap}
+@media(min-width:900px){html body #aiBox .aiHead b:not(#_){font-size:20px!important}html body #aiBox .aiHead>img.aiCream:not(#_){height:46px}}
+/* '추천' 검색창: 50 → 44px (맨 위 검색창과 같은 높이), 버튼도 작게 */
+html body #aiBox .aiInput:not(#_):not(#_):not(#_){height:44px!important;padding:3px!important;border-radius:12px!important}
+html body #aiBox .aiInput>input:not(#_):not(#_):not(#_){padding:0 10px!important;font-size:14.5px!important}
+html body #aiBox .aiInput>button:not(#_):not(#_):not(#_){padding:0 14px!important;border-radius:9px!important;font-size:14px!important}
+@media(max-width:899px){html body #aiBox .aiInput>input:not(#_):not(#_):not(#_){font-size:16px!important}}
 </style>
 </body></html>
