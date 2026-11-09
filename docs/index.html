@@ -1150,6 +1150,23 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .mkToday .mkNow button{border:0;background:#fff;border-radius:14px;padding:9px 13px;font-size:14.5px;font-weight:800;color:#7a2414;box-shadow:0 3px 10px rgba(180,90,30,.12);text-align:left}
 .mkToday .mkNow button small{display:block;font-size:12px;font-weight:600;color:var(--muted)}
 .mkToday p{margin:6px 0 0;font-size:14px;color:#6b2a1c}
+/* 2026-11-09: '오늘 장 서는 곳' 칸 낮추기 — 시장 칸은 이름·동네를 한 줄로, 상설·쉬는 곳은 글머리표로 줄을 나눔 */
+html body .mkToday{padding:14px 16px}
+html body .mkToday>b{font-size:19px;margin-bottom:8px}
+html body .mkToday .mkNow{gap:6px}
+html body .mkToday .mkNow button{padding:6px 11px;border-radius:12px;font-size:14.5px;line-height:1.3}
+html body .mkToday .mkNow button small{font-size:11.5px;line-height:1.25;margin-top:1px}
+.mkToday .mkInfo{list-style:none;margin:10px 0 0;padding:0;font-size:14px;line-height:1.55;color:#6b2a1c}
+.mkToday .mkInfo li{position:relative;padding-left:14px}
+.mkToday .mkInfo li+li{margin-top:5px}
+.mkToday .mkInfo li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:#c2562b}
+.mkToday .mkInfo li b{font-weight:800;margin-right:4px}
+.mkToday .mkInfo li b::after{content:":"}
+.mkToday .mkInfo li span{white-space:nowrap}
+.mkToday .mkInfo li.off{color:#9a2a1a}
+.mkToday .mkInfo li.off::before{background:#9a2a1a}
+:where(:root[data-theme="dark"]) .mkToday .mkInfo{color:#f9ab99}
+:where(:root[data-theme="dark"]) .mkToday .mkInfo li.off{color:#ff8f7a}
 .wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:0 0 16px}
 .wk div{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 4px;text-align:center;min-height:86px;display:flex;flex-direction:column;gap:3px;align-items:center}
 .wk div.today{border-color:var(--red);box-shadow:0 0 0 3px rgba(239,91,60,.15)}
@@ -1157,6 +1174,19 @@ body:has(#searchView:not(.hidden)){overflow:hidden}
 .wk div span{font-size:11.5px;font-weight:700;border-radius:8px;padding:2px 5px;background:var(--gold-l);color:#7a4a05;line-height:1.3;word-break:keep-all}
 .wk div span.nt{background:#ede4fb;color:#5b2f78}.wk div span.off{background:#eee;color:#888;text-decoration:line-through}
 .wk div i{font-style:normal;font-size:11px;color:#c0b8aa;margin-top:auto}
+.wk div button.wkMore{font:inherit;font-size:11.5px;font-weight:800;border:1.5px solid #e2b25a;border-radius:8px;padding:1px 7px;background:#fff7e6;color:#7a4a05;line-height:1.3;cursor:pointer;min-height:24px}
+.wk div button.wkMore:active{transform:scale(.96)}
+.mkPop h3{margin:4px 0 12px;font-size:19px;color:#7a2414;padding-right:30px}
+.mkPop h4{margin:16px 0 8px;font-size:15px;color:var(--ink2)}
+.mkPopList{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.mkPopList button{border:1px solid var(--line);background:#fffaf2;border-radius:12px;padding:8px 11px;text-align:left;cursor:pointer;font:inherit}
+.mkPopList button b{display:block;font-size:14.5px;font-weight:800;color:#7a2414}
+.mkPopList button small{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.mkPopList.off button{background:#f4f4f4}.mkPopList.off button b{color:#777;text-decoration:line-through}
+.mkPopNote{margin:14px 0 0;font-size:12.5px;color:var(--muted)}
+:where(:root[data-theme="dark"]) .wk div button.wkMore{background:#2a2112;color:#e1ab71;border-color:#6b5124}
+:where(:root[data-theme="dark"]) .mkPop h3,:where(:root[data-theme="dark"]) .mkPopList button b{color:#ffa28d}
+:where(:root[data-theme="dark"]) .mkPopList button{background:#202020}
 @media(max-width:600px){.wk{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -14px 16px;padding:0 14px}.wk::-webkit-scrollbar{display:none}.wk div{flex:0 0 92px}}
 .mkLine{display:block!important;font-size:13.5px!important;font-weight:700;border-radius:10px;padding:7px 10px;line-height:1.45;background:var(--gold-l);color:#7a4a05!important}
 .mkLine.on{background:#e4f3e8;color:#1e6b3b!important}.mkLine.off{background:#fff1ec;color:#b2391f!important}.mkLine.nt{background:#f1eafb;color:#5b2f78!important}
@@ -7951,6 +7981,19 @@ const MK_GROUPS = [
   ["지하철로", "🚇", v => { const n = nearStation(v); return !!(n && n.d <= SUBWAY_WALK_KM) }],
 ];
 let MK = { group: "전체", gu: "전체" };
+/* 2026-11-09: 일주일 장날 달력 '+N곳' → 그날 장 서는 곳 전부를 팝업으로 (오른쪽 위 × 로 닫기) */
+window.mkDayPop = iso => {
+  const pool = VENUES.filter(isMarket);
+  const jl = pool.filter(v => jangOn(v, iso)).sort((a, b) => !!b.market.main - !!a.market.main);
+  const nt = pool.filter(v => nightOn(v, iso)), off = pool.filter(v => mkClosedOn(v, iso));
+  const row = (v, sub) => `<button type="button" onclick="closeModal();setTimeout(()=>aiProfile('${jsq(v.id)}'),80)"><b>${esc(v.name)}</b><small>${esc(v.district)}${sub ? " · " + esc(sub) : ""}${v.market.main ? " · 큰 장" : ""}</small></button>`;
+  $("#modalContent").innerHTML = `<div class="mkPop"><span class="eyebrow">일주일 장날 달력</span><h3>🏮 ${mdTxt(iso)}${iso === todayISO() ? " · 오늘" : ""} 장 서는 곳 ${jl.length}곳</h3>
+    <div class="mkPopList">${jl.map(v => row(v, v.market.days ? `장날 ${dayStr(v.market)}${v.market.dayText ? "" : "일"}` : "")).join("")}</div>
+    ${nt.length ? `<h4>🌙 야시장</h4><div class="mkPopList">${nt.map(v => row(v, nightOn(v, iso)[1])).join("")}</div>` : ""}
+    ${off.length ? `<h4>🚫 이날 쉬는 곳</h4><div class="mkPopList off">${off.map(v => row(v, "정기 휴무")).join("")}</div>` : ""}
+    <p class="mkPopNote">이름을 누르면 시장 정보를 볼 수 있어요. 장날 없이 매일 여는 상설시장은 여기 없어요.</p></div>`;
+  $("#modal").classList.add("show"); document.body.classList.add("modal-open");
+};
 function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { staysView: STAYS, cinemasView: CINEMAS, cafesView: CAFES, marketsView: VENUES.filter(v => v.market) }["marketsView"])) return;
   const el = document.getElementById("marketsView"); if (!el) return;
   const t = todayISO(), pool = VENUES.filter(isMarket);
@@ -7961,7 +8004,7 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
   const week = [...Array(7)].map((_, i) => isoPlus(i)).map(d => {
     const jl = pool.filter(v => jangOn(v, d)).sort((a, b) => !!b.market.main - !!a.market.main), more = jl.length > 4 ? jl.length - 3 : 0;
     const items = [...jl.slice(0, more ? 3 : 4).map(v => `<span>${esc(v.market.short || (v.name.replace(/시장|5일시장/, "").replace("1913송정역", "송정역") || v.name) + "장")}</span>`),
-      ...(more ? [`<span>+${more}곳</span>`] : []),
+      ...(more ? [`<button type="button" class="wkMore" onclick="mkDayPop('${d}')" aria-label="${mdTxt(d)} 장 서는 곳 모두 보기">+${more}곳</button>`] : []),
       ...pool.filter(v => nightOn(v, d)).map(v => `<span class="nt">🌙 ${esc(v.name.replace(/예술시장|시장/, ""))}</span>`),
       ...pool.filter(v => mkClosedOn(v, d)).map(v => `<span class="off">${esc(v.name.replace(/시장/, ""))}</span>`)];
     const w = isoDow(d);
@@ -7970,12 +8013,12 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
   const mkEv = EVENTS.filter(e => (pool.some(v => v.id === e.venueId) || /야시장|장터|전통시장/.test(e.title + " " + (e.subtype || ""))) && (!e.end || e.end >= t))
     .sort((a, b) => (a.start || t).localeCompare(b.start || t));
   const cnt = gg => pool.filter(gg[2]).length;
-  const btn = v => `<button onclick="aiProfile('${jsq(v.id)}')">${esc(v.name)}<small>${esc(v.district)}${nightOn(v, t) ? " · 🌙 " + esc(nightOn(v, t)[1]) : v.market.days ? " · 장날" : ""}</small></button>`;
+  const btn = v => `<button onclick="aiProfile('${jsq(v.id)}')">${esc(v.name)}<small>${esc(v.district)}${nightOn(v, t) ? " · 🌙 " + esc(nightOn(v, t)[1]) : ""}</small></button>`;
   const always = pool.filter(v => !v.market.days && !mkClosedOn(v, t));
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MARKETS</span><h2>시장 한 바퀴 돌아볼랑가?<small>${REGION === "gj" ? "양동시장 통닭부터 말바우 장날·남광주 새벽 해산물·대인예술야시장까지" : esc(RNAME()) + " 5일장과 상설시장"}</small></h2></div><span>${pool.length}곳</span></div>
   <div class="mkToday"><b>🏮 오늘 장 서는 곳 · ${mdTxt(t)}</b>
    <div class="mkNow">${[...night, ...jang.sort((a, b) => !!b.market.main - !!a.market.main)].slice(0, jang.length + night.length > 10 ? 8 : 10).map(btn).join("")}${jang.length + night.length > 10 ? `<button onclick="setMk('group','오늘 장 서는 곳')">+${jang.length + night.length - 8}곳 더 보기<small>목록으로</small></button>` : ""}</div>
-   <p>${jang.length || night.length ? "" : "오늘은 장날인 곳이 없어요. "}상설시장은 매일 열어요: ${always.map(v => esc(v.name)).join(" · ")}${off.length ? ` · <b>오늘 쉬는 곳: ${off.map(v => esc(v.name)).join(", ")}</b>` : ""}</p></div>
+   <ul class="mkInfo">${jang.length || night.length ? "" : `<li>오늘은 장날인 곳이 없어요.</li>`}${always.length ? `<li><b>매일 여는 상설시장 ${always.length}곳</b> ${always.map(v => `<span>${esc(v.name)}</span>`).join(" · ")}</li>` : ""}${off.length ? `<li class="off"><b>오늘 쉬는 곳</b> ${off.map(v => `<span>${esc(v.name)}</span>`).join(" · ")}</li>` : ""}</ul></div>
   <h3 class="sub" style="margin-top:6px">일주일 장날 달력</h3>
   <div class="wk">${week}</div>
   ${mkEv.length ? `<h3 class="sub">시장 행사·야시장 ${mkEv.length}</h3><div class="stList">${mkEv.slice(0, 8).map(e => `<button class="stRow" onclick="detail('${jsq(e.id)}')"><span class="stDate">${e.start && e.start > t ? `${Number(e.start.slice(5, 7))}.${dayNum(e.start)}` : "NOW"}</span><span class="stMain"><b>${esc(e.title)}</b><small>📍 ${esc(e.venue)}${e.time ? " · 🕘 " + esc(e.time) : ""}</small></span><em class="ok">${esc(e.price ? e.price.split(" · ")[0] : "")}</em></button>`).join("")}</div>` : ""}
