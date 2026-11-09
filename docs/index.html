@@ -8149,7 +8149,7 @@ function renderLocal() {
   ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
   <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
   ${LIBS.length ? `<h3 class="sub libHead" style="margin-top:16px"><span class="libTitle">📚 동네 도서관</span><small class="libSub" style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${mainLibs.slice(0, 6).map(([l]) => libCard(l)).join("") || `<p class="empty">이 동네엔 공공·어린이 도서관 자료가 없어요. 아래 작은도서관을 살펴보세요.</p>`}</div>${mainLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${mainLibs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}
-   ${smallLibs.length ? `<h3 class="sub libHead libSmallHead" style="margin-top:20px"><span class="libTitle">🏠 작은도서관 · 무인 대출기</span><small class="libSub" style="font-weight:500;color:var(--muted)">${smallLibs.length}곳 · 가기 전에 운영 여부 확인</small></h3><div class="grid libSmall">${smallLibs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${smallLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${smallLibs.length - 6}곳 — 아파트·주민센터·종교시설 안 작은 공간이 많아요. 동네를 선택하면 가까운 곳부터 볼 수 있어요.</p>` : ""}` : ""}` : ""}
+   ${smallLibs.length ? `<details class="libSmallFold"${(window.__libSmallOpen ?? !mainLibs.length) ? " open" : ""} ontoggle="window.__libSmallOpen=this.open"><summary><h3 class="sub libHead libSmallHead" style="margin-top:20px"><span class="libTitle">🏠 작은도서관 · 무인 대출기 <em class="foldMark" aria-hidden="true">▾</em></span><small class="libSub" style="font-weight:500;color:var(--muted)">${smallLibs.length}곳 · <span class="foldHint">눌러서 펼치기 · </span>가기 전에 운영 여부 확인</small></h3></summary><div class="grid libSmall">${smallLibs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${smallLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${smallLibs.length - 6}곳 — 아파트·주민센터·종교시설 안 작은 공간이 많아요. 동네를 선택하면 가까운 곳부터 볼 수 있어요.</p>` : ""}</details>` : ""}` : ""}
   ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
   <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
   <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
@@ -12282,6 +12282,13 @@ html body #foodQuick:not(#_){display:none!important}
 .localToday .ltRow button strong{font-size:18px;font-weight:900;color:var(--green,#2f6f5e);line-height:1.1}
 .localToday .ltRow button span{font-size:11.5px;font-weight:750;color:var(--muted,#555);white-space:nowrap}
 .localToday .ltRow button.zero strong{color:var(--muted,#999);opacity:.6}
+/* 작은도서관 · 무인 대출기: 기본 접힘 (2026-11-09) */
+.libSmallFold>summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.libSmallFold>summary::-webkit-details-marker{display:none}
+.libSmallFold .foldMark{font-style:normal;display:inline-block;font-size:.8em;color:var(--muted,#888);transition:transform .2s}
+.libSmallFold:not([open]) .foldMark{transform:rotate(-90deg)}
+.libSmallFold:not([open]) .libSub{opacity:.85}
+.libSmallFold[open] .foldHint{display:none}
 .nearMeal{margin:14px 0 0;padding:10px 12px;border:1px dashed var(--line2,#e6e0d4);border-radius:12px;font-size:14px}
 .nearMeal a{font-weight:800;color:var(--green,#2f6f5e);text-decoration:none}
 .planMealLite{display:block;margin-top:6px}.planMealLite a{font-weight:800;color:var(--green,#2f6f5e)}
@@ -12303,14 +12310,24 @@ html body #foodQuick:not(#_){display:none!important}
     var r=counts(), c=r.c, where=r.g || (typeof RNAME==="function" ? RNAME() : "");
     if(!c.lib && !c.prog && !c.mk && !c.free){ el.innerHTML=""; el.hidden=true; return }
     el.hidden=false;
-    var cell=function(k,ic,n,lab){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
+    var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
     el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b><small>'+esc(where)+(r.g?"":" · 사는 동네를 고르면 그 동네만")+'</small></div><div class="ltRow">'
-      +cell("lib","📚",c.lib,"문 연 도서관")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
+      +cell("lib","📚",c.lib,"문 연 도서관","지금 문 연 공공·어린이 도서관 (작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
   }
   document.addEventListener("click",function(ev){
     var b=ev.target.closest && ev.target.closest("#localToday [data-lt]"); if(!b) return;
     var k=b.dataset.lt;
-    if(k==="lib"){ showTab("local"); try{ if(typeof setLocalF==="function") setLocalF("전체") }catch(e){} }
+    if(k==="lib"){
+      // 동네 탭을 열고 '📚 동네 도서관' 목록으로 바로 내려감 (숫자를 센 동네와 같은 동네로 맞춤)
+      showTab("local");
+      try{ if(typeof setLocalGu==="function") setLocalGu(guOf()||"전체") }catch(e){}
+      var goLib=function(){
+        var t=document.querySelector("#localView h3.libHead")||document.getElementById("quickLibraryAnchor"); if(!t) return;
+        var hh=(document.querySelector("header.top")||{}).offsetHeight||0;
+        window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.scrollY-hh-12),behavior:"instant"});
+      };
+      [80,350,850].forEach(function(ms){ setTimeout(goLib,ms) });
+    }
     else if(k==="prog"){ showTab("local"); try{ setLocalF("접수 중") }catch(e){} }
     else if(k==="mk"){ try{ setNowWhen(0); setNowCat("장날") }catch(e){} var n=document.getElementById("nowShow"); if(n) n.scrollIntoView({behavior:"smooth",block:"start"}) }
     else if(k==="free"){ showTab("events"); setTimeout(function(){ var f=document.querySelector('#chips [data-filter="무료"]'); if(f) f.click() },60) }
