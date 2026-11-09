@@ -1389,6 +1389,10 @@ html body .quick button{display:flex;align-items:center;justify-content:center;t
   html body .decideGrid .choiceRow button{font-size:12.5px!important;padding:6px 4px!important;min-height:34px;width:100%;text-align:center}
   html body .decideGrid .choiceRow[data-choice="time"]{grid-template-columns:repeat(4,minmax(0,1fr))}
   html body .decideGrid .choiceRow[data-choice="budget"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  html body .decideGrid .choiceRow[data-choice="meal"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+  html body .decideGrid .choiceGroup.themeGroup{grid-template-columns:1fr!important;gap:6px!important}
+  html body .decideGrid .choiceRow[data-choice="theme"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  html body .decideGrid .choiceRow[data-choice="theme"] button{white-space:normal!important;line-height:1.15!important;font-size:12.5px!important;padding:6px 3px!important}
 }
 /* 좁은 화면·큰 글씨 설정에서도 길잡이 버튼과 답변이 화면 밖으로 안 나가게 */
 .ai > *{min-width:0}
@@ -4350,10 +4354,13 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
     <div class="originBar"></div>
     <div class="decisionWeather" id="decisionWeather">🌤 오늘 날씨를 확인해 추천에 반영할게요.</div>
     <div class="decideGrid">
+      <div class="choiceGroup themeGroup"><b>무엇을?</b><div class="choiceRow" data-choice="theme"><button class="on">✨ 골고루</button><button>🎨 전시·미술관</button><button>🏛 전시+박물관</button><button>🌳 산책·자연</button><button>🧪 체험·과학</button><button>🎵 공연</button><button>🏮 시장·먹거리</button></div></div>
       <div class="choiceGroup"><b>누구와?</b><div class="choiceRow" data-choice="with"><button class="on">연인</button><button>혼자</button><button>친구</button><button>아이</button><button>부모님</button><button>🐶 반려견</button></div></div>
       <div class="choiceGroup"><b>얼마나?</b><div class="choiceRow" data-choice="time"><button>1시간</button><button class="on">3시간</button><button>반나절</button><button>하루</button></div></div>
       <div class="choiceGroup"><b>입장료 <small style="font-weight:500;opacity:.7">1인 · 식사 별도</small></b><div class="choiceRow" data-choice="budget"><button>무료만</button><button class="on">1만원 이하</button><button>3만원 이하</button><button>상관없음</button></div></div>
       <div class="choiceGroup"><b>이동</b><div class="choiceRow" data-choice="move"><button>도보</button><button>대중교통</button><button class="on">자동차</button></div></div>
+      <div class="choiceGroup"><b>어디서?</b><div class="choiceRow" data-choice="inout"><button class="on">상관없음</button><button>🏠 실내만</button><button>🌤 야외만</button></div></div>
+      <div class="choiceGroup"><b>밥·카페</b><div class="choiceRow" data-choice="meal"><button class="on">알아서</button><button>☕ 카페만</button><button>🍽 밥 꼭</button><button>구경만</button></div></div>
     </div>
     <div class="detailSearch" id="detailSearch" hidden style="display:none">
       <button type="button" id="detailToggle" class="detailToggle" aria-expanded="false">📍 원하는 지역·일정을 직접 적기 <span>자세히 요청하기 ＋</span></button>
@@ -9434,15 +9441,44 @@ function petList(s) {
 
 /* 추천 설명 · 현실성 점수 · 동선 미리보기 */
 let DECISION_MAP=null;
+/* 2026-11-10: '무엇을?' — 고른 종류(전시만 / 전시+박물관 / 산책 / 체험 / 공연 / 시장)로 코스를 짠다 */
+const DEC_THEMES=["전시·미술관","전시+박물관","산책·자연","체험·과학","공연","시장·먹거리"];
+function decInoutOk(x,kind,sel){ const w=String((sel&&sel.inout)||""); if(!/실내|야외/.test(w)||kind==='food'||kind==='cafe') return true; const io=String(x.inout||(kind==='event'?"":"실내")); if(!io) return true; return /실내/.test(w) ? io.includes("실내") : io.includes("야외") }   // 일정은 실내·야외를 모르면 빼지 않음
+function decMealMode(sel){ const m=String((sel&&sel.meal)||""); return /카페만/.test(m)?"cafe":/밥/.test(m)?"meal":/구경만/.test(m)?"none":"" }
+function decThemeKey(sel){ const t=String((sel&&sel.theme)||"").replace(/^[^\p{L}]+/u,"").trim(); return DEC_THEMES.includes(t)?t:"" }
+function decThemeOk(x,kind,theme){
+  if(!theme) return true;
+  if(!x||kind==='food'||kind==='cafe') return false;
+  const cat=String(x.category||""), kd=String(x.kind||""), sub=String(x.subtype||"");
+  const all=[kd,cat,sub,x.name,x.title,(x.tags||[]).join(" ")].filter(Boolean).join(" ");
+  const isEv=kind==='event';
+  const art = isEv ? (cat==="전시"||/전시|미술|갤러리|비엔날레|사진전|아트페어/.test(cat+" "+sub+" "+(x.title||"")))&&!/공연|음악/.test(cat)
+                   : /미술관|갤러리|전시관|전시·컨벤션|비엔날레|아트센터|아트스페이스|창작|예술공간/.test(kd+" "+x.name)&&!/공연장/.test(kd);
+  const museum = !isEv && /박물관|기념관|역사관|문학관|기록관|민속|유물|전시관/.test(kd+" "+x.name) && !/과학관/.test(kd+" "+x.name);
+  if(theme==="전시·미술관") return art;
+  if(theme==="전시+박물관") return art||museum||(isEv&&/박물관|역사|유물/.test(all)&&!/공연|음악|축제/.test(cat));
+  if(theme==="산책·자연") return !isEv && /공원|정원|산책|자연|숲|호수|해변|해수욕장|둘레길|수목원|저수지|천변|경관|전망|생태|습지|계곡|트레킹|등산|산림|휴양림/.test(kd+" "+x.name) && !/박물관|미술관|전시|과학관|시장/.test(kd+" "+x.name);
+  if(theme==="체험·과학") return isEv ? /체험|교육|만들기|클래스|워크숍|과학/.test(cat+" "+sub+" "+(x.title||"")) : /과학|체험|공방|레포츠|키즈|어린이|천문|놀이|만들기/.test(kd+" "+x.name);
+  if(theme==="공연") return isEv && /공연|음악|콘서트|연극|뮤지컬|국악|버스킹|무용|오페라/.test(cat+" "+sub+" "+(x.title||""));   // 공연장 건물만 가는 건 의미 없어서 그날 공연(일정)만
+  if(theme==="시장·먹거리") return isEv ? /야시장|장터|먹거리|푸드/.test(all) : (!!x.market||/시장|골목|먹자/.test(kd+" "+x.name));
+  return true;
+}
 function decisionReasonSet(selected){
   const r=[];
   if(WEATHER){const w=WMO(WEATHER.code); if(wxRainy()) r.push('비 예보 반영 · 실내 우선'); else r.push(`${w[1]} 날씨 반영`)}
+  const th=decThemeKey(selected);
+  if(/실내|야외/.test(selected.inout||"")) r.push(`${String(selected.inout).replace(/^[^\p{L}]+/u,"")} 기준`);
+  { const mm=decMealMode(selected); if(mm) r.push(mm==="none"?"밥·카페 없이 구경만":mm==="cafe"?"중간에 카페 한 곳":selected._mealMiss?"지금은 밥때(11~14시반·17~20시반)가 아니라 식당은 못 넣었어요":"밥때 맞춰 식당 한 곳") }
+  if(th) r.push(/반려견/.test(selected.with||"") ? `반려견 동반 장소 위주라 '${th}'은 반영하지 못했어요`
+    : selected._themeLate ? `${th}은 뒤쪽 시간이라 그 전까지 다른 곳을 묶었어요`
+    : selected._themeMiss ? (th==="공연" ? "지금 시간에 맞춰 갈 수 있는 공연이 없어 골고루 골랐어요" : `지금 조건으로 갈 수 있는 ${th} 장소가 없어 골고루 골랐어요`)
+    : selected._themeShort ? `${th} 위주 · 근처에 모자라 다른 곳도 섞음` : `${th} 위주로 가까운 곳끼리`);
   r.push(`${RNAME()} 우선`);
   r.push(`${selected.time} 안에 가능한 동선`);
   r.push(`입장료 ${selected.budget} 기준 (식사 별도)`);
   r.push(`${selected.move} 이동 기준`);
   if(/반려견/.test(selected.with)) r.push('🐶 반려견 동반 장소 우선');
-  return r.slice(0,6);
+  return r.slice(0,8);
 }
 /* 크리밍 코스 공통 규칙 */
 const DEC_FIRST_CAP = { "도보": 35, "대중교통": 60, "자동차": 60 };   // 출발지 → 첫 장소 최대 이동(분)
@@ -9496,7 +9532,8 @@ function decBestOrder(list,selected){
 }
 function decisionRoutePicks(selected){
   const t=todayISO();
-  const sig=[selected.with,selected.time,selected.budget,selected.move].join("|");
+  const theme=decThemeKey(selected);
+  const sig=[selected.with,selected.time,selected.budget,selected.move,theme,selected.inout,selected.meal].join("|");
   const key=aiQueryKey(sig,"decision-route");
   const wrap=(kind,x)=>({kind,x,name:kind==='event'?x.title:x.name,sub:kind==='event'?(x.venue||x.category):(x.menu||x.district||x.kind||'')});
 
@@ -9530,7 +9567,7 @@ function decisionRoutePicks(selected){
   const timeOkV=openV.filter(v=>fitFirst(v,'venue'));
 
   openV=openV.filter(v=>decBudgetOk(v,selected.budget));
-  const activeB=active.filter(e=>decBudgetOk(e,selected.budget));
+  let activeB=active.filter(e=>decBudgetOk(e,selected.budget));
   if(/아이/.test(selected.with)){
     openV=openV.filter(v=>v.kids || /동물원|테마파크|과학관|박물관|공원|정원/.test([v.kind,v.name].join(" ")));
   }
@@ -9540,13 +9577,23 @@ function decisionRoutePicks(selected){
     openV = indoor.length>=2 ? indoor : [...indoor,...market];
   }
 
+  if(/실내|야외/.test(selected.inout||"")){ const io=openV.filter(v=>decInoutOk(v,'venue',selected)); if(io.filter(v=>timeOkV.includes(v)).length) openV=io; activeB=activeB.filter(e=>decInoutOk(e,'event',selected)) }
+  // '무엇을?'을 골랐으면 그 종류만 후보로. 하나도 없으면 골고루로 되돌리고 결과에 알려 준다
+  if(theme){
+    const tv=openV.filter(v=>decThemeOk(v,'venue',theme)), te=activeB.filter(e=>decThemeOk(e,'event',theme));
+    const tvFit=tv.filter(v=>timeOkV.includes(v));
+    if(tvFit.length||te.length){ openV=tv; activeB=te; selected._themeMiss=false }
+    else selected._themeMiss=true;
+  }
   // 첫 장소에서 오래 기다리지 않게: 도착하자마자(30분 안에) 들어갈 수 있는 곳이 있으면 그중에서 고른다
   const waitOf=(x,kind)=>{ const lg=firstLegOf(x); const r=tripCheck(x,kind,start+lg,{stay:stayCap}); return r.ok?(r.wait||0)+(r.start!=null?Math.max(0,r.start-(start+lg)):0):999 };
   let firstPool=openV.filter(v=>timeOkV.includes(v));
   { const quick=firstPool.filter(v=>waitOf(v,'venue')<=30); if(quick.length) firstPool=quick; }
   const firstV=aiDiverse(firstPool,key+":first",1,10)[0];
   const firstE=aiDiverse(activeB,key+":event",1,7)[0];
-  let first=firstV ? wrap('venue',firstV) : firstE ? wrap('event',firstE) : null;
+  // 공연은 일정(공연)부터, 다른 종류도 그날 열리는 일정이 있으면 가끔 일정부터 시작해 코스가 늘 같은 모양이 되지 않게
+  const evFirst = firstE && (!firstV || (theme && !selected._themeMiss && (theme==="공연" || Math.random()<0.35)));
+  let first=evFirst ? wrap('event',firstE) : firstV ? wrap('venue',firstV) : firstE ? wrap('event',firstE) : null;
   if(!first){
     const fo=FOOD.filter(x=>(!/아이/.test(selected.with)||decKidFoodOk(x))&&fitFirst(x,'food')).map(x=>wrap('food',x));
     const ca=[...CAFES,...BAKERIES].filter(x=>fitFirst(x,'cafe')).map(x=>wrap('cafe',x));
@@ -9576,8 +9623,9 @@ function decisionRoutePicks(selected){
 
   // 장소만 3개가 어려울 때(시간이 늦었거나 마감이 가까울 때) 음식/카페를 자연스럽게 섞는다.
   if(!third){
-    const mix=[...fitsAfter(plan2.picks,aiNearestChoices(thirdBase,FOOD.filter(x=>!/아이/.test(selected.with)||decKidFoodOk(x)),radius,5),'food').map(x=>wrap('food',x)),
-               ...fitsAfter(plan2.picks,aiNearestChoices(thirdBase,[...CAFES,...BAKERIES],radius,6),'cafe').map(x=>wrap('cafe',x))];
+    const mm=decMealMode(selected);
+    const mix=mm==="none"?[]:[...(mm==="cafe"?[]:fitsAfter(plan2.picks,aiNearestChoices(thirdBase,FOOD.filter(x=>!/아이/.test(selected.with)||decKidFoodOk(x)),radius,5),'food').map(x=>wrap('food',x))),
+               ...(mm==="meal"?[]:fitsAfter(plan2.picks,aiNearestChoices(thirdBase,[...CAFES,...BAKERIES],radius,6),'cafe').map(x=>wrap('cafe',x)))];
     const m=aiDiverse(mix,key+":mix",1,8)[0];
     return decBestOrder([first,second&&wrap('venue',second),m].filter(Boolean).slice(0,3),selected);
   }
@@ -9592,6 +9640,7 @@ function decisionVariedPicks(selected){
   if(!original.length||duration<=60) return original;
   const rainy=!!(WEATHER&&wxRainy());
   const pet=/반려견/.test(selected.with), kid=/아이/.test(selected.with), elder=/부모님/.test(selected.with);
+  const theme=decThemeKey(selected), cultureTheme=/전시/.test(theme);   // 첫 장소로 못 잡았어도(예: 저녁 공연) 뒤쪽 장소에서는 고른 종류를 우선
   const wrap=(kind,x)=>({kind,x,name:kind==='event'?x.title:x.name,sub:kind==='event'?(x.venue||x.category):(x.menu||x.district||x.kind||'')});
   const familyOk=(v)=>!kid||(v.kids||/동물원|테마파크|과학관|박물관|공원|정원|체험|어린이|가족/.test([v.kind,v.name].join(' ')));
   const kinds=(p)=>{
@@ -9609,17 +9658,18 @@ function decisionVariedPicks(selected){
   const cap=DEC_LEG_CAP[tripMoveKey(selected.move)]||40;
   const radius=/도보/.test(selected.move)?3:/자동차/.test(selected.move)?14:7;
   const extras=[];
-  const venueOk=v=>openToday(v)!==false&&decBudgetOk(v,selected.budget)&&decCoordOk(v,selected)&&familyOk(v)&&(!pet||decPetVenueOk(v))&&(!rainy||(v.inout||'').includes('실내'));
+  const mm=decMealMode(selected);
+  const venueOk=v=>openToday(v)!==false&&decBudgetOk(v,selected.budget)&&decCoordOk(v,selected)&&familyOk(v)&&(!pet||decPetVenueOk(v))&&(!rainy||(v.inout||'').includes('실내'))&&decInoutOk(v,'venue',selected);
   for(const v of VENUES.filter(venueOk))extras.push(wrap('venue',v));
   if(!pet){
     const today=todayISO();
-    for(const e of EVENTS.filter(e=>(!e.start||e.start<=today)&&(!e.end||e.end>=today)&&decBudgetOk(e,selected.budget)&&!['매진','종료'].includes(ticketOf(e).status)))extras.push(wrap('event',e));
-    for(const f of FOOD.filter(f=>!kid||decKidFoodOk(f)))extras.push(wrap('food',f));
-    for(const c of [...CAFES,...BAKERIES])extras.push(wrap('cafe',c));
+    for(const e of EVENTS.filter(e=>(!e.start||e.start<=today)&&(!e.end||e.end>=today)&&decBudgetOk(e,selected.budget)&&!['매진','종료'].includes(ticketOf(e).status)&&decInoutOk(e,'event',selected)))extras.push(wrap('event',e));
+    if(mm!=="none"&&mm!=="cafe")for(const f of FOOD.filter(f=>!kid||decKidFoodOk(f)))extras.push(wrap('food',f));
+    if(mm!=="none"&&mm!=="meal")for(const c of [...CAFES,...BAKERIES])extras.push(wrap('cafe',c));
   }else{
     for(const c of CAFES.filter(c=>c.pet))extras.push(wrap('cafe',c));
   }
-  const signature=aiQueryKey([selected.with,selected.time,selected.budget,selected.move].join('|'),'decision-variety');
+  const signature=aiQueryKey([selected.with,selected.time,selected.budget,selected.move,theme,selected.inout,selected.meal].join('|'),'decision-variety');
   const recent=AI_RECENT_PICKS[signature]||[];
   // 마지막 장소에서 다음 장소로 옮기는 방식으로 검증하므로 비현실적인 왕복·긴 이동은 제외한다.
   for(let idx=best.length;idx<goal;idx++){
@@ -9630,8 +9680,8 @@ function decisionVariedPicks(selected){
     const last=current.picks[current.picks.length-1];
     const remain=current.end-last.plan.leave;
     if(remain<35)break;
-    const mealDue=duration>=300&&decMealOk(last.plan.leave+25)&&!usedTypes.includes('meal');
-    const cafeDue=duration>=180&&!usedTypes.includes('cafe')&&best.length>=2;
+    const mealDue=(duration>=300||mm==="meal")&&decMealOk(last.plan.leave+25)&&!usedTypes.includes('meal');
+    const cafeDue=(duration>=180||mm==="cafe")&&!usedTypes.includes('cafe')&&best.length>=(mm==="cafe"?1:2);
     const pool=extras.map(p=>{
       if(usedNames.includes(aiItemKey(p.x))||best.some(q=>decSameSite(q.x,p.x)))return null;
       if(pet&&p.kind==='venue'&&!decPetVenueOk(p.x))return null;
@@ -9642,7 +9692,7 @@ function decisionVariedPicks(selected){
       const type=kinds(p);
       if(type==='meal'&&(usedTypes.includes('meal')||!decMealOk(last.plan.leave+leg)))return null;
       if(type==='cafe'&&usedTypes.includes('cafe')&&best.length<4)return null;
-      if(type==='culture'&&prevType==='culture'&&extras.some(q=>kinds(q)!=='culture'))return null;
+      if(!cultureTheme&&type==='culture'&&prevType==='culture'&&extras.some(q=>kinds(q)!=='culture'))return null;
       const scored=tripPlanPicks([...best,p],selected);
       if(scored.picks.length!==best.length+1)return null;
       const item=scored.picks[scored.picks.length-1];
@@ -9655,7 +9705,11 @@ function decisionVariedPicks(selected){
       if((kid||elder)&&type==='experience')score+=kid?35:0;
       if(elder&&type==='outdoor')score-=20;
       if(/연인|친구/.test(selected.with)&&type==='outdoor'&&!rainy)score+=35;
-      if(type==='culture'&&usedTypes.filter(t=>t==='culture').length>=1)score-=110;
+      if(!cultureTheme&&type==='culture'&&usedTypes.filter(t=>t==='culture').length>=1)score-=110;
+      if(theme&&p.kind!=='food'&&p.kind!=='cafe'){
+        if(decThemeOk(p.x,p.kind,theme)){ score+=170-dist*6; if(type===prevType)score+=80; if(!usedTypes.includes(type))score-=90 }   // 고른 종류는 같은 종류가 이어져도 괜찮고, 가까울수록 좋게
+        else score-=150;                                                                                                                // 다른 종류는 고를 게 없을 때만
+      }
       if(recent.includes(aiItemKey(p.x)))score-=55;
       // 동일 조건 재검색 시 상위 동선 중 다양한 후보가 순환되도록 한다.
       score+=Math.random()*16;
@@ -9666,6 +9720,18 @@ function decisionVariedPicks(selected){
   }
   const result=tripPlanPicks(best,selected).picks;
   if(result.length<original.length&&duration<=180)return original;
+  // '밥 꼭': 식당이 빠졌으면 마지막 장소 근처 밥집을 붙이거나(시간이 되면) 마지막 장소와 바꿔 넣는다
+  if(mm==="meal"&&!pet&&result.length&&!result.some(p=>p.kind==='food')){
+    const foods=FOOD.filter(f=>!kid||decKidFoodOk(f)).map(f=>wrap('food',f));
+    const tryWith=list=>{ const r=tripPlanPicks(list,selected).picks; return r.length===list.length&&r[r.length-1].kind==='food'&&decMealOk(r[r.length-1].plan.arrive)?r:null };
+    const near=base=>foods.map(f=>({f,d:kmAny(base.x,f.x)})).filter(o=>o.d!=null&&o.d<=radius).sort((a,b)=>a.d-b.d).slice(0,6).map(o=>o.f);
+    let fixed=null;
+    for(const f of near(result[result.length-1])){ fixed=tryWith([...result,f]); if(fixed)break }
+    if(!fixed&&result.length>=2) for(const f of near(result[result.length-2])){ fixed=tryWith([...result.slice(0,-1),f]); if(fixed)break }
+    if(fixed){ AI_RECENT_PICKS[signature]=[...fixed.map(p=>aiItemKey(p.x)),...recent].slice(0,30); if(theme){ const sg=fixed.filter(p=>p.kind!=='food'&&p.kind!=='cafe'); selected._themeShort=sg.some(p=>!decThemeOk(p.x,p.kind,theme)) } return fixed }
+    selected._mealMiss=true;
+  }
+  if(theme){ const sights=result.filter(p=>p.kind!=='food'&&p.kind!=='cafe'); selected._themeShort=sights.some(p=>!decThemeOk(p.x,p.kind,theme)); selected._themeLate=!!selected._themeMiss&&sights.some(p=>decThemeOk(p.x,p.kind,theme)) }
   AI_RECENT_PICKS[signature]=[...result.map(p=>aiItemKey(p.x)),...recent].slice(0,30);
   return result;
 }
@@ -9775,15 +9841,16 @@ function initDecisionMiniMap(picks){
   const go=document.getElementById('decideGo');
   if(go) go.addEventListener('click',()=>{
     const pick=k=>document.querySelector(`.choiceRow[data-choice="${k}"] button.on`)?.textContent.trim()||'';
-    const selected={with:pick('with').replace('🐶 ','').trim(),time:pick('time'),budget:pick('budget'),move:pick('move')};
-    const reasons=decisionReasonSet(selected), routePicks=decisionVariedPicks(selected);
+    const selected={with:pick('with').replace('🐶 ','').trim(),time:pick('time'),budget:pick('budget'),move:pick('move'),theme:pick('theme'),inout:pick('inout'),meal:pick('meal')};
+    const routePicks=decisionVariedPicks(selected), reasons=decisionReasonSet(selected);
+    const themeTxt=decThemeKey(selected)||'골고루';
     const wideOk = false; // 권역 선택 시 다른 권역으로 자동 확대하지 않음
     // 짧은 일정·제한 예산은 현재 권역을 절대 벗어나지 않는다. 광주권 확장은 '하루+자동차+예산 상관없음'일 때만 허용한다.
     const scope = wideOk
       ? `현재 선택 권역은 ${RNAME()}이며 광주권을 우선 추천하되, 하루 종일 자동차 이동이고 예산 제한이 없으므로 필요할 때만 순천여수권·무안목포권까지 확대 가능.`
       : `현재 선택 권역 ${RNAME()} 안에서만 추천. 다른 권역(순천여수권·무안목포권)으로 넘어가지 말 것.`;
     const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·나들이·맛집·카페 중 가까운 동선으로 시간에 맞춰 다양한 장소를 추천`;
-    const input=document.getElementById('aiq'); if(input) input.value=`${selected.with}와 ${selected.time} · ${selected.budget} · ${selected.move}`;
+    const input=document.getElementById('aiq'); if(input) input.value=`${themeTxt==='골고루'?'':themeTxt+' · '}${selected.with}와 ${selected.time} · ${selected.budget} · ${selected.move}`;
     // 아래 '더 자세히 보기'에도 위 동선과 똑같은 코스가 보이게 (예전엔 다른 엔진이 다른 곳을 골라 엇갈렸음)
     const ans=document.getElementById('answer'); if(ans) ans.innerHTML=routePreviewHtml(routePicks,selected.move).replace('<div id="decisionMiniMap" class="decisionMiniMap"></div>','')+decisionDetailHtml(routePicks,selected);
 
@@ -9795,7 +9862,7 @@ function initDecisionMiniMap(picks){
       mc.innerHTML=`<div class="decisionResult">
         <div class="drHead"><div class="appResultHint">어디가볼까가 방금 골라준 코스</div><span class="eyebrow">TODAY PICK</span><h3>오늘은 이렇게 가보세요.</h3><p style="margin:0;color:var(--muted);font-size:14px">${wideOk ? `${esc(RNAME())}을 우선으로 보고, 조건상 먼 권역까지 갈 수 있는 경우에만 범위를 넓혀요.` : `${esc(RNAME())} 안에서만, 고른 조건과 오늘 이용 가능한 정보를 기준으로 추렸어요.`} 모바일에서는 이 화면이 앱 결과 페이지처럼 열립니다.</p></div>
         <div class="creamingGuide"><img class="creamingMascot" src="${CREAMING_SRC}" alt="크리밍"><div class="creamingBubble"><b>크리밍이 골라봤어요!</b>${esc(selected.time)} 동안 ${esc(selected.move)}로 이동하기 좋은 코스를 먼저 묶었어요. 아래에서 이동 순서도 같이 확인해보세요.</div></div>
-        <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>🎟 입장료 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
+        <div class="drChoices"><span>📍 ${esc(RNAME())}${wideOk ? ' 우선' : ''}</span><span>🎯 ${esc(themeTxt)}</span>${/실내|야외/.test(selected.inout)?`<span>${esc(selected.inout)}</span>`:''}${decMealMode(selected)?`<span>${esc(selected.meal)}</span>`:''}<span>👥 ${esc(selected.with)}</span><span>⏱ ${esc(selected.time)}</span><span>🎟 입장료 ${esc(selected.budget)}</span><span>🚙 ${esc(selected.move)}</span></div>
         <div class="decisionExplain"><b>왜 이 코스를 추천했어요?</b><div class="chipsWhy">${reasons.map(r=>`<span>✓ ${esc(r)}</span>`).join('')}</div></div>
         ${routePreviewHtml(routePicks,selected.move)}
         <div class="drBody">${decisionDetailHtml(routePicks,selected)}</div>
@@ -12341,6 +12408,13 @@ html body #foodQuick:not(#_){display:none!important}
 .localToday .ltRow button span{font-size:11.5px;font-weight:750;color:var(--muted,#555);white-space:nowrap}
 .localToday .ltRow button.zero strong{color:var(--muted,#999);opacity:.6}
 /* 작은도서관 · 무인 대출기: 기본 접힘 — 누를 수 있는 칸처럼 잘 보이게 (2026-11-09) */
+/* 2026-11-10: '오늘 뭐하지' 조건이 7줄로 늘어 PC에서 옆으로 넘치던 것 → 줄바꿈 ('무엇을?'은 한 줄 전체) */
+@media(min-width:900px){
+  html body .decideGrid:not(#_){display:flex!important;flex-wrap:wrap!important;gap:10px!important;overflow:visible!important;margin:0!important;padding:0!important;justify-content:flex-start!important}
+  html body .decideGrid:not(#_) .choiceGroup{flex:0 1 auto!important;width:auto!important;min-width:0!important}
+  html body .decideGrid:not(#_) .choiceGroup.themeGroup{flex:1 1 100%!important}
+  html body .decideGrid:not(#_) .choiceRow{flex-wrap:wrap!important;width:auto!important}
+}
 .libSmallFold{margin-top:20px}
 .libSmallFold>summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;display:block;background:var(--card,#fff);border:1.5px solid var(--line2,#d9d3c6);border-radius:16px;padding:12px 96px 12px 14px;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.06))}
 .libSmallFold>summary::-webkit-details-marker{display:none}
