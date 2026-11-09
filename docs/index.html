@@ -4336,7 +4336,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 <section class="quickNavIntro" aria-label="핵심 메뉴">
   <div class="quickNavHead"><b>필요한 것만 빠르게</b><span>세부 정보는 각 메뉴 안에서 볼 수 있어요</span><div class="quickNavTools"><button class="quickFav" type="button" onclick="showTab('favorites')">♡ 찜</button></div></div>
 <div class="tabsBar" id="tabsBar">
-<div class="tabs" id="tabs"><button class="on" data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button data-tab="events"><i><i class="calIc" aria-hidden="true"></i></i>일정</button><button data-tab="kids"><i><img class="crIc" src="creaming.webp" alt=""></i>아이와</button><button data-tab="places"><i>🏛</i>나들이</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="map"><i>🗺</i>지도</button><button data-tab="food"><i>🍽</i>먹을 곳</button></div>
+<div class="tabs" id="tabs"><button class="on" data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button data-tab="events"><i><i class="calIc" aria-hidden="true"></i></i>일정</button><button data-tab="kids"><i><img class="crIc" src="creaming.webp" alt=""></i>아이랑</button><button data-tab="places"><i>🏛</i>나들이</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="map"><i>🗺</i>지도</button><button data-tab="food"><i>🍽</i>먹을 곳</button></div>
 <div class="chips" id="chips">
 <button class="active" data-filter="전체">전체</button><button data-filter="전시">🎨 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button class="chipWide" data-filter="관람가능">✅ 지금 볼 수 있는</button><button class="chipWide" data-filter="김대중컨벤션센터">🏢 김대중컨벤션센터</button>
 </div>
@@ -7488,8 +7488,8 @@ function renderPlaces() {
   ${paged("renderPlaces", list, sp ? sp[1] : placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
   <div class="verify" style="margin-top:12px">비 오는 날은 '실내', 날 좋은 날은 '야외'를 눌러보세요. 관람시간·휴관일은 전시 교체·공휴일에 따라 바뀔 수 있어요.</div>`;
 }
-window.setPlace = (k, v) => { if (k === "group") { if (v === "아이와") return showKids("전체"); PLACE_GROUP = v } if (k === "io") PLACE_IO = v; if (k === "gu") PLACE_GU = v; if (k === "open") PLACE_OPEN = v; renderPlaces() };
-window.setPlaceKind = k => { if (k === "아이와") return showKids("전체"); PLACE_GROUP = PLACE_GROUPS.some(x => x[0] === k) ? k : "전체"; renderPlaces() };
+window.setPlace = (k, v) => { if (k === "group") { if (v === "아이와" || v === "아이랑") return showKids("전체"); PLACE_GROUP = v } if (k === "io") PLACE_IO = v; if (k === "gu") PLACE_GU = v; if (k === "open") PLACE_OPEN = v; renderPlaces() };
+window.setPlaceKind = k => { if (k === "아이와" || k === "아이랑") return showKids("전체"); PLACE_GROUP = PLACE_GROUPS.some(x => x[0] === k) ? k : "전체"; renderPlaces() };
 
 /* ───────── 🧸 아이와 탭: 아이와 갈 행사 + 아이와 갈 곳 ───────── */
 function isKidsEvent(x) {
@@ -7560,7 +7560,7 @@ const VT_GROUPS = {
     ["대학 박물관", "🎓", v => /대학교|교대/.test(v.name)],
     ["기념관·역사", "🕊", v => v.kind === "기념관" || /5·18|독립|민주|4·19|기록관/.test(v.name)],
     ["작은 박물관", "🏺", v => v.kind === "박물관" && !/국립|시립|역사민속|대학교|교대/.test(v.name)],
-    ["아이와", CR_IC, v => v.kind === "과학관" || !!v.kids || /어린이|체험|과학/.test(v.name + (v.desc || ""))],
+    ["아이랑", CR_IC, v => v.kind === "과학관" || !!v.kids || /어린이|체험|과학/.test(v.name + (v.desc || ""))],
   ]
 };
 function renderVenueTab(tab) {
@@ -10740,7 +10740,7 @@ window.openArtistFollowQuick=function(){
 <aside class="rightQuick isCollapsed" id="rightQuick" aria-label="오른쪽 빠른 메뉴">
  <button type="button" class="rightQuickToggle" id="rightQuickToggle" aria-controls="rightQuickPanel" aria-expanded="false" aria-label="더 보기 메뉴 펼치기">더 보기</button>
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
-  <button type="button" data-rightjump="kids">👶 아이와</button>
+  <button type="button" data-rightjump="kids">👶 아이랑</button>
   <button type="button" data-rightjump="weather">🌤 날씨</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="markets">🛒 시장</button>
@@ -10983,7 +10983,7 @@ window.openPrivacy = function(){
    한 기기에서 하루 한 번만 받음. */
 (function(){
   const FACES=[["최고예요","😍"],["좋아요","🙂"],["그저 그래요","😐"],["아쉬워요","🙁"]];
-  const PARTS=["오늘 뭐하지","아이와","일정·축제","나들이","대중공연","맛집·빵집","동네·도서관"];
+  const PARTS=["오늘 뭐하지","아이랑","일정·축제","나들이","대중공연","맛집·빵집","동네·도서관"];
   let pick=null, parts=[];
   window.openReview=function(){
     const box=document.getElementById("modalContent"); if(!box) return;
