@@ -4236,6 +4236,8 @@ html body header.top label.search:not(#_):focus-within{box-shadow:0 0 0 4px rgba
 @media(max-width:899px){html body header.top .topSearch .search:not(#_){height:44px!important}}
 html[data-theme="dark"] body header.top label.search:not(#_){background:#262624!important;border-color:var(--green)!important;box-shadow:0 3px 10px rgba(0,0,0,.4)!important}
 html[data-theme="dark"] body header.top label.search:not(#_) input::placeholder{color:#c9d1cc!important}
+/* 오른쪽 '더 보기' 손잡이: 44×76 → 30×62 로 줄여 검색창을 덜 가리게 */
+html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width:30px!important;min-width:30px!important;max-width:30px!important;min-height:62px!important;padding:6px 2px!important;font-size:11px!important;border-radius:10px 0 0 10px!important}
 </style>
 </head>
 <body data-tab="home" data-screen="home">
