@@ -5939,6 +5939,15 @@ function upcomingFestHtml(dates) {
   const grow = a => { const last = a.last || (a.this && a.this.year < y ? a.this : null); return `<button class="stRow" onclick="showTab('events');setTimeout(()=>document.querySelector('#eventsView h3.sub:last-of-type')?.scrollIntoView({behavior:'smooth'}),300)"><span class="stDate">${a.month}월</span><span class="stMain"><b>${esc(a.name)} <small style="font-weight:600;color:var(--gold-d)">· 곧 열릴 때예요</small></b><small>📍 ${esc(a.place)} · ${esc(a.when)}${last ? ` · 작년 ${md(last.start)}~${md(last.end)}` : ""}</small></span><em>날짜 발표 전</em></button>` };
   return `<h3 class="sub" style="margin-top:22px">🎪 한 달 안에 열리는 축제 · ${esc(RNAME())} ${ev.length + guess.length}</h3><div class="stList">${ev.slice(0, 10).map(row).join("")}${guess.map(grow).join("")}</div>`;
 }
+/* 2026-11-09: '장날'은 장날이 정해진 시장(말바우 2·4·7·9 등)·야시장만 셈 → 장날 없이 매일 여는 시장(송정역·양동·남광주 등)이 빠진 걸 한 줄로 알림. 이름은 지금 권역 자료에서 고름 */
+function dailyMarketNote(iso) {
+  const daily = VENUES.filter(v => v.market && !v.market.days && !(v.market.weekly || []).length && !mkClosedOn(v, iso))
+    .sort((a, b) => !!b.market.main - !!a.market.main);
+  if (!daily.length) return "";
+  const nm = v => esc(String(v.market.short || v.name).split(" (")[0]);
+  const names = daily.slice(0, 3).map(nm).join("·") + (daily.length > 3 ? " 등" : "");
+  return `<div class="nowMore mkDailyNote"><span>🏮 ${names}처럼 <b>장날 없이 매일 여는 시장 ${daily.length}곳</b>은 여기엔 안 나와요</span><button onclick="showTab('markets');setMk('group','상설·관광')">상설시장 보기 →</button></div>`;
+}
 let NOW_CAT = "전체";
 window.setNowCat = c => { NOW_CAT = c; window.NOW_MORE = false; renderNowShow() };
 function renderNowShow() {
@@ -5965,6 +5974,7 @@ function renderNowShow() {
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > 3 ? (window.NOW_MORE ? `<button type="button" class="nowMoreBtn" aria-expanded="true" onclick="NOW_MORE=false;renderNowShow();document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">접기 ▴</button>` : `<button type="button" class="nowMoreBtn" aria-expanded="false" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${shown.length - 3}건 더 보기 ▾</button>`) : ""}
+   ${NOW_CAT === "장날" ? dailyMarketNote(dates[0]) : ""}
    <button type="button" class="nowAllBtn" onclick="showTab('events')">${CAL_IC} 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
    ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${jsq(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
@@ -7935,7 +7945,7 @@ const MK_GROUPS = [
   ["전체", "✦", () => true],
   ["오늘 장 서는 곳", "🟢", v => (v.market.days ? jangOn(v, todayISO()) : true) && !mkClosedOn(v, todayISO())],
   ["읍내 큰 장", "🏘", v => !!v.market.main],
-  ["5일장", "🧺", v => !!v.market.days],
+  ["장날 있는 곳", "🧺", v => !!v.market.days],
   ["상설·관광", "🏮", v => !v.market.days],
   ["야시장", "🌙", v => !!(v.market.nights || []).length || /야시장/.test(v.note || "")],
   ["지하철로", "🚇", v => { const n = nearStation(v); return !!(n && n.d <= SUBWAY_WALK_KM) }],
@@ -7962,10 +7972,10 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
   const cnt = gg => pool.filter(gg[2]).length;
   const btn = v => `<button onclick="aiProfile('${jsq(v.id)}')">${esc(v.name)}<small>${esc(v.district)}${nightOn(v, t) ? " · 🌙 " + esc(nightOn(v, t)[1]) : v.market.days ? " · 장날" : ""}</small></button>`;
   const always = pool.filter(v => !v.market.days && !mkClosedOn(v, t));
-  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MARKETS</span><h2>시장 한 바퀴 돌아볼랑가?<small>${REGION === "gj" ? "양동시장 통닭부터 말바우 5일장·남광주 새벽 해산물·대인예술야시장까지" : esc(RNAME()) + " 5일장과 상설시장"}</small></h2></div><span>${pool.length}곳</span></div>
+  el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MARKETS</span><h2>시장 한 바퀴 돌아볼랑가?<small>${REGION === "gj" ? "양동시장 통닭부터 말바우 장날·남광주 새벽 해산물·대인예술야시장까지" : esc(RNAME()) + " 5일장과 상설시장"}</small></h2></div><span>${pool.length}곳</span></div>
   <div class="mkToday"><b>🏮 오늘 장 서는 곳 · ${mdTxt(t)}</b>
    <div class="mkNow">${[...night, ...jang.sort((a, b) => !!b.market.main - !!a.market.main)].slice(0, jang.length + night.length > 10 ? 8 : 10).map(btn).join("")}${jang.length + night.length > 10 ? `<button onclick="setMk('group','오늘 장 서는 곳')">+${jang.length + night.length - 8}곳 더 보기<small>목록으로</small></button>` : ""}</div>
-   <p>${jang.length || night.length ? "" : "오늘은 5일장이 안 서요. "}상설시장은 매일 열어요: ${always.map(v => esc(v.name)).join(" · ")}${off.length ? ` · <b>오늘 쉬는 곳: ${off.map(v => esc(v.name)).join(", ")}</b>` : ""}</p></div>
+   <p>${jang.length || night.length ? "" : "오늘은 장날인 곳이 없어요. "}상설시장은 매일 열어요: ${always.map(v => esc(v.name)).join(" · ")}${off.length ? ` · <b>오늘 쉬는 곳: ${off.map(v => esc(v.name)).join(", ")}</b>` : ""}</p></div>
   <h3 class="sub" style="margin-top:6px">일주일 장날 달력</h3>
   <div class="wk">${week}</div>
   ${mkEv.length ? `<h3 class="sub">시장 행사·야시장 ${mkEv.length}</h3><div class="stList">${mkEv.slice(0, 8).map(e => `<button class="stRow" onclick="detail('${jsq(e.id)}')"><span class="stDate">${e.start && e.start > t ? `${Number(e.start.slice(5, 7))}.${dayNum(e.start)}` : "NOW"}</span><span class="stMain"><b>${esc(e.title)}</b><small>📍 ${esc(e.venue)}${e.time ? " · 🕘 " + esc(e.time) : ""}</small></span><em class="ok">${esc(e.price ? e.price.split(" · ")[0] : "")}</em></button>`).join("")}</div>` : ""}
@@ -7975,7 +7985,7 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
     <button class="btn" onclick="$('#aiq').value='시장 구경하고 먹방';recommend('시장 구경하고 먹방')">🏮 시장 먹방 코스 짜줘 →</button>
   </div>
   <div class="grid">${list.map(marketCard).join("") || "<p class='empty'>조건에 맞는 시장이 없어요. 위 조건을 하나 풀어보세요.</p>"}</div>
-  <div class="mkTips"><div><b>🛍 장바구니</b>시장은 비닐을 줄이는 중이에요. 접는 장바구니 하나면 넉넉해요.</div><div><b>💵 현금·온누리상품권</b>카드 되는 가게가 많지만, 노점은 현금이 편해요.</div><div><b>⏰ 장은 오전에</b>5일장은 오후 늦게 파장해요. 구경은 오전이 제일 활기차요.</div><div><b>🚇 차는 두고</b>${REGION === "gj" ? "장날엔 주변 길이 많이 막혀요. 양동시장·남광주는 지하철역이 바로 앞이에요." : "장날엔 시장 주변 길이 많이 막혀요. 공영주차장이나 버스를 이용하세요."}</div></div>
+  <div class="mkTips"><div><b>🛍 장바구니</b>시장은 비닐을 줄이는 중이에요. 접는 장바구니 하나면 넉넉해요.</div><div><b>💵 현금·온누리상품권</b>카드 되는 가게가 많지만, 노점은 현금이 편해요.</div><div><b>⏰ 장은 오전에</b>장날엔 오후 늦게 파장해요. 구경은 오전이 제일 활기차요.</div><div><b>🚇 차는 두고</b>${REGION === "gj" ? "장날엔 주변 길이 많이 막혀요. 양동시장·남광주는 지하철역이 바로 앞이에요." : "장날엔 시장 주변 길이 많이 막혀요. 공영주차장이나 버스를 이용하세요."}</div></div>
   <div class="verify" style="margin-top:12px">장날·운영시간·휴무는 한국관광공사 관광정보와 시·군·구 발표를 바탕으로 했어요(2026.10 확인). 명절·날씨에 따라 달라질 수 있고, 점포마다 쉬는 날이 달라요. 야시장 일정은 해마다 바뀌니 새 일정이 나오면 '시장 행사' 칸에 붙어요.</div>`;
 }
 window.setMk = (k, v) => { MK[k] = v; renderMarkets() };
@@ -12320,7 +12330,7 @@ html body .libSmallFold>summary h3.libSmallHead .libSub{white-space:normal!impor
     el.hidden=false;
     var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
     el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b><small>'+esc(where)+(r.g?"":" · 사는 동네를 고르면 그 동네만")+'</small></div><div class="ltRow">'
-      +cell("lib","📚",c.lib,"문 연 도서관","지금 문 연 공공·어린이 도서관 (작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
+      +cell("lib","📚",c.lib,"문 연 도서관","지금 문 연 공공·어린이 도서관 (작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장","오늘 장날인 시장·야시장 (장날 없이 매일 여는 시장 제외)")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
   }
   // 동네 탭을 열고 '📚 동네 도서관' 목록으로 바로 내려감 (숫자를 센 동네와 같은 동네로 맞춤)
   window.goLocalLib=function(){
