@@ -1552,7 +1552,7 @@ button.repCalDay{cursor:pointer}
 /* ── 10.26 사진 보고 정리 ── */
 /* 장날 달력: '오늘' 칸이 하루 코스(.today)의 위 여백을 물려받아 혼자 내려앉던 문제 */
 html body .wk div.today{margin-top:0!important;z-index:auto!important}
-/* 분류 버튼(가볼 곳·시장·전시장·박물관·공연): 폰에서는 모두 2칸 · [아이콘 이름 ……… 숫자] 한 줄 */
+/* 분류 버튼(나들이·시장·전시장·박물관·공연): 폰에서는 모두 2칸 · [아이콘 이름 ……… 숫자] 한 줄 */
 @media(max-width:899px){
   html body .groupGrid,html body .groupGrid.placeGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
   html body .groupGrid>button{flex-direction:row!important;gap:7px!important;padding:0 12px!important;border-radius:13px!important;font-size:13.5px!important;min-width:0!important;overflow:hidden!important;overflow-wrap:normal!important}
@@ -3686,7 +3686,7 @@ html body .card .visual .date{background:rgba(20,36,70,.9)!important}
 .footMore>.footList{margin:0;padding:0 14px 12px}
 
 /* ── 12. 메뉴 겹침 정리 (폰·태블릿: 아래 메뉴가 기본) ──
-   아래 메뉴 = 홈·일정·가볼 곳·동네·먹을 곳·지도 / 오른쪽 '더 보기' = 아이와·날씨·대중공연·시장·동네도서관·찜.
+   아래 메뉴 = 홈·일정·나들이·동네·먹을 곳·지도 / 오른쪽 '더 보기' = 아이와·날씨·대중공연·시장·동네도서관·찜.
    '필요한 것만 빠르게' 탭 줄은 아래 메뉴와 같아서 폰에서는 없앰 (일정 탭의 종류 필터 칩만 남김). PC는 아래 메뉴가 없으니 그대로. */
 @media(max-width:899px){
   html body .quickNavIntro .quickNavHead,html body .quickNavIntro .tabs{display:none!important}
@@ -3764,7 +3764,7 @@ html body .concertQuickAccess .kidsQuickHome .kqTitle{grid-area:ti;min-width:0;w
 html body .concertQuickAccess .kidsQuickHome .kqGo{grid-area:go;justify-self:end}
 html body .concertQuickAccess .kidsQuickHome .kqChips{grid-area:ch;display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;flex-wrap:nowrap!important}
 html body .concertQuickAccess .kidsQuickHome .kqChips i{justify-content:center!important;white-space:nowrap!important}
-/* 오늘 열리는 것 · 일정 · 가볼 곳 · 맛집 · 멍카페: 칸을 낮고 작게 */
+/* 오늘 열리는 것 · 일정 · 나들이 · 맛집 · 멍카페: 칸을 낮고 작게 */
 html body .heroStats{gap:6px!important;margin-top:14px!important}
 html body .heroStats .heroNow{min-height:40px!important;height:40px!important;padding:0 10px!important;border-radius:12px!important}
 html body .heroStats .heroNow strong{font-size:17px!important}
@@ -3851,7 +3851,7 @@ html body .nowAllBtn>span{flex:0 0 100%!important;text-align:center!important;wh
 :where(:root[data-theme="dark"]) .seasonPick .spBadge.late{background:#2e2a22;color:#c9b894}
 
 /* ── #statsHead-1106 ── */
-/* 일정·가볼 곳·맛집·멍카페 카드 위 제목 */
+/* 일정·나들이·맛집·멍카페 카드 위 제목 */
 html body .statsHead{margin:18px 4px 0}
 html body .statsHead .statsTitle{margin:0;font-family:"Jua",var(--display);font-weight:400;font-size:19px;line-height:1.35;color:var(--ink);letter-spacing:-.005em;word-break:keep-all}
 html body .statsHead .statsSub{margin:2px 0 0;font-size:12.5px;font-weight:600;color:var(--muted)}
@@ -3892,7 +3892,7 @@ html.bigText body #decideNow h2 .dhSub{font-size:1em}   /* 글자 크게 보기:
 html body[data-tab="food"] #foodQuick,html body[data-tab="bakeries"] #foodQuick,html body[data-tab="cafes"] #foodQuick{display:block!important;margin:4px 0 10px!important}
 
 /* ── 2026-11-06: 첫 화면 버튼 세로 줄이기 ──
-   '오늘 밤 코스 골라줘'와 일정·가볼 곳·동네 도서관·먹을 곳 칸이 위아래 여백(14px·12px)이 겹쳐 너무 길었음 */
+   '오늘 밤 코스 골라줘'와 일정·나들이·동네 도서관·먹을 곳 칸이 위아래 여백(14px·12px)이 겹쳐 너무 길었음 */
 html body .hero .impactGo{padding-top:9px!important;padding-bottom:9px!important;min-height:44px!important;line-height:1.2!important}
 html body .hero .heroStats button:not(.heroNow){
   height:auto!important;min-height:44px!important;padding-top:6px!important;padding-bottom:6px!important;
@@ -4263,7 +4263,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
       <div class="heroTop"><div class="dateBadge" id="dateBadge"><b>오늘</b><span>광주광역시</span></div></div>
       <span class="eyebrow" id="heroEyebrow">공공데이터 자동 수집 · 오늘의 광주를 하루 두 번</span>
       <h1 id="greet">오늘 광주에서<br><em>어디 갈까?</em></h1>
-      <p id="heroLead"><b>오늘 광주에서 바로 즐길 수 있는 전시·공연·축제와 가볼 곳을 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
+      <p id="heroLead"><b>오늘 우리 동네에서 열리는 전시·공연·축제·장날부터 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
         <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="creaming.webp" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
       </div>
@@ -4273,7 +4273,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
       </div>
       <div class="heroStats">
         <button onclick="showTab('events')"><strong id="eventNum">—</strong><span>일정</span><small class="statDesc">전시·공연·축제</small></button>
-        <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>가볼 곳</span><small class="statDesc">산책·전시·체험</small></button>
+        <button onclick="showTab('places')"><strong id="placeNum">—</strong><span>나들이</span><small class="statDesc">산책·전시·체험</small></button>
         <button onclick="document.querySelector('[data-rightjump=local]') ? document.querySelector('[data-rightjump=local]').click() : showTab('local')"><strong id="libNum">—</strong><span>동네 도서관</span><small class="statDesc" id="libDesc">강좌·책 읽기 좋은 곳</small></button>
         <button onclick="showTab('food')"><strong id="foodNum">—</strong><span>먹을 곳</span><small class="statDesc" id="foodDesc">나들이 길 한 끼</small></button>
       </div>
@@ -4336,7 +4336,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 <section class="quickNavIntro" aria-label="핵심 메뉴">
   <div class="quickNavHead"><b>필요한 것만 빠르게</b><span>세부 정보는 각 메뉴 안에서 볼 수 있어요</span><div class="quickNavTools"><button class="quickFav" type="button" onclick="showTab('favorites')">♡ 찜</button></div></div>
 <div class="tabsBar" id="tabsBar">
-<div class="tabs" id="tabs"><button class="on" data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button data-tab="events"><i><i class="calIc" aria-hidden="true"></i></i>일정</button><button data-tab="kids"><i><img class="crIc" src="creaming.webp" alt=""></i>아이와</button><button data-tab="places"><i>🏛</i>가볼 곳</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="map"><i>🗺</i>지도</button><button data-tab="food"><i>🍽</i>먹을 곳</button></div>
+<div class="tabs" id="tabs"><button class="on" data-jump="decide"><i>✨</i>오늘 뭐하지?</button><button data-tab="events"><i><i class="calIc" aria-hidden="true"></i></i>일정</button><button data-tab="kids"><i><img class="crIc" src="creaming.webp" alt=""></i>아이와</button><button data-tab="places"><i>🏛</i>나들이</button><button data-tab="local"><i>🏘</i>동네</button><button data-tab="popshows"><i>🎤</i>대중가수 공연</button><button data-tab="map"><i>🗺</i>지도</button><button data-tab="food"><i>🍽</i>먹을 곳</button></div>
 <div class="chips" id="chips">
 <button class="active" data-filter="전체">전체</button><button data-filter="전시">🎨 전시</button><button data-filter="음악">🎵 음악</button><button data-filter="콘서트">🎤 콘서트</button><button data-filter="공연">🎭 공연</button><button data-filter="축제">🎪 축제</button><button data-filter="스포츠">⚾ 스포츠</button><button data-filter="무료">🆓 무료</button><button class="chipWide" data-filter="관람가능">✅ 지금 볼 수 있는</button><button class="chipWide" data-filter="김대중컨벤션센터">🏢 김대중컨벤션센터</button>
 </div>
@@ -4454,7 +4454,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
 <div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요. 공공데이터에 올라온 행사·장소만 담기 때문에 작은 갤러리·책방 행사는 빠질 수 있어요. 빠진 곳은 각 항목의 '정보 수정'으로 알려 주세요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주통합특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디가볼까? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터 디자인의 권리 관계 및 등록 여부는 관련 증빙자료로 확인해야 합니다. 사용·재배포에는 권리자의 허락이 필요할 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
 
-<nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events"><i class="calIc" aria-hidden="true"></i><span>일정</span></button><button data-jump="places">🏛<span>가볼 곳</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="pick">✨<span>오늘 뭐하지</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
+<nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events"><i class="calIc" aria-hidden="true"></i><span>일정</span></button><button data-jump="places">🏛<span>나들이</span></button><button data-jump="local">🏘<span>동네</span></button><button data-jump="pick">✨<span>오늘 뭐하지</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
 <script>window.__PC__=location.protocol==="file:";window.__PINNED__=[{"id":"ys-bookjeok-2026","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"category":"축제","subtype":"책·독서","title":"독서문화축제 「BOOK적BOOK적 IN 여수」","venue":"이순신도서관 일원","libKey":"이순신도서관","district":"여수시","address":"","date":"10.23(금) ~ 10.24(토)","start":"2026-10-23","end":"2026-10-24","time":"프로그램별 시간은 여수시립도서관 누리집","price":"공식 안내 확인","discount":"","group":"","child":"어린이 체험존 '섬섬여수 가디언즈'","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"프로그램별 안내 확인","contact":"","status":"예정","verified":"2026-10-12","verify":"보도자료 기준 · 시간·참가비는 여수시립도서관 공지 확인","source":"여수시 독서문화축제 보도(전남투데이)","url":"https://www.jntoday.co.kr/news/article.html?no=318137","tags":["축제","책","가족","아이"],"origin":"manual","image":"","ticket":{"status":"확인필요","note":"야외 독서·공연, 책 나눔 장터, 그림 대회","checked":"2026-10-12"}},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-sansu-puppy-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"그림책 원화 전시 「내 강아지에게」","venue":"산수도서관","libKey":"산수도서관","district":"동구","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","가족","아이","실내"],"verify":"보도자료 기준 · 운영시간·휴관일은 도서관 누리집 확인","source":"광주도서관 10월 문화행사 보도(시사의창, 2026.9.27)","url":"https://sisaissue.com/View.aspx?No=4242083"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-sangsaeng-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"조선미 개인전 「상생」","venue":"목포시립도서관 1층 전시갤러리","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 운영시간은 도서관 확인","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"category":"전시","subtype":"책·독서","time":"도서관 운영시간","price":"무료","discount":"무료 관람","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"예약 없이 관람","contact":"","status":"운영중","verified":"2026-10-12","origin":"manual","image":"","ticket":{"status":"무료","note":"도서관 전시","checked":"2026-10-12"},"id":"lib-mokpo-ink-2026-10","aliases":["도서전","북페어","책 축제","책축제","독서","책 전시","도서 전시"],"title":"한국화·문인화 전시 (김영곤 ~10.15 · 이광길 10.16~)","venue":"목포시립도서관 3층 문화라운지","libKey":"목포시립도서관","district":"목포시","address":"","date":"10.1 ~ 10.31","start":"2026-10-01","end":"2026-10-31","tags":["전시","무료","책","실내"],"verify":"보도자료 기준 · 작가별 기간 다름","source":"목포시립도서관 문화의 달 전시 보도(전남투데이, 2026.10.1)","url":"https://www.jntoday.co.kr/news/article.html?no=317511"},{"id":"ys-kgarden-2026","category":"축제","subtype":"정원축제","title":"2026 남도 K-가든 페스티벌","venue":"여운문화의거리","district":"여수시","address":"전남 여수시 문수로 124","date":"09.11 — 10.31","start":"2026-09-11","end":"2026-10-31","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (주최: 전남광주통합특별시·여수시) / ysgarden.kr","url":"https://www.ktriptips.com/kor/festival/4095228","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-jinnam-media-2026","category":"행사","subtype":"미디어아트·야간","title":"국가유산 미디어아트 여수 진남관","venue":"여수 진남관","district":"여수시","address":"전라남도 여수시 동문로 11","date":"10.09 — 11.08","start":"2026-10-09","end":"2026-11-08","time":"매일 19:30–21:30 · 화요일 휴무","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"한국관광공사 축제정보 (국가유산청 국가유산 미디어아트)","url":"https://www.ktriptips.com/kor/festival/4116779","tags":["축제","무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"},"venueId":"ys-jinnamgwan","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23425b3b%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239eb682%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3E%EC%97%AC%EC%88%98%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%95%84%ED%8A%B8%20%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EC%97%AC%EC%88%98%20%EC%A7%84%EB%82%A8%EA%B4%80%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼"},{"id":"ys-sieaf-2026","category":"공연","subtype":"실험예술","title":"2026 섬진강국제실험예술제 (SIEAF)","venue":"곡성 죽곡면 섬진강변","district":"곡성군","address":"전남 곡성군 죽곡면 섬진강로 1012","date":"09.22 — 10.30","start":"2026-09-22","end":"2026-10-30","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표와 대조 완료 · 프로그램별 장소·시간 다름","source":"곡성군 발표 · 스페셜타임스 2026.9.19 / 공식 sieaf.com","url":"https://www.specialtimes.co.kr/news/articleView.html?idxno=464784","tags":["공연","미술"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"ys-nokdong-drone-2026","category":"행사","subtype":"드론쇼","title":"고흥 녹동항 드론쇼","venue":"녹동항 일원","district":"고흥군","address":"전남 고흥군 도양읍 녹동항","date":"04.04 — 10.31","start":"2026-04-04","end":"2026-10-31","time":"매주 토요일 20:00","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"고흥군 발표 · 헤럴드경제 2026.4.1","url":"https://www.heraldk.com/article/2026040121165542956","tags":["무료","야간"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-port-2026","category":"축제","subtype":"지역축제","title":"목포항구축제","venue":"목포항·삼학도","district":"목포시","address":"전남 목포시 삼학로92번길 6","date":"10.16 — 10.18","start":"2026-10-16","end":"2026-10-18","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"목포시 발표 · MTN뉴스 2026.10.7 / 공식 누리집 mokpoharborfestival.com","url":"https://news.mtn.co.kr/news-detail/2026100716292179691","tags":["축제","무료"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gangjin-reed-2026","category":"축제","subtype":"생태축제","title":"강진만 춤추는 갈대축제","venue":"강진만 생태공원","district":"강진군","address":"전남 강진군 강진읍 생태공원길 47","date":"10.24 — 11.01","start":"2026-10-24","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"강진군 발표 · 파이낸셜뉴스 2026.10.6","url":"https://www.fnnews.com/news/202610061232572305","tags":["축제","무료","야외"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-gukhyang-2026","category":"축제","subtype":"국화축제","title":"대한민국 국향대전","venue":"함평엑스포공원","district":"함평군","address":"전남 함평군 함평읍 곤재로 27","date":"10.23 — 11.08","start":"2026-10-23","end":"2026-11-08","time":"기간 중 · 시간은 공식 채널 확인","price":"유료 (입장료 공식 확인)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"함평군 발표 · 위키트리 2026.9.28","url":"https://www.wikitree.co.kr/articles/1162352","tags":["축제","가족","야외"],"origin":"manual","ticket":{"status":"확인필요","note":"유료 (입장료 공식 확인)","checked":"2026-10-06"}},{"id":"gj-dolmen-flower-2026","category":"축제","subtype":"꽃축제","title":"2026 화순 고인돌 가을꽃 축제","venue":"화순 고인돌 유적지 일원","district":"화순군","address":"전남 화순군 화순읍 동헌길 23","date":"10.16(금) ~ 10.25(일)","start":"2026-10-16","end":"2026-10-25","time":"09:00–18:00","price":"첫날(10.16) 무료 · 10.17부터 5,000원(화순사랑상품권으로 전액 환급, 화순군민 무료)","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 시작일 10.17→10.16 바로잡음","source":"화순군 발표 · MTN뉴스 2026.10.7","url":"https://news.mtn.co.kr/news-detail/2026100714431553836","tags":["축제","야외","가족"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-haenam-minam-2026","category":"축제","subtype":"먹거리축제","title":"해남미남축제","venue":"해남 대흥사 일원","district":"해남군","address":"전남 해남군 삼산면 대흥사길 400","date":"10.30 — 11.01","start":"2026-10-30","end":"2026-11-01","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표·보도와 날짜 대조 완료","source":"해남군 축제 안내 · 광주데일리뉴스 2026.10.4","url":"https://www.gjdaily.net/news/articleView.html?idxno=100796","tags":["축제","먹거리"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"mp-jindo-bobae-2026","category":"축제","subtype":"문화예술제","title":"진도군 보배섬 문화예술제","venue":"진도군 철마광장 일원","district":"진도군","address":"전남 진도군 진도읍 진도대로 7197","date":"10.9(금) ~ 10.11(일)","start":"2026-10-09","end":"2026-10-11","time":"기간 중 · 시간은 공식 채널 확인","price":"무료","discount":"","group":"","child":"","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"예정","verified":"2026-10-12","verify":"공식 발표와 대조: 10.31~11.2 → 10.9~10.11 바로잡음(종료)","source":"진도군 발표 · 서울신문 2026.9.29","url":"https://www.seoul.co.kr/news/society/2026/09/29/20260929500178","tags":["축제","공연"],"origin":"manual","ticket":{"status":"무료","note":"무료","checked":"2026-10-06"}},{"id":"island-visit-year-2026","category":"축제","subtype":"섬 관광 정책·여행경비 지원","title":"2026년 섬 방문의 해 · 섬 여행비 지원","venue":"전국 대상 섬 여행 지원 사업 (여수세계섬박람회와 별도)","district":"전국","address":"전국 여객선 이용 대상 섬 (참여 섬 및 제외 지역 공식 확인)","date":"10.01 — 11.04 (2차 여행기간)","start":"2026-10-01","end":"2026-11-04","time":"2차 여행 기간: 2026.10.1.~11.4. · 사전 신청: 2026.9.8. 10:00~9.21. 18:00 (현재 마감)","price":"여행경비 최대 10만 원 지원 (사전 선정·정산 조건 충족 시)","discount":"대상 섬 1박 이상 여행, 승선권·숙박·식비 등 지출 증빙 필요. 여수 일부 섬 여객선 50% 특별할인은 별도 조건 확인","group":"팀 단위 신청·선정. 여행 전 사전 신청 및 추첨 선정 필요","child":"가족 여행도 지원 기준·선정 여부 확인","pet":"여객선·숙소마다 동반 규정 상이","stroller":"여객선·섬 이동 접근성 확인","nursing":"방문 시설별 확인","parking":"출항지별 확인","accessibility":"선박 및 섬별 편의시설 확인","reservation":"2026년 2차 신규 신청은 9월 21일 18시 마감. 기존 선정자는 안내받은 조건에 따라 여행·증빙 제출","contact":"","status":"진행중","verified":"2026-10-09","verify":"행정안전부 공식 발표 기준. 2026년 섬 방문의 해는 전국 섬 관광 활성화 정책으로, 여수세계섬박람회와 별도 사업입니다. 2차 여행 기간은 진행 중이나 사전 신청은 이미 마감됐습니다.","source":"행정안전부 2026.9.7. 보도자료 · 섬 방문의 해 공식 누리집","url":"https://www.visitisland.kr/","tags":["섬 방문의 해","섬방문의해","섬여행","섬 관광","여행비","여행경비 지원","숙박","여객선","관광정책"],"aliases":"섬 방문의 해 섬방문의해 섬 방문 캠페인 2026 섬 여행비 지원 10만원 지원 섬 여행 지원","origin":"manual","ticket":{"status":"확인필요","note":"사전 신청 9월 21일 마감 · 여행기간 진행중","checked":"2026-10-09"}},{"id":"ys-island-expo-2026","category":"축제","subtype":"박람회","title":"2026 여수세계섬박람회","venue":"여수 돌산 진모지구 (주행사장) · 개도·금오도·여수세계박람회장 (부행사장)","district":"여수시","address":"전남 여수시 돌산읍 진모지구","date":"09.05 — 11.04","start":"2026-09-05","end":"2026-11-04","time":"2026.9.5~11.4 · 일별 프로그램과 운영시간은 공식 홈페이지 확인","price":"입장권 공식 누리집 확인","discount":"여수 섬 여객선 특별할인 등은 지원 대상·운항편·조건을 공식 공지에서 별도 확인","group":"","child":"섬 캠핑·해양레저 체험","pet":"","stroller":"","nursing":"","parking":"","accessibility":"","reservation":"","contact":"","status":"진행중","verified":"2026-10-09","verify":"2026.9.5.~11.4. 여수 돌산 진모지구 주행사장, 여수세계박람회장·개도·금오도 부행사장. ‘2026 섬 방문의 해’ 여행비 지원 사업과 다른 행사입니다.","source":"2026 여수세계섬박람회 공식 홈페이지","url":"https://www.yeosu2026.or.kr/","tags":["축제","가족","야외","섬여행","섬관광","섬박람회"],"origin":"manual","ticket":{"status":"확인필요","note":"입장권은 공식 누리집에서","checked":"2026-10-06"},"venueId":"ys-geumodo","image":"data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201200%20675%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231f4d6d%22/%3E%0A%20%20%20%20%20%20%20%20%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2359a5b7%22/%3E%0A%20%20%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width%3D%221200%22%20height%3D%22675%22%20fill%3D%22url%28%23g%29%22/%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.12%22%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%221010%22%20cy%3D%22140%22%20r%3D%22180%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%22180%22%20cy%3D%22600%22%20r%3D%22220%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%20540%20C250%20440%20400%20660%20670%20560%20C850%20492%201030%20430%201200%20500%20L1200%20675%20L0%20675%20Z%22%20fill%3D%22%23fff%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Cg%20opacity%3D%22.22%22%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22820%22%20y%3D%2288%22%20width%3D%22250%22%20height%3D%22250%22%20rx%3D%2242%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%22770%22%20y%3D%22390%22%20width%3D%22360%22%20height%3D%22170%22%20rx%3D%2234%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22/%3E%0A%20%20%20%20%3C/g%3E%0A%20%20%20%20%3Crect%20x%3D%2286%22%20y%3D%2286%22%20width%3D%22140%22%20height%3D%2246%22%20rx%3D%2223%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.4%29%22/%3E%3Ctext%20x%3D%22108%22%20y%3D%22116%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22800%22%20fill%3D%22%23fff%22%3EEXPO%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2286%22%20y%3D%22210%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2272%22%20font-weight%3D%22800%22%20fill%3D%22%23ffffff%22%3E2026%20%EC%97%AC%EC%88%98%EC%84%B8%EA%B3%84%EC%84%AC%EB%B0%95%EB%9E%8C%ED%9A%8C%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22500%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2227%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.92%29%22%3E%EB%8F%8C%EC%82%B0%20%EC%A7%84%EB%AA%A8%EC%A7%80%EA%B5%AC%20%C2%B7%20%EC%84%AC%EA%B6%8C%EC%97%AD%3C/text%3E%0A%20%20%20%20%3Ctext%20x%3D%2288%22%20y%3D%22584%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2223%22%20font-weight%3D%22700%22%20fill%3D%22rgba%28255%2C255%2C255%2C.84%29%22%3E%EC%95%88%EB%82%B4%EC%9A%A9%20%EB%B9%84%EC%A3%BC%EC%96%BC%20%C2%B7%20%EC%8B%A4%EC%A0%9C%20%ED%98%84%EC%9E%A5/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%80%20%EB%8B%A4%EB%A5%BC%20%EC%88%98%20%EC%9E%88%EC%9D%8C%3C/text%3E%0A%20%20%20%20%3C/svg%3E","imageCredit":"행사 안내용 비주얼","aliases":"여수세계섬박람회 여수섬박람회 섬박람회 2026 여수 국제 섬 박람회"}];</script>
 <script>const CREAMING_SRC="creaming.webp";
@@ -4879,7 +4879,7 @@ async function getJSON(n, fallback = []) {
   const local = location.protocol === "file:" || window.__PC__;
   const base = local ? (DATA_URL ? DATA_URL.replace(/\/+$/, "") + "/" : "") : "";
   if (!local || base) { try { const r = await guardedFetch(`${base}data/${n}.json`, { cache: "no-cache" }, 10000); if (r.ok) { const j = await r.json();
-    // 서버 자료가 빈 목록([])으로 올라가 있으면 가볼 곳·맛집이 통째로 사라지니, 그때는 내장 자료를 쓴다
+    // 서버 자료가 빈 목록([])으로 올라가 있으면 나들이·맛집이 통째로 사라지니, 그때는 내장 자료를 쓴다
     if (!(Array.isArray(j) && !j.length && EMBEDDED_KEYS.includes(n))) { DATA_HEALTH.remoteOk.add(n); return j } } } catch { } }
   if (n === "meta" || EMBEDDED_KEYS.includes(n)) DATA_HEALTH.remoteFailed.add(n);
   // 파일을 더블클릭해서 연 경우(컴퓨터용) 또는 인터넷이 끊긴 경우: 내장 데이터 사용
@@ -5005,11 +5005,11 @@ function renderRegionBar() {
   note.classList.toggle("hidden", !thin);
   if (thin) note.innerHTML = `<b>${R.emoji} ${R.name}</b><span>${R.districts.map(d => d.replace(/[시군]$/, "")).join(" · ")} — 공공데이터에서 하루 두 번 자동으로 받아와요. 아직 들어온 자료가 적은 분야도 있어요.</span><button onclick="setRegion('gj')">🟢 광주권 보기</button>`;
   const HL = {
-    gj: ["광주 도심부터 근교까지 · 오늘의 광주권", "<b>광주의 전시·공연·축제와 가볼 곳을 한눈에.</b> 동명동·양림동·무등산부터 담양·화순·나주·장성까지, 오늘 시간과 날씨에 맞춰 가까운 동선으로 골라드려요."],
-    ys: ["순천·여수·광양 · 남해안 오늘의 순천여수권", "<b>정원과 바다, 전시·공연·축제를 한 번에.</b> 순천의 정원·원도심부터 여수의 바다·야경, 광양·보성·구례까지 오늘 움직이기 좋은 코스로 골라드려요."],
-    mp: ["목포·무안·신안 · 서남해 오늘의 무안목포권", "<b>목포 원도심과 서남해 바다, 오늘 즐길 곳을 한눈에.</b> 목포·무안·신안부터 해남·진도·완도까지 시간과 이동 조건에 맞춰 무리 없는 코스로 골라드려요."]
+    gj: ["광주 도심부터 근교까지 · 오늘의 광주권", "<b>오늘 광주에서 열리는 전시·공연·축제·장날부터 한눈에.</b> 동네 도서관·강좌부터 주말 나들이까지, 오늘 시간과 날씨에 맞춰 골라드려요."],
+    ys: ["순천·여수·광양 · 남해안 오늘의 순천여수권", "<b>오늘 순천·여수에서 열리는 전시·공연·축제·장날부터 한눈에.</b> 동네 도서관·강좌부터 정원·바다 나들이까지, 오늘 시간과 날씨에 맞춰 골라드려요."],
+    mp: ["목포·무안·신안 · 서남해 오늘의 무안목포권", "<b>오늘 목포·무안에서 열리는 전시·공연·축제·장날부터 한눈에.</b> 동네 도서관·강좌부터 바다·섬 나들이까지, 오늘 시간과 이동 조건에 맞춰 골라드려요."]
   };
-  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 기차 타고 당일치기", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."],
+  const CUR = { gj: ["광주 토박이 길잡이", "예: 비 오는 날 아이와 실내 / 퇴근하고 저녁 산책 / 동네 무료 강좌", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."],
     ys: ["순천여수 토박이 길잡이", "예: 비 오는 날 실내 / 여수 박물관 + 맛집 / 순천 산책", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."],
     mp: ["무안목포 토박이 길잡이", "예: 아이와 박물관 / 목포 산책 / 해남 땅끝", "하고 싶은 걸 적거나 아래 버튼을 눌러보쇼."] }[REGION];
   const an = document.getElementById("aiName"), as = document.getElementById("aiSub"), aq = document.getElementById("aiq");
@@ -5149,7 +5149,7 @@ const HERO_PICS = [
   ["https://tong.visitkorea.or.kr/cms/resource/05/3515105_image2_1.jpg", "광주호 호수생태원", "v", "lake-eco"],
   ["https://tong.visitkorea.or.kr/cms/resource/56/3351356_image2_1.jpg", "국립광주박물관", "v", "nmg"],
 ];
-/* 사진을 누르면 바로 그 정보로: 장소 → 장소 안내, 일정 → 상세, 분류 → 가볼 곳 목록 */
+/* 사진을 누르면 바로 그 정보로: 장소 → 장소 안내, 일정 → 상세, 분류 → 나들이 목록 */
 window.openPic = (t, id) => {
   if (t === "v") return aiProfile(id);
   if (t === "e") return EVENTS.some(e => e.id === id) ? detail(id) : null;
@@ -5976,7 +5976,7 @@ function planCard(p, i) {
   return `<article class="plan p${i % 3}${p.now ? " nowSlot" : ""}"><div class="planPic" role="button" tabindex="0" onclick="${p.eventId ? `detail('${jsq(p.eventId)}')` : p.mapId ? `aiProfile('${jsq(p.mapId)}')` : ""}">${img}<span class="planNo">${esc(p.slot)}</span>${p.now ? `<span class="nowTag">지금 딱 좋아요</span>` : ""}<span class="planIcon">${p.icon}</span></div>
   <div class="planBody"><div class="why">${p.why.map(w => `<span>${esc(w)}</span>`).join("")}</div><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p>
   ${p.eventId ? parkLine(EVENTS.find(e => e.id === p.eventId)) : p.mapId ? visitLine(VENUES.find(v => v.id === p.mapId)) + parkLine(VENUES.find(v => v.id === p.mapId)) : ""}
-  ${p.meal ? `<div class="planMeal"><span>${esc(p.meal.label)}</span><b>${esc(p.meal.name)}</b><small>${esc(p.meal.sub)}</small>${p.meal.reason ? `<small style="display:block;margin-top:3px;color:#6f7b74">추천 이유 · ${esc(p.meal.reason)}</small>` : ""}<a target="_blank" rel="noopener noreferrer" href="${p.meal.link}">${p.meal.searchOnly ? "근처 식당 찾기 ↗" : "길찾기 ↗"}</a></div>` : ""}
+  ${p.meal ? `<small class="goLine planMealLite">🍲 근처 밥집: <a target="_blank" rel="noopener noreferrer" href="${p.meal.link}">${p.meal.searchOnly ? "지도에서 찾기 ↗" : esc(p.meal.name) + " 길찾기 ↗"}</a></small>` : ""}
   <div class="planCta"><button class="go" onclick="goPlan(${i})">이 코스로 짜기 →</button>${p.mapId ? `<button onclick="showOnMap('venue','${jsq(p.mapId)}')">지도</button>` : ""}${p.eventId ? `<button onclick="detail('${jsq(p.eventId)}')">상세</button>` : ""}</div></div></article>`;
 }
 let PLANS = [];
@@ -7071,8 +7071,8 @@ function renderNowStart(refresh=false) {
   const picks=rot.slice(0,3); window.NOW_PICK_IDS=new Set(picks.map(p=>p.x.id).filter(Boolean));
   const nN=document.getElementById('nowStartN'); if(nN) nN.textContent=picks.length||0;
   { const lead=nN&&nN.parentElement; if(lead){ lead.dataset.orig ||= lead.innerHTML; if(!picks.length) lead.textContent='지금 나서서 제대로 볼 수 있는 곳을 아직 못 찾았어요.'; else if(!document.getElementById('nowStartN')||!lead.contains(document.getElementById('nowStartN'))){ lead.innerHTML=lead.dataset.orig; document.getElementById('nowStartN').textContent=picks.length; } } }
-  if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 가볼 곳·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
-  const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'가볼 곳');
+  if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 나들이·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
+  const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'나들이');
   const name=p=>p.kind==='event'?p.x.title:p.x.name;
   const meta=p=>{const d=homeKm(p.x);return `${p.window.label} · ${p.kind==='event'?(p.x.venue||''):(p.x.district||'')}${d!=null?` · 🏠 ${d<0.95?Math.max(100,Math.round(d*10)*100)+'m':d.toFixed(1)+'km'}`:''} · ${p.kind==='event'?(p.x.time||''):(p.x.hours||'')}`};
   const click=p=>p.kind==='event'?`detail('${jsq(p.x.id)}')`:`aiProfile('${jsq(p.x.id)}')`;
@@ -7478,7 +7478,7 @@ function renderPlaces() {
     : sortHome(VENUES.filter(placeFilter));
   const cnt = g => PLACE_SPECIAL[g] ? PLACE_SPECIAL[g][0]().length : VENUES.filter(PLACE_GROUPS.find(x => x[0] === g)[2]).length;
   const d = DAY_KO[kstNow().getUTCDay()];
-  $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>어디 가볼랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div></div>
+  $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>오늘 어디로 나들이 갈랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div></div>
   <div class="groupGrid placeGrid">${PLACE_GROUPS.filter(([g]) => (REGION === "gj" || !["양림동", "무등산"].includes(g)) && (g === "전체" || g === PLACE_GROUP || cnt(g))).map(([g, ic]) => `<button class="${g === PLACE_GROUP ? "active" : ""}" onclick="setPlace('group','${g}')"><span>${ic}</span>${g}<small>${cnt(g)}</small></button>`).join("")}</div>
   <div class="filterBar">
     <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === PLACE_IO ? "on" : ""}" onclick="setPlace('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
@@ -8263,7 +8263,7 @@ function importFavsFromHash() {
 /* ───────── 지도 ───────── */
 const LAYER_DEF = {
   events: { label: CAL_IC + " 일정", color: "#c2410c", on: true },
-  venues: { label: "🏛 가볼 곳", color: "#1d4ed8", on: true },
+  venues: { label: "🏛 나들이", color: "#1d4ed8", on: true },
   food: { label: "🍲 맛집", color: "#b91c1c", on: true },
   cafes: { label: "🐶 멍카페", color: "#b87414", on: false },
   cinemas: { label: "🎬 영화관", color: "#6d28d9", on: false },
@@ -8514,7 +8514,7 @@ document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
   } else showTab(b.dataset.jump);
 });
 document.querySelectorAll("#chips button").forEach(b => b.onclick = () => { document.querySelectorAll("#chips button").forEach(x => x.classList.remove("active")); b.classList.add("active"); FILTER = b.dataset.filter; showTab("events"); renderEvents() });
-/* 통합 검색: 어느 탭에 있든 일정·가볼 곳·맛집·숙소·카페를 한 번에 찾는다 */
+/* 통합 검색: 어느 탭에 있든 일정·나들이·맛집·숙소·카페를 한 번에 찾는다 */
 const norm = t => (t || "").toLowerCase().replace(/[\s·.]/g, "");
 /* 다르게 부르는 이름: 왼쪽 말로 찾으면 오른쪽 말이 들어간 곳도 같이 나와요 */
 const SEARCH_SYN = {
@@ -8564,7 +8564,7 @@ const APP_FEATURES = [
   ["🎨 전시장", "미술관·갤러리 전시", "전시장 전시 미술관 갤러리", () => { clearSearch(); showTab("galleries") }],
   ["🏛 박물관", "박물관 모아 보기", "박물관 역사", () => { clearSearch(); showTab("museums") }],
   ["🧸 아이와", "아이와 갈 곳·볼 행사·과학 체험", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
-  ["🌳 나들이·가볼 곳", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
+  ["🌳 나들이", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
   ["🍽 맛집", "주변 식사", "맛집 식사 밥 먹을곳 음식점", () => { clearSearch(); showTab("food") }],
   ["🥐 빵지순례", "빵집 모아 보기", "빵 빵집 베이커리 빵지순례", () => { clearSearch(); showTab("bakeries") }],
   ["🧺 전통시장", "시장 구경", "시장 전통시장 장날", () => { clearSearch(); showTab("markets") }],
@@ -8611,8 +8611,8 @@ function renderSearch() {
   const islandExpoIntent = /섬박람회|세계섬박람회/.test(norm(q)) && !/방문의해/.test(norm(q));
   // 분류어 검색은 소개 문장 속 단어가 아니라 실제 자료 유형을 기준으로 찾습니다.
   // 예: '축제' → 축제 일정·연례축제만, '미술관' → 미술관 시설만.
-  const categoryWord = /(?:^|\s)(축제|전시|미술관|박물관|시장|전통시장|가볼\s*곳|가볼곳)(?=\s|$)/.exec(q);
-  const category = categoryWord ? categoryWord[1].replace(/\s+/g, "") : "";
+  const categoryWord = /(?:^|\s)(축제|전시|미술관|박물관|시장|전통시장|가볼\s*곳|가볼곳|나들이)(?=\s|$)/.exec(q);
+  const category = categoryWord ? categoryWord[1].replace(/\s+/g, "").replace(/^나들이$/, "가볼곳") : "";   // 메뉴 이름이 '나들이'로 바뀜 (2026-11-09)
   const categoryRest = category ? q.replace(categoryWord[0], " ").trim() : "";
   const categoryMatches = x => !categoryRest || hitsAll(categoryRest, x);
   const eventCategory = x => String(x.category || "").trim();
@@ -8675,11 +8675,11 @@ function renderSearch() {
   sv.classList.remove("hidden");
   sv.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">SEARCH</span><h2>'${esc(q)}' 검색 결과</h2></div><span>${n}개</span></div>
   ${q.split(/\s+/).length >= 2 ? `<div class="verify"><b>✨ 문장으로 찾으시나요?</b> 단어별 검색 결과는 아래에 그대로 보여드려요. 날씨·시간·동행 조건을 고려한 코스가 필요하면 <button type="button" class="btn" onclick="searchToGuide()">이 문장으로 맞춤 추천받기 →</button></div>` : ""}
-  <div class="jump">${[["앱 기능", ft.length, "sft"], ["가볼 곳", pl.length, "sp"], ["일정", ev.length, "se"], ["맛집", fd.length, "sf"], ["빵지순례", bk.length, "sb"], ["숙소", st.length, "ss"], ["멍카페", cf.length, "sc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", cn.length, "scn"], ["해마다 축제", an.length, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
+  <div class="jump">${[["앱 기능", ft.length, "sft"], ["나들이", pl.length, "sp"], ["일정", ev.length, "se"], ["맛집", fd.length, "sf"], ["빵지순례", bk.length, "sb"], ["숙소", st.length, "ss"], ["멍카페", cf.length, "sc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", cn.length, "scn"], ["해마다 축제", an.length, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
   ${otherRegions.length ? `<p class="emptyNote">📍 ${autoAll ? `${esc(RNAME())}에는 없어서 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) 결과 ${otherN}개를 보여 드려요.` : showAll ? `${esc(RNAME())} ${mineN}개를 먼저 보여 주고, 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) ${otherN}개도 같이 보여 드려요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=null;renderSearch()">${esc(RNAME())}만 보기</a>` : `${mineN ? `${esc(RNAME())} 결과만 보여 드려요.` : `${esc(RNAME())}에는 없어요.`} 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")})에 ${otherN}개 더 있어요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=$('#search').value.trim()+'|'+REGION;renderSearch()">다른 권역도 보기</a>`} ${otherRegions.map(r => `<a href="#" onclick="event.preventDefault();setRegion('${r}')">${REGIONS[r].emoji} ${REGIONS[r].name}으로 바꾸기</a>`).join(" ")}</p>` : ""}
   ${ft.length ? `<h3 class="sub" id="sft">🧭 앱 기능 바로가기 ${ft.length}</h3><div class="grid">${ft.map(featureCard).join("")}</div>` : ""}
   ${n || otherN ? "" : `<p class='empty'>앱에 등록된 자료에는 '${esc(q)}'${josa2(q,"이","가")} 없어요. 아래에서 바로 찾아보세요 — 더 짧게(예: '펭귄', '보리밥') 찾아도 돼요.</p>${outsideSearch(q, true)}`}
-  ${pl.length ? `<h3 class="sub" id="sp">가볼 곳 ${pl.length}</h3><div class="grid">${pl.map(placeCard).join("")}</div>` : ""}
+  ${pl.length ? `<h3 class="sub" id="sp">나들이 ${pl.length}</h3><div class="grid">${pl.map(placeCard).join("")}</div>` : ""}
   ${ev.length ? `<h3 class="sub" id="se">일정 ${ev.length}</h3><div class="grid">${ev.map(eventCard).join("")}</div>` : ""}
   ${fd.length ? `<h3 class="sub" id="sf">맛집 ${fd.length}</h3><div class="grid">${fd.map(foodCard).join("")}</div>` : ""}
   ${bk.length ? `<h3 class="sub" id="sb">🥐 빵지순례 ${bk.length}</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
@@ -9221,7 +9221,7 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (ev) { out.push({ t: "볼거리", name: ev.title, sub: `${ev.venue} · ${ev.date} · ${ticketLabel(ev)[1]}`, d: ev.district, x: ev }); if (!anchor) anchor = VENUES.find(v => v.id === ev.venueId) || ev }
   if (anchor && anchor.name) {
     const nowOn = eventsAt(anchor).filter(e => (!e.start || e.start <= todayISO()) && e !== ev)[0];
-    out.push({ t: anchor.kind === "무등산 트레킹" ? "산행" : "가볼 곳", name: anchor.name, sub: [nowOn ? `지금: ${nowOn.title} (${nowOn.date})` : "", anchor.inout, anchor.hours, anchor.price].filter(Boolean).join(" · "), d: anchor.district, x: anchor });
+    out.push({ t: anchor.kind === "무등산 트레킹" ? "산행" : "나들이", name: anchor.name, sub: [nowOn ? `지금: ${nowOn.title} (${nowOn.date})` : "", anchor.inout, anchor.hours, anchor.price].filter(Boolean).join(" · "), d: anchor.district, x: anchor });
   }
   // 5·18 같은 걷기 코스는 가까운 곳 2곳을 이어서
   if (anchor && /5·18|518|오월|민주|걷기/.test(s)) VENUES.filter(v => v.kind === anchor.kind && v !== anchor).map(v => [v, km(anchor, v)]).filter(([, d]) => d != null && d < 1.5).sort((a, b) => a[1] - b[1]).slice(0, 2).forEach(([v, d]) => out.push({ t: "걸어서", name: v.name, sub: `${kmTxt(d)} · ${v.hours || ""}`, d: v.district, x: v }));
@@ -9246,7 +9246,7 @@ function recommend(t, forced = null, fixedMeal = null) {
     extras.forEach(v=>{
       const d=km(anchor,v);
       out.push({
-        t: d!=null && d<=1.5 ? "걸어서" : "가볼 곳",
+        t: d!=null && d<=1.5 ? "걸어서" : "나들이",
         name:v.name,
         sub:[d!=null?kmTxt(d):"",v.kind,v.hours,v.price].filter(Boolean).join(" · "),
         d:v.district,x:v
@@ -9348,7 +9348,7 @@ function historyList(s) {
    <p class="pfNote">🚩 ${esc(o.label || "출발지")}에서 ${tripHM(start)} 출발 기준 · 가까운 곳부터 · 도착해서 충분히 둘러볼 수 있는 곳만 '갈 수 있어요'로 표시했어요. 출발지는 위 '어디서 출발해요?'에서 바꿀 수 있어요.</p>
    ${ok.length ? `<div class="acGrid">${ok.map(x => row(x, true)).join("")}</div>` : `<p class="pfNone">지금 출발해서 오늘 제대로 둘러볼 수 있는 곳이 없어요. 아래 '오늘은 어려운 곳'의 이유를 보고 내일 일찍 가 보세요.</p>`}
    ${no.length ? `<details class="histNo"><summary>오늘은 어려운 곳 ${no.length} (이유 보기)</summary><div class="acGrid">${no.map(x => row(x, false)).join("")}</div></details>` : ""}
-   <p class="pfNote"><button class="btn" onclick="showTab('places');setPlace('group','역사 유적·5·18')">🏯 가볼 곳 탭에서 역사 유적 전체 보기 →</button></p></div>`;
+   <p class="pfNote"><button class="btn" onclick="showTab('places');setPlace('group','역사 유적·5·18')">🏯 나들이 탭에서 역사 유적 전체 보기 →</button></p></div>`;
   scrollAI();
 }
 function petList(s) {
@@ -9665,9 +9665,9 @@ function decisionPlaceType(p){
     if(/박물관|기념관|과학관/.test(txt)) return '🏺 박물관·문화시설';
     if(/공원|정원|산|숲|산책/.test(txt)) return '🌿 자연·산책';
     if(/시장/.test(txt)) return '🏮 시장';
-    return `🏛 ${x.kind||'가볼 곳'}`;
+    return `🏛 ${x.kind||'나들이'}`;
   }
-  return '📍 가볼 곳';
+  return '📍 나들이';
 }
 function decisionPlaceArea(p){
   const x=p?.x||{};
@@ -9711,7 +9711,7 @@ function initDecisionMiniMap(picks){
     const scope = wideOk
       ? `현재 선택 권역은 ${RNAME()}이며 광주권을 우선 추천하되, 하루 종일 자동차 이동이고 예산 제한이 없으므로 필요할 때만 순천여수권·무안목포권까지 확대 가능.`
       : `현재 선택 권역 ${RNAME()} 안에서만 추천. 다른 권역(순천여수권·무안목포권)으로 넘어가지 말 것.`;
-    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·가볼 곳·맛집·카페 중 가까운 동선으로 시간에 맞춰 다양한 장소를 추천`;
+    const q=`${scope} 오늘 지금부터 ${selected.time} 동안 ${selected.with}와, 입장료 1인 ${selected.budget}(식사 별도), ${selected.move} 이동으로 갈 수 있는 곳. 현재 운영/진행 중인 곳만 골라서 전시·축제·공연·나들이·맛집·카페 중 가까운 동선으로 시간에 맞춰 다양한 장소를 추천`;
     const input=document.getElementById('aiq'); if(input) input.value=`${selected.with}와 ${selected.time} · ${selected.budget} · ${selected.move}`;
     // 아래 '더 자세히 보기'에도 위 동선과 똑같은 코스가 보이게 (예전엔 다른 엔진이 다른 곳을 골라 엇갈렸음)
     const ans=document.getElementById('answer'); if(ans) ans.innerHTML=routePreviewHtml(routePicks,selected.move).replace('<div id="decisionMiniMap" class="decisionMiniMap"></div>','')+decisionDetailHtml(routePicks,selected);
@@ -10350,7 +10350,7 @@ window.reportItem = (kind, id) => {
 /* 공유받은 링크(#e=… #v=…)로 들어오면 그 항목을 바로 연다 */
 function openSharedLink() {
   if (location.hash === "#local") { showTab("local"); return }
-  if (location.hash === "#weekend") { const w = document.getElementById("weekendPick"); if (w) w.scrollIntoView({ behavior: "smooth", block: "start" }); return }
+  if (location.hash === "#weekend") { try { setNowWhen(2) } catch (e) {} const w = document.getElementById("nowShow"); if (w) setTimeout(() => w.scrollIntoView({ behavior: "smooth", block: "start" }), 300); return }   // 2026-11-09: 아이콘 바로가기 '이번 주말 열리는 것' → 홈의 이번 주말 탭
   const m = location.hash.match(/^#([evfcb])=(.+)$/); if (!m) return;
   const kind = m[1], id = decodeURIComponent(m[2]), x = findShared(kind, id); if (!x) return;
   const r = regionOfItem(x); if (r && r !== REGION && REGIONS[r]) setRegion(r);
@@ -10771,7 +10771,7 @@ window.openArtistFollowQuick=function(){
    if(target==='kids'||target==='science'){
      showKids(target==='kids'?'전체':'과학·체험');
    }else if(target==='indoor'){
-     // 비·더위 대비: 가볼 곳 전체 중 실내 + 오늘 문 연 곳만
+     // 비·더위 대비: 나들이 전체 중 실내 + 오늘 문 연 곳만
      PLACE_GROUP='전체';PLACE_IO='실내';PLACE_OPEN=true;
      window.showTab('places');renderPlaces();
      // 다시 그린 뒤 목록 맨 위(필터 칩이 보이는 곳)로 이동
@@ -10983,7 +10983,7 @@ window.openPrivacy = function(){
    한 기기에서 하루 한 번만 받음. */
 (function(){
   const FACES=[["최고예요","😍"],["좋아요","🙂"],["그저 그래요","😐"],["아쉬워요","🙁"]];
-  const PARTS=["오늘 뭐하지","아이와","일정·축제","가볼 곳","대중공연","맛집·빵집","동네·도서관"];
+  const PARTS=["오늘 뭐하지","아이와","일정·축제","나들이","대중공연","맛집·빵집","동네·도서관"];
   let pick=null, parts=[];
   window.openReview=function(){
     const box=document.getElementById("modalContent"); if(!box) return;
@@ -11904,7 +11904,7 @@ html body .foldBar > span:first-child{white-space:nowrap;overflow:hidden;text-ov
 /* ── 홈 시작점 정리 (2026-11-06) ──
    첫 화면의 큰 버튼(✨ 오늘 코스 골라줘 / 🌙 오늘 밤 코스)과 '오늘 뭐하지?'를 주인공으로 두고, 폰에서 겹치는 입구를 덜어냄.
    · '아이랑 어디 갈까?' 카드 → 폰에서 숨김 (오늘 뭐하지?의 「아이」, 오른쪽 '더 보기'의 아이와 탭으로 그대로 감)
-   · '요런 게 있당께' 4칸(일정·가볼 곳·도서관·먹을 곳) → 폰에서 숨김 (아래 메뉴와 같은 길)
+   · '요런 게 있당께' 4칸(일정·나들이·도서관·먹을 곳) → 폰에서 숨김 (아래 메뉴와 같은 길)
    · '글로 물어보기' 예시 버튼 19개 → 폰에서 옆으로 넘기는 한 줄
    PC는 아래 메뉴가 없으므로 그대로 둠. 되돌리려면 이 style 블록만 지우면 됨. */
 @media(max-width:899px){
@@ -12136,7 +12136,7 @@ html body .footerManual>.privacyLink:not(#_):not(#_){flex:1 1 0!important;min-he
 html body #nowShow>button.nowAllBtn:not(#_):not(#_){height:auto!important;min-height:46px!important;flex-wrap:wrap!important;column-gap:8px!important;row-gap:0!important;padding:8px 14px!important}
 html body #nowShow>button.nowAllBtn>span:not(#_){font-size:12px!important;font-weight:650!important;opacity:.85;margin:0!important;display:inline!important}
 
-/* ⑦ 가볼 곳·무대 등 종류 버튼(전체·역사 유적…): PC에서 34px 칸에 세로로 쌓여 글자가 넘치던 것 → 글자 길이만큼 가로 칩 */
+/* ⑦ 나들이·무대 등 종류 버튼(전체·역사 유적…): PC에서 34px 칸에 세로로 쌓여 글자가 넘치던 것 → 글자 길이만큼 가로 칩 */
 html body .groupGrid:not(#_):not(#_){display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin-bottom:10px!important}
 html body .groupGrid>button:not(#_):not(#_){flex:0 0 auto!important;flex-direction:row!important;width:auto!important;padding:0 12px!important;gap:5px!important;border-radius:999px!important;font-size:13px!important}
 html body .groupGrid>button span:not(#_){font-size:15px!important;line-height:1!important}
@@ -12271,6 +12271,7 @@ html body #foodQuick:not(#_){display:none!important}
 .localToday .ltRow button.zero strong{color:var(--muted,#999);opacity:.6}
 .nearMeal{margin:14px 0 0;padding:10px 12px;border:1px dashed var(--line2,#e6e0d4);border-radius:12px;font-size:14px}
 .nearMeal a{font-weight:800;color:var(--green,#2f6f5e);text-decoration:none}
+.planMealLite{display:block;margin-top:6px}.planMealLite a{font-weight:800;color:var(--green,#2f6f5e)}
 </style>
 <script id="local20261109Js">
 (function(){

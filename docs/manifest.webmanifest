@@ -15,7 +15,7 @@
     { "src": "icon-maskable-512.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "이번 주말 뭐 하지?", "url": "./#weekend", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "이번 주말 열리는 것", "url": "./#weekend", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
     { "name": "동네 도서관·강좌", "url": "./#local", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]
 }
