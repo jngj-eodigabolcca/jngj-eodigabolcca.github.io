@@ -4407,7 +4407,7 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
   <div class="aiLeft">
     <div class="aiHead"><img class="js-creaming-src aiCream" alt="" aria-hidden="true"><div><b id="aiName">크리밍한테 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
     <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
-        <div class="quick" id="quick"><button>비 오는 날 실내</button><button>아이와 무료로</button><button>이번 주말 공연</button><button>축제 뭐 있어?</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>박물관 + 맛집</button><button>양림동 데이트</button><button>빵지순례</button><button>전통시장 구경</button><button>역사 유적</button><button>5·18 역사 걷기</button><button>무등산 등산하고 보리밥</button><button>비엔날레 + 카페</button><button>떡갈비 먹고 영화</button><button>강아지랑 카페</button><button data-go="local">📚 동네 도서관·강좌</button><button class="ktx trip">🚄 기차 타고 당일치기</button><button class="trip">🚗 자가용 하루 코스</button><button class="trip">🛏 하루 더 머문다면 1박</button></div>
+        <div class="quick" id="quick"><button data-go="local">📚 동네 도서관·강좌</button><button>아이와 무료로</button><button>비 오는 날 실내</button><button>이번 주말 공연</button><button>축제 뭐 있어?</button><button>전통시장 구경</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>5·18 역사 걷기</button><button>역사 유적</button><button>무등산 등산하고 보리밥</button><button>비엔날레 + 카페</button><button>강아지랑 카페</button><button>박물관 + 맛집</button><button>양림동 데이트</button><button>빵지순례</button><button>떡갈비 먹고 영화</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<span class="crEx"><br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</span></small></div></div></div>
 </div>
@@ -5068,7 +5068,8 @@ function renderQuick() {
   const q = document.getElementById("quick"); if (!q) return;
   if (!QUICK_GJ) QUICK_GJ = q.innerHTML;
   // 버튼은 한 줄에 세 개씩이라 3의 배수로 맞춤 (무안목포권 12개, 순천여수권 15개 · 기차 당일치기·자가용 하루·하루 더 머문다면 포함)
-  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "비 오는 날 실내", "아이와 무료로", "빵지순례", "박물관 + 맛집", "산책하기 좋은 곳", "역사 유적", "이번 주말 공연", "축제 뭐 있어?", "미술관 + 카페", "🚄 기차 타고 당일치기", "🚗 자가용 하루 코스", "🛏 하루 더 머문다면 1박"].map(t => `<button${/^(🚄|🚗|🛏)/u.test(t) ? ' class="trip"' : ""}><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("") + (REGION === "ys" ? `<button data-go="local">📚 동네 도서관·강좌</button>` : "");
+  q.innerHTML = REGION === "gj" ? QUICK_GJ : [...(REGION === "ys" ? ["📖 벌교 태백산맥 문학길", "시장 구경하고 먹방"] : []), "아이와 무료로", "비 오는 날 실내", "이번 주말 공연", "축제 뭐 있어?", "산책하기 좋은 곳", "역사 유적", "미술관 + 카페", "박물관 + 맛집", "빵지순례", "🚄 기차 타고 당일치기", "🚗 자가용 하루 코스", "🛏 하루 더 머문다면 1박"].map(t => `<button${/^(🚄|🚗|🛏)/u.test(t) ? ' class="trip"' : ""}><span>${t.replace(/ (\S+ \S)$/, ' <span class="nw">$1</span>')}</span></button>`).join("");
+  q.insertAdjacentHTML("afterbegin", REGION === "gj" ? "" : `<button data-go="local">📚 동네 도서관·강좌</button>`);   // 2026-11-09: 생활형 버튼을 맨 앞에
   q.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.go) { showTab(b.dataset.go); return } const s = b.textContent.replace(/^[^\p{L}\p{N}]+/u, "").trim(); $("#aiq").value = s; recommend(s) });
 }
 
@@ -5184,7 +5185,8 @@ function heroScore(p, x) {
   else if (x.harsh) s += p.io === "in" ? 2 : p.io === "out" ? -1 : 0;
   else if (x.clear) s += p.io === "out" ? 2 : 0;
   if (x.night) s += NIGHT_FIT.test(p.id) ? 3 : p.io === "out" ? -1 : 0;
-  if (p.t === "e") s += 2;          // 지금 열리는 축제
+  if (p.live) s += 8;               // 오늘 열리는 행사 사진이 늘 먼저
+  else if (p.t === "e") s += 2;     // 지금 열리는 축제
   if (p.core) s += 1;               // 대표 사진
   return s + Math.random() * 2.6;   // 열 때마다 조금씩 다르게
 }
@@ -5207,6 +5209,9 @@ function renderHeroPics() {
   const el = document.getElementById("slides"); if (!el) return;
   const x = heroCtx(), ioOf = v => !v ? "mix" : v.inout === "실내" ? "in" : v.inout === "야외" ? "out" : "mix";
   const seen = new Set(), pool = [];
+  // 2026-11-09: 명소 사진보다 '오늘 실제로 열리는 행사' 사진을 먼저 (관광 앱처럼 보이지 않게)
+  const tHero = todayISO();
+  EVENTS.filter(e => e.image && !isCancelled(e) && happensOn(e, tHero)).forEach(e => { const u = e.image; if (seen.has(u)) return; seen.add(u); pool.push({ u, c: String(e.title || "").length > 28 ? String(e.title).slice(0, 27) + "…" : e.title, t: "e", id: e.id, io: "mix", live: true }) });
   HERO_PICS.filter(([, , t, id]) => t === "e" ? EVENTS.some(e => e.id === id) : t === "v" ? VENUES.some(v => v.id === id) : REGION === "gj").forEach(([u, c, t, id]) => {
     seen.add(u); if (t === "v") seen.add(id);
     pool.push({ u, c, t, id, core: true, io: t === "g" ? "out" : t === "e" ? "out" : ioOf(VENUES.find(v => v.id === id)) });
@@ -5216,7 +5221,7 @@ function renderHeroPics() {
   el.innerHTML = pics.map((p, i) => {
     const raw = rawImg(p.u), px = proxyImg(p.u);
     const info = p.t === "v" ? VENUES.find(v => v.id === p.id) : p.t === "e" ? EVENTS.find(e => e.id === p.id) : null;
-    const desc = info ? [info.kind || info.category || "",info.district || info.area || ""].filter(Boolean).join(" · ") : p.t === "g" ? "자연 속에서 만나는 오늘의 풍경" : "오늘의 사진 속 장소";
+    const desc = p.live && info ? ["오늘 열려요", info.venue || info.category || ""].filter(Boolean).join(" · ") : info ? [info.kind || info.category || "",info.district || info.area || ""].filter(Boolean).join(" · ") : p.t === "g" ? "자연 속에서 만나는 오늘의 풍경" : "오늘의 사진 속 장소";
     return `<figure class="${i === 0 ? "on" : ""}" data-desc="${esc(desc)}" data-cap="${esc(p.c)}" onclick="openPic('${p.t}','${jsq(p.id)}')" role="button" tabindex="0" aria-label="${esc(p.c)} 사진 크게 보기"><img src="${esc(px || raw)}" data-raw="${esc(raw)}" data-step="0" alt="${esc(p.c)}" ${i === 0 ? 'loading="eager"' : 'loading="lazy"'} referrerpolicy="no-referrer" onerror="heroImgFail(this)"><div class="ph heroPhotoFallback"></div></figure>`;
   }).join("");
   const dots = $("#dots"); dots.innerHTML = pics.map((_, i) => `<i class="${i === 0 ? "on" : ""}" onclick="goSlide(${i})" role="button" tabindex="0" aria-label="${i + 1}번째 사진"></i>`).join("");
@@ -12244,6 +12249,89 @@ html:not([data-theme="dark"]) body .hero[data-tod=evening] .ridges path:not(:las
   setInterval(apply,60000);
   document.addEventListener("visibilitychange",function(){ if(!document.hidden) apply(); });
   window.__heroTod=tod;
+})();
+</script>
+<!-- ── #local20261109 : '관광·맛집 앱' 느낌 덜기 (이 블록만 지우면 원래대로) ──
+  · 첫 화면 맨 위(사진 바로 아래)에 '우리 동네 오늘' 한 줄: 문 연 도서관 · 접수 중 강좌 · 오늘 장 · 오늘 무료 행사 (사는 동네를 골랐으면 그 동네만)
+  · 첫 화면 '나들이 길에 한 끼' 맛집·빵집 단추 숨김 → 대신 일정 상세 맨 아래에 '근처 밥집' 한 줄
+  · (본체에서 함께 바꿈) 첫 화면 사진은 오늘 열리는 행사 먼저 · 예시 버튼은 생활형 먼저, 광주권은 기차·자가용·1박 버튼 뺌
+-->
+<style id="local20261109">
+html body #foodQuick:not(#_){display:none!important}
+.localToday{margin:14px 0 4px}
+.localToday .ltBox{background:var(--card,#fff);border:1px solid var(--line2,#e6e0d4);border-radius:18px;padding:12px 12px 10px;box-shadow:var(--shadow,none)}
+.localToday .ltHead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 2px 8px}
+.localToday .ltHead b{font-size:16px;font-weight:900}
+.localToday .ltHead small{color:var(--muted,#6b6b6b);font-size:12px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.localToday .ltRow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.localToday .ltRow button{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line2,#e6e0d4);background:transparent;border-radius:14px;padding:8px 2px;cursor:pointer;color:inherit;font:inherit;min-height:var(--tap,44px)}
+.localToday .ltRow button i{font-style:normal;font-size:18px;line-height:1}
+.localToday .ltRow button strong{font-size:18px;font-weight:900;color:var(--green,#2f6f5e);line-height:1.1}
+.localToday .ltRow button span{font-size:11.5px;font-weight:750;color:var(--muted,#555);white-space:nowrap}
+.localToday .ltRow button.zero strong{color:var(--muted,#999);opacity:.6}
+.nearMeal{margin:14px 0 0;padding:10px 12px;border:1px dashed var(--line2,#e6e0d4);border-radius:12px;font-size:14px}
+.nearMeal a{font-weight:800;color:var(--green,#2f6f5e);text-decoration:none}
+</style>
+<script id="local20261109Js">
+(function(){
+  function guOf(){ try { return (typeof HOME!=="undefined" && HOME && HOME.gu && REGIONS[REGION].districts.includes(HOME.gu)) ? HOME.gu : "" } catch(e){ return "" } }
+  function counts(){
+    var t=todayISO(), g=guOf(), inGu=function(x){ return !g || x.district===g };
+    var c={lib:0,prog:0,mk:0,free:0};
+    try { c.lib=LIBS.filter(inGu).filter(isMainLib).filter(function(l){ var st=libToday(l); return st.open!==false && !st.done }).length } catch(e){}
+    try { c.prog=PROGRAMS.filter(inGu).filter(function(p){ return (!p.end||p.end>=t) && progState(p)[0]==="접수 중" }).length } catch(e){}
+    try { c.mk=VENUES.filter(function(v){ return v.market && inGu(v) && (jangOn(v,t)||nightOn(v,t)) && !mkClosedOn(v,t) }).length } catch(e){}
+    try { c.free=EVENTS.filter(function(e){ return inGu(e) && happensOn(e,t) && /무료/.test((e.price||"")+" "+(e.discount||"")+" "+(e.tags||[]).join(" ")) }).length } catch(e){}
+    return {c:c,g:g};
+  }
+  function render(){
+    var el=document.getElementById("localToday"); if(!el || typeof EVENTS==="undefined") return;
+    var r=counts(), c=r.c, where=r.g || (typeof RNAME==="function" ? RNAME() : "");
+    if(!c.lib && !c.prog && !c.mk && !c.free){ el.innerHTML=""; el.hidden=true; return }
+    el.hidden=false;
+    var cell=function(k,ic,n,lab){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
+    el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b><small>'+esc(where)+(r.g?"":" · 사는 동네를 고르면 그 동네만")+'</small></div><div class="ltRow">'
+      +cell("lib","📚",c.lib,"문 연 도서관")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
+  }
+  document.addEventListener("click",function(ev){
+    var b=ev.target.closest && ev.target.closest("#localToday [data-lt]"); if(!b) return;
+    var k=b.dataset.lt;
+    if(k==="lib"){ showTab("local"); try{ if(typeof setLocalF==="function") setLocalF("전체") }catch(e){} }
+    else if(k==="prog"){ showTab("local"); try{ setLocalF("접수 중") }catch(e){} }
+    else if(k==="mk"){ try{ setNowWhen(0); setNowCat("장날") }catch(e){} var n=document.getElementById("nowShow"); if(n) n.scrollIntoView({behavior:"smooth",block:"start"}) }
+    else if(k==="free"){ showTab("events"); setTimeout(function(){ var f=document.querySelector('#chips [data-filter="무료"]'); if(f) f.click() },60) }
+  });
+  function place(){
+    var main=document.querySelector("main"), ns=document.getElementById("nowShow"); if(!main||!ns||ns.parentNode!==main) return;
+    var el=document.getElementById("localToday");
+    if(!el){ el=document.createElement("section"); el.id="localToday"; el.className="localToday homeOnly"; el.setAttribute("aria-label","우리 동네 오늘"); }
+    if(ns.previousElementSibling!==el) ns.insertAdjacentElement("beforebegin",el);
+    render();
+  }
+  ["arrangeHome","renderAll","setHome","clearHome"].forEach(function(fn){
+    if(typeof window[fn]==="function"){ var o=window[fn]; window[fn]=function(){ var r=o.apply(this,arguments); try{ place() }catch(e){ console.warn("[localToday]",e) } return r } }
+  });
+  // 일정 상세 맨 아래: 근처 밥집 (맛집을 앞세우지 않고, 볼 것을 고른 다음에만)
+  if(typeof window.detail==="function"){
+    var od=window.detail;
+    window.detail=function(id){
+      var r=od.apply(this,arguments);
+      try{
+        var e=(EVENTS||[]).find(function(x){ return x.id===id }), box=document.getElementById("modalContent");
+        if(e && box && !box.querySelector(".nearMeal")){
+          var place=e.venue||e.address||e.district; if(place){
+            var p=document.createElement("p"); p.className="nearMeal";
+            p.innerHTML='🍲 보고 나서 한 끼? <a target="_blank" rel="noopener noreferrer" href="'+esc(searchNear(place,"밥집"))+'">'+esc(place)+' 근처 밥집 지도에서 보기 ↗</a>';
+            box.appendChild(p);
+          }
+        }
+      }catch(err){}
+      return r;
+    };
+  }
+  function run(){ try{ place() }catch(e){ console.warn("[localToday]",e) } }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
+  window.addEventListener("load",function(){ setTimeout(run,1500) });
 })();
 </script>
 </body></html>
