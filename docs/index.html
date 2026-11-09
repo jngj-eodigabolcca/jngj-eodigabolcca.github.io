@@ -4226,6 +4226,17 @@ html body .popStats button:focus-visible{outline:2px solid #fff;outline-offset:2
   if (typeof module !== 'undefined' && module.exports) module.exports = { pickHeadline, HEADLINES };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
+<!-- ── #search20261109 : '뭐든 찾아보쇼잉' 검색창 눈에 띄게 (이 블록만 지우면 원래대로) ── -->
+<style id="search20261109">
+html body header.top label.search:not(#_){background:#fff!important;border:2px solid var(--green)!important;box-shadow:0 3px 10px rgba(15,60,50,.14)!important}
+html body header.top label.search:not(#_)>span{color:var(--green)!important;font-size:19px!important;font-weight:900}
+html body header.top label.search:not(#_) input{color:var(--ink)!important;font-weight:650}
+html body header.top label.search:not(#_) input::placeholder{color:#4a5568!important;opacity:1!important;font-weight:650}
+html body header.top label.search:not(#_):focus-within{box-shadow:0 0 0 4px rgba(15,118,110,.2)!important}
+@media(max-width:899px){html body header.top .topSearch .search:not(#_){height:44px!important}}
+html[data-theme="dark"] body header.top label.search:not(#_){background:#262624!important;border-color:var(--green)!important;box-shadow:0 3px 10px rgba(0,0,0,.4)!important}
+html[data-theme="dark"] body header.top label.search:not(#_) input::placeholder{color:#c9d1cc!important}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
