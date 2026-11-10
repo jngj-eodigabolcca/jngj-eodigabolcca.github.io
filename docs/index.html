@@ -6015,6 +6015,7 @@ function renderNowShow() {
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > 3 ? (window.NOW_MORE ? `<button type="button" class="nowMoreBtn" aria-expanded="true" onclick="NOW_MORE=false;renderNowShow();document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">접기 ▴</button>` : `<button type="button" class="nowMoreBtn" aria-expanded="false" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${shown.length - 3}건 더 보기 ▾</button>`) : ""}
    ${NOW_CAT === "장날" ? dailyMarketNote(dates[0]) : ""}
+   ${(() => { if (NOW_WHEN === 2) return ""; let n = 0; try { n = weekendPicks().picks.length } catch (e) {} return n ? `<button type="button" class="nowAllBtn wkHint" onclick="setNowWhen(2);document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">🗓 이번 주말 추천 ${n}곳 보기 <span>주말 탭에서 골라 둔 곳 ›</span></button>` : "" })()}
    <button type="button" class="nowAllBtn" onclick="showTab('events')">${CAL_IC} 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
    ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${jsq(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
@@ -6025,10 +6026,10 @@ function renderNowShow() {
   const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>이번 주말</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
   // 이번 주말 5선: 평일(월~금)엔 '주말 뭐 하지?' 칸으로 따로, 토·일엔 '오늘'과 겹치므로 '이번 주말' 탭 안에만
   if (wpBox) {
-    const wkend = [0, 6].includes(isoDow(t0));
-    wpBox.classList.toggle("wpWeekday", !wkend);
-    wpBox.classList.toggle("wpInNow", wkend && NOW_WHEN === 2);
-    if (wkend && NOW_WHEN === 2) (el.querySelector(".nowHead") || el.firstElementChild)?.after(wpBox);
+    // 2026-11-10: 첫 화면에 따로 있던 '🗓 이번 주말 추천' 칸은 없애고, 평일이든 주말이든 '이번 주말' 탭을 눌렀을 때만 그 안에
+    wpBox.classList.remove("wpWeekday");
+    wpBox.classList.toggle("wpInNow", NOW_WHEN === 2);
+    if (NOW_WHEN === 2) (el.querySelector(".nowSeg") || el.querySelector(".nowHead") || el.firstElementChild)?.after(wpBox);
   }
 }
 
@@ -6186,7 +6187,7 @@ window.dateCourse = id => {
 const NIGHT_IDS = ["sajik", "yangnim-walk", "daein-market", "dongmyeong", "gwangju-theater", "jeonil245", "geumnamro", "pungam", "ssangam", "songjeong-market"];
 function renderToday() {
   const el = document.getElementById("today"); if (!el) return;
-  if (!VENUES.length) { el.innerHTML = `<div class="todayBox"><div class="todayTitle"><div><span class="eyebrow">TODAY · ${esc(RNAME())}</span><h2>오늘 하루 코스<small>${esc(RNAME())}은 아직 받아온 장소 자료가 없어요</small></h2></div></div><div class="nowEmpty">🧭 자동 업데이트가 돌면 관광공사 자료로 ${esc(RNAME())}의 박물관·미술관·축제가 채워지고, 여기에 하루 플랜이 떠요. ${REGION === "gj" ? `인터넷 연결을 확인한 뒤 <button class="btn" onclick="location.reload()">↻ 다시 불러오기</button>` : `지금 바로 둘러보려면 <button class="btn" onclick="setRegion('gj')">🟢 광주권 보기</button>`}</div></div>`; return }
+  if (!VENUES.length) { el.innerHTML = `<div class="todayBox"><div class="todayTitle"><div><span class="eyebrow">TODAY · ${esc(RNAME())}</span><h2>오늘 하루 플랜 <em class="autoTag">자동</em><small>${esc(RNAME())}은 아직 받아온 장소 자료가 없어요</small></h2></div></div><div class="nowEmpty">🧭 자동 업데이트가 돌면 관광공사 자료로 ${esc(RNAME())}의 박물관·미술관·축제가 채워지고, 여기에 하루 플랜이 떠요. ${REGION === "gj" ? `인터넷 연결을 확인한 뒤 <button class="btn" onclick="location.reload()">↻ 다시 불러오기</button>` : `지금 바로 둘러보려면 <button class="btn" onclick="setRegion('gj')">🟢 광주권 보기</button>`}</div></div>`; return }
   const now = kstNow(), h = now.getUTCHours(), d = DAY_KO[now.getUTCDay()];
   const t = todayISO(), r = rnd(Number(t.replace(/-/g, "")) + TODAY_SEED * 7919);
   const HOLI = HOLIDAYS[t] || "", OFF = isOff(t), weekend = OFF;
@@ -6413,9 +6414,9 @@ function renderToday() {
   while (dates.length < Math.min(3, dpool.length)) { const c = pickR(dpool, dr); if (!dates.includes(c)) dates.push(c) }
   const closed = VENUES.filter(v => openToday(v) === false).length;
   el.innerHTML = `<div class="todayBox">
-   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)} 하루 코스` : "쉬는 날 하루 코스") : "오늘 하루 코스"}<small>🚩 ${esc(originName(originKey()))} 출발 · <b>오전·오후·저녁</b> 플랜<br>${d}요일 ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·행사"} 맞춰 골랐어요${closed ? ` · 휴관 ${closed}곳 뺌` : ""}${OFF ? "" : " · 퇴근 후엔 저녁 칸부터"}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
+   <div class="todayTitle"><div><span class="eyebrow">${OFF ? "DAY OFF · 쉬는 날 하루 플랜" : `TODAY · 심심할 틈 없는 ${RW()}`}</span><h2>${OFF ? (HOLI ? `${esc(HOLI)} 하루 플랜` : "쉬는 날 하루 플랜") : "오늘 하루 플랜"} <em class="autoTag">자동</em><small>고르지 않아도 날씨·휴관일 보고 골라 둔 플랜이에요 · 조건을 고르려면 ✨ 오늘 뭐하지?<br>🚩 ${esc(originName(originKey()))} 출발 · <b>오전·오후·저녁</b> 플랜<br>${d}요일 ${indoorDay ? "날씨 봐서 실내 위주로" : "날씨·휴관일·행사"} 맞춰 골랐어요${closed ? ` · 휴관 ${closed}곳 뺌` : ""}${OFF ? "" : " · 퇴근 후엔 저녁 칸부터"}</small></h2></div><button class="shuffle" onclick="shufflePlans()">🎲 다른 추천</button></div>
    <div class="plans">${PLANS.map(planCard).join("") || `<div class="nowEmpty">${esc(RNAME())}은 아직 추천할 장소 자료가 적어요. 자동 수집으로 박물관·축제가 채워지면 여기에 하루 플랜이 떠요.</div>`}</div>
-   ${dates.length ? `<div class="dateHead"><div><span class="eyebrow" style="color:var(--red)">TODAY'S DATE COURSE</span><h3>💑 오늘 데이트는 어떻게 할랑가?</h3></div><button class="shuffle" onclick="dateCourse('${dates[0]?.id}')">전체 코스 보기 →</button></div>
+   ${false && dates.length ? `<div class="dateHead"><div><span class="eyebrow" style="color:var(--red)">TODAY'S DATE COURSE</span><h3>💑 오늘 데이트는 어떻게 할랑가?</h3></div><button class="shuffle" onclick="dateCourse('${dates[0]?.id}')">전체 코스 보기 →</button></div>
    <div class="dates">${dates.map(c => `<button class="dateCard" onclick="dateCourse('${c.id}')"><span class="dcPic"><span class="ph"${bg(c.img)}></span><em>${c.emoji}</em></span><span class="dcBody"><b>${esc(c.name)}</b><small>${esc(c.area)} · ${esc(c.mood)}</small><i>${c.steps.length}곳 · 코스 보기 →</i></span></button>`).join("")}</div>` : ""}
   </div>`;
 }
@@ -9830,6 +9831,17 @@ function initDecisionMiniMap(picks){
   try{ if(DECISION_MAP){DECISION_MAP.remove();DECISION_MAP=null} DECISION_MAP=L.map(el,{zoomControl:false,attributionControl:true}); L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'}).addTo(DECISION_MAP); const latlng=[]; pts.forEach(o=>{const ll=[o.c.lat,o.c.lng];latlng.push(ll);L.marker(ll).addTo(DECISION_MAP).bindTooltip(`${o.i+1}. ${o.p.name} · ${decisionPlaceType(o.p)}`,{permanent:false});}); if(latlng.length>1)L.polyline(latlng,{weight:4,opacity:.75}).addTo(DECISION_MAP); DECISION_MAP.fitBounds(L.latLngBounds(latlng).pad(.25)); setTimeout(()=>DECISION_MAP?.invalidateSize(),80);}catch(e){el.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">지도 미리보기를 불러오지 못했어요. 상세의 길찾기를 이용해 주세요.</div>'}
 }
 
+/* 2026-11-10: 첫 화면에 따로 있던 '💑 오늘 데이트는 어떻게 할랑가?'를 여기로 — 누구와=연인이면 결과 아래에 미리 짜 둔 데이트 코스 */
+function decisionDateHtml(sel){
+  if(!/연인/.test((sel&&sel.with)||"")||typeof DATES==="undefined") return "";
+  const rainy=!!(typeof WEATHER!=="undefined"&&WEATHER&&wxRainy());
+  let pool=DATES.filter(c=>(c.region||"gj")===REGION&&(rainy?c.rainOk:!c.indoor));
+  if(!pool.length) pool=DATES.filter(c=>(c.region||"gj")===REGION);
+  if(!pool.length) return "";
+  const pick=pool.map(c=>[c,Math.random()]).sort((a,b)=>a[1]-b[1]).slice(0,3).map(a=>a[0]);
+  return `<div class="drDates"><div class="dateHead"><div><span class="eyebrow" style="color:var(--red)">DATE COURSE</span><h3>💑 이런 데이트 코스도 있어요</h3><small>크리밍이 미리 짜 둔 코스 · 시간·순서가 다 들어 있어요${rainy?" · 비 와도 괜찮은 코스로":""}</small></div></div>
+    <div class="dates">${pick.map(c=>`<button class="dateCard" onclick="closeModal();setTimeout(()=>dateCourse('${jsq(c.id)}'),80)"><span class="dcPic"><span class="ph"${bg(c.img)}></span><em>${c.emoji}</em></span><span class="dcBody"><b>${esc(c.name)}</b><small>${esc(c.area)} · ${esc(c.mood)}</small><i>${c.steps.length}곳 · 코스 보기 →</i></span></button>`).join("")}</div></div>`;
+}
 /* 오늘 결정 패널 → 기존 추천 엔진 연결 */
 (function(){
   document.querySelectorAll('.choiceRow').forEach(row=>{
@@ -9866,6 +9878,7 @@ function initDecisionMiniMap(picks){
         <div class="decisionExplain"><b>왜 이 코스를 추천했어요?</b><div class="chipsWhy">${reasons.map(r=>`<span>✓ ${esc(r)}</span>`).join('')}</div></div>
         ${routePreviewHtml(routePicks,selected.move)}
         <div class="drBody">${decisionDetailHtml(routePicks,selected)}</div>
+        ${decisionDateHtml(selected)}
         <div class="drActions"><button class="again" onclick="closeModal()">조건 바꾸기</button><button class="detailGo" onclick="closeModal();setTimeout(()=>document.querySelector('#aiBox')?.scrollIntoView({behavior:'smooth',block:'start'}),120)">더 자세히 보기</button></div>
       </div>`;
       modal.classList.add('decisionMode','show');
@@ -11781,7 +11794,7 @@ window.renderSeason = renderSeason;
 /* 2026-11-06 홈 추천 칸 접기: 주말 추천·계절 명소·오늘 하루 코스는 제목만 보이고 누르면 펼침.
    칸 내용은 각 render 함수가 새로 그려도 되도록, 그릴 때마다 맨 위에 제목 줄을 다시 붙인다. 펼친 상태는 이 기기에 기억. */
 (function(){
-  const FOLD = {weekendPick:"🗓 이번 주말 추천", seasonPick:"🌿 지금 가기 좋은 계절 명소", today:"🚩 오늘 하루 코스 · 데이트 코스"};
+  const FOLD = {seasonPick:"🌿 지금 가기 좋은 계절 명소", today:"🚩 오늘 하루 플랜 (자동) · 오전·오후·저녁"};
   const KEY = "glm_fold_open";
   let open; try { open = JSON.parse(localStorage.getItem(KEY) || "{}") } catch (e) { open = {} }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(open)) } catch (e) {} };
@@ -12416,6 +12429,9 @@ html body #foodQuick:not(#_){display:none!important}
   html body .decideGrid:not(#_) .choiceRow{flex-wrap:wrap!important;width:auto!important}
 }
 .libSmallFold{margin-top:20px}
+.autoTag{display:inline-block;vertical-align:middle;font-style:normal;font-size:12px;font-weight:800;letter-spacing:0;padding:3px 8px;border-radius:999px;background:var(--green-l,#e3f1ec);color:var(--green-d,#1f5c4c);margin-left:4px}
+:root[data-theme="dark"] .autoTag{background:#1f3a33;color:#9fd8c6}
+.drDates{margin:18px 0 6px}.drDates .dateHead small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}.drDates .dates{margin-top:10px}
 .libSmallFold>summary{list-style:none;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;display:block;background:var(--card,#fff);border:1.5px solid var(--line2,#d9d3c6);border-radius:16px;padding:12px 96px 12px 14px;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.06))}
 .libSmallFold>summary::-webkit-details-marker{display:none}
 .libSmallFold>summary:active{transform:scale(.99)}
@@ -12504,6 +12520,93 @@ html body .libSmallFold>summary h3.libSmallHead .libSub{white-space:normal!impor
   function run(){ try{ place() }catch(e){ console.warn("[localToday]",e) } }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",run); else run();
   window.addEventListener("load",function(){ setTimeout(run,1500) });
+})();
+</script>
+
+<!-- ── #homeMerge20261110 : 첫 화면 겹치는 추천 칸 합치기 (이 블록만 지우면 원래대로) ──
+  · '크리밍한테 물어보기'(#aiBox) → '오늘 뭐하지?'(#decideNow) 칸 맨 아래 '✍️ 글로 물어보기'로
+  · '🚀 지금 바로 갈 곳'(#nowStart) → '오늘 뭐하지?' 칸 맨 위 '🚀 고민 없이 지금 바로' 한 줄로
+-->
+<style id="homeMerge20261110">
+html body #decideNow > .mergedAsk{margin:14px 0 0!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
+html body #decideNow > .mergedAsk::before{content:"✍️ 고르기 귀찮으면 글로 물어보기";display:block;font-size:13px;font-weight:800;color:var(--muted,#6b6b6b);margin:0 4px 8px}
+html body #decideNow #nowStart.mergedNow{margin:4px 0 12px!important;padding:0!important}
+html body #decideNow #nowStart.mergedNow .nowStartBox{padding:12px 12px 10px!important;border-radius:18px!important;min-height:0!important}
+html body #decideNow #nowStart.mergedNow .nowStartHead{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 8px!important}
+html body #decideNow #nowStart.mergedNow .nowStartHead .eyebrow,html body #decideNow #nowStart.mergedNow .nowStartHead p{display:none!important}
+html body #decideNow #nowStart.mergedNow .nowStartHead h2{font-size:16px!important;margin:0!important;line-height:1.3!important}
+html body #decideNow #nowStart.mergedNow .nowClock{font-size:11.5px!important;padding:3px 8px!important;white-space:nowrap}
+html body #decideNow #nowStart.mergedNow .nowStartGrid{display:flex!important;gap:8px!important;overflow-x:auto!important;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}
+html body #decideNow #nowStart.mergedNow .nowStartGrid::-webkit-scrollbar{display:none}
+html body #decideNow #nowStart.mergedNow .nowPick{flex:0 0 74%!important;min-width:0!important;scroll-snap-align:start;padding:10px 12px!important;min-height:0!important}
+html body #decideNow #nowStart.mergedNow .nowPick small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html body #decideNow #nowStart.mergedNow .nowStartFoot{margin-top:8px!important;padding:0!important;border:0!important}
+html body #decideNow #nowStart.mergedNow .nowStartFoot #nowStartNote{display:none!important}
+html body #decideNow #nowStart.mergedNow .nowStartFoot .nowRefresh{margin-left:auto}
+@media(min-width:900px){html body #decideNow #nowStart.mergedNow .nowPick{flex:1 1 0!important}}
+html body #decideNow .condMoreBtn{grid-column:1/-1;flex:1 1 100%;display:flex!important;align-items:center;gap:8px;width:100%;text-align:left;border:1.5px dashed var(--line2,#d9d3c6);background:transparent;border-radius:14px;padding:10px 12px;cursor:pointer;font:inherit;color:inherit;min-height:44px}
+html body #decideNow .condMoreBtn span{font-weight:800;font-size:13.5px;white-space:nowrap}
+html body #decideNow .condMoreBtn small{flex:1;min-width:0;font-size:12px;color:var(--muted,#6b6b6b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body #decideNow .condMoreBtn em{font-style:normal;color:var(--muted,#6b6b6b)}
+html body #decideNow .condMore{grid-column:1/-1;flex:1 1 100%;display:grid;gap:7px}
+html body #decideNow .condMore[hidden]{display:none!important}
+@media(min-width:900px){html body #decideNow .condMore{display:flex;flex-wrap:wrap;gap:10px}}
+html body #decideNow #nowStart.mergedNow .nowStartFoot{display:none!important}
+html body #decideNow #nowStart.mergedNow .nowStartHead h2{flex:1 1 auto;min-width:0}
+html body #decideNow #nowStart.mergedNow .nowStartHead .nowRefresh{flex:0 0 auto;min-height:32px!important;padding:5px 11px!important;font-size:12.5px!important;margin:0!important}
+@media(max-width:899px){
+  /* 폰: '오늘 코스 골라줘'까지 덜 내려가게 */
+  html body #decideNow .decisionHeroText > p{display:none!important}
+  html body #decideNow #nowStart.mergedNow .nowClock{display:none!important}
+  html body #decideNow .decideAction > div{display:none!important}
+  html body #decideNow .decideAction{padding:10px!important}
+  html body #decideNow .decideGrid{grid-template-columns:minmax(0,1fr)!important;min-width:0!important;max-width:100%!important}
+  html body #decideNow .decideGrid > *{min-width:0!important;max-width:100%!important}
+  html body .decideGrid .choiceGroup.themeGroup{grid-template-columns:minmax(0,1fr)!important}
+  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"]{min-width:0!important;max-width:100%!important;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none;gap:6px!important;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:18px}
+  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"]::-webkit-scrollbar{display:none}
+  html body .decideGrid .choiceGroup.themeGroup > b::after{content:"  · 옆으로 밀면 7가지 ›";font-weight:600;color:var(--muted,#888);font-size:11.5px}
+  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"] button{flex:0 0 auto!important;width:auto!important;white-space:nowrap!important;padding:6px 11px!important}
+}
+</style>
+<script id="homeMerge20261110Js">
+(function(){
+  function merge(){
+    var dn=document.getElementById("decideNow"); if(!dn) return;
+    // ② 지금 바로 갈 곳 → 맨 위
+    var ns=document.getElementById("nowStart");
+    var top=dn.querySelector(".decideTop");   // '오늘 뭐하지?' 제목 바로 아래
+    if(ns && top && top.nextElementSibling!==ns){ ns.classList.add("mergedNow"); ns.classList.remove("homeOnly"); top.insertAdjacentElement("afterend",ns) }
+    if(ns){ var h=ns.querySelector(".nowStartHead h2"); if(h && h.textContent!=="🚀 고민 없이 지금 바로") h.textContent="🚀 고민 없이 지금 바로";
+      var rf=ns.querySelector(".nowRefresh"), hd=ns.querySelector(".nowStartHead"); if(rf && hd && rf.parentNode!==hd){ rf.textContent="↻ 다시"; rf.title="다른 곳 추천"; hd.appendChild(rf) } }   // '다시 추천'을 제목 줄로 올려 한 줄 아끼기
+    // ① 크리밍한테 물어보기 → 맨 아래
+    var ai=document.getElementById("aiBox"), sec=ai && (ai.closest("section")||ai);
+    if(sec && sec!==dn && sec.parentNode!==dn){ sec.classList.add("mergedAsk"); sec.classList.remove("homeOnly"); dn.appendChild(sec) }
+  }
+  // 조건 7줄 중 자주 안 바꾸는 3줄(입장료·어디서·밥·카페)은 '조건 더 보기'로 접기 → '오늘 코스 골라줘' 버튼이 위로
+  function foldConds(){
+    var grid=document.querySelector("#decideNow .decideGrid"); if(!grid || grid.querySelector(".condMore")) return;
+    var rows=["budget","inout","meal"].map(function(k){ var r=grid.querySelector('.choiceRow[data-choice="'+k+'"]'); return r && r.closest(".choiceGroup") }).filter(Boolean);
+    if(!rows.length) return;
+    var KEY="glm_cond_more", open=false; try{ open=localStorage.getItem(KEY)==="1" }catch(e){}
+    var btn=document.createElement("button"); btn.type="button"; btn.className="condMoreBtn";
+    var box=document.createElement("div"); box.className="condMore"; box.hidden=!open;
+    rows.forEach(function(g){ box.appendChild(g) });
+    grid.appendChild(btn); grid.appendChild(box);
+    function txt(k){ var b=grid.querySelector('.choiceRow[data-choice="'+k+'"] button.on'); return b ? b.textContent.replace(/^[^\p{L}\p{N}]+/u,"").trim() : "" }
+    function paint(){
+      var sum=["입장료 "+txt("budget"), txt("inout")==="상관없음"?"실내·야외 상관없음":txt("inout"), txt("meal")==="알아서"?"밥·카페 알아서":txt("meal")].join(" · ");
+      btn.innerHTML='<span>'+(box.hidden?"⚙️ 조건 더 보기":"⚙️ 조건 접기")+'</span><small>'+sum+'</small><em>'+(box.hidden?"▾":"▴")+'</em>';
+      btn.setAttribute("aria-expanded",String(!box.hidden));
+    }
+    btn.onclick=function(){ box.hidden=!box.hidden; try{ localStorage.setItem(KEY,box.hidden?"0":"1") }catch(e){} paint() };
+    box.addEventListener("click",function(){ setTimeout(paint,0) });
+    paint();
+  }
+  function all(){ try{ merge() }catch(e){ console.warn("[homeMerge]",e) } try{ foldConds() }catch(e){ console.warn("[condMore]",e) } }
+  if(typeof window.arrangeHome==="function"){ var o=window.arrangeHome; window.arrangeHome=function(){ var r=o.apply(this,arguments); all(); return r } }
+  document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",all) : all();
+  window.addEventListener("load",function(){ setTimeout(all,1200) });
 })();
 </script>
 </body></html>
