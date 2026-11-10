@@ -32,6 +32,37 @@
 -->
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script id="security20261110">
+/* 2026-11-10 보안 강화 (공공기관 운영 대비) — 이 블록만 지우면 원래대로
+   ① 콘텐츠 보안 정책(CSP): 정해 둔 곳에서만 코드·글꼴·자료를 받게 함. 사진은 여러 기관 누리집에서 오므로 https는 모두 허용
+      (GitHub Pages는 서버 헤더를 못 바꿔서 <meta>로 넣음. 내 컴퓨터에서 파일을 바로 열 때(file:)는 내장 자료가 막히지 않게 적용하지 않음)
+   ② 다른 사이트가 이 앱을 몰래 자기 화면 안(iframe)에 넣어 누르게 하는 것(클릭재킹) 막기 */
+(function(){
+  if (location.protocol === "https:") {
+    var csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://gc.zgo.at",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com",
+      "font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net",
+      "img-src 'self' data: blob: https:",
+      "connect-src 'self' https://jngj-eodigabolcca.github.io https://api.open-meteo.com https://air-quality-api.open-meteo.com https://wttr.in https://photon.komoot.io https://gc.zgo.at https://*.goatcounter.com",
+      "media-src 'self' https:",
+      "worker-src 'self'", "manifest-src 'self'",
+      "frame-src 'none'", "object-src 'none'", "base-uri 'self'", "form-action 'none'",
+      "upgrade-insecure-requests"
+    ].join("; ");
+    var m = document.createElement("meta"); m.httpEquiv = "Content-Security-Policy"; m.content = csp;
+    document.head.appendChild(m);
+  }
+  try {
+    if (window.top !== window.self) {
+      var same = false; try { same = window.top.location.origin === location.origin } catch (e) {}
+      if (!same) { document.documentElement.style.display = "none"; window.top.location.href = location.href }
+    }
+  } catch (e) { document.documentElement.style.display = "none" }
+})();
+</script>
 <meta name="theme-color" content="#ffffff">
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="어디가볼까">
@@ -4925,17 +4956,38 @@ async function guardedFetch(url, options = {}, timeoutMs = 10000) {
   try { return await fetch(url, { ...options, signal: controller.signal }); }
   finally { clearTimeout(timer); }
 }
+/* 2026-11-10 보안: 자동 수집 자료(누리집 판독·제보 포함)에 HTML·스크립트가 섞여 들어와도 화면에서 실행되지 않게 한 번 걸러서 씀
+   · 글자 안의 < > 는 생김새가 같은 〈 〉 로 바꿈 (공연 제목 <…> 도 그대로 읽힘)
+   · url·image 같은 주소 칸은 https:// · http:// · 도메인 · 앱 안 파일 경로만 남기고 나머지(javascript: 등)는 비움
+   · __proto__ 같은 위험한 키는 버림 */
+const CLEAN_URL_KEY = /^(url|urls|image|images|img|photo|thumb|thumbnail|poster|link|homepage|href|ticketUrl|bookUrl)$/i;
+function cleanUrlStr(v) {
+  const t = String(v).trim();
+  if (!t) return "";
+  if (/^https?:\/\//i.test(t) || /^[\w.-]+\.[a-z]{2,}(?:[\/?#]\S*)?$/i.test(t) || /^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(t))
+    return t.replace(/["'<>`\s\\]/g, c => encodeURIComponent(c));
+  return "";
+}
+function cleanData(v, key) {
+  if (typeof v === "string") return key && CLEAN_URL_KEY.test(key) ? cleanUrlStr(v) : v.replace(/</g, "〈").replace(/>/g, "〉");
+  if (Array.isArray(v)) { for (let i = 0; i < v.length; i++) v[i] = cleanData(v[i], key); return v }
+  if (v && typeof v === "object") {
+    for (const k of Object.keys(v)) { if (k === "__proto__" || k === "constructor" || k === "prototype") { delete v[k]; continue } v[k] = cleanData(v[k], k) }
+    return v;
+  }
+  return v;
+}
 async function getJSON(n, fallback = []) {
   const local = location.protocol === "file:" || window.__PC__;
   const base = local ? (DATA_URL ? DATA_URL.replace(/\/+$/, "") + "/" : "") : "";
   if (!local || base) { try { const r = await guardedFetch(`${base}data/${n}.json`, { cache: "no-cache" }, 10000); if (r.ok) { const j = await r.json();
     // 서버 자료가 빈 목록([])으로 올라가 있으면 나들이·맛집이 통째로 사라지니, 그때는 내장 자료를 쓴다
-    if (!(Array.isArray(j) && !j.length && EMBEDDED_KEYS.includes(n))) { DATA_HEALTH.remoteOk.add(n); return j } } } catch { } }
+    if (!(Array.isArray(j) && !j.length && EMBEDDED_KEYS.includes(n))) { DATA_HEALTH.remoteOk.add(n); return cleanData(j) } } } catch { } }
   if (n === "meta" || EMBEDDED_KEYS.includes(n)) DATA_HEALTH.remoteFailed.add(n);
   // 파일을 더블클릭해서 연 경우(컴퓨터용) 또는 인터넷이 끊긴 경우: 내장 데이터 사용
   // 내장 데이터(embedded-data.js, 약 440KB)는 이때만 불러와서 평소 첫 화면을 가볍게 유지
   if (EMBEDDED_KEYS.includes(n)) await loadEmbedded();
-  return (window.__DATA__ && window.__DATA__[n]) ?? fallback;
+  return cleanData((window.__DATA__ && window.__DATA__[n]) ?? fallback);
 }
 const EMBEDDED_KEYS = ["events", "cafes", "cinemas", "venues", "restaurants", "stays", "annual", "meta", "bakeries"];
 let EMBEDDED_P = null;
@@ -5844,14 +5896,18 @@ window.heroImgFail = img => {
 };
 function imgWithFallback(u, alt="", cls=""){
   if (!u) return `<div class="ph emptyPhoto" title="공공데이터·누리집 원래 자료에 사진이 없어요"><span>📷</span><small>원래 자료에 사진이 없어요</small></div>`;
-  const raw = rawImg(u), px = proxyImg(u);
-  return `<img class="${cls}" src="${px || raw}" data-proxy="${px}" data-raw="${raw}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer"
+  const okImg = x => /^(https?:\/\/|data:image\/)/i.test(x || "") || /^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(x || "") ? esc(x) : "";   // 2026-11-10 보안
+  const raw = okImg(rawImg(u)), px = okImg(proxyImg(u));
+  if (!raw && !px) return `<div class="ph emptyPhoto"><span>📷</span><small>사진 주소가 올바르지 않아요</small></div>`;
+  return `<img class="${esc(cls)}" src="${px || raw}" data-proxy="${px}" data-raw="${raw}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer"
     onerror="if(this.dataset.step==='1'){this.dataset.step='2'; this.src=this.dataset.raw || this.dataset.proxy;} else { this.outerHTML='<div class=&quot;ph emptyPhoto&quot; title=&quot;사진을 올린 기관이 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요&quot;><span>📷</span><small>사진을 불러오지 못했어요<br>(원 누리집 사정)</small></div>'; }">`;
 }
 /* 배경 이미지는 원본 + 프록시를 함께 써서, 한쪽이 막혀도 다른 쪽으로 보이게 */
 const bg = u => {
   if (!u) return "";
-  const px = esc(proxyImg(u));
+  const p0 = proxyImg(u);
+  if (!/^(https?:\/\/|data:image\/)/i.test(p0) && !/^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(p0)) return "";   // 2026-11-10 보안: 이상한 주소는 배경으로 안 씀
+  const px = esc(p0.replace(/[()'"\\\s]/g, c => encodeURIComponent(c)));
   return ` style="background-image:url('${px}')"`; 
 };
 const imgOf = x => x?.image || (VENUES.find(v => v.id === x?.venueId) || {}).image || "";
@@ -8374,9 +8430,12 @@ let LEAFLET_P = null;
 function loadLeaflet() {
   if (window.L && window.L.markerClusterGroup) return Promise.resolve(true);
   if (LEAFLET_P) return LEAFLET_P;
-  const css = href => new Promise(res => { const l = document.createElement("link"); l.rel = "stylesheet"; l.href = LEAFLET_CDN + href; l.onload = l.onerror = () => res(); document.head.appendChild(l) });
-  const js = src => new Promise((res, rej) => { const t = document.createElement("script"); t.src = LEAFLET_CDN + src; t.onload = res; t.onerror = rej; document.head.appendChild(t) });
-  LEAFLET_P = Promise.all([css("leaflet/1.9.4/leaflet.min.css"), css("leaflet.markercluster/1.5.3/MarkerCluster.min.css"), js("leaflet/1.9.4/leaflet.min.js")])
+  // 2026-11-10 보안: Leaflet 본체는 leafletjs.com에 공개된 무결성 값(SRI)으로 확인한 뒤에만 실행. 핀 묶음 플러그인은 공개 값이 없어 그대로 받음
+  const SRI = { "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css": "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js": "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" };
+  const full = p => /^https:/.test(p) ? p : LEAFLET_CDN + p;
+  const css = href => new Promise(res => { const l = document.createElement("link"); l.rel = "stylesheet"; l.href = full(href); if (SRI[l.href]) { l.integrity = SRI[l.href]; l.crossOrigin = "anonymous" } l.onload = l.onerror = () => res(); document.head.appendChild(l) });
+  const js = src => new Promise((res, rej) => { const t = document.createElement("script"); t.src = full(src); if (SRI[t.src]) { t.integrity = SRI[t.src]; t.crossOrigin = "anonymous" } t.onload = res; t.onerror = rej; document.head.appendChild(t) });
+  LEAFLET_P = Promise.all([css("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"), css("leaflet.markercluster/1.5.3/MarkerCluster.min.css"), js("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js")])
     .then(() => js("leaflet.markercluster/1.5.3/leaflet.markercluster.min.js").catch(() => {}))   // 핀 묶음은 없어도 지도는 뜸
     .then(() => !!window.L)
     .catch(() => { LEAFLET_P = null; return false });   // 실패하면 다음에 다시 시도
@@ -8561,7 +8620,11 @@ function goDecision(){
   ensureHome();
   document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x.dataset.jump==="decide"));
   document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.jump==="decide"));
-  const el=document.getElementById("decideNow"); if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+  // 2026-11-10: 위에 붙어 있는 머리(앱 이름·권역·검색) 높이만큼 덜 내려가서 '오늘 뭐하지?' 제목이 가리지 않게.
+  //   다른 탭에서 올 때 '맨 위로' 보정과 부딪히지 않게 바로 옮기고, 사진·글자가 늦게 그려져 밀리면 두 번 더 맞춤
+  window.__scrollReq=(window.__scrollReq||0)+1;
+  const go=()=>{ const el=document.getElementById("decideNow"); if(!el) return; const hh=document.querySelector("header.top")?.offsetHeight||0; window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-hh-8),behavior:"instant"}) };
+  go(); [80,350,800].forEach(ms=>setTimeout(go,ms));
 }
 document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => {
   if (b.dataset.jump === "decide") return goDecision();
@@ -9436,7 +9499,7 @@ function petList(s) {
   if (!list.length) list = CAFES;
   $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🐶 멍뭉이랑 갈 만한 카페</b><span>${list.length}곳</span></div>
    <p class="pfNote">${gu ? gu + " · " : ""}${big ? "넓은 야외 공간 위주 · " : ""}동반 규칙은 가게마다 달라요. 가기 전에 전화 한 통!</p>
-   <div class="acGrid">${list.slice(0, 10).map(c => `<article class="aiCard"><div class="acBody"><div class="acTags"><span>${esc(c.district)}</span>${c.big ? `<span class="on">넓은 야외</span>` : ""}</div><b>${esc(c.name)}</b><small>🐾 ${esc(c.pet)}</small><small>🕘 ${esc(c.hours)}</small>${c.note ? `<small class="acV">${esc(c.note)}</small>` : ""}<div class="acBtns"><button onclick="showOnMap('cafe','${jsq(c.id)}')">지도</button><button onclick="window.open('${mapLink(c.name + " " + c.district)}','_blank','noopener,noreferrer')">최신 정보 ↗</button></div></div></article>`).join("")}</div>
+   <div class="acGrid">${list.slice(0, 10).map(c => `<article class="aiCard"><div class="acBody"><div class="acTags"><span>${esc(c.district)}</span>${c.big ? `<span class="on">넓은 야외</span>` : ""}</div><b>${esc(c.name)}</b><small>🐾 ${esc(c.pet)}</small><small>🕘 ${esc(c.hours)}</small>${c.note ? `<small class="acV">${esc(c.note)}</small>` : ""}<div class="acBtns"><button onclick="showOnMap('cafe','${jsq(c.id)}')">지도</button><button onclick="window.open('${jsq(mapLink(c.name + " " + c.district))}','_blank','noopener,noreferrer')">최신 정보 ↗</button></div></div></article>`).join("")}</div>
    ${list.length > 10 ? `<p class="pfNote"><button class="btn" onclick="showTab('cafes')">멍카페 ${list.length}곳 전부 보기 →</button></p>` : ""}</div>`;
 }
 
@@ -9828,7 +9891,7 @@ function initDecisionMiniMap(picks){
   if(typeof L==='undefined'){ el.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">🗺 지도를 불러오는 중이에요…</div>'; loadLeaflet().then(ok=>{ const e2=document.getElementById('decisionMiniMap'); if(!e2) return; if(ok){ e2.innerHTML=''; initDecisionMiniMap(picks) } else e2.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">지도를 불러오지 못했어요. 아래 각 장소의 길찾기를 이용해 주세요.</div>' }); return }
   const pts=picks.map((p,i)=>({p,i,c:coordForDecision(p)})).filter(o=>o.c);
   if(!pts.length){el.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">위치 좌표를 확인 중이에요. 각 장소의 지도 버튼은 상세에서 바로 열 수 있어요.</div>';return}
-  try{ if(DECISION_MAP){DECISION_MAP.remove();DECISION_MAP=null} DECISION_MAP=L.map(el,{zoomControl:false,attributionControl:true}); L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'}).addTo(DECISION_MAP); const latlng=[]; pts.forEach(o=>{const ll=[o.c.lat,o.c.lng];latlng.push(ll);L.marker(ll).addTo(DECISION_MAP).bindTooltip(`${o.i+1}. ${o.p.name} · ${decisionPlaceType(o.p)}`,{permanent:false});}); if(latlng.length>1)L.polyline(latlng,{weight:4,opacity:.75}).addTo(DECISION_MAP); DECISION_MAP.fitBounds(L.latLngBounds(latlng).pad(.25)); setTimeout(()=>DECISION_MAP?.invalidateSize(),80);}catch(e){el.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">지도 미리보기를 불러오지 못했어요. 상세의 길찾기를 이용해 주세요.</div>'}
+  try{ if(DECISION_MAP){DECISION_MAP.remove();DECISION_MAP=null} DECISION_MAP=L.map(el,{zoomControl:false,attributionControl:true}); L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'}).addTo(DECISION_MAP); const latlng=[]; pts.forEach(o=>{const ll=[o.c.lat,o.c.lng];latlng.push(ll);L.marker(ll).addTo(DECISION_MAP).bindTooltip(`${o.i+1}. ${esc(o.p.name)} · ${esc(decisionPlaceType(o.p))}`,{permanent:false});}); if(latlng.length>1)L.polyline(latlng,{weight:4,opacity:.75}).addTo(DECISION_MAP); DECISION_MAP.fitBounds(L.latLngBounds(latlng).pad(.25)); setTimeout(()=>DECISION_MAP?.invalidateSize(),80);}catch(e){el.innerHTML='<div style="padding:20px;color:#6f7b74;font-size:13px">지도 미리보기를 불러오지 못했어요. 상세의 길찾기를 이용해 주세요.</div>'}
 }
 
 /* 2026-11-10: 첫 화면에 따로 있던 '💑 오늘 데이트는 어떻게 할랑가?'를 여기로 — 누구와=연인이면 결과 아래에 미리 짜 둔 데이트 코스 */
@@ -11861,7 +11924,7 @@ html[data-theme="dark"] body .hero .heroStats button:not(.heroNow) strong,html[d
     var anchor=document.getElementById("heroUpdated")||document.getElementById("heroLead"); if(!anchor) return;
     var b=document.createElement("button"); b.type="button"; b.className="impactGo";
     b.innerHTML='✨ 오늘 코스 골라줘 <small>조건 4개면 끝</small>';
-    b.onclick=function(){ var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
+    b.onclick=function(){ if(typeof goDecision==="function") return goDecision(); var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
     anchor.insertAdjacentElement("afterend",b);
   }
   function run(){ lead(); go(); }
@@ -11978,7 +12041,7 @@ html body .hero .impactGo.night{background:linear-gradient(135deg,#1f2d55,#3b3f8
       b.onclick=function(){ if (typeof window.runTheme==="function") window.runTheme("night"); else { var t=document.querySelector('.themeBtn[data-theme="night"]'); if(t) t.click(); } };
     } else {
       b.innerHTML='✨ 오늘 코스 골라줘 <small>조건 4개면 끝</small>';
-      b.onclick=function(){ var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
+      b.onclick=function(){ if(typeof goDecision==="function") return goDecision(); var d=document.getElementById("decideNow"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
     }
   }
   function run(){ try{ place() }catch(e){ console.warn("[onlyNow]",e) } nightMode(); }
