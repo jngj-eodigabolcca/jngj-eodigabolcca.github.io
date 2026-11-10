@@ -4315,13 +4315,13 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
     <div class="logo"><img src="favicon-64.png?v=2" alt="" aria-hidden="true"></div>
     <div><b><span class="brandLong">오늘, 전남광주 </span>어디가볼까?</b><small>전시·공연·축제·장날 · 오늘 갈 곳 골라드려요</small></div>
   </div>
-  <label class="search"><span>⌕</span><input id="search" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 — 도서관, 동네, 요가, 비엔날레"></label>
+  <label class="search"><span>⌕</span><input id="search" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 · 도서관, 요가, 비엔날레"></label>
   <button id="bigTextToggle" class="darkToggle bigTextBtn" type="button" onclick="toggleBigText()" aria-pressed="false" aria-label="글자 크게 보기" title="글자 크게 보기">가<small>+</small></button>
   <button id="darkToggle" class="darkToggle" type="button" onclick="cycleTheme()" aria-label="화면 밝기 바꾸기">🌓</button>
   <button id="install" class="install hidden">📲 앱 설치</button>
 </div>
 <div class="regionBar" id="regionBar" role="tablist" aria-label="권역 고르기"></div>
-<div class="topSearch"><label class="search"><span>⌕</span><input id="search2" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 — 도서관, 동네, 요가, 비엔날레"></label></div>
+<div class="topSearch"><label class="search"><span>⌕</span><input id="search2" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="뭐든 찾아보쇼잉 · 도서관, 요가, 비엔날레"></label></div>
 </header>
 <div class="wrap"><div class="homeBar" id="homeBar"></div></div>
 
@@ -8082,7 +8082,7 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
   }).join("");
   const mkEv = EVENTS.filter(e => (pool.some(v => v.id === e.venueId) || /야시장|장터|전통시장/.test(e.title + " " + (e.subtype || ""))) && (!e.end || e.end >= t))
     .sort((a, b) => (a.start || t).localeCompare(b.start || t));
-  const cnt = gg => pool.filter(gg[2]).length;
+  const cnt = gg => pool.filter(v => gg[2](v) && (MK.gu === "전체" || v.district === MK.gu)).length;   // 2026-11-11: 고른 구 기준으로 셈 (전에는 권역 전체)
   const btn = v => `<button onclick="aiProfile('${jsq(v.id)}')">${esc(v.name)}<small>${esc(v.district)}${nightOn(v, t) ? " · 🌙 " + esc(nightOn(v, t)[1]) : ""}</small></button>`;
   const always = pool.filter(v => !v.market.days && !mkClosedOn(v, t));
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MARKETS</span><h2>시장 한 바퀴 돌아볼랑가?<small>${REGION === "gj" ? "양동시장 통닭부터 말바우 장날·남광주 새벽 해산물·대인예술야시장까지" : esc(RNAME()) + " 5일장과 상설시장"}</small></h2></div><span>${pool.length}곳</span></div>
@@ -8779,7 +8779,9 @@ function renderSearch() {
       : islandExpoIntent
         ? ALL.EVENTS.filter(x => x.id === "ys-island-expo-2026")
         : D.EVENTS.filter(x => hitsAll(q, x));
-    const pl = islandVisitIntent || islandExpoIntent ? [] : D.VENUES.filter(x => hitsAll(q, x));
+    // 2026-11-11: '문화센터·복지관' 같은 시설 이름을 찾으면, 나들이는 소개글 속 단어가 아니라 이름·종류로만 찾음
+    const facilityQ = /문화센터|복지관|주민센터|행정복지센터|평생학습관|청소년수련관|체육센터|체육관|수영장|문화의집/.test(q);
+    const pl = islandVisitIntent || islandExpoIntent ? [] : D.VENUES.filter(x => facilityQ ? hits(q, x, ["name", "kind", "category", "aliases"]) : hitsAll(q, x));
     const fd = islandVisitIntent || islandExpoIntent ? [] : D.FOOD.filter(x => hitsAll(q, x));
     const bkQ = /빵지순례|베이커리|빵집|빵/.test(q) ? q.replace(/빵지순례|베이커리|빵집|빵/g, "").trim() : q;
     const bk = islandVisitIntent || islandExpoIntent ? [] : D.BAKERIES.filter(x => !bkQ || hitsAll(bkQ, x));
@@ -12778,11 +12780,11 @@ html body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){
   text-align:left;line-height:1.2!important;font-size:17px!important;font-weight:900!important;letter-spacing:-.2px;
   transition:transform .15s ease, box-shadow .2s ease;-webkit-tap-highlight-color:transparent}
 html:not([data-theme="dark"]) body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){
-  background:linear-gradient(115deg,#ff5a26 0%,#ff7a2f 45%,#ffa646 100%)!important;color:#fff!important;
+  background:linear-gradient(115deg,#e9481a 0%,#f2601f 55%,#f77a24 100%)!important;color:#fff!important;
   box-shadow:0 12px 26px -8px rgba(255,90,38,.55),inset 0 1px 0 rgba(255,255,255,.35)!important}
 html body #decideNow .decideGo .goIc{flex:0 0 40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:20px;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
 html body #decideNow .decideGo .goTx{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px}
-html body #decideNow .decideGo .goTx small{display:block;font-size:12px;font-weight:700;opacity:.95;text-shadow:0 1px 1px rgba(150,50,0,.18);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body #decideNow .decideGo .goTx small{display:block;font-size:12.5px;font-weight:700;opacity:1;color:#fff;text-shadow:0 1px 2px rgba(110,30,0,.35);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html body #decideNow .decideGo .goArr{flex:0 0 36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;background:#fff;color:#ff5a26;box-shadow:0 3px 8px rgba(120,40,0,.18);transition:transform .2s ease}
 html body #decideNow .decideGo::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;pointer-events:none;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-18deg);animation:goShine 4.5s ease-in-out 1.2s infinite}
@@ -12801,5 +12803,29 @@ html body #decideNow .decideGo:focus-visible{outline:3px solid #1f3d73;outline-o
 @media(min-width:900px){
   html body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){width:auto;min-width:300px;flex:0 0 auto}
 }
+</style>
+<style id="fix20261111">
+/* ── 2026-11-11 (이 블록만 지우면 원래대로) ──
+   ① 검색창: 누르면 안쪽에 상자가 하나 더 생기던 것 → 바깥 테두리 하나만 진해지게, 돋보기는 동그라미 안으로
+   ② '아이랑 어디 갈까?' 카드: 연한 주황 위 흰 글씨가 안 보이던 것 → 바탕을 진하게, 행사·갈 곳 칸은 흰 바탕에 진한 글씨 */
+html body header.top label.search input:focus,html body header.top label.search input:focus-visible{outline:none!important;box-shadow:none!important;border:0!important;background:transparent!important}
+html body header.top label.search:not(#_):not(#_){border:2px solid #24467f!important;border-radius:999px!important;background:#fff!important;box-shadow:0 4px 14px rgba(24,47,89,.10)!important;padding-left:6px!important;gap:8px!important;transition:box-shadow .15s,border-color .15s}
+html body header.top label.search:not(#_):not(#_):focus-within{border-color:#ff6a2b!important;box-shadow:0 0 0 4px rgba(255,106,43,.18)!important}
+html body header.top label.search:not(#_):not(#_)>span{flex:0 0 32px;width:32px;height:32px;border-radius:50%;display:block!important;background:#24467f url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 20 20'/%3E%3C/svg%3E") center/17px no-repeat;font-size:0!important;color:transparent!important;transition:background-color .15s}
+html body header.top label.search:not(#_):not(#_):focus-within>span{background-color:#ff6a2b}
+html body header.top label.search:not(#_):not(#_) input{min-width:0;text-overflow:ellipsis}
+html body header.top label.search:not(#_):not(#_) input::placeholder{color:#55607a!important;font-weight:600}
+html[data-theme="dark"] body header.top label.search:not(#_):not(#_){background:#262624!important;border-color:#5f8fd6!important}
+html[data-theme="dark"] body header.top label.search:not(#_):not(#_) input::placeholder{color:#c9d1cc!important}
+html[data-theme="dark"] body header.top label.search:not(#_):not(#_)>span{background-color:#5f8fd6}
+html[data-theme="dark"] body header.top label.search:not(#_):not(#_):focus-within{border-color:#ffb070!important;box-shadow:0 0 0 4px rgba(255,176,112,.2)!important}
+html[data-theme="dark"] body header.top label.search:not(#_):not(#_):focus-within>span{background-color:#e0803a}
+html:not([data-theme="dark"]) body .concertQuickAccess .kidsQuickHome:not(#_):not(#_){background:radial-gradient(circle at 92% 16%,rgba(255,255,255,.18) 0 6px,transparent 7px),radial-gradient(circle at 70% 88%,rgba(255,255,255,.14) 0 4px,transparent 5px),linear-gradient(120deg,#e8501f 0%,#f06a22 55%,#f5862a 100%)!important;box-shadow:0 10px 22px -6px rgba(220,80,20,.45)!important}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqTitle{color:#fff!important;text-shadow:0 1px 3px rgba(110,30,0,.4)!important}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i{background:#fff!important;color:#b33d0c!important;font-weight:800!important;box-shadow:0 2px 6px rgba(120,40,0,.15)}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i *,html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips em{color:#b33d0c!important}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqGo{color:#d2471a!important}
+html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i{background:#2a2014!important;color:#ffcf9e!important}
+html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i *,html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips em{color:#ffcf9e!important}
 </style>
 </body></html>
