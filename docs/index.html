@@ -12626,10 +12626,10 @@ html body #decideNow #nowStart.mergedNow .nowStartHead .nowRefresh{flex:0 0 auto
   html body #decideNow .decideGrid{grid-template-columns:minmax(0,1fr)!important;min-width:0!important;max-width:100%!important}
   html body #decideNow .decideGrid > *{min-width:0!important;max-width:100%!important}
   html body .decideGrid .choiceGroup.themeGroup{grid-template-columns:minmax(0,1fr)!important}
-  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"]{min-width:0!important;max-width:100%!important;display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:none;gap:6px!important;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:18px}
+  /* 2026-11-10: '무엇을?' 7가지를 밀지 않고 한 화면에 — 글자 길이만큼만 차지하고 줄바꿈 */
+  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"]{min-width:0!important;max-width:100%!important;display:flex!important;flex-wrap:wrap!important;overflow:visible!important;gap:6px!important;-webkit-mask-image:none!important;mask-image:none!important;padding-right:0!important}
   html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"]::-webkit-scrollbar{display:none}
-  html body .decideGrid .choiceGroup.themeGroup > b::after{content:"  · 옆으로 밀면 7가지 ›";font-weight:600;color:var(--muted,#888);font-size:11.5px}
-  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"] button{flex:0 0 auto!important;width:auto!important;white-space:nowrap!important;padding:6px 11px!important}
+  html body .decideGrid .choiceGroup.themeGroup .choiceRow[data-choice="theme"] button{flex:0 0 auto!important;width:auto!important;white-space:nowrap!important;padding:6px 10px!important;font-size:12.5px!important;min-height:34px!important}
 }
 </style>
 <script id="homeMerge20261110Js">
