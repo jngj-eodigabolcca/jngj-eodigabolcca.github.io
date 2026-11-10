@@ -12491,6 +12491,13 @@ html body #foodQuick:not(#_){display:none!important}
   html body .decideGrid:not(#_) .choiceGroup.themeGroup{flex:1 1 100%!important}
   html body .decideGrid:not(#_) .choiceRow{flex-wrap:wrap!important;width:auto!important}
 }
+/* 2026-11-10: 첫 화면 바뀌는 사진 칸이 너무 크게 들어와서 줄임 (폰 약 242px → 약 190px, PC 약 445px → 최대 330px) */
+@media(max-width:899px){
+  html body .hero .photoCard:not(#_){height:clamp(170px,50vw,215px)!important;min-height:170px!important;aspect-ratio:auto!important;margin-top:10px!important}
+}
+@media(min-width:900px){
+  html body .hero .photoCard:not(#_){aspect-ratio:16/10!important;max-height:330px!important}
+}
 .libSmallFold{margin-top:20px}
 .autoTag{display:inline-block;vertical-align:middle;font-style:normal;font-size:12px;font-weight:800;letter-spacing:0;padding:3px 8px;border-radius:999px;background:var(--green-l,#e3f1ec);color:var(--green-d,#1f5c4c);margin-left:4px}
 :root[data-theme="dark"] .autoTag{background:#1f3a33;color:#9fd8c6}
