@@ -4412,7 +4412,7 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
         <div id="detailResults" class="detailResults" aria-live="polite"></div>
       </div>
     </div>
-    <div class="decideAction"><div><b>최신 정보에서 맞춤 코스를 골라드려요.</b><small>지금 출발해 도착했을 때 입장마감 전이고 충분히 볼 시간이 있는 곳만, 가까운 동선으로 묶어요.</small></div><button class="decideGo" id="decideGo">✨ 오늘 코스 골라줘</button></div>
+    <div class="decideAction"><div><b>최신 정보에서 맞춤 코스를 골라드려요.</b><small>지금 출발해 도착했을 때 입장마감 전이고 충분히 볼 시간이 있는 곳만, 가까운 동선으로 묶어요.</small></div><button class="decideGo" id="decideGo" aria-label="오늘 코스 골라줘"><span class="goIc" aria-hidden="true">✨</span><span class="goTx">오늘 코스 골라줘<small>고른 조건으로 바로 묶어드려요</small></span><span class="goArr" aria-hidden="true">→</span></button></div>
   </div>
 </section>
 
@@ -12767,4 +12767,39 @@ html[data-theme="dark"] body :is(.on,.active) small{color:#fff!important}
   document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".skipLink"); if(!a) return; e.preventDefault(); var m=document.getElementById("mainContent"); if(m){ m.focus({preventScroll:true}); var hh=(document.querySelector("header.top")||{}).offsetHeight||0; window.scrollTo({top:Math.max(0,m.getBoundingClientRect().top+scrollY-hh-8),behavior:"instant"}) } });
 })();
 </script>
+<style id="goBtn20261110">
+/* ── 2026-11-10 '오늘 코스 골라줘' 버튼 다듬기 (이 블록만 지우면 원래대로) ──
+   · 폰: 버튼을 감싸던 남색 상자를 없애 위아래 여백 어긋남 해소
+   · 버튼: 아이콘 · 제목+한 줄 설명 · 화살표 3칸 구성, 은은한 빛 지나감(움직임 줄이기 설정이면 멈춤) */
+html body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){
+  position:relative;overflow:hidden;width:100%;height:auto!important;min-height:62px!important;margin:0!important;
+  padding:10px 12px 10px 12px!important;border-radius:18px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;
+  text-align:left;line-height:1.2!important;font-size:17px!important;font-weight:900!important;letter-spacing:-.2px;
+  transition:transform .15s ease, box-shadow .2s ease;-webkit-tap-highlight-color:transparent}
+html:not([data-theme="dark"]) body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){
+  background:linear-gradient(115deg,#ff5a26 0%,#ff7a2f 45%,#ffa646 100%)!important;color:#fff!important;
+  box-shadow:0 12px 26px -8px rgba(255,90,38,.55),inset 0 1px 0 rgba(255,255,255,.35)!important}
+html body #decideNow .decideGo .goIc{flex:0 0 40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:20px;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+html body #decideNow .decideGo .goTx{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:3px}
+html body #decideNow .decideGo .goTx small{display:block;font-size:12px;font-weight:700;opacity:.95;text-shadow:0 1px 1px rgba(150,50,0,.18);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body #decideNow .decideGo .goArr{flex:0 0 36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:900;background:#fff;color:#ff5a26;box-shadow:0 3px 8px rgba(120,40,0,.18);transition:transform .2s ease}
+html body #decideNow .decideGo::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-18deg);animation:goShine 4.5s ease-in-out 1.2s infinite}
+@keyframes goShine{0%{left:-60%}28%,100%{left:130%}}
+html body #decideNow .decideGo:hover .goArr{transform:translateX(3px)}
+html body #decideNow .decideGo:active{transform:scale(.98)}
+html body #decideNow .decideGo:focus-visible{outline:3px solid #1f3d73;outline-offset:3px}
+/* 밤(어두운 화면): 기존 노란 버튼 색을 살리고 화살표만 맞춤 */
+:root[data-theme="dark"] #decideNow .decideGo .goIc{background:rgba(59,39,6,.12);box-shadow:none}
+:root[data-theme="dark"] #decideNow .decideGo .goTx small{color:#5a3a08;text-shadow:none;opacity:1}
+:root[data-theme="dark"] #decideNow .decideGo .goArr{background:#3b2706;color:#ffbd45}
+@media (prefers-reduced-motion:reduce){html body #decideNow .decideGo::after{animation:none;display:none}}
+@media(max-width:899px){
+  html body #decideNow .decideAction:not(#_):not(#_){background:none!important;padding:0!important;margin:16px 0 2px!important;border-radius:0!important;box-shadow:none!important;border:0!important}
+}
+@media(min-width:900px){
+  html body #decideNow .decideAction>button.decideGo:not(#_):not(#_):not(#_){width:auto;min-width:300px;flex:0 0 auto}
+}
+</style>
 </body></html>
