@@ -5077,7 +5077,7 @@ function updateLibTile() {
   let n = LIBS.length, d = "강좌·책 읽기 좋은 곳";
   try {
     const g = LOCAL_GU !== "전체" && REGIONS[REGION].districts.includes(LOCAL_GU) ? LOCAL_GU : "전체";
-    n = LIBS.filter(x => (g === "전체" || x.district === g) && isMainLib(x)).filter(l => { const st = libToday(l); return st.open !== false && !st.done }).length;
+    n = LIBS.filter(x => (g === "전체" || x.district === g) && isMainLib(x)).filter(l => { const st = libToday(l); return (st.open !== false || st.later) && !st.done }).length;
     d = (g === "전체" ? "" : g + " · ") + "공공 · 오늘 운영";
   } catch (e) {}
   el.textContent = LIBS.length ? n : "—";
@@ -8172,7 +8172,7 @@ function renderLocal() {
   const gu = x => LOCAL_GU === "전체" || x.district === LOCAL_GU;
   const libs = sortHome(LIBS.filter(gu)).map(l => [l, libToday(l)]).sort((a, b) => libTier(a[0]) - libTier(b[0]) || libBooks(b[0]) - libBooks(a[0]));
   const mainLibs = libs.filter(([l]) => isMainLib(l)), smallLibs = libs.filter(([l]) => !isMainLib(l));
-  const openLibs = mainLibs.filter(([, s]) => s.open !== false && !s.done);
+  const openLibs = mainLibs.filter(([, s]) => (s.open !== false || s.later) && !s.done);
   const evening = p => /^(1[89]|2\d):/.test(p.time || "");
   const weekend = p => /토|일|주말/.test(p.days || "");
   let progs = PROGRAMS.filter(gu).filter(p => !p.end || p.end >= t);
@@ -12439,9 +12439,9 @@ html body .libSmallFold>summary h3.libSmallHead .libSub{white-space:normal!impor
   function counts(){
     var t=todayISO(), g=guOf(), inGu=function(x){ return !g || x.district===g };
     var c={lib:0,prog:0,mk:0,free:0};
-    try { c.lib=LIBS.filter(inGu).filter(isMainLib).filter(function(l){ var st=libToday(l); return st.open!==false && !st.done }).length } catch(e){}
+    try { c.lib=LIBS.filter(inGu).filter(isMainLib).filter(function(l){ var st=libToday(l); return (st.open!==false || st.later) && !st.done }).length } catch(e){}   // 2026-11-10: 아침 개관 전에 0으로 나오던 것 → 오늘 여는 곳(개관 전 포함)
     try { c.prog=PROGRAMS.filter(inGu).filter(function(p){ return (!p.end||p.end>=t) && progState(p)[0]==="접수 중" }).length } catch(e){}
-    try { c.mk=VENUES.filter(function(v){ return v.market && inGu(v) && (jangOn(v,t)||nightOn(v,t)) && !mkClosedOn(v,t) }).length } catch(e){}
+    try { c.mk=VENUES.filter(function(v){ return v.market && inGu(v) && !mkClosedOn(v,t) && (jangOn(v,t)||nightOn(v,t)||(!v.market.days && !(v.market.weekly||[]).length)) }).length } catch(e){}   // 2026-11-10: 장날 없는 동네(동구 등)는 늘 0이던 것 → 매일 여는 상설시장도 셈
     try { c.free=EVENTS.filter(function(e){ return inGu(e) && happensOn(e,t) && /무료/.test((e.price||"")+" "+(e.discount||"")+" "+(e.tags||[]).join(" ")) }).length } catch(e){}
     return {c:c,g:g};
   }
@@ -12452,7 +12452,7 @@ html body .libSmallFold>summary h3.libSmallHead .libSub{white-space:normal!impor
     el.hidden=false;
     var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
     el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b><small>'+esc(where)+(r.g?"":" · 사는 동네를 고르면 그 동네만")+'</small></div><div class="ltRow">'
-      +cell("lib","📚",c.lib,"문 연 도서관","지금 문 연 공공·어린이 도서관 (작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"오늘 장","오늘 장날인 시장·야시장 (장날 없이 매일 여는 시장 제외)")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
+      +cell("lib","📚",c.lib,"여는 도서관","오늘 여는 공공·어린이 도서관 (아직 문 열기 전인 곳 포함, 작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"여는 시장","오늘 여는 시장 (장날인 시장·야시장 + 매일 여는 상설시장, 정기 휴무 제외)")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
   }
   // 동네 탭을 열고 '📚 동네 도서관' 목록으로 바로 내려감 (숫자를 센 동네와 같은 동네로 맞춤)
   window.goLocalLib=function(){
@@ -12470,7 +12470,7 @@ html body .libSmallFold>summary h3.libSmallHead .libSub{white-space:normal!impor
     var k=b.dataset.lt;
     if(k==="lib"){ window.goLocalLib() }
     else if(k==="prog"){ showTab("local"); try{ setLocalF("접수 중") }catch(e){} }
-    else if(k==="mk"){ try{ setNowWhen(0); setNowCat("장날") }catch(e){} var n=document.getElementById("nowShow"); if(n) n.scrollIntoView({behavior:"smooth",block:"start"}) }
+    else if(k==="mk"){ showTab("markets"); try{ MK.group="전체"; setMk("gu", guOf()||"전체") }catch(e){} }
     else if(k==="free"){ showTab("events"); setTimeout(function(){ var f=document.querySelector('#chips [data-filter="무료"]'); if(f) f.click() },60) }
   });
   function place(){
