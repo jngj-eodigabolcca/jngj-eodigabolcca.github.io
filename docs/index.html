@@ -4961,12 +4961,12 @@ async function guardedFetch(url, options = {}, timeoutMs = 10000) {
    · url·image 같은 주소 칸은 https:// · http:// · 도메인 · 앱 안 파일 경로만 남기고 나머지(javascript: 등)는 비움
    · __proto__ 같은 위험한 키는 버림 */
 const CLEAN_URL_KEY = /^(url|urls|image|images|img|photo|thumb|thumbnail|poster|link|homepage|href|ticketUrl|bookUrl)$/i;
+/* 주소 방식이 http(s)·data:image 가 아닌 것(javascript:, vbscript:, data:text 등)만 위험한 주소로 봄. 상대 경로·//주소·도메인만 적힌 주소는 그대로 */
+const unsafeUrl = x => /^\s*(?!https?:|data:image\/)[a-z][a-z0-9+.\-]*:/i.test(String(x || "").replace(/[\u0000-\u001f\s]+/g, ""));
 function cleanUrlStr(v) {
   const t = String(v).trim();
-  if (!t) return "";
-  if (/^https?:\/\//i.test(t) || /^[\w.-]+\.[a-z]{2,}(?:[\/?#]\S*)?$/i.test(t) || /^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(t))
-    return t.replace(/["'<>`\s\\]/g, c => encodeURIComponent(c));
-  return "";
+  if (!t || unsafeUrl(t)) return "";
+  return t.startsWith("data:image/") ? t.replace(/["'<>`\\]/g, "") : t.replace(/["'<>`\s\\]/g, c => encodeURIComponent(c));
 }
 function cleanData(v, key) {
   if (typeof v === "string") return key && CLEAN_URL_KEY.test(key) ? cleanUrlStr(v) : v.replace(/</g, "〈").replace(/>/g, "〉");
@@ -5327,7 +5327,8 @@ function renderHeroPics() {
     const raw = rawImg(p.u), px = proxyImg(p.u);
     const info = p.t === "v" ? VENUES.find(v => v.id === p.id) : p.t === "e" ? EVENTS.find(e => e.id === p.id) : null;
     const desc = p.live && info ? ["오늘 열려요", info.venue || info.category || ""].filter(Boolean).join(" · ") : info ? [info.kind || info.category || "",info.district || info.area || ""].filter(Boolean).join(" · ") : p.t === "g" ? "자연 속에서 만나는 오늘의 풍경" : "오늘의 사진 속 장소";
-    return `<figure class="${i === 0 ? "on" : ""}" data-desc="${esc(desc)}" data-cap="${esc(p.c)}" onclick="openPic('${p.t}','${jsq(p.id)}')" role="button" tabindex="0" aria-label="${esc(p.c)} 사진 크게 보기"><img src="${esc(px || raw)}" data-raw="${esc(raw)}" data-step="0" alt="${esc(p.c)}" ${i === 0 ? 'loading="eager"' : 'loading="lazy"'} referrerpolicy="no-referrer" onerror="heroImgFail(this)"><div class="ph heroPhotoFallback"></div></figure>`;
+    const bgu = String(px || raw).replace(/[()'"\\\s]/g, c => encodeURIComponent(c));
+    return `<figure class="${i === 0 ? "on" : ""}" style="--hero-bg:url('${esc(bgu)}')" data-desc="${esc(desc)}" data-cap="${esc(p.c)}" onclick="openPic('${p.t}','${jsq(p.id)}')" role="button" tabindex="0" aria-label="${esc(p.c)} 사진 크게 보기"><img src="${esc(px || raw)}" data-raw="${esc(raw)}" data-step="0" alt="${esc(p.c)}" ${i === 0 ? 'loading="eager"' : 'loading="lazy"'} referrerpolicy="no-referrer" onerror="heroImgFail(this)"><div class="ph heroPhotoFallback"></div></figure>`;
   }).join("");
   const dots = $("#dots"); dots.innerHTML = pics.map((_, i) => `<i class="${i === 0 ? "on" : ""}" onclick="goSlide(${i})" role="button" tabindex="0" aria-label="${i + 1}번째 사진"></i>`).join("");
   heroFx(x);
@@ -5896,7 +5897,7 @@ window.heroImgFail = img => {
 };
 function imgWithFallback(u, alt="", cls=""){
   if (!u) return `<div class="ph emptyPhoto" title="공공데이터·누리집 원래 자료에 사진이 없어요"><span>📷</span><small>원래 자료에 사진이 없어요</small></div>`;
-  const okImg = x => /^(https?:\/\/|data:image\/)/i.test(x || "") || /^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(x || "") ? esc(x) : "";   // 2026-11-10 보안
+  const okImg = x => x && !unsafeUrl(x) ? esc(x) : "";   // 2026-11-10 보안
   const raw = okImg(rawImg(u)), px = okImg(proxyImg(u));
   if (!raw && !px) return `<div class="ph emptyPhoto"><span>📷</span><small>사진 주소가 올바르지 않아요</small></div>`;
   return `<img class="${esc(cls)}" src="${px || raw}" data-proxy="${px}" data-raw="${raw}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer"
@@ -5906,7 +5907,7 @@ function imgWithFallback(u, alt="", cls=""){
 const bg = u => {
   if (!u) return "";
   const p0 = proxyImg(u);
-  if (!/^(https?:\/\/|data:image\/)/i.test(p0) && !/^(?:\.\/)?[\w\-./]+\.(?:jpe?g|png|webp|gif|svg|avif)$/i.test(p0)) return "";   // 2026-11-10 보안: 이상한 주소는 배경으로 안 씀
+  if (!p0 || unsafeUrl(p0)) return "";   // 2026-11-10 보안: 위험한 주소는 배경으로 안 씀
   const px = esc(p0.replace(/[()'"\\\s]/g, c => encodeURIComponent(c)));
   return ` style="background-image:url('${px}')"`; 
 };
@@ -12498,6 +12499,11 @@ html body #foodQuick:not(#_){display:none!important}
 @media(min-width:900px){
   html body .hero .photoCard:not(#_){aspect-ratio:16/10!important;max-height:330px!important}
 }
+/* 2026-11-10: 첫 화면 바뀌는 사진 — 칸이 낮아져 위아래가 잘리던 것 → 사진 전체를 보여 주고 남는 자리는 같은 사진을 흐리게 깔기 */
+html body .hero .slides figure{background:#2b2b2b;overflow:hidden}
+html body .hero .slides figure::before{content:"";position:absolute;inset:-24px;background:var(--hero-bg) center/cover no-repeat;filter:blur(18px) brightness(.8) saturate(1.1);z-index:0}
+html body .hero .slides figure img{position:relative;z-index:1;object-fit:contain!important;transform:none!important}
+html body .hero .slides figure .heroPhotoFallback{z-index:1}
 .libSmallFold{margin-top:20px}
 .autoTag{display:inline-block;vertical-align:middle;font-style:normal;font-size:12px;font-weight:800;letter-spacing:0;padding:3px 8px;border-radius:999px;background:var(--green-l,#e3f1ec);color:var(--green-d,#1f5c4c);margin-left:4px}
 :root[data-theme="dark"] .autoTag{background:#1f3a33;color:#9fd8c6}
