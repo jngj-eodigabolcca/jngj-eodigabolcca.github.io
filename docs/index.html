@@ -4306,10 +4306,11 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
 </style>
 </head>
 <body data-tab="home" data-screen="home">
+<a class="skipLink" href="#mainContent">본문 바로가기</a>
 <script>/* 글자 크게 보기: 이 기기에만 기억 */try{if(localStorage.getItem("glm_bigtext")==="1")document.documentElement.classList.add("bigText")}catch(e){}</script>
 <script>/* 사진 위 날씨 "누르면 날씨탭으로 가요" 안내: 한 번 눌러봤으면 이 기기에선 숨김 */try{if(localStorage.getItem("wx_hint_seen")==="1")document.documentElement.classList.add("wxHintSeen")}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="kdDad"><rect x="12" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><rect x="19" y="37" width="5" height="16" rx="2.5" fill="#4b5d70"/><path d="M11 39V27a7 7 0 0 1 14 0v12z" fill="#2f8f83"/><path d="M12 26q-3 6-2 12" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="18" cy="11" r="6.4" fill="#f4cba3"/><path d="M11.6 11a6.4 6.4 0 0 1 12.8-1q-4-3-8.7-.5-2 1-4.1 1.5z" fill="#4a3426"/><circle cx="20.6" cy="12.4" r=".9" fill="#3a2a1a"/></g><g id="kdMom"><rect x="13.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><rect x="18.6" y="39" width="3.8" height="14" rx="1.9" fill="#f4cba3"/><path d="M11.2 11a6.8 6.8 0 0 1 13.6 0v9.5q-6.8 2-13.6 0z" fill="#5a3a28"/><path d="M12.2 27a5.8 5.8 0 0 1 11.6 0l3.2 14h-18z" fill="#ef7a63"/><path d="M12.8 26q-3 6-2.2 11" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="18" cy="11.6" r="6" fill="#f4cba3"/><path d="M11.8 11a6.2 6.2 0 0 1 12.4 0q-3.5-3.4-7.6-2.2-2.6.9-4.8 2.2z" fill="#5a3a28"/><circle cx="20.4" cy="12.8" r=".9" fill="#3a2a1a"/><circle cx="21.6" cy="14.6" r="1" fill="#f6a98a" opacity=".7"/></g></defs></svg>
-<header class="top"><div class="wrap topIn">
+<header class="top"><h1 class="srOnly appH1">오늘, 전남광주 어디가볼까?</h1><div class="wrap topIn">
   <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})" role="button" tabindex="0" aria-label="맨 위로">
     <div class="logo"><img src="favicon-64.png?v=2" alt="" aria-hidden="true"></div>
     <div><b><span class="brandLong">오늘, 전남광주 </span>어디가볼까?</b><small>전시·공연·축제·장날 · 오늘 갈 곳 골라드려요</small></div>
@@ -4360,13 +4361,14 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
     <div class="photoCard">
       <div class="slides" id="slides"></div>
       <div class="fx" id="heroFx" aria-hidden="true"></div>
+      <button type="button" class="slidePause" id="slidePause" aria-pressed="false" aria-label="사진 자동 넘김 멈추기" title="사진 자동 넘김 멈추기">⏸</button>
       <div class="wx" id="wx" role="button" tabindex="0" onclick="window.goWeatherTab&&goWeatherTab()" title="오늘 날씨·옷차림·챙길 것 보기" aria-label="날씨 자세히 보기">날씨 불러오는 중…</div>
       <div class="slideCap"><span id="slideDesc" aria-live="polite"></span><span id="slideName"></span><div class="dots" id="dots"></div></div>
     </div>
   </div>
 </section>
 
-<main class="wrap">
+<main class="wrap" id="mainContent" tabindex="-1">
 <section class="noticeBoard" id="noticeBoard" hidden aria-live="polite"></section>
 <section class="decideWrap mainDecision" id="decideNow">
   <div class="decide">
@@ -4487,7 +4489,7 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
 <div class="ai" id="aiBox">
   <div class="aiLeft">
     <div class="aiHead"><img class="js-creaming-src aiCream" alt="" aria-hidden="true"><div><b id="aiName">크리밍한테 물어보기</b><small id="aiSub">하고 싶은 걸 적거나 아래 버튼을 눌러보쇼.</small></div></div>
-    <div class="aiInput"><input id="aiq" type="text" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
+    <div class="aiInput"><input id="aiq" type="text" aria-label="크리밍한테 물어볼 내용 (예: 비 오는 날 아이와 실내)" enterkeyhint="go" autocomplete="off" placeholder="예: 광주에서 무안 박물관 보고 떡갈비 먹고 싶어"><button id="ask">추천</button></div>
         <div class="quick" id="quick"><button data-go="local">📚 동네 도서관·강좌</button><button>아이와 무료로</button><button>비 오는 날 실내</button><button>이번 주말 공연</button><button>축제 뭐 있어?</button><button>전통시장 구경</button><button><span>산책하기 <span class="nw">좋은 곳</span></span></button><button>5·18 역사 걷기</button><button>역사 유적</button><button>무등산 등산하고 보리밥</button><button>비엔날레 + 카페</button><button>강아지랑 카페</button><button>박물관 + 맛집</button><button>양림동 데이트</button><button>빵지순례</button><button>떡갈비 먹고 영화</button></div>
   </div>
   <div id="answer" class="answer"><div class="creamingState"><img class="js-creaming-src" alt="크리밍"><div><b>크리밍이 오늘 갈 곳을 골라드릴게요.</b><small>원하는 조건을 적어주세요. 오늘 실제 이용 가능한 일정과 장소부터 살펴볼게요.<span class="crEx"><br>예) "오늘 6시 이후 데이트", "비 오면 아이와 실내", "무료 전시 + 근처 저녁"</span></small></div></div></div>
@@ -5334,7 +5336,7 @@ function renderHeroPics() {
   heroFx(x);
   if (!pics.length) { $("#slideName").textContent = `📍 ${RNAME()} 사진은 자동 수집으로 채워지는 중이에요`; clearInterval(SLIDE_TIMER); return }
   goSlide(0);
-  clearInterval(SLIDE_TIMER); SLIDE_TIMER = setInterval(() => goSlide(SLIDE + 1), 6000);
+  clearInterval(SLIDE_TIMER); SLIDE_TIMER = setInterval(() => { if (!window.__slidePaused) goSlide(SLIDE + 1) }, 6000);   // 2026-11-10 접근성: ⏸ 버튼으로 멈춤
 }
 window.goSlide = i => {
   const fs = [...document.querySelectorAll("#slides figure")]; if (!fs.length) return;
@@ -7536,7 +7538,7 @@ function hereBox(v) {
 function placeCard(v) {
   const trail = v.kind === "무등산 트레킹";
   const rows = (trail ? [["코스", v.hours], ["출발", (v.parking || "").replace("출발: ", "")], ["확인", v.closed], ["요금", v.price]] : [["시간", v.hours], ["휴관", v.closed], ["요금", v.price], ["아이", v.kids]]).filter(r => r[1]);
-  return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow">${flagTag(v)}${homeTag(v)}<span class="kind k-${esc(v.kind)}">${esc(v.kind)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : v.inout === "실내" ? "🏠 실내" : "🏠🌤 실내·야외"}</span>` : ""}</div><b>${esc(v.name)}</b>
+  return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" aria-label="${esc(v.name)} 자세히 보기" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow">${flagTag(v)}${homeTag(v)}<span class="kind k-${esc(v.kind)}">${esc(v.kind)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : v.inout === "실내" ? "🏠 실내" : "🏠🌤 실내·야외"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${v.note || v.desc ? `<small class="note">${esc(v.note || v.desc)}</small>` : ""}${v.updated ? `<small class="upd">↻ ${esc(v.updated.slice(5).replace("-", "."))} 관광공사 정보로 갱신</small>` : ""}
   <dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>
   ${visitLine(v)}${parkLine(v)}${petLine(v)}${hereBox(v)}
@@ -8028,7 +8030,7 @@ function mkStatus(v) {
 function marketCard(v) {
   const m = v.market, rows = [["시간", v.hours], ["쉬는 날", v.closed], ["사는 것", (m.buy || []).join(" · ")]].filter(r => r[1]);
   const near = typeof nearest === "function" ? nearest(v, FOOD, 1.2) : null;
-  return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow"><span class="kind k-${esc(m.type)}">${esc(m.type)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : "🏠 실내"}</span>` : ""}</div><b>${esc(v.name)}</b>
+  return `<div class="listCard place withCover"><div class="coverBtn" role="button" tabindex="0" aria-label="${esc(v.name)} 자세히 보기" onclick="aiProfile('${jsq(v.id)}')">${cover(v, v.kind)}</div><div class="listMain"><div class="kindRow"><span class="kind k-${esc(m.type)}">${esc(m.type)}</span><span class="gu">${esc(v.district)}</span>${v.inout ? `<span class="io ${v.inout === "야외" ? "out" : ""}">${v.inout === "야외" ? "🌤 야외" : "🏠 실내"}</span>` : ""}</div><b>${esc(v.name)}</b>
   ${mkStatus(v).map(([c, t]) => `<small class="mkLine ${c}">${calTxt(esc(t))}</small>`).join("")}
   ${v.desc ? `<small class="note">${esc(v.desc)}</small>` : ""}
   ${(m.eats || []).length ? `<div class="eats">${m.eats.map(e => `<a target="_blank" rel="noopener noreferrer" href="${mapLink(v.name.split(" (")[0] + " " + e.split(" (")[0])}">😋 ${esc(e)}</a>`).join("")}</div>` : ""}
@@ -12683,6 +12685,86 @@ html body #decideNow #nowStart.mergedNow .nowStartHead .nowRefresh{flex:0 0 auto
   if(typeof window.arrangeHome==="function"){ var o=window.arrangeHome; window.arrangeHome=function(){ var r=o.apply(this,arguments); all(); return r } }
   document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",all) : all();
   window.addEventListener("load",function(){ setTimeout(all,1200) });
+})();
+</script>
+<style id="a11y20261110">
+/* ── 2026-11-10 웹 접근성(KWCAG 2.2) 보강 — 이 블록과 아래 a11y20261110Js 만 지우면 원래대로 ──
+   화면 배치는 그대로. 바뀌는 건 ① 대비가 부족한 글자색을 기준(4.5:1)에 겨우 넘게 조금 진하게 ② 키보드로 움직일 때만 보이는 선택 테두리 ③ 작은 누름칸의 '누르는 범위'만 넓힘 */
+.srOnly{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important;border:0!important}
+body:not([data-screen="tab"]) .appH1{display:none!important}
+.skipLink{position:absolute;left:8px;top:-60px;z-index:100000;background:#1d2a3a;color:#fff!important;padding:10px 16px;border-radius:10px;font-weight:800;text-decoration:none;transition:top .15s}
+.skipLink:focus{top:8px}
+#mainContent:focus{outline:none}
+/* 키보드로 움직일 때만 보이는 선택 테두리 */
+html body :is(a,button,[role=button],[role=tab],[tabindex]:not([tabindex="-1"]),input,select,textarea,summary):focus-visible{outline:3px solid #1a5fb4!important;outline-offset:2px!important;border-radius:8px}
+html[data-theme="dark"] body :is(a,button,[role=button],[role=tab],[tabindex]:not([tabindex="-1"]),input,select,textarea,summary):focus-visible{outline-color:#8ab4f8!important}
+html body .aiInput:focus-within,html body .search:focus-within{box-shadow:0 0 0 3px #1a5fb4!important}
+/* 사진 넘김 멈춤 버튼 */
+html body .hero .photoCard .slidePause{position:absolute;top:10px;right:10px;z-index:9;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:14px;line-height:34px;padding:0;cursor:pointer}
+html body .hero .photoCard .slidePause[aria-pressed="true"]{background:rgba(0,0,0,.7)}
+/* 작은 누름칸: 모양은 그대로, 누르는 범위만 넓게 */
+html body .dots i{position:relative}
+html body .dots i::after{content:"";position:absolute;inset:-9px}
+html body .goLine a{display:inline-block;padding:5px 3px;margin:-5px -3px}
+html body .here > button{min-height:28px}
+html body input[type=checkbox],html body input[type=radio]{min-width:24px;min-height:24px}
+/* 글자 대비 (밝은 화면) */
+html:not([data-theme="dark"]){--red:#c94c32;--gold-d:#a15d0a}
+html:not([data-theme="dark"]) body .fav:not(.on):not(#_){color:#7a7469}
+html:not([data-theme="dark"]) body .visit:not(.on):not(#_){color:#59645f}
+html[data-theme="dark"] body .visit:not(.on):not(#_){background:#202020;color:#b5c3bd}
+html body .here em.ok:not(#_),html body .tag.status:not(#_){background:#288450!important}
+html body .ncHot:not(#_),html body .dleft:not(.calm):not(#_){background:#c94c32}
+html:not([data-theme="dark"]) body .eyebrow:not([style*="color"]):not(#_){color:#bc4416!important}
+html:not([data-theme="dark"]) body #onlyNow .onBadge:not(.hot):not(.soon){color:#bd481a}
+html:not([data-theme="dark"]) body .wk div i:not(#_){color:#7c7468!important}
+html body .nowStart .nowPickNo:not(#_):not(#_){background:#c25121!important}
+html:not([data-theme="dark"]) body .wk div span.off:not(#_){color:#6a6a6a}
+/* 크리밍 칸(남색) 안에 복사된 코스 카드: 흰 카드인데 글자가 흰색을 물려받아 안 보이던 것 */
+html:not([data-theme="dark"]) body #answer .routePreview:not(#_){color:#24302b}
+html:not([data-theme="dark"]) body #answer .routePreview > b:not(#_),html:not([data-theme="dark"]) body #answer .routeStop b:not(#_){color:#1d2a3a}
+html:not([data-theme="dark"]) body #answer .routeStop small:not(#_){color:#5a6560}
+html[data-theme="dark"] body #answer .routePreview:not(#_){background:#1c1f1d;color:#e9eeea}
+html[data-theme="dark"] body #answer .routeStop:not(#_){background:#262a28}
+html[data-theme="dark"] body #answer .routePreview > b:not(#_),html[data-theme="dark"] body #answer .routeStop b:not(#_){color:#fff}
+html[data-theme="dark"] body #answer .routeStop small:not(#_){color:#b5c3bd}
+html:not([data-theme="dark"]) body .routeLeg span:not(#_){color:#b23c22}
+html body .courseShareBtn:not(#_){background:#c25121!important;color:#fff!important}
+html body .noticeBoard .nbHead em:not(#_){background:#c94c32}
+/* 글자 대비 (어두운 화면) */
+:root:root[data-theme="dark"]{--green:#178378}
+html[data-theme="dark"] body :is(a.btn,button.btn,a.miniBtn,button.miniBtn):not(.on):not(.active):not(.primary):not(#_){color:#3fa79c}
+html[data-theme="dark"] body .wTag:not(#_){color:#3fa79c}
+html[data-theme="dark"] body .localToday .ltRow button strong:not(#_){color:#74d3c6}
+html[data-theme="dark"] body .appResultHint:not(#_){color:#cfd8d3}
+html[data-theme="dark"] body .nowSeg button.on b:not(#_){background:rgba(0,0,0,.25)!important}
+html[data-theme="dark"] body :is(.on,.active) small{color:#fff!important}
+</style>
+<script id="a11y20261110Js">
+(function(){
+  // ① 사진 자동 넘김 멈춤(KWCAG: 자동 변경 콘텐츠 정지). '동작 줄이기'를 켠 기기는 처음부터 멈춤
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function paintPause(){ var b=document.getElementById("slidePause"); if(!b) return; var p=!!window.__slidePaused; b.setAttribute("aria-pressed",String(p)); b.textContent=p?"▶":"⏸"; var t=p?"사진 자동 넘김 다시 시작":"사진 자동 넘김 멈추기"; b.setAttribute("aria-label",t); b.title=t }
+  window.__slidePaused = reduce;
+  document.addEventListener("click",function(e){ var b=e.target.closest&&e.target.closest("#slidePause"); if(!b) return; e.stopPropagation(); e.preventDefault(); window.__slidePaused=!window.__slidePaused; paintPause() },true);
+  // ② 눌리는 칸인데 버튼이 아닌 것(카드·사진): 키보드로 갈 수 있게, 화면낭독기에 '버튼'으로
+  var NATIVE=/^(A|BUTTON|INPUT|SELECT|TEXTAREA|SUMMARY|LABEL|OPTION)$/;
+  function fix(root){
+    (root||document).querySelectorAll("[onclick]").forEach(function(el){
+      if(NATIVE.test(el.tagName)) return;
+      var oc=el.getAttribute("onclick")||""; if(/^\s*(event\.)?stopPropagation\(\)\s*;?\s*$/.test(oc)) return;   // 안쪽 버튼 클릭만 막는 칸은 제외
+      if(!el.hasAttribute("tabindex")) el.setAttribute("tabindex","0");
+      if(!el.getAttribute("role")) el.setAttribute("role","button");
+      if(!el.getAttribute("aria-label")){ var t=(el.innerText||"").trim().replace(/\s+/g," "); if(!t){ var im=el.querySelector("img[alt]"); t=im&&im.alt } if(t) el.setAttribute("aria-label",t.slice(0,80)) }
+    });
+    // 장식용 그림(svg)은 화면낭독기가 읽지 않게
+    (root||document).querySelectorAll("svg:not([aria-hidden]):not([role])").forEach(function(sv){ if(!sv.closest("button,a,[role=button]")&&!sv.querySelector("title")) sv.setAttribute("aria-hidden","true") });
+  }
+  var pend=false; function later(){ if(pend) return; pend=true; requestAnimationFrame(function(){ pend=false; try{ fix() }catch(e){} paintPause() }) }
+  function start(){ fix(); paintPause(); new MutationObserver(later).observe(document.body,{childList:true,subtree:true}) }
+  document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",start) : start();
+  // ③ 본문 바로가기: 누르면 지금 보이는 화면의 첫 칸으로
+  document.addEventListener("click",function(e){ var a=e.target.closest&&e.target.closest(".skipLink"); if(!a) return; e.preventDefault(); var m=document.getElementById("mainContent"); if(m){ m.focus({preventScroll:true}); var hh=(document.querySelector("header.top")||{}).offsetHeight||0; window.scrollTo({top:Math.max(0,m.getBoundingClientRect().top+scrollY-hh-8),behavior:"instant"}) } });
 })();
 </script>
 </body></html>
