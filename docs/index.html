@@ -4344,7 +4344,7 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
       <h1 id="greet">오늘 광주에서<br><em>어디 갈까?</em></h1>
       <p id="heroLead"><b>오늘 우리 동네에서 열리는 전시·공연·축제·장날부터 한눈에.</b> 날짜·시간·날씨와 원하는 조건을 보고 지금 가기 좋은 곳부터 하루 동선까지 골라드려요.</p><div class="heroFresh" id="heroUpdated" role="button" tabindex="0" title="자동 운영 구조 보기" onclick="openPipeline()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPipeline()}">자료 현행화 시간 확인 중…</div>
       <div class="concertQuickAccess" aria-label="첫 화면 빠른 이용">
-        <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="creaming.webp" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i>🎈 행사</i><i>📍 갈 곳</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
+        <button type="button" class="kidsQuickHome" onclick="showKids('전체')" aria-label="아이랑 어디 갈까? 아이와 볼 행사·갈 곳 보러 가기 (행사·갈 곳 칸을 누르면 그 목록으로 바로 가요)"><span class="kqIcon" aria-hidden="true"><svg class="kidsDuo kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="creaming.webp" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg></span><span class="kqText"><b class="kqTitle">아이랑 어디 갈까?</b><span class="kqChips" id="kidsQuickSub"><i class="kqLink" onclick="event.stopPropagation();kidsEventsAll()">🎈 행사 ›</i><i class="kqLink" onclick="event.stopPropagation();showKids('전체');kidsScrollToPlaces()">📍 갈 곳 ›</i></span></span><span class="kqGo" aria-hidden="true">보기 ›</span></button>
       </div>
       <div class="statsHead">
         <h2 class="statsTitle"><span id="statsRegion" class="statsRegion">광주권</span>엔 요런 게 있당께</h2>
@@ -7652,7 +7652,7 @@ function kidsEvRow(x) {
 function renderKidsQuick() {
   const el = document.getElementById("kidsQuickSub"); if (!el) return;
   const ev = EVENTS.filter(isKidsEvent).length, pl = VENUES.filter(isKidsPlace).length;
-  el.innerHTML = `<i>🎈 행사 <em>${ev || "—"}</em></i><i>📍 갈 곳 <em>${pl ? pl + "곳" : "—"}</em></i>`;
+  el.innerHTML = `<i class="kqLink" onclick="event.stopPropagation();kidsEventsAll()" title="아이와 볼 행사로 바로 가기">🎈 행사 <em>${ev || "—"}</em> ›</i><i class="kqLink" onclick="event.stopPropagation();showKids('전체');kidsScrollToPlaces()" title="아이와 갈 곳으로 바로 가기">📍 갈 곳 <em>${pl ? pl + "곳" : "—"}</em> ›</i>`;   // 2026-11-11: 행사·갈 곳을 눌러 그 칸으로 바로
 }
 function renderKids() {
   renderKidsQuick();
@@ -12880,4 +12880,11 @@ html body #cultureSpot.cdFlash .cultureDay{animation:cdFlash 1.2s ease 2}
   document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",init) : init();
 })();
 </script>
+<style id="kidsChips20261111">
+/* ── 2026-11-11 '아이랑 어디 갈까?' : 행사·갈 곳 칸을 눌러 각 목록으로 바로 · '보기 ›' 버튼은 뺌 (카드 나머지를 눌러도 아이랑 화면으로 감) ── */
+html body .concertQuickAccess .kidsQuickHome .kqGo{display:none!important}
+html body .concertQuickAccess .kidsQuickHome{grid-template-columns:auto minmax(0,1fr)!important;grid-template-areas:"ic ti" "ic ch"!important}
+html body .concertQuickAccess .kidsQuickHome .kqChips i.kqLink{cursor:pointer;transition:transform .12s,box-shadow .12s}
+html body .concertQuickAccess .kidsQuickHome .kqChips i.kqLink:active{transform:scale(.95)}
+</style>
 </body></html>
