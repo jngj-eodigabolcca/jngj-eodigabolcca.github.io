@@ -12845,4 +12845,39 @@ html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqGo{color:#d2471a
 html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i{background:#2a2014!important;color:#ffcf9e!important}
 html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips i *,html[data-theme="dark"] body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips em{color:#ffcf9e!important}
 </style>
+<style id="cdLink20261111">
+/* ── 2026-11-11 첫 화면 날짜 옆 '🎫 문화가 있는 날'을 누르면 아래 안내로 이동 (이 블록과 아래 script만 지우면 원래대로) ── */
+html body .hero .dateBadge.cdLink{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s}
+html body .hero .dateBadge.cdLink:active{transform:scale(.97)}
+html body .hero .dateBadge.cdLink span{color:#c2410c;font-weight:800;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+html body .hero .dateBadge.cdLink span::after{content:" ›";text-decoration:none;display:inline-block;margin-left:2px}
+html[data-theme="dark"] body .hero .dateBadge.cdLink span{color:#ffb070}
+@keyframes cdFlash{0%,100%{box-shadow:0 0 0 0 rgba(255,106,43,0)}30%{box-shadow:0 0 0 6px rgba(255,106,43,.35)}}
+html body #cultureSpot.cdFlash .cultureDay{animation:cdFlash 1.2s ease 2}
+</style>
+<script id="cdLink20261111Script">
+(function(){
+  function go(){
+    var t=document.getElementById("cultureSpot"); if(!t) return;
+    t.scrollIntoView({behavior:"smooth",block:"center"});
+    t.classList.remove("cdFlash"); void t.offsetWidth; t.classList.add("cdFlash");
+    setTimeout(function(){ t.classList.remove("cdFlash") },2600);
+  }
+  function mark(){
+    var b=document.getElementById("dateBadge"); if(!b) return;
+    var on=/문화가 있는 날/.test(b.textContent||"");
+    b.classList.toggle("cdLink",on);
+    if(on){ b.setAttribute("role","button"); b.setAttribute("tabindex","0"); b.setAttribute("aria-label","오늘은 문화가 있는 날 · 아래 안내로 이동"); }
+    else { b.removeAttribute("role"); b.removeAttribute("tabindex"); b.removeAttribute("aria-label"); }
+  }
+  function init(){
+    var b=document.getElementById("dateBadge"); if(!b) return;
+    b.addEventListener("click",function(){ if(b.classList.contains("cdLink")) go() });
+    b.addEventListener("keydown",function(e){ if(b.classList.contains("cdLink") && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); go() } });
+    if(window.MutationObserver) new MutationObserver(mark).observe(b,{childList:true,subtree:true,characterData:true});
+    mark();
+  }
+  document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",init) : init();
+})();
+</script>
 </body></html>
