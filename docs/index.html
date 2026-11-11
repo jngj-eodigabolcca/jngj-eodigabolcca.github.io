@@ -1,10 +1,15 @@
 <!doctype html>
 <!--
   오늘, 전남광주 어디가볼까? (어디가볼까)
-  © 2026 오늘, 전남광주 어디가볼까? All rights reserved.
+  © 2026 매직글러브(개발자). 저작권은 개발자에게 있습니다.
   이 파일의 화면 구성·코드·문구·편집 데이터는 저작권법으로 보호됩니다.
-  허락 없이 복제·수정·재배포하거나 다른 서비스에 쓸 수 없습니다. (LICENSE 참고)
-  크리밍 캐릭터는 원작자의 이용허락을 받아 사용합니다(저작권은 원작자에게 있음).
+  · 허락 없이 복제·수정·재배포하거나 상업적으로 쓸 수 없습니다.
+  · 지방자치단체·공공기관이 비영리 공공서비스로 쓰려는 경우, 개발자와 협의해
+    무상·비독점으로 복제·수정·운영할 수 있습니다. 이 경우 개발자 표시(매직글러브)를 남겨 주세요.
+  · 공공기관에 이관한 뒤에도 저작권은 개발자에게 남으며, 개발자는 이 앱을
+    공모전·경진대회·포트폴리오 등에 자유롭게 활용할 수 있습니다.
+  크리밍 캐릭터는 원작자가 개발자에게 이용을 허락한 것입니다(저작권은 원작자에게 있음).
+  앱을 이관받는 기관은 원작자에게 별도로 허락을 받아야 캐릭터를 쓸 수 있습니다.
 -->
 <!--
   ── 코드 지도 (인수인계용 · 2026-11-06 갱신) ──────────────────────────────
@@ -66,7 +71,7 @@
 <meta name="theme-color" content="#ffffff">
 <script>/* 화면 밝기: auto(휴대폰 설정 따름) · dark · light */(function(){var K="glm_theme",mq=window.matchMedia?matchMedia("(prefers-color-scheme: dark)"):null;function pref(){try{return localStorage.getItem(K)||"auto"}catch(e){return"auto"}}function apply(){var p=pref(),t=p==="auto"?(mq&&mq.matches?"dark":"light"):p,r=document.documentElement;r.setAttribute("data-theme",t);r.setAttribute("data-theme-pref",p);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161917":"#fff3e2");var b=document.getElementById("darkToggle");if(b){var L={auto:["🌓","자동 (휴대폰 설정 따름)"],dark:["🌙","어둡게"],light:["☀️","밝게"]}[p];b.textContent=L[0];b.title="화면 밝기: "+L[1];b.setAttribute("aria-label","화면 밝기: "+L[1]+" — 눌러서 바꾸기")}}window.__applyTheme=apply;window.cycleTheme=function(){var n={auto:"dark",dark:"light",light:"auto"}[pref()];try{localStorage.setItem(K,n)}catch(e){}apply()};apply();if(mq){mq.addEventListener?mq.addEventListener("change",apply):mq.addListener&&mq.addListener(apply)}document.addEventListener("DOMContentLoaded",apply)})();</script><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="어디가볼까">
-<meta name="author" content="오늘, 전남광주 어디가볼까?"><meta name="copyright" content="© 2026 오늘, 전남광주 어디가볼까? All rights reserved.">
+<meta name="author" content="오늘, 전남광주 어디가볼까?"><meta name="copyright" content="© 2026 매직글러브(개발자). 저작권은 개발자에게 있습니다.">
 <meta name="description" content="공공기관 문화·생활 정보를 자동으로 모아 전남광주 시민의 오늘 하루를 안내하는 앱. 전시·공연·축제·장날, 도서관과 동네 강좌를 권역별로 한눈에.">
 <!-- 카카오톡·페이스북·문자 공유 미리보기 (주소가 바뀌면 아래 3곳의 주소도 바꾸세요) -->
 <link rel="canonical" href="https://jngj-eodigabolcca.github.io/">
@@ -4535,7 +4540,7 @@ html body .rightQuick.isCollapsed:not(.rqHidden) .rightQuickToggle:not(#_){width
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요. 공공데이터에 올라온 행사·장소만 담기 때문에 작은 갤러리·책방 행사는 빠질 수 있어요. 빠진 곳은 각 항목의 '정보 수정'으로 알려 주세요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주통합특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 오늘, 전남광주 어디가볼까? All rights reserved. 앱 화면·코드·편집 데이터의 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 단, 지방자치단체·공공기관이 비영리 공공서비스 목적으로 이용하려는 경우 개발자와 협의하여 이용할 수 있습니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터는 원작자의 이용허락을 받아 사용하고 있습니다. 캐릭터의 저작권은 원작자에게 있으며, 허락 없이 사용·복제·재배포할 수 없습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요. 공공데이터에 올라온 행사·장소만 담기 때문에 작은 갤러리·책방 행사는 빠질 수 있어요. 빠진 곳은 각 항목의 '정보 수정'으로 알려 주세요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주통합특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 매직글러브(개발자). 앱 화면·코드·편집 데이터의 저작권은 개발자에게 있으며, 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 단, 지방자치단체·공공기관이 비영리 공공서비스로 이용하려는 경우 개발자와 협의해 무상·비독점으로 이용(복제·수정·운영)할 수 있으며, 이때 개발자 표시는 남겨 주세요. 기관에 이관한 뒤에도 저작권은 개발자에게 있고, 개발자는 이 앱을 공모전·포트폴리오 등에 활용할 수 있습니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터는 원작자가 개발자에게 이용을 허락해 사용하고 있습니다. 캐릭터의 저작권은 원작자에게 있으며, 허락 없이 사용·복제·재배포할 수 없습니다. 앱을 이관받는 기관도 원작자에게 따로 허락을 받아야 캐릭터를 쓸 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
 
 <nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events"><i class="calIc" aria-hidden="true"></i><span>일정</span></button><button data-jump="places">🏛<span>나들이</span></button><button data-jump="local">🏘<span>동네서</span></button><button data-jump="pick">✨<span>오늘 뭐하지</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
@@ -11664,7 +11669,7 @@ window.openRightsAndLicenses=function(){
  <li>오류 신고 또는 정보 수정 요청은 실제 제공기관 원문을 우선 확인하세요.</li>
  </ul>
  <h4>앱 고유 창작물·생성형 이미지</h4>
- <p>앱의 독자적인 코드·편집·디자인 권리는 외부 자료나 오픈소스의 권리와 구분됩니다. 크리밍 캐릭터는 원작자의 이용허락을 받아 사용하며, 저작권은 원작자에게 있습니다. 생성형 이미지의 권리 및 사용조건은 제작 도구와 소재별로 추가 확인해야 합니다.</p>
+ <p>앱의 독자적인 코드·편집·디자인 권리는 외부 자료나 오픈소스의 권리와 구분되며, 그 저작권은 개발자(매직글러브)에게 있습니다. 지방자치단체·공공기관에는 협의를 거쳐 비영리 공공서비스용으로 무상·비독점 이용(복제·수정·운영)을 허락하며, 이관 뒤에도 저작권은 개발자에게 남고 개발자는 공모전·포트폴리오 등에 이 앱을 활용할 수 있습니다. 크리밍 캐릭터는 원작자가 개발자에게 이용을 허락한 것이므로(저작권은 원작자에게 있음), 이관받는 기관은 원작자에게 별도로 허락을 받아야 합니다. 생성형 이미지의 권리 및 사용조건은 제작 도구와 소재별로 추가 확인해야 합니다.</p>
  <h4>공공기관 이관 전 필수 확인</h4>
  <p>외부 이미지의 게시 권한, 제3자 라이선스 고지, 개인정보 처리, 웹 접근성, 취약점·공급망 점검, 서비스 장애 대응, 운영 주체와 책임 범위는 별도 심사·계약·서버 설정이 필요합니다.</p>
  <p class="rightsOk">참고: 이 안내는 앱의 기존 화면·추천·자동수집 로직을 변경하지 않습니다. 안내 문구가 권리 확보나 보안 검증을 대신하지 않습니다.</p>
