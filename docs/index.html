@@ -3758,7 +3758,7 @@ html body .card .visual .date{background:rgba(20,36,70,.9)!important}
 .footMore>.footList{margin:0;padding:0 14px 12px}
 
 /* ── 12. 메뉴 겹침 정리 (폰·태블릿: 아래 메뉴가 기본) ──
-   아래 메뉴 = 홈·일정·나들이·동네·먹을 곳·지도 / 오른쪽 '더 보기' = 아이와·날씨·대중공연·시장·동네도서관·찜.
+   아래 메뉴 = 홈·일정·나들이·동네·먹을 곳·지도 / 오른쪽 '더 보기' = 아이와·날씨·공연장·대중공연·시장·동네도서관·먹을 곳.
    '필요한 것만 빠르게' 탭 줄은 아래 메뉴와 같아서 폰에서는 없앰 (일정 탭의 종류 필터 칩만 남김). PC는 아래 메뉴가 없으니 그대로. */
 @media(max-width:899px){
   html body .quickNavIntro .quickNavHead,html body .quickNavIntro .tabs{display:none!important}
@@ -7770,7 +7770,16 @@ const STAGE_GROUPS = [
   ["가족·아이", CR_IC, e => /가족|어린이|아동|키즈|쥬쥬|피노키오/.test(e.subtype + " " + e.title + " " + (e.tags || []).join(" "))],
   ["무료", "🆓", e => /^무료/.test(e.price || "") || ticketOf(e).status === "무료"],
 ];
-let STAGE = { group: "전체", range: 60, venue: "전체" };
+let STAGE = { group: "전체", range: 14, venue: "전체" };
+/* 공연 탭 기간: 오늘 밤 기준으로 가깝게. 공연 자료(KOPIS 등)는 보통 한두 달 앞까지만 올라와서
+   더 길게 골라도 늘어나는 게 없는 기간 버튼은 숨겨요(건수가 앞 버튼과 같으면 생략). */
+function stageRanges(g) {
+  const t = todayISO(), base = EVENTS.filter(e => isShow(e) && (!e.end || e.end >= t) && g[2](e) && (STAGE.venue === "전체" || e.venueId === STAGE.venue || eventsAt(VENUES.find(v => v.id === STAGE.venue) || {}).includes(e)));
+  const opts = [[0, "오늘"], [7, "이번 주"], [14, "2주"], [30, "한 달"], [60, "두 달"]].map(([n, l]) => { const u = isoPlus(n); return [n, l, base.filter(e => !e.start || e.start <= u).length] });
+  const out = opts.filter((o, i) => i < 3 || o[2] > opts[i - 1][2] || o[0] === STAGE.range);
+  if (!out.some(o => o[0] === STAGE.range)) STAGE.range = 14;
+  return out;
+}
 function renderStages() {
   const el = document.getElementById("stagesView"); if (!el) return;
   const t = todayISO(), until = isoPlus(STAGE.range);
@@ -7786,7 +7795,7 @@ function renderStages() {
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">STAGES</span><h2>오늘 밤 뭐 들을랑가?<small>${REGION === "gj" ? "예술의전당·5·18기념문화센터·빛고을시민문화관·유니버시아드체육관… 콘서트부터 클래식·뮤지컬까지" : `${esc(RNAME())} 문화예술회관·공연장 — 콘서트부터 클래식·국악까지`}</small></h2></div><span>${list.length}건</span></div>
   <div class="groupGrid">${STAGE_GROUPS.map(gg => `<button class="${gg[0] === STAGE.group ? "active" : ""}" onclick="setStage('group','${gg[0]}')"><span>${gg[1]}</span>${gg[0]}<small>${all.filter(gg[2]).length}</small></button>`).join("")}</div>
   <div class="filterBar">
-    <div class="seg">${[[14, "2주"], [60, "두 달"], [120, "넉 달"]].map(([n, l]) => `<button class="${n === STAGE.range ? "on" : ""}" onclick="setStage('range',${n})">${l}</button>`).join("")}</div>
+    <div class="seg stageRange">${stageRanges(g).map(([n, l, c]) => `<button class="${n === STAGE.range ? "on" : ""}" onclick="setStage('range',${n})">${l}<small>${c}</small></button>`).join("")}</div>
     <select aria-label="공연장 선택" onchange="setStage('venue',this.value)"><option value="전체">모든 공연장</option>${venues.map(v => `<option ${v.id === STAGE.venue ? "selected" : ""} value="${esc(v.id)}">${esc(v.name.split(" (")[0])}</option>`).join("")}</select>
   </div>
   ${list.length ? Object.entries(groups).map(([k, es]) => `<h3 class="sub">${k} <small style="font-weight:500;color:var(--muted)">${es.length}</small></h3><div class="stList">${es.map(row).join("")}</div>`).join("") : `<div class="nowEmpty">🎭 조건에 맞는 공연이 아직 없어요. 하루 두 번(09시·18시) 공연 정보를 자동으로 받아와 채워요.</div>`}
@@ -10990,11 +10999,11 @@ window.openArtistFollowQuick=function(){
  <div class="rightQuickPanel" id="rightQuickPanel" aria-label="추가 바로가기">
   <button type="button" data-rightjump="kids">👶 아이랑</button>
   <button type="button" data-rightjump="weather">🌤 날씨</button>
+  <button type="button" data-rightjump="stages">🎼 공연장</button>
   <button type="button" data-rightjump="popshows">🎤 대중공연</button>
   <button type="button" data-rightjump="markets">🛒 시장</button>
   <button type="button" data-rightjump="local">📚 동네도서관</button>
   <button type="button" data-rightjump="food">🍽 먹을 곳</button>
-  <button type="button" data-rightjump="favorites">♡ 찜</button>
  </div>
 </aside>
 <script id="rightQuickScript">
@@ -11015,7 +11024,7 @@ window.openArtistFollowQuick=function(){
  rail.querySelectorAll('[data-rightjump]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=btn.dataset.rightjump;
    // 방문 통계: 빠른 메뉴에서 무엇을 눌렀는지 (GoatCounter 이벤트 '빠른메뉴-…')
-   try{const nm={today:'오늘',weekend:'주말',weather:'날씨',popshows:'대중공연',markets:'시장',local:'동네도서관',kids:'아이와',indoor:'실내',dayplan:'하루코스'}[target]||target;window.goatcounter?.count?.({path:'빠른메뉴-'+nm,title:'빠른 메뉴 · '+btn.textContent.trim(),event:true})}catch(e){}
+   try{const nm={today:'오늘',weekend:'주말',weather:'날씨',popshows:'대중공연',markets:'시장',local:'동네도서관',kids:'아이와',indoor:'실내',dayplan:'하루코스',stages:'공연장'}[target]||target;window.goatcounter?.count?.({path:'빠른메뉴-'+nm,title:'빠른 메뉴 · '+btn.textContent.trim(),event:true})}catch(e){}
    if(target==='kids'||target==='science'){
      showKids(target==='kids'?'전체':'과학·체험');
    }else if(target==='indoor'){
@@ -12394,6 +12403,10 @@ html body .groupGrid>button small:not(#_){margin-left:2px!important;font-size:11
 @media(max-width:899px){
   html body #chips:not(#_):not(#_){display:flex!important;flex-wrap:wrap!important;gap:6px!important}
   html body #chips>button:not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 12px!important;grid-column:auto!important}
+  html body #chips>button.hidden:not(#_):not(#_):not(#_){display:none!important}
+  html body .seg.stageRange{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  html body .seg.stageRange>button:not(#_):not(#_){padding:7px 11px!important;white-space:nowrap;gap:4px}
+  html body .seg.stageRange small{font-size:11px;font-weight:700;opacity:.65}
 }
 
 /* ⑨ '지금 바로 갈 곳' 카드: 번호·이름이 카드마다 높이가 달랐던 것 → 위에 맞춤 */
