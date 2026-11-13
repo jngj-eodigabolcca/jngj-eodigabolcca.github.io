@@ -4236,7 +4236,7 @@ html body #chips>button.hidden:not(#_):not(#_):not(#_){display:none!important}
 .calToday b{display:block;background:#e5484d;color:#fff;font-size:.3em;font-weight:800;text-align:center;padding:.18em 0 .14em;letter-spacing:-.02em}
 .calToday em{flex:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:.52em;color:#1f2937;letter-spacing:-.04em}
 #menuGlance .calToday{font-size:1.2em}
-.subchips .chipN{font-size:.85em;font-weight:700;opacity:.7;margin-left:2px}
+.chipN{font-size:.85em;font-weight:700;opacity:.7;margin-left:2px}
 html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_){border-radius:999px!important}
 html body .seg:not(#_):not(#_){padding:3px!important;border-radius:12px!important}
 html body .seg>button:not(#_):not(#_){border-radius:9px!important;font-size:13px!important}
@@ -8027,8 +8027,23 @@ function eventMatches(x, q) {
   return ok && hay.includes(q);
 }
 window.EV_SHOW = { n: 12, key: "", override: null, heading: "오늘·이번 달 추천" };
+/* 2026-11-13: 일정 탭 위 분류 칩(전체·전시·음악…)에 개수 표시 */
+function eventChipCounts() {
+  try {
+    const keep = FILTER, t = todayISO();
+    document.querySelectorAll("#chips button[data-filter]").forEach(b => {
+      const f = b.dataset.filter; let n;
+      if (f === "관람가능") n = EVENTS.filter(x => (!x.start || x.start <= t) && ["관람가능", "무료", "예매중"].includes(ticketOf(x).status)).length + VENUES.filter(v => openToday(v) === true).length;
+      else { FILTER = f; n = EVENTS.filter(x => eventMatches(x, "")).length }
+      let sm = b.querySelector(".chipN"); if (!sm) { sm = document.createElement("small"); sm.className = "chipN"; b.append(" ", sm) }
+      sm.textContent = n;
+    });
+    FILTER = keep;
+  } catch (e) { console.warn("[chip counts]", e) }
+}
 function renderEvents(listOverride = null, heading = "오늘·이번 달 추천") {
   const q = "";
+  eventChipCounts();
   if (!listOverride && FILTER === "관람가능") return renderOpenToday(q);
   const list = listOverride || EVENTS.filter(x => eventMatches(x, q));
   // 첫 화면이 끝없이 길어지지 않게 12개씩 (필터·권역이 바뀌면 처음부터)
@@ -8379,12 +8394,18 @@ function renderPlaces() {
     ? (isLib ? sortLibs : sortHome)(sp[0]().filter(x => (PLACE_GU === "전체" || x.district === PLACE_GU) && (!PLACE_OPEN || isOpen(x))))
     : sortHome(VENUES.filter(placeFilter));
   const cnt = g => PLACE_SPECIAL[g] ? PLACE_SPECIAL[g][0]().length : VENUES.filter(PLACE_GROUPS.find(x => x[0] === g)[2]).length;
+  // 2026-11-13: 실내·야외 버튼과 구 고르기에 개수 (다른 조건은 그대로 두고 그 칸만 바꿨을 때)
+  const placeN = (k, val) => {
+    if (sp) { if (k !== "gu") return 0; return sp[0]().filter(x => (val === "전체" || x.district === val) && (!PLACE_OPEN || isOpen(x))).length }
+    const keep = k === "io" ? PLACE_IO : PLACE_GU; if (k === "io") PLACE_IO = val; else PLACE_GU = val;
+    const n = VENUES.filter(placeFilter).length; if (k === "io") PLACE_IO = keep; else PLACE_GU = keep; return n;
+  };
   const d = DAY_KO[kstNow().getUTCDay()];
   $("#placesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">PLACES · ${esc(RNAME())}</span><h2>오늘 어디로 나들이 갈랑가?<small>${REGION === "gj" ? "미술관·박물관·양림동·무등산부터 담양·나주·장성 근교까지" : REGION === "ys" ? "순천만·낙안읍성·여수 바다·녹차밭·매화마을·박물관까지" : "목포 근대길·자연사박물관·땅끝·대흥사·청자박물관까지"}</small></h2></div></div>
   <div class="groupGrid placeGrid">${PLACE_GROUPS.filter(([g]) => (REGION === "gj" || !["양림동", "무등산"].includes(g)) && (g === "전체" || g === PLACE_GROUP || cnt(g))).map(([g, ic]) => `<button class="${g === PLACE_GROUP ? "active" : ""}" onclick="setPlace('group','${g}')"><span>${ic}</span>${g}<small>${cnt(g)}</small></button>`).join("")}</div>
   <div class="filterBar">
-    <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === PLACE_IO ? "on" : ""}" onclick="setPlace('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
-    <select id="placeGu" aria-label="구 선택" onchange="setPlace('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === PLACE_GU ? "selected" : ""} value="${g}">${distLabel(g)}</option>`).join("")}</select>
+    <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === PLACE_IO ? "on" : ""}" onclick="setPlace('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}${sp ? "" : " " + `<small class="chipN">${placeN('io', x)}</small>`}</button>`).join("")}</div>
+    <select id="placeGu" aria-label="구 선택" onchange="setPlace('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === PLACE_GU ? "selected" : ""} value="${g}">${distLabel(g)} (${placeN('gu', g)})</option>`).join("")}</select>
     <label class="chk"><input type="checkbox" id="placeOpen" ${PLACE_OPEN ? "checked" : ""} onchange="setPlace('open',this.checked)"> 오늘(${d}) 문 연 곳만</label>
   </div>
   ${paged("renderPlaces", list, sp ? sp[1] : placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
@@ -8421,6 +8442,7 @@ function renderKids() {
   const el = document.getElementById("kidsView"); if (!el) return;
   const base = VENUES.filter(isKidsPlace);
   const list = sortHome(base.filter(kidsFilter));
+  const kidsN = (k, val) => { const keep = k === "io" ? KIDS_IO : KIDS_GU; if (k === "io") KIDS_IO = val; else KIDS_GU = val; const n = base.filter(kidsFilter).length; if (k === "io") KIDS_IO = keep; else KIDS_GU = keep; return n };
   const t = todayISO();
   const evs = EVENTS.filter(isKidsEvent).sort((a, b) => ((a.start && a.start > t) - (b.start && b.start > t)) || String(a.start || "").localeCompare(String(b.start || "")));
   const d = DAY_KO[kstNow().getUTCDay()];
@@ -8429,8 +8451,8 @@ function renderKids() {
   ${evs.length ? `<h3 class="sub" id="kidsEvents">${CAL_IC} 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.map(kidsEvRow).join("")}</div>` : ""}
   <h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
   <div class="filterBar">
-    <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === KIDS_IO ? "on" : ""}" onclick="setKids('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"}</button>`).join("")}</div>
-    <select aria-label="구 선택" onchange="setKids('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === KIDS_GU ? "selected" : ""} value="${g}">${distLabel(g)}</option>`).join("")}</select>
+    <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === KIDS_IO ? "on" : ""}" onclick="setKids('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"} <small class="chipN">${kidsN('io', x)}</small></button>`).join("")}</div>
+    <select aria-label="구 선택" onchange="setKids('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === KIDS_GU ? "selected" : ""} value="${g}">${distLabel(g)} (${kidsN('gu', g)})</option>`).join("")}</select>
     <label class="chk"><input type="checkbox" ${KIDS_OPEN ? "checked" : ""} onchange="setKids('open',this.checked)"> 오늘(${d}) 문 연 곳만</label>
   </div>
   ${paged("renderKids", list, placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
@@ -8488,7 +8510,7 @@ function renderVenueTab(tab) {
   ${soon.length ? `<div class="nowMore"><span>곧 시작해요</span>${soon.slice(0, 8).map(e => `<button onclick="detail('${jsq(e.id)}')">${gal ? "🎨" : "🏺"} ${esc(e.title)} · ${esc(e.start.slice(5).replace("-", "."))}~</button>`).join("")}</div>` : ""}
   <div class="groupGrid" style="margin-top:18px">${groups.filter(gg => gg[0] === "전체" || gg[0] === st.group || cnt(gg)).map(gg => `<button class="${gg[0] === st.group ? "active" : ""}" onclick="setVT('${tab}','group','${gg[0]}')"><span>${gg[1]}</span>${gg[0]}<small>${cnt(gg)}</small></button>`).join("")}</div>
   <div class="filterBar">
-    <select aria-label="구 선택" onchange="setVT('${tab}','gu',this.value)">${DIST_OPTS().map(x => `<option ${x === st.gu ? "selected" : ""} value="${x}">${distLabel(x)}</option>`).join("")}</select>
+    <select aria-label="구 선택" onchange="setVT('${tab}','gu',this.value)">${DIST_OPTS().map(x => `<option ${x === st.gu ? "selected" : ""} value="${x}">${distLabel(x)} (${pool.filter(v => g[2](v) && (x === "전체" || v.district === x) && (!st.open || openToday(v) !== false) && (!st.free || /무료/.test(v.price || ""))).length})</option>`).join("")}</select>
     <label class="chk"><input type="checkbox" ${st.open ? "checked" : ""} onchange="setVT('${tab}','open',this.checked)"> 오늘(${d}) 문 연 곳만</label>
     <label class="chk"><input type="checkbox" ${st.free ? "checked" : ""} onchange="setVT('${tab}','free',this.checked)"> 무료만</label>
   </div>
@@ -8551,7 +8573,7 @@ function renderStages() {
   <div class="groupGrid">${STAGE_GROUPS.map(gg => `<button class="${gg[0] === STAGE.group ? "active" : ""}" onclick="setStage('group','${gg[0]}')"><span>${gg[1]}</span>${gg[0]}<small>${all.filter(gg[2]).length}</small></button>`).join("")}</div>
   <div class="filterBar">
     <div class="seg stageRange">${stageRanges(g).map(([n, l, c]) => `<button class="${n === STAGE.range ? "on" : ""}" onclick="setStage('range',${n})">${l}<small>${c}</small></button>`).join("")}</div>
-    <select aria-label="공연장 선택" onchange="setStage('venue',this.value)"><option value="전체">모든 공연장</option>${venues.map(v => `<option ${v.id === STAGE.venue ? "selected" : ""} value="${esc(v.id)}">${esc(v.name.split(" (")[0])}</option>`).join("")}</select>
+    <select aria-label="공연장 선택" onchange="setStage('venue',this.value)"><option value="전체">모든 공연장 (${all.filter(g[2]).length})</option>${venues.map(v => `<option ${v.id === STAGE.venue ? "selected" : ""} value="${esc(v.id)}">${esc(v.name.split(" (")[0])} (${all.filter(e => g[2](e) && (e.venueId === v.id || eventsAt(v).includes(e))).length})</option>`).join("")}</select>
   </div>
   ${list.length ? Object.entries(groups).map(([k, es]) => `<h3 class="sub">${k} <small style="font-weight:500;color:var(--muted)">${es.length}</small></h3><div class="stList">${es.map(row).join("")}</div>`).join("") : `<div class="nowEmpty">🎭 조건에 맞는 공연이 아직 없어요. 하루 두 번(09시·18시) 공연 정보를 자동으로 받아와 채워요.</div>`}
   <h3 class="sub" style="margin-top:26px">공연장 ${venues.length}</h3>
@@ -8730,7 +8752,7 @@ function renderFood() {
   ${REGION === "gj" ? `<div class="mi7Head"><b>광주 7미<i class="mi7Han">(味)</i></b><span>광주 오면 이건 먹고 가야제 — 누르면 맛집이 나와요</span></div>
   <div class="mi7">${MI7.map(([e, n, d, q]) => `<button onclick="mi7('${q}')"><em>${e}</em><b>${n}</b><small>${d}</small></button>`).join("")}</div>` : `<div class="nowEmpty">🍲 ${esc(RNAME())} 맛집 자료가 아직 들어오지 않았어요. 그동안은 <a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(REGIONS[REGION].hub + " 맛집")}">${esc(REGIONS[REGION].hub)} 맛집 지도에서 보기 ↗</a></div>`}
   <div class="foodIntro${REGION === "gj" ? "" : " hidden"}">광주광역시가 시민·업계 추천 217곳 중 <b>전문가 평가 + 시민 5,526명 온라인 평가</b>로 고른 <b>'2025 광주맛집' 50곳</b>과, 떡갈비·오리탕·보리밥 음식거리입니다.</div>
-  <div class="subchips">${gus.map(g => `<button class="${g === FOOD_GU ? "active" : ""}" onclick="setFoodGu('${g}')">${g}</button>`).join("")}</div>
+  <div class="subchips">${gus.map(g => `<button class="${g === FOOD_GU ? "active" : ""}" onclick="setFoodGu('${g}')">${g} <small class="chipN">${g === "전체" ? FOOD.length : FOOD.filter(f => f.district === g).length}</small></button>`).join("")}</div>
   ${paged("renderFood", list, foodCard, "<p class='empty'>조건에 맞는 맛집이 없어요. 위 조건을 하나 풀어보세요.</p>")}
   <div class="verify" style="margin-top:12px">대표 메뉴는 상호에 드러난 경우만 표시했어요. 메뉴·영업시간·휴무는 '메뉴·영업시간' 버튼으로 최신 정보를 확인하세요. 출처: 광주광역시 2025 광주맛집 발표(2025.3), 한국관광공사 관광정보.<br><b>이렇게 골랐어요</b> · 시가 선정한 맛집과 관광공사에 등록된 음식점만 담고, 별점·리뷰로 순위를 매기지 않아요. 잘못된 정보나 빼야 할 가게는 카드의 ⚠ 정보 수정으로 알려주세요.</div>`;
 }
@@ -8763,7 +8785,7 @@ function renderBakeries() {
   const list = sortHome(BAKERIES.filter(b => BAKERY_GU === "전체" || b.district === BAKERY_GU)
     .sort((a,b) => String(a.name).localeCompare(String(b.name), "ko")));
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BREAD TOUR · ${esc(RNAME())}</span><h2>오늘은 빵지순례 어때요?<small>지역 대표빵부터 오래된 로컬 제과점까지 · 무엇을 먹어야 하는지 바로 보여드려요</small></h2></div><span>${list.length}곳</span></div>
-    <div class="subchips">${gus.map(g => `<button class="${g === BAKERY_GU ? "active" : ""}" onclick="setBakeryGu('${g}')">${g}</button>`).join("")}</div>
+    <div class="subchips">${gus.map(g => `<button class="${g === BAKERY_GU ? "active" : ""}" onclick="setBakeryGu('${g}')">${g} <small class="chipN">${g === "전체" ? BAKERIES.length : BAKERIES.filter(b => b.district === g).length}</small></button>`).join("")}</div>
     <div class="verify" style="margin-bottom:12px"><b>이렇게 골랐어요</b> · 지역 대표빵이 있거나 오래 이어온 동네 제과점을 모았어요. 별점·리뷰 수로 순위를 매기지 않고, ${HOME ? "내 동네에서 가까운 순" : "가나다순"}으로 보여드려요. 영업시간은 2026.10.06 확인값이라 빵 소진·임시휴무가 잦으니 출발 전 지도에서 다시 확인하세요.<br>목록에 없는 가게를 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.</div>
     ${paged("renderBakeries", list, bakeryCard, "<p class='empty'>이 권역에서 확인된 빵집이 아직 없어요.</p>")}`;
 }
@@ -8882,7 +8904,7 @@ function renderMarkets() { if (regionEmpty("marketsView", "🏮", "시장", { st
   ${mkEv.length ? `<h3 class="sub">시장 행사·야시장 ${mkEv.length}</h3><div class="stList">${mkEv.slice(0, 8).map(e => `<button class="stRow" onclick="detail('${jsq(e.id)}')"><span class="stDate">${e.start && e.start > t ? `${Number(e.start.slice(5, 7))}.${dayNum(e.start)}` : "NOW"}</span><span class="stMain"><b>${esc(e.title)}</b><small>📍 ${esc(e.venue)}${e.time ? " · 🕘 " + esc(e.time) : ""}</small></span><em class="ok">${esc(e.price ? e.price.split(" · ")[0] : "")}</em></button>`).join("")}</div>` : ""}
   <div class="groupGrid" style="margin-top:18px">${MK_GROUPS.filter(gg => gg[0] === "전체" || gg[0] === MK.group || cnt(gg)).map(gg => `<button class="${gg[0] === MK.group ? "active" : ""}" onclick="setMk('group','${gg[0]}')"><span>${gg[1]}</span>${gg[0]}<small>${cnt(gg)}</small></button>`).join("")}</div>
   <div class="filterBar">
-    <select aria-label="구 선택" onchange="setMk('gu',this.value)">${DIST_OPTS().map(x => `<option ${x === MK.gu ? "selected" : ""} value="${x}">${distLabel(x)}</option>`).join("")}</select>
+    <select aria-label="구 선택" onchange="setMk('gu',this.value)">${DIST_OPTS().map(x => `<option ${x === MK.gu ? "selected" : ""} value="${x}">${distLabel(x)} (${pool.filter(v => g[2](v) && (x === "전체" || v.district === x)).length})</option>`).join("")}</select>
     <button class="btn" onclick="$('#aiq').value='시장 구경하고 먹방';recommend('시장 구경하고 먹방')">🏮 시장 먹방 코스 짜줘 →</button>
   </div>
   <div class="grid">${list.map(marketCard).join("") || "<p class='empty'>조건에 맞는 시장이 없어요. 위 조건을 하나 풀어보세요.</p>"}</div>
@@ -8935,7 +8957,7 @@ function renderCafes() { if (regionEmpty("cafesView", "🐶", "반려견 동반 
   const list = sortHome(CAFES.filter(c => CAFE_GU === "전체" || (CAFE_GU === "야외" ? c.big : c.district === CAFE_GU)).map((c, i) => [c, i]).sort((a, b) => ((a[0].publicListed === false) - (b[0].publicListed === false)) || a[1] - b[1]).map(a => a[0]));
   $("#cafesView").innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH MY DOG</span><h2>멍뭉이랑 같이 가는 카페<small>${RW()} 반려견 동반 카페 ${CAFES.length}곳</small></h2></div><span>${list.length}곳</span></div>
   <div class="petTips"><div><b>🦮 리드줄·하네스</b>대부분 필수예요. 매너벨트(기저귀)를 챙기면 실내 동반되는 곳이 많아요.</div><div><b>🐕 대형견이면</b>'넓은 마당·야외' 표시된 곳이 편해요. 크기 제한은 꼭 전화로 확인!</div><div><b>📞 가기 전에</b>동반 규칙·영업시간이 자주 바뀌어요. '최신 정보'로 한 번 더 확인하쇼.</div></div>
-  <div class="subchips">${["전체", "야외", ...DIST_OPTS().slice(1).filter(g => CAFES.some(c => c.district === g))].map(g => `<button class="${g === CAFE_GU ? "active" : ""}" onclick="setCafeGu('${g}')">${g === "야외" ? "🌳 넓은 야외" : g}</button>`).join("")}</div>
+  <div class="subchips">${["전체", "야외", ...DIST_OPTS().slice(1).filter(g => CAFES.some(c => c.district === g))].map(g => `<button class="${g === CAFE_GU ? "active" : ""}" onclick="setCafeGu('${g}')">${g === "야외" ? "🌳 넓은 야외" : g} <small class="chipN">${g === "전체" ? CAFES.length : CAFES.filter(c => g === "야외" ? c.big : c.district === g).length}</small></button>`).join("")}</div>
   <div class="grid">${list.map(petCard).join("") || "<p class='empty'>이 동네엔 아직 등록된 곳이 없네잉.</p>"}</div>
   <div class="verify" style="margin-top:14px"><b>이렇게 골랐어요</b> · 한국관광공사 「반려동물 동반여행」과 한국문화정보원 「반려동물 동반 가능 문화시설」 공공데이터에 등록된 광주·전남 카페를 기본으로 보여드려요(✓ 공공데이터). 문화정보원 자료는 2022년에 조사된 것이라 카드마다 작성일을 적었어요. 공공데이터에 아직 없지만 동반 가능으로 공개된 곳은 <b>운영자 확인</b> 표시를 달아 뒤에 따로 두었어요. 순위를 매기지 않고 ${HOME ? "내 동네에서 가까운 순" : "공공데이터 먼저, 목록 순"}으로 보여드려요. 동반 규칙은 매장 사정에 따라 바뀌니 방문 전 꼭 확인하세요.<br>목록에 없는 곳을 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.</div>`;
 }
@@ -9055,11 +9077,14 @@ function renderLocal() {
   const localEvents = todayEvents.filter(e => LOCAL_EVENT_F === "전체" || localEventKind(e) === LOCAL_EVENT_F).sort(eventSort);
   const dists = DIST_OPTS().slice(1).filter(g => LIBS.some(l => l.district === g) || PROGRAMS.some(p => p.district === g) || EVENTS.some(e => e.district === g) || (REGIONS[REGION]?.districts || []).includes(g));
   const nothing = !LIBS.length && !PROGRAMS.length && !EVENTS.length;
+  // 2026-11-13: 동네·분류 버튼에 개수 표시
+  const guN = g => { const f = x => g === "전체" || x.district === g; const ev = d => EVENTS.filter(e => f(e) && localEventKind(e) && (!e.end || e.end >= t) && (!e.start || e.start <= isoPlus(d))).length; return (ev(7) || ev(30)) + PROGRAMS.filter(p => f(p) && (!p.end || p.end >= t)).length + LIBS.filter(f).length };
+  const evN = f => f === "전체" ? todayEvents.length : todayEvents.filter(e => localEventKind(e) === f).length;
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">MY NEIGHBORHOOD</span><h2>동네서 시간 보내기<small>${esc(RW())} 오늘·이번 주 동네 축제와 공연, 체험부터 도서관·강좌까지</small></h2></div><span>${todayEvents.length + progs.length + libs.length}</span></div>
-  <div class="subchips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${jsq(g)}')">${g === "전체" ? "모든 동네" : esc(g)}</button>`).join("")}</div>
+  <div class="subchips">${["전체", ...dists].map(g => `<button class="${g === LOCAL_GU ? "active" : ""}" onclick="setLocalGu('${jsq(g)}')">${g === "전체" ? "모든 동네" : esc(g)} <small class="chipN">${guN(g)}</small></button>`).join("")}</div>
   ${nothing ? `<div class="nowEmpty">🏘 동네 행사·강좌·도서관 정보는 공공데이터 자동 수집 후 채워집니다.</div>` : ""}
   <h3 class="sub">🎉 지금 즐길 수 있는 동네 행사 <small style="font-weight:500;color:var(--muted)">${extended ? "향후 30일 이내 예정 행사" : "오늘부터 7일 이내 행사"} · ${todayEvents.length}건</small></h3>
-  <div class="subchips">${["전체", "축제·행사", "공연·버스킹", "체험·교육"].map(f => `<button class="${f === LOCAL_EVENT_F ? "active" : ""}" onclick="setLocalEventF('${jsq(f)}')">${f}</button>`).join("")}</div>
+  <div class="subchips">${["전체", "축제·행사", "공연·버스킹", "체험·교육"].map(f => `<button class="${f === LOCAL_EVENT_F ? "active" : ""}" onclick="setLocalEventF('${jsq(f)}')">${f} <small class="chipN">${evN(f)}</small></button>`).join("")}</div>
   <div class="grid">${localEvents.slice(0, 6).map(eventCard).join("") || `<p class="empty">해당 조건으로 등록된 행사가 없어요. 다른 동네나 분류를 선택하거나 ‘일정’ 탭에서 전체 행사를 확인해 주세요.</p>`}</div>
   ${localEvents.length > 6 ? `<p class="emptyNote">먼저 ${6}건을 보여드려요. 나머지 ${localEvents.length - 6}건은 위 분류·동네를 바꿔 살펴보세요. 전체 일정은 ‘일정’ 탭에서 볼 수 있어요.</p>` : ""}
   <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
