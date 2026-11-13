@@ -9453,10 +9453,52 @@ const SEARCH_SYN = {
   "나로": ["나로우주센터", "외나로도"], "나로도": ["나로우주센터", "외나로도"], "우주센터": ["나로우주센터"],
   "로켓": ["나로우주센터", "우주과학관"],
   "ktx": ["송정역", "기차역", "srt"], "srt": ["송정역", "기차역", "ktx"], "기차": ["송정역", "기차역", "ktx"], "기차역": ["송정역", "ktx"], "우주": ["우주과학관", "우주천문", "나로우주센터"],
+  // 2026-11-13: 다르게 부르는 말 넓히기 (사투리·줄임말·영어·비슷한 말)
+  "뮤지엄": ["박물관", "미술관"], "아트": ["미술관", "갤러리", "전시"], "화랑": ["갤러리"], "그림": ["미술관", "갤러리", "전시"], "미술": ["미술관", "갤러리", "전시"],
+  "전시회": ["전시"], "사진전": ["사진", "전시"], "유물": ["박물관"], "과학": ["과학관"], "천문대": ["천문", "별"], "별보기": ["천문"],
+  "콘서트": ["공연", "음악"], "뮤지컬": ["공연"], "연극": ["공연"], "국악": ["판소리", "공연"], "클래식": ["교향악", "오케스트라", "공연"], "버스킹": ["거리공연", "공연"],
+  "페스티벌": ["축제"], "엑스포": ["박람회"], "박람회": ["엑스포"], "불꽃놀이": ["불꽃"], "야시장": ["시장", "야간"],
+  "바다": ["해변", "해수욕장", "바닷가", "해안"], "바닷가": ["해변", "바다"], "해변": ["해수욕장", "바다"], "섬": ["섬"], "갯벌": ["습지", "갯벌"],
+  "산": ["산", "등산로"], "등산": ["산", "등산로", "둘레길"], "둘레길": ["옛길", "둘레길"], "산책": ["산책로", "공원", "둘레길", "숲"], "숲": ["수목원", "휴양림", "숲"],
+  "꽃": ["정원", "꽃", "수목원"], "정원": ["가든", "수목원"], "수목원": ["정원", "식물원"], "식물원": ["수목원"], "호수": ["저수지", "호수"], "단풍": ["산", "숲"],
+  "공원": ["공원", "유원지"], "놀이공원": ["패밀리랜드", "놀이"], "놀이동산": ["패밀리랜드"], "동물원": ["우치", "동물"], "아쿠아리움": ["수족관", "아쿠아"], "수족관": ["아쿠아"],
+  "캠핑": ["캠핑장", "야영"], "야영": ["캠핑"], "온천": ["스파"], "찜질방": ["사우나", "스파"], "물놀이": ["워터", "수영장", "계곡"], "계곡": ["계곡", "물놀이"],
+  "한옥": ["고택", "전통"], "고택": ["한옥"], "절": ["사찰", "사찰"], "사찰": ["절"], "성당": ["교회", "성당"], "역사": ["유적", "사적", "기념관"], "유적지": ["유적", "사적"],
+  "518": ["5·18", "오월", "민주"], "오일팔": ["5·18", "오월"], "acc": ["국립아시아문화전당", "문화전당"], "아시아문화전당": ["국립아시아문화전당"], "문화전당": ["국립아시아문화전당"],
+  "기아": ["챔피언스필드", "야구"], "야구": ["챔피언스필드", "기아"], "야구장": ["챔피언스필드"], "축구": ["광주fc", "축구전용"], "광주fc": ["축구"],
+  "영화": ["영화관", "cgv", "메가박스", "롯데시네마"], "영화관": ["cgv", "메가박스", "롯데시네마", "극장"], "극장": ["영화관", "cgv", "메가박스"],
+  "밥": ["식당", "맛집"], "밥집": ["식당", "맛집"], "맛집": ["식당"], "식당": ["맛집"], "커피": ["카페"], "카페": ["커피"], "디저트": ["카페", "베이커리", "빵"],
+  "빵": ["베이커리", "제과"], "빵집": ["베이커리", "제과"], "베이커리": ["빵"], "브런치": ["카페"],
+  "떡갈비": ["떡갈비"], "오리탕": ["오리"], "꼬막": ["꼬막"], "회": ["횟집", "회"], "횟집": ["회"], "국밥": ["국밥", "곰탕"], "곰탕": ["국밥"], "한정식": ["백반", "정식"], "백반": ["한정식", "정식"],
+  "숙소": ["호텔", "모텔", "펜션", "게스트하우스", "한옥스테이"], "호텔": ["숙소"], "펜션": ["숙소"], "게하": ["게스트하우스"], "잘곳": ["숙소", "호텔"],
+  "애견": ["반려", "강아지"], "강아지": ["반려", "애견"], "반려견": ["반려", "애견", "강아지"], "댕댕이": ["반려", "애견", "강아지"], "펫": ["반려", "애견"],
+  "아이": ["어린이", "키즈", "아동"], "애들": ["어린이", "키즈", "아이"], "어린이": ["키즈", "아이", "아동"], "키즈": ["어린이", "아이"], "유아": ["어린이", "키즈"],
+  "도서관": ["도서관"], "책": ["도서관", "책방", "서점"], "서점": ["책방", "서점"], "책방": ["서점"], "강좌": ["교실", "강의", "수업"], "수업": ["강좌", "교실"], "배우기": ["강좌", "교실"],
+  "체험": ["체험", "만들기", "공방"], "공방": ["체험", "공방"], "만들기": ["체험"], "장날": ["오일장", "5일장", "시장"], "오일장": ["5일장", "장날"], "시장": ["장터", "시장"],
+  "주차": ["주차장", "주차"], "화장실": ["화장실"], "무료": ["무료", "0원"], "공짜": ["무료"], "야경": ["야간", "밤"], "밤": ["야간", "야경"],
+  "송정": ["광주송정", "송정역"], "충장로": ["충장"], "상무지구": ["상무"], "첨단": ["첨단지구"], "무등산": ["무등"], "여수밤바다": ["여수", "밤바다", "야경"],
 };
+/* 2026-11-13: 찾는 말 넓히기
+   ① 조사 떼기: '미술관에서'·'송정역까지'·'바다랑' → '미술관'·'송정역'·'바다'
+   ② 붙은 말 무시: '근처'·'추천'·'가볼만한' 같은 말은 자료에 없어서 결과를 0개로 만들던 문제
+   ③ 결과가 하나도 없으면 오타·초성(ㅁㅅㄱ)으로 가장 비슷한 말을 찾아 다시 찾기 */
+const SEARCH_JOSA = /(?:에서는|에서|에게|한테|으로|이랑|하고|까지|부터|처럼|이나|이랑은|에는|에선|엔|에|로|은|는|이|가|을|를|랑|와|과|도|만|의|쪽|근처|주변|인근|가는길|갈만한|가볼만한)$/;
+const SEARCH_TAILS = ["에서는", "에서", "에게", "한테", "으로", "이랑", "하고", "까지", "부터", "처럼", "이나", "에는", "에선", "엔", "에", "로", "은", "는", "이", "가", "을", "를", "랑", "와", "과", "도", "만", "의", "쪽", "근처", "주변", "인근", "집", "가게", "식당"];
+const SEARCH_STOP = new Set(["근처", "주변", "인근", "근방", "쪽", "추천", "추천해줘", "알려줘", "좀", "요즘", "좋은", "괜찮은", "유명한", "가볼만한", "갈만한", "가볼곳", "갈곳", "곳", "데", "장소", "정보", "찾기", "찾아줘", "있는", "있어", "어디", "뭐", "할거", "볼거리", "놀거리", "놀곳", "구경"]);
+function searchForms(w) {
+  const k = norm(w); const out = new Set([k]); (SEARCH_SYN[k] || []).forEach(x => out.add(norm(x)));
+  // 끝말을 하나씩 떼 본다 ('아이랑' → '아이', '보리밥집' → '보리밥'). 남는 말이 두 글자 이상일 때만
+  SEARCH_TAILS.forEach(j => { if (!k.endsWith(j)) return; const st = k.slice(0, -j.length); if (st.length < 2) return; out.add(st); (SEARCH_SYN[st] || []).forEach(x => out.add(norm(x))) });
+  return [...out].filter(Boolean);
+}
+function searchWords(q) {
+  const ws = String(q || "").split(/\s+/).filter(Boolean);
+  const keep = ws.filter(w => !searchForms(w).some(f => SEARCH_STOP.has(f)));
+  return keep.length ? keep : ws;
+}
 function hits(q, item, fields) {
   const h = norm(fields.map(f => Array.isArray(item[f]) ? item[f].join(" ") : item[f]).join(" "));
-  return q.split(/\s+/).filter(Boolean).every(w => { const k = norm(w); return h.includes(k) || (SEARCH_SYN[k] || []).some(x => h.includes(norm(x))) });
+  return searchWords(q).every(w => searchForms(w).some(k => h.includes(k)));
 }
 /* 카드에 담긴 글은 전부 찾는다 (주소·링크·좌표 같은 기계용 칸만 뺌) */
 const SKIP_KEY = /^(id|url|link|image|img|imageCredit|lat|lng|lon|x|y|venueId|source|infoSource|verified|updated|ticketUrl|homepage|photo|photos|thumb)$/i;
@@ -9479,7 +9521,7 @@ function hitsAll(q, item) {
   const nameH = norm(searchPlaceText([item.name, item.title, item.venue, allText(item.aliases)].filter(Boolean).join(" "), q));
   const textH = spaced(searchPlaceText(allText(item), q));
   const has = k => nameH.includes(k) || textH.includes(k);
-  return q.split(/\s+/).filter(Boolean).every(w => { const k = norm(w); return has(k) || (SEARCH_SYN[k] || []).some(x => has(norm(x))) });
+  return searchWords(q).every(w => searchForms(w).some(has));
 }
 /* 앱 기능 바로가기: 장소·일정 자료가 아니라 앱 안의 메뉴·코스·도구도 검색되게 */
 const goTrip = s => { clearSearch(); const run = () => { itinerary(s); setTimeout(() => $("#answer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80) }; if (REGION !== "gj" && !KTX_REGION[REGION]) { setRegion("gj"); setTimeout(run, 120) } else run() };
@@ -9528,6 +9570,59 @@ window.searchToGuide = function(q) {
   recommend(text);
   setTimeout(() => $("#aiBox")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
 };
+/* 2026-11-13: 오타·초성 고치기 (결과가 0개일 때만 씀) */
+const HCHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+const toJamo = s => [...s].map(ch => { const c = ch.charCodeAt(0) - 0xAC00; return c >= 0 && c < 11172 ? String.fromCharCode(0x1100 + Math.floor(c / 588), 0x1161 + Math.floor(c % 588 / 28)) + (c % 28 ? String.fromCharCode(0x11A7 + c % 28) : "") : ch }).join("");
+const toCho = s => [...s].map(ch => { const c = ch.charCodeAt(0) - 0xAC00; return c >= 0 && c < 11172 ? HCHO[Math.floor(c / 588)] : ch }).join("");
+function editDist(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]; let lo = i;
+    for (let j = 1; j <= b.length; j++) { cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); if (cur[j] < lo) lo = cur[j] }
+    if (lo > max) return max + 1; prev = cur;
+  }
+  return prev[b.length];
+}
+let SEARCH_IDX = null;
+function searchIndex() {
+  const key = [ALL.EVENTS.length, ALL.VENUES.length, (ALL.FOOD || []).length, (ALL.PROGRAMS || []).length, (ANNUAL || []).length].join("|");
+  if (SEARCH_IDX && SEARCH_IDX.key === key) return SEARCH_IDX;
+  const vocab = new Map(), blob = [];
+  const add = (t, w) => String(t || "").toLowerCase().split(/[\s·,()\[\]/~\-]+/).forEach(x => { x = x.replace(/[^가-힣a-z0-9]/g, ""); if (x.length >= 2) vocab.set(x, (vocab.get(x) || 0) + w) });
+  ["EVENTS", "VENUES", "FOOD", "BAKERIES", "STAYS", "CAFES", "LIBS", "PROGRAMS", "CINEMAS"].map(k => ALL[k] || []).concat([ANNUAL || []]).forEach(a => a.forEach(x => {
+    ["name", "title", "venue", "kind", "category", "district"].forEach(f => add(x[f], 1)); add(allText(x.aliases), 1); blob.push(allText(x));
+  }));
+  Object.keys(SEARCH_SYN).forEach(k => vocab.set(k, (vocab.get(k) || 0) + 5));
+  SEARCH_IDX = { key, vocab: [...vocab], blob: norm(blob.join(" ")) };
+  return SEARCH_IDX;
+}
+function fixWord(w) {
+  const k = norm(w); if (!k || k.length < 2) return w;
+  const { vocab, blob } = searchIndex();
+  if (searchForms(k).some(f => blob.includes(f))) return w;                 // 자료에 있는 말이면 그대로
+  if (/^[ㄱ-ㅎ]{2,}$/.test(k)) {                                             // 초성: ㅁㅅㄱ → 미술관
+    const sc = new Map();   // 같은 말이 여러 이름에 들어 있을수록 앞에 (ㅂㄹㅂ → 보리밥)
+    vocab.forEach(([t, n]) => { const c = toCho(t); let i = c.indexOf(k); while (i >= 0) { const sub = [...t].slice(i, i + k.length).join(""); if (/^[가-힣]+$/.test(sub)) sc.set(sub, (sc.get(sub) || 0) + n); i = c.indexOf(k, i + 1) } });
+    const best = [...sc].sort((a, b) => b[1] - a[1])[0];
+    return best ? best[0] : w;
+  }
+  const L = [...k].length, max = /[a-z]/.test(k) ? (L >= 4 ? 1 : 0) : (L >= 3 ? 2 : 1), kj = toJamo(k);
+  if (!max) return w;
+  const cand = new Map();   // [거리, 나온 횟수]
+  vocab.forEach(([t, n]) => {
+    const ch = [...t];
+    for (let len = Math.max(2, L - 1); len <= L + 1; len++) for (let i = 0; i + len <= ch.length; i++) {
+      const sub = ch.slice(i, i + len).join(""); const c = cand.get(sub);
+      if (c) { c[1] += n; continue }
+      const d = editDist(kj, toJamo(sub), max); cand.set(sub, [d, n]);
+    }
+  });
+  const best = [...cand].filter(([, [d]]) => d <= max).sort((a, b) => a[1][0] - b[1][0] || b[1][1] - a[1][1])[0];
+  return best ? best[0] : w;
+}
+function searchFix(q) { try { return String(q || "").split(/\s+/).filter(Boolean).map(fixWord).join(" ") } catch (e) { return q } }
+window.searchFix = searchFix;
 function renderSearch() {
   const q = $("#search").value.trim();
   if (!q) { $("#searchView").classList.add("hidden"); return }
@@ -9549,7 +9644,7 @@ function renderSearch() {
   const eventCategory = x => String(x.category || "").trim();
   const venueKind = x => String(x.kind || x.category || "").trim();
   const venueIsMarket = x => !!x.market || /전통시장|재래시장|오일장|정기시장/.test(venueKind) || (/시장/.test(venueKind) && /시장|장터|장날/.test(x.name || ""));
-  const find = D => {
+  const find = (D, q) => {
     if (category) {
       const ev = /^(축제|전시)$/.test(category) ? D.EVENTS.filter(x => eventCategory(x) === category && categoryMatches(x)) : [];
       const pl = category === "미술관" ? D.VENUES.filter(x => /미술관/.test(venueKind(x)) && categoryMatches(x))
@@ -9589,7 +9684,20 @@ function renderSearch() {
     return { ev, pl, fd, bk, st, cf, lb, pg, cn, an, n: ev.length + pl.length + fd.length + bk.length + st.length + cf.length + lb.length + pg.length + cn.length + an.length };
   };
   // 권역과 상관없이 앱 안의 자료를 전부 찾고, 지금 고른 권역 것을 먼저 보여 준다 (예: 광주권에서 '나로호' → 고흥)
-  const R = find({ EVENTS: ALL.EVENTS, VENUES: ALL.VENUES, FOOD: ALL.FOOD || [], BAKERIES: ALL.BAKERIES || [], STAYS: ALL.STAYS || [], CAFES: ALL.CAFES || [], LIBS: ALL.LIBS || [], PROGRAMS: ALL.PROGRAMS || [], CINEMAS: ALL.CINEMAS || [], ANNUAL: ANNUAL || [] });
+  const SDATA = { EVENTS: ALL.EVENTS, VENUES: ALL.VENUES, FOOD: ALL.FOOD || [], BAKERIES: ALL.BAKERIES || [], STAYS: ALL.STAYS || [], CAFES: ALL.CAFES || [], LIBS: ALL.LIBS || [], PROGRAMS: ALL.PROGRAMS || [], CINEMAS: ALL.CINEMAS || [], ANNUAL: ANNUAL || [] };
+  let R = find(SDATA, q), fixNote = "";
+  // 2026-11-13: 하나도 안 나오면 ① 오타·초성 고쳐서 ② 그래도 없으면 가장 잘 맞는 한 단어로 다시 찾기
+  if (!category && !islandVisitIntent && !islandExpoIntent && !R.n) {
+    const fx = searchFix(q);
+    if (fx && fx !== q) { const R2 = find(SDATA, fx); if (R2.n) { R = R2; fixNote = `🔎 '${esc(q)}' 그대로는 없어서 비슷한 말 <b>'${esc(fx)}'</b>(으)로 찾았어요.` } }
+    if (!R.n) {
+      const ws = searchWords(q);
+      if (ws.length >= 2) {
+        const best = ws.map(w => [w, find(SDATA, w)]).filter(([, r]) => r.n).sort((a, b) => a[1].n - b[1].n)[0];
+        if (best) { R = best[1]; fixNote = `🔎 '${esc(q)}'에 다 맞는 곳은 없어서 <b>'${esc(best[0])}'</b>(으)로 찾은 결과를 보여 드려요.` }
+      }
+    }
+  }
   const mine = x => { const r = regionOfItem(x); return r === REGION || r === "*" };
   // 지금 고른 권역 것만 보여 준다. 다른 권역 결과는 '다른 권역도 보기'를 눌렀을 때만 (그때도 우리 권역 먼저)
   const allKey = q + "|" + REGION;                 // 권역을 바꾸거나 다른 말을 찾으면 다시 '우리 권역만'
@@ -9614,6 +9722,7 @@ function renderSearch() {
   sv.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">SEARCH</span><h2>'${esc(q)}' 검색 결과</h2></div><span>${n}개</span></div>
   ${q.split(/\s+/).length >= 2 ? `<div class="verify"><b>✨ 문장으로 찾으시나요?</b> 단어별 검색 결과는 아래에 그대로 보여드려요. 날씨·시간·동행 조건을 고려한 코스가 필요하면 <button type="button" class="btn" onclick="searchToGuide()">이 문장으로 맞춤 추천받기 →</button></div>` : ""}
   <div class="jump">${[["앱 기능", ft.length, "sft"], ["나들이", pl.length, "sp"], ["일정", ev.length, "se"], ["맛집", fd.length, "sf"], ["빵지순례", bk.length, "sb"], ["숙소", st.length, "ss"], ["멍카페", cf.length, "sc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", cn.length, "scn"], ["해마다 축제", an.length, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
+  ${fixNote ? `<p class="emptyNote">${fixNote}</p>` : ""}
   ${otherRegions.length ? `<p class="emptyNote">📍 ${autoAll ? `${esc(RNAME())}에는 없어서 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) 결과 ${otherN}개를 보여 드려요.` : showAll ? `${esc(RNAME())} ${mineN}개를 먼저 보여 주고, 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) ${otherN}개도 같이 보여 드려요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=null;renderSearch()">${esc(RNAME())}만 보기</a>` : `${mineN ? `${esc(RNAME())} 결과만 보여 드려요.` : `${esc(RNAME())}에는 없어요.`} 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")})에 ${otherN}개 더 있어요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=$('#search').value.trim()+'|'+REGION;renderSearch()">다른 권역도 보기</a>`} ${otherRegions.map(r => `<a href="#" onclick="event.preventDefault();setRegion('${r}')">${REGIONS[r].emoji} ${REGIONS[r].name}으로 바꾸기</a>`).join(" ")}</p>` : ""}
   ${ft.length ? `<h3 class="sub" id="sft">🧭 앱 기능 바로가기 ${ft.length}</h3><div class="grid">${ft.map(featureCard).join("")}</div>` : ""}
   ${n || otherN ? "" : `<p class='empty'>앱에 등록된 자료에는 '${esc(q)}'${josa2(q,"이","가")} 없어요. 아래에서 바로 찾아보세요 — 더 짧게(예: '펭귄', '보리밥') 찾아도 돼요.</p>${outsideSearch(q, true)}`}
@@ -13292,43 +13401,44 @@ document.addEventListener("keydown",function(e){
      사투리·다른 말을 앱이 원래 알아듣는 말로 바꾼 뒤(원래 추천 규칙 그대로 사용), 알아들은 조건을 칩으로 보여 준다. */
   const R = [
     // [이름, 찾는 말, 칩 글자, 바꿀 말(없으면 그대로), 덧붙일 말]
-    ["kid", /애기들?|아기들?|애들|아그들|꼬맹이들?|유치원생?|초등학생|초딩|어린이집|딸내미|딸래미|아들내미|조카들?|우리\s*애|자녀|아이들?|어린이|유아/g, "👶 아이랑", "아이"],
-    ["couple", /여친|남친|여자\s*친구|남자\s*친구|애인|와이프|마누라|아내|남편|신랑|각시|썸|데이트|연인|커플/g, "❤️ 데이트", "데이트"],
-    ["parents", /어머니|아버지|어머님|아버님|엄마|아빠|할머니|할아버지|할매|할배|어르신|부모님?|효도/g, "👵 부모님과"],
-    ["pet", /댕댕이?|강쥐|멍뭉이|우리\s*개|반려견|반려동물|강아지|애견/g, "🐶 강아지랑", "강아지"],
-    ["alone", /혼자|혼놀|나\s*홀로/g, "🙋 혼자"],
-    ["friends", /친구들?|동창|모임/g, "👫 친구랑"],
-    ["free", /공짜|돈\s*안\s*(?:드는|들고|들이고|쓰고)|돈\s*없(?:이|어)?|0원|무료/g, "🆓 무료", "무료"],
-    ["wxIn", /비\s*(?:가\s*)?(?:온다|온대|오는|와서|오면|와|올|내리|오네)|비오는|장마|폭염|무더위|더워|덥다|더운|추워|춥다|추운|한파|쌀쌀|미세먼지|황사/g, "🏠 실내 (날씨)", null, "실내"],
+    ["kid", /손주들?|손자|손녀|꼬마들?|키즈|초등생|애기들?|아기들?|애들|아그들|꼬맹이들?|유치원생?|초등학생|초딩|어린이집|딸내미|딸래미|아들내미|조카들?|우리\s*애|자녀|아이들?|어린이|유아/g, "👶 아이랑", "아이"],
+    ["couple", /여보|자기랑|소개팅|기념일|프러포즈|분위기\s*(?:좋은|있는)|여친|남친|여자\s*친구|남자\s*친구|애인|와이프|마누라|아내|남편|신랑|각시|썸|데이트|연인|커플/g, "❤️ 데이트", "데이트"],
+    ["parents", /엄니|어매|아부지|아배|장모님?|장인\s*어른|시어머니|시아버지|시부모님?|칠순|팔순|환갑|어머니|아버지|어머님|아버님|엄마|아빠|할머니|할아버지|할매|할배|어르신|부모님?|효도/g, "👵 부모님과"],
+    ["pet", /멍멍이|댕댕이?|개랑|개\s*데리고|강쥐|멍뭉이|우리\s*개|반려견|반려동물|강아지|애견/g, "🐶 강아지랑", "강아지"],
+    ["alone", /혼자|혼놀|혼밥|혼행|나\s*홀로|나\s*혼자/g, "🙋 혼자"],
+    ["friends", /친구들?|동창|모임|동기들?|동료들?|회사\s*사람|계모임|단체/g, "👫 친구랑"],
+    ["free", /공짜|돈\s*안\s*(?:드는|들고|들이고|쓰고)|돈\s*없(?:이|어)?|0원|무료|입장료\s*(?:없|안\s*받)/g, "🆓 무료", "무료"],
+    ["wxIn", /비\s*(?:가\s*)?(?:온다|온대|오는|와서|오면|와|올|내리|오네)|비오는|장마|폭염|무더위|더워|덥다|더운|추워|춥다|추운|한파|쌀쌀|미세먼지|황사|비\s*옴|소나기|태풍|눈\s*(?:와|온|오는|내리)|폭설|찜통|후덥|날씨\s*(?:궂|안\s*좋|별로|나빠)/g, "🏠 실내 (날씨)", null, "실내"],
     ["indoor", /실내|안에서|에어컨/g, "🏠 실내"],
-    ["outdoor", /바람\s*쐬|햇볕|햇빛|날\s*좋|밖에서|야외|소풍|피크닉/g, "🌳 야외", null, "야외"],
+    ["outdoor", /날씨\s*(?:좋|짱|끝내)|화창|선선|맑은\s*날|꽃구경|단풍|벚꽃|바람\s*쐬|햇볕|햇빛|날\s*좋|밖에서|야외|소풍|피크닉/g, "🌳 야외", null, "야외"],
     ["now", /(?:^|\s)(?:인자|이자|지금|당장|바로)(?=\s|$|부터|가|는)/g, "⏱ 지금 나서기"],
-    ["evening", /퇴근\s*(?:하고|후|길)?|일\s*끝나고|저녁|밤에?|야간|야경/g, "🌙 저녁·밤", null, "저녁"],
+    ["evening", /퇴근\s*(?:하고|후|길)?|일\s*끝나고|저녁|밤에?|밤늦게|야간|야경|해\s*지고|노을|일몰/g, "🌙 저녁·밤", null, "저녁"],
     ["moreh", /낼모레|모레/g, "📆 모레", "모레"],
     ["tomorrow", /내일/g, "📆 내일"],
     ["weekend", /주말|토요일|일요일/g, "🗓 주말"],
     ["morning", /오전|아침/g, "🌅 오전"],
     ["afternoon", /점심|오후/g, "☀️ 낮"],
-    ["food", /배고파|배고픈|출출|한\s*끼|밥집|밥\s*(?:먹|묵)|먹을\s*(?:데|곳)|맛있는\s*(?:거|데)|맛집|식사/g, "🍽 밥도", null, "맛집"],
-    ["cafe", /커피|카공|디저트|케이크|카페|찻집/g, "☕ 카페"],
-    ["exhibit", /그림|작품|전시회?|미술관?|갤러리|비엔날레/g, "🎨 전시"],
-    ["perf", /노래|음악|공연|콘서트|연주|뮤지컬|연극|국악|클래식|들을|버스킹/g, "🎵 공연", null, "공연"],
-    ["walk", /걷고\s*싶|걸을|걷기|산책|숲길?|둘레길/g, "🌿 산책", null, "산책"],
-    ["quiet", /조용한|한적한|사람\s*(?:없는|적은|안\s*많은)|호젓/g, "🤫 한적한 데", null, "산책"],
-    ["hike", /등산|산행|산에\s*(?:가|오르)|트레킹/g, "⛰ 등산"],
-    ["exp", /체험|만들기|과학|놀이/g, "🧪 체험"],
-    ["fest", /축제|행사/g, "🎪 축제·행사"],
-    ["market", /장날|오일장|5일장|전통시장|시장/g, "🏮 시장·장날"],
-    ["movie", /영화|극장/g, "🎬 영화"],
-    ["history", /역사|5\.?18|오월|유적|사적/g, "🏛 역사"],
-    ["museum", /박물관|기념관/g, "🏺 박물관"],
+    ["food", /배고프|허기|맛난\s*거|먹방|맛있는\s*집|배고파|배고픈|출출|한\s*끼|밥집|밥\s*(?:먹|묵)|먹을\s*(?:데|곳)|맛있는\s*(?:거|데)|맛집|식사/g, "🍽 밥도", null, "맛집"],
+    ["cafe", /빙수|브런치|차\s*한\s*잔|티타임|커피|카공|디저트|케이크|카페|찻집/g, "☕ 카페"],
+    ["exhibit", /사진전|작가|화랑|아트|그림|작품|전시회?|미술관?|갤러리|비엔날레/g, "🎨 전시"],
+    ["perf", /판소리|오페라|발레|댄스|재즈|밴드|합창|오케스트라|마술|인형극|노래|음악|공연|콘서트|연주|뮤지컬|연극|국악|클래식|들을|버스킹/g, "🎵 공연", null, "공연"],
+    ["walk", /거닐|산보|마실|한\s*바퀴|천변|강변|호숫가|걷고\s*싶|걸을|걷기|산책|숲길?|둘레길/g, "🌿 산책", null, "산책"],
+    ["quiet", /조용히|조용하게|한산|힐링|쉬고\s*싶|멍\s*때리|여유롭|조용한|한적한|사람\s*(?:없는|적은|안\s*많은)|호젓/g, "🤫 한적한 데", null, "산책"],
+    ["hike", /산\s*타|등반|등산|산행|산에\s*(?:가|오르)|트레킹/g, "⛰ 등산"],
+    ["exp", /체험|만들기|과학|놀이|공방|원데이\s*클래스|클래스|도예|실험/g, "🧪 체험"],
+    ["fest", /축제|행사|페스티벌|박람회|엑스포|불꽃/g, "🎪 축제·행사"],
+    ["market", /장터|야시장|장날|오일장|5일장|전통시장|시장/g, "🏮 시장·장날"],
+    ["movie", /영화|극장|cgv|메가박스|롯데시네마/gi, "🎬 영화"],
+    ["history", /옛날|전통(?!시장)|고택|한옥|문화재|역사|5\.?18|오월|유적|사적/g, "🏛 역사"],
+    ["museum", /박물관|기념관|과학관|유물/g, "🏺 박물관"],
+    ["sea", /바다|바닷가|해변|해수욕장|갯벌|항구|포구|섬(?!진)/g, "🌊 바다·섬", null, "야외"],
     ["walkMove", /걸어서|도보/g, "🚶 걸어서"],
-    ["bus", /버스|지하철|대중교통/g, "🚌 대중교통"],
-    ["car", /차로|자차|운전|드라이브/g, "🚗 차로"]
+    ["bus", /버스|지하철|전철|대중교통/g, "🚌 대중교통"],
+    ["car", /차로|자차|자가용|차\s*(?:끌고|타고)|운전|드라이브/g, "🚗 차로"]
   ];
   // 사투리로 '어디 갈 데 있어?' 하는 말 → 원래 앱이 알아듣는 '어디'를 덧붙임 (칩은 안 만듦)
-  const ASK_WORDS = /갈\s*데|가볼\s*데|놀\s*데|놀\s*거리|놀거리|볼\s*거리|볼거리|할\s*거\s*(?:리|없)|있당가|있으까|있소|있어라|있을랑가|할랑가|갈랑가|볼랑가|뭐하꼬|가꼬|심심/;
-  const FILLER = /(?:^|\s)(?:와따|오매|겁나|긍께|그랑께|근디|거시기)(?=\s|$|,|!)/g;
+  const ASK_WORDS = /갈\s*데|가볼\s*데|놀\s*데|놀\s*거리|놀거리|볼\s*거리|볼거리|할\s*거\s*(?:리|없)|있당가|있으까|있소|있어라|있을랑가|할랑가|갈랑가|볼랑가|뭐하꼬|가꼬|심심|뭐\s*하지|뭐\s*할까|어디\s*가지|어디\s*갈까|가\s*볼\s*만|갈\s*만한|추천\s*좀|땡기는|땡겨|가고\s*잡|가고\s*싶|놀러/;
+  const FILLER = /(?:^|\s)(?:와따|오매|아따|워메|겁나|허벌나게|허벌라게|징하게|솔찬히|긍께|그랑께|근디|거시기|그냥|혹시)(?=\s|$|,|!)/g;
   const NEG = /((?:[가-힣]+\s)?[가-힣]+\s(?:데|곳)|[가-힣A-Za-z0-9]+)\s*(?:은|는|이|가|을|를)?\s*(?:말고|빼고|제외하고|제외|싫어|싫고|안\s*가고|피해서)/g;
 
   function areaChips(t){
