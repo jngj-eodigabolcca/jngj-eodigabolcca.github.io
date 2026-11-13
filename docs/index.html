@@ -5058,6 +5058,19 @@ html body #tabs button.tabAll{font-weight:800}
 </script>
 <!-- ── #search20261109 : '뭐든 찾아보쇼잉' 검색창 눈에 띄게 (이 블록만 지우면 원래대로) ── -->
 
+<style id="homeBarSlim">
+/* 2026-11-13: '○○ 기준 · 가까운 순 · 바꾸기' — 탭 줄 위 오른쪽에 작은 한 줄로 */
+html body #decideNow .hbMoved:not(#_):not(#_){margin:0 0 6px!important;padding:0!important;display:flex;justify-content:flex-end}
+html body #decideNow .hbMoved .homeBar:not(#_):not(#_){margin:0!important}
+html body #homeBar .homeOn:not(#_):not(#_){display:inline-flex;align-items:center;gap:4px;min-height:0!important;height:auto!important;padding:3px 10px!important;font-size:12px!important;font-weight:700;line-height:1.4;border-radius:999px}
+html body #homeBar .homeOn>button:not(#_):not(#_){min-height:0!important;height:auto!important;padding:0 0 0 4px!important;font-size:12px!important;line-height:1.4;border:0!important;background:transparent!important}
+/* 2026-11-13: 지금 바로·조건 골라·크리밍한테·하루 코스 탭 — 아이콘을 글자 옆으로 붙여 높이를 낮춤 */
+html body #decideNow .dnTabs:not(#_){margin:0 0 10px!important;padding:3px!important;border-radius:13px!important}
+html body #decideNow .dnTabs button:not(#_){flex-direction:row!important;justify-content:center;gap:3px!important;padding:7px 2px!important;font-size:13px!important;line-height:1.2;border-radius:10px!important;white-space:nowrap}
+html body #decideNow .dnTabs button i:not(#_){font-size:14px!important;line-height:16px!important}
+@media(max-width:370px){html body #decideNow .dnTabs button:not(#_){font-size:12px!important;gap:2px!important}html body #decideNow .dnTabs button i:not(#_){font-size:12px!important}}
+@media(min-width:900px){html body #decideNow .dnTabs button:not(#_){font-size:14px!important;padding:9px 6px!important;gap:6px!important}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -13628,7 +13641,7 @@ document.addEventListener("keydown",function(e){
     const hbWrap = $id("homeBar")?.parentElement;
     return {
       dn, d,
-      now: [$id("nowStart"), hbWrap].filter(Boolean),
+      now: [$id("nowStart")].filter(Boolean),
       cond: [".originBar", "#decisionWeather", ".decideGrid", "#detailSearch", ".decideAction"].map(q => d.querySelector(q)).filter(Boolean),
       ask: [$id("aiBox")?.closest("section")].filter(Boolean),
       plan: [$id("today")].filter(Boolean)
@@ -13655,7 +13668,8 @@ document.addEventListener("keydown",function(e){
     // 지금 바로 → 바로 아래 '우리 동네' 한 줄 (첫 추천을 본 다음에 묻기)
     const ns = $id("nowStart"), hbWrap = $id("homeBar")?.parentElement;
     if (ns && ns.parentNode === p.d && bar.nextElementSibling !== ns) bar.insertAdjacentElement("afterend", ns);
-    if (ns && hbWrap && hbWrap.id !== "mainContent" && ns.nextElementSibling !== hbWrap) { hbWrap.classList.add("hbMoved"); ns.insertAdjacentElement("afterend", hbWrap) }
+    // 동네 기준 한 줄은 네 탭 모두에 쓰이므로(가까운 순) 탭 줄 바로 위에 작게 둔다
+    if (hbWrap && hbWrap.id !== "mainContent" && bar.previousElementSibling !== hbWrap) { hbWrap.classList.add("hbMoved"); hbWrap.classList.remove("dnOff"); bar.insertAdjacentElement("beforebegin", hbWrap) }
     // 하루 코스(#today)는 물어보기 다음 칸으로
     const t = $id("today"), ask = $id("aiBox")?.closest("section");
     if (t && t.parentNode !== p.dn) { (ask && ask.parentNode === p.dn ? ask : p.d).insertAdjacentElement("afterend", t) }
