@@ -4232,6 +4232,10 @@ html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):
   display:inline-flex!important;align-items:center;justify-content:center;gap:3px!important;box-sizing:border-box;white-space:nowrap!important}
 /* 2026-11-13: 위 inline-flex!important(#_ 2개)가 .hidden을 이겨서 순천여수권·무안목포권에도 '김대중컨벤션센터' 칩이 보이던 문제 → 숨김이 항상 이기게 */
 html body #chips>button.hidden:not(#_):not(#_):not(#_){display:none!important}
+.calToday{display:inline-flex;flex-direction:column;width:1.08em;height:1.12em;border-radius:.2em;overflow:hidden;background:#fff;border:1.5px solid #cfd4dd;box-sizing:border-box;line-height:1;vertical-align:middle;font-style:normal;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.calToday b{display:block;background:#e5484d;color:#fff;font-size:.3em;font-weight:800;text-align:center;padding:.18em 0 .14em;letter-spacing:-.02em}
+.calToday em{flex:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:.52em;color:#1f2937;letter-spacing:-.04em}
+#menuGlance .calToday{font-size:1.2em}
 .subchips .chipN{font-size:.85em;font-weight:700;opacity:.7;margin-left:2px}
 html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_){border-radius:999px!important}
 html body .seg:not(#_):not(#_){padding:3px!important;border-radius:12px!important}
@@ -13250,9 +13254,11 @@ document.addEventListener("keydown",function(e){
   const hh = () => document.querySelector("header.top")?.offsetHeight || 0;
   const toTop = el => { if (!el) return; window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - hh() - 10), behavior: "instant" }) };
 
+  /* 2026-11-13: 📅 이모지는 폰 글꼴에 'JUL 17'이 그려져 있어 오늘 날짜와 달라 보임 → 오늘 날짜가 찍히는 달력 아이콘 */
+  const CAL_TODAY = (() => { const d = new Date(); return `<span class="calToday"><b>${d.getMonth() + 1}월</b><em>${d.getDate()}</em></span>` })();
   /* ── 메뉴 목록 (한곳에서 관리) ── */
   const M = {
-    events:   ["📅", "일정", "전시·공연·축제"],
+    events:   [CAL_TODAY, "일정", "전시·공연·축제"],
     stages:   ["🎼", "오늘 밤 뭐 들을랑가", "공연장 무대"],
     popshows: ["🎤", "대중가수 공연", "콘서트·팬미팅"],
     places:   ["🏛", "나들이", "산책·전시·체험"],
@@ -13342,7 +13348,7 @@ document.addEventListener("keydown",function(e){
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll() });
 
   /* ── 하단 탭 5개 (늘 보임) ── */
-  const TABS = [["decide", "🏠", "홈"], ["events", "📅", "일정"], ["map", "🗺", "지도"], ["favorites", "♡", "찜"], ["all", "☰", "전체"]];
+  const TABS = [["decide", "🏠", "홈"], ["events", CAL_TODAY, "일정"], ["map", "🗺", "지도"], ["favorites", "♡", "찜"], ["all", "☰", "전체"]];
   function syncTabs(){
     const t = document.body.dataset.tab || "home", cur = (t === "home" || t === "decide") ? "decide" : t;
     document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === cur));
