@@ -1321,6 +1321,215 @@ RECURRING = [
 ]
 
 
+# ───────── 관심 축제 지키기 (scripts/festival_watch.json) ─────────
+# 해마다 열리지만 공공데이터 등록이 늦거나 빠지는 축제를, 이름이 바뀌거나 시기가 옮겨져도 놓치지 않게 한다.
+#  ① 관광공사 TourAPI를 '이름·옛 이름'으로 직접 검색(지역코드와 무관하게) → 행사 상세의 날짜 사용
+#  ② 못 찾으면 공식 누리집에서 올해·내년 날짜를 읽음
+#  ③ 그래도 없는데 열릴 때가 다가오면 meta.json 에 '일정 못 찾음'을 빨갛게 남김 (관리자 화면 #admin 에 보임)
+# 찾은 날짜는 docs/data/annual.json(축제 달력)의 this 에도 적어, 달력이 해마다 저절로 맞춰지게 한다.
+WATCH_PATH = Path(__file__).resolve().parent / "festival_watch.json"
+OUT_ANNUAL = DATA_DIR / "annual.json"
+WATCH_MISSING = []
+WATCH_FOUND = []
+MANUAL_FOR_WATCH = []
+
+_DASH = r"[~∼〜\-–—]"
+_DAY = r"\s*일?\.?\s*(?:\([^)]{1,3}\))?\s*"
+_RANGE_Y = re.compile(r"(20\d{2})\s*[.\-/년]\s*(\d{1,2})\s*[.\-/월]\s*(\d{1,2})" + _DAY + _DASH +
+                      r"\s*(?:(20\d{2})\s*[.\-/년]\s*)?(?:(\d{1,2})\s*[.\-/월]\s*)?(\d{1,2})(?!\d)")
+_RANGE_NOY = re.compile(r"(?<![\d.])(\d{1,2})\s*[.월]\s*(\d{1,2})" + _DAY + _DASH + r"\s*(?:(\d{1,2})\s*[.월]\s*)?(\d{1,2})(?!\d)")
+
+
+def _mk_range(y, m1, d1, y2, m2, d2):
+    from datetime import date
+    try:
+        y, m1, d1 = int(y), int(m1), int(d1)
+        m2 = int(m2) if m2 else m1
+        y2 = int(y2) if y2 else (y + 1 if m2 < m1 else y)
+        a, b = date(y, m1, d1), date(y2, m2, int(d2))
+    except (ValueError, TypeError):
+        return None
+    if b < a or (b - a).days > 31:
+        return None
+    return a.isoformat(), b.isoformat()
+
+
+def watch_dates_in_text(text, names, need_near=True):
+    """글 속에서 축제 날짜(시작~끝)를 찾는다. need_near 면 축제 이름 근처(앞뒤 300자)에 있는 날짜만."""
+    t = re.sub(r"\s+", " ", text or "")
+    y_now = NOW.year
+    keys = [n for n in names if n]
+    def near(i):
+        if not need_near:
+            return True
+        win = t[max(0, i - 300): i + 300]
+        return any(k in win or k.replace(" ", "") in win.replace(" ", "") for k in keys)
+    found = []
+    for m in _RANGE_Y.finditer(t):
+        if near(m.start()):
+            r = _mk_range(*m.groups())
+            if r: found.append(r)
+    for m in _RANGE_NOY.finditer(t):
+        if not near(m.start()):
+            continue
+        before = t[max(0, m.start() - 120): m.start()]
+        ys = re.findall(r"(20\d{2})", before)
+        if not ys:
+            continue
+        r = _mk_range(ys[-1], m.group(1), m.group(2), None, m.group(3), m.group(4))
+        if r: found.append(r)
+    found = [r for r in found if int(r[0][:4]) in (y_now, y_now + 1) and r[1] >= TODAY_ISO]
+    return sorted(set(found))[0] if found else None
+
+
+def tourapi_keyword(keyword):
+    params = {"serviceKey": DATA_KEY, "MobileOS": "ETC", "MobileApp": "gwangju-eodi", "_type": "json",
+              "keyword": keyword, "contentTypeId": "15", "numOfRows": "30", "pageNo": "1", "arrange": "A"}
+    raw = http_get("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?" + urllib.parse.urlencode(params))
+    j = json.loads(raw.decode("utf-8"))
+    resp = (j or {}).get("response") or {}
+    if str((resp.get("header") or {}).get("resultCode")) not in ("0000", "0"):
+        raise RuntimeError(f"TourAPI 키워드 검색 오류: {resp.get('header')}")
+    items = ((resp.get("body") or {}).get("items") or {}) or {}
+    items = items.get("item") if isinstance(items, dict) else []
+    return [items] if isinstance(items, dict) else (items or [])
+
+
+def _watch_event(w, start, end, how, extra=None):
+    tpl = dict(w.get("template") or {})
+    y = start[:4]
+    title = tpl.pop("title", w["names"][0]).replace("{year}", y)
+    md = lambda s: f"{int(s[5:7])}.{int(s[8:10])}"
+    e = {
+        "id": f"watch-{w['id']}-{y}", "title": title, **tpl,
+        "start": start, "end": end, "date": f"{md(start)} ~ {md(end)}",
+        "status": "예정" if start > TODAY_ISO else "진행중",
+        "origin": "auto", "api": "watch", "verified": TODAY_ISO,
+        "verify": f"{how} · 시간·요금은 공식 누리집 확인",
+        "source": how,
+        "ticket": {"status": "확인필요", "note": "공식 안내 확인", "checked": TODAY_ISO},
+    }
+    al = list(e.get("aliases") or [])
+    for n in w["names"]:
+        if n not in al and n != title:
+            al.append(n)
+    e["aliases"] = al
+    if extra:
+        e.update({k: v for k, v in extra.items() if v})
+    return e
+
+
+def _watch_annual(w, start, end):
+    """축제 달력(annual.json)의 올해 날짜를 찾은 날짜로 맞춘다. 예전 해 날짜는 last 로 남김."""
+    try:
+        ann = read_json(OUT_ANNUAL, [])
+        aid = w.get("annual_id") or f"an-{w['id']}"
+        for a in ann:
+            if a.get("id") != aid:
+                continue
+            cur = a.get("this") or {}
+            new = {"year": int(start[:4]), "start": start, "end": end, "round": cur.get("round", "") if cur.get("year") == int(start[:4]) else ""}
+            if cur.get("start") == start and cur.get("end") == end:
+                return
+            if cur and cur.get("year") != new["year"]:
+                a["last"] = cur
+            a["this"] = new
+            a["month"] = int(start[5:7])
+            write_json(OUT_ANNUAL, ann)
+            log(f"  ✎ 축제 달력 맞춤: {a.get('name')} {start}~{end}")
+            return
+    except Exception as ex:
+        log(f"  ⚠ 축제 달력 맞추기 실패 (무시): {ex}")
+
+
+def _watch_done_this_year(w):
+    """올해 것이 이미 들어 있거나 이미 끝났으면 '못 찾음' 경고를 내지 않는다."""
+    y = NOW.year
+    keys = [norm_title(n) for n in w["names"]]
+    hit = lambda e: (e.get("start") or "")[:4] == str(y) and any(k and k in norm_title(e.get("title", "") + " ".join(e.get("aliases") or [])) for k in keys)
+    if any(hit(e) for e in MANUAL_FOR_WATCH) or any(hit(e) for e in PREV.values()):
+        return True
+    for a in read_json(OUT_ANNUAL, []):
+        if a.get("id") == (w.get("annual_id") or f"an-{w['id']}") and (a.get("this") or {}).get("year") == y:
+            return True
+    return False
+
+
+def _watch_window(w):
+    """열릴 수 있는 달(months)의 45일 전부터 그 달 끝까지면 True"""
+    from datetime import date
+    today = NOW.date()
+    for m in w.get("months") or []:
+        first = date(today.year, int(m), 1)
+        last = (date(today.year + (m == 12), (m % 12) + 1, 1) - timedelta(days=1))
+        if first - timedelta(days=45) <= today <= last:
+            return True
+    return False
+
+
+def watch_festivals():
+    WATCH_MISSING.clear(); WATCH_FOUND.clear()
+    conf = read_json(WATCH_PATH, {})
+    deadline = time.time() + SOURCE_BUDGET
+    out = []
+    for w in conf.get("festivals", []):
+        if not w.get("id") or not w.get("names") or time.time() > deadline:
+            continue
+        keys = [norm_title(n) for n in w["names"]]
+        got = None
+        # ① 관광공사 이름 검색
+        if DATA_KEY:
+            for name in w["names"]:
+                try:
+                    items = tourapi_keyword(name)
+                except Exception as ex:
+                    log(f"  관광공사 '{name}' 검색 실패: {ex}"); continue
+                for x in items:
+                    t = clean_api_text(x.get("title"))
+                    if not in_region(x.get("addr1") or "") or not any(k and (k in norm_title(t) or norm_title(t) in k) for k in keys):
+                        continue
+                    cid = str(x.get("contentid") or "")
+                    try:
+                        intro = guarded("관광공사", tourapi_detail_intro, cid)
+                    except Exception:
+                        intro = {}
+                    s, e = ymd(intro.get("eventstartdate")), ymd(intro.get("eventenddate"))
+                    if s and (e or s) >= TODAY_ISO:
+                        got = _watch_event(w, s, e or s, "한국관광공사 TourAPI (이름 검색)", {
+                            "id": f"tour-{cid}", "apiId": cid, "title": t,
+                            "image": x.get("firstimage") or x.get("firstimage2") or "",
+                            "lat": to_float(x.get("mapy")), "lng": to_float(x.get("mapx")),
+                            "time": clean_api_text(intro.get("playtime")),
+                            "price": clean_api_text(intro.get("usetimefestival")),
+                            "venue": clean_api_text(intro.get("eventplace")),
+                        })
+                        break
+                if got:
+                    break
+        # ② 공식 누리집에서 날짜 읽기
+        if not got:
+            own = (w.get("template") or {}).get("url", "")
+            for url in w.get("pages") or []:
+                try:
+                    raw = http_get(url, timeout=15).decode("utf-8", "replace")
+                except Exception as ex:
+                    log(f"  {url} 읽기 실패: {ex}"); continue
+                text = html.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"(?is)<(script|style)\b.*?</\1>", " ", raw)))
+                r = watch_dates_in_text(text, w["names"] + list((w.get("template") or {}).get("aliases") or []),
+                                        need_near=not (own and url.rstrip("/") == own.rstrip("/")))
+                if r:
+                    got = _watch_event(w, r[0], r[1], f"공식 누리집 날짜 자동 확인 ({urllib.parse.urlparse(url).netloc})")
+                    break
+        if got:
+            out.append(got); WATCH_FOUND.append(f"{w['names'][0]} {got['start']}~{got['end']}")
+            _watch_annual(w, got["start"], got["end"])
+            log(f"  ✔ 관심 축제 찾음: {got['title']} {got['start']}~{got['end']} ({got['source']})")
+        elif _watch_window(w) and not _watch_done_this_year(w):
+            WATCH_MISSING.append(w["names"][0])
+            log(f"  ⚠ 관심 축제 일정 못 찾음: {w['names'][0]} → festivals_extra.json 에 직접 넣어 주세요")
+    return out
+
+
 def recurring_events():
     out = []
     today = NOW.date()
@@ -1368,6 +1577,7 @@ def main():
     except Exception as ex:
         log(f"⚠ festivals_extra.json 읽기 실패 (무시하고 계속): {ex}")
 
+    MANUAL_FOR_WATCH[:] = manual            # 관심 축제: 직접 넣은 일정에 올해 것이 있으면 '못 찾음' 경고 안 냄
     previous = read_json(OUT_EVENTS, [])
     for e in previous:
         if e.get("id"):
@@ -1378,6 +1588,7 @@ def main():
     KOPIS_GAP_H = 11.5            # KOPIS 는 자주 물으면 막는다 → 하루 한 번(09:10 실행)만 묻고, 18:10 은 받아 둔 자료 사용
     for source_id, source_name, fn in [
         ("tourapi", "관광공사 행사·축제", tourapi_festivals),
+        ("watch", "관심 축제 지키기", watch_festivals),
         ("kopis", "KOPIS 공연", kopis_performances),
         ("culture", "문화정보원 전시·체험", culture_events),
         ("gma", "광주시립미술관 전시", gma_exhibitions),
@@ -1414,6 +1625,12 @@ def main():
             rows = fn()
             log(f"✔ {source_name} {len(rows)}건 ({int(time.time() - t0)}초)")
             api_events.extend(rows)
+            if source_id == "watch":
+                st = {"id": "watch", "name": source_name, "ok": not WATCH_MISSING, "count": len(rows),
+                      "message": (f"일정 못 찾음: {', '.join(WATCH_MISSING)} → scripts/festivals_extra.json 에 직접 넣어 주세요"
+                                  if WATCH_MISSING else (f"찾음: {', '.join(WATCH_FOUND)}" if WATCH_FOUND else "지켜보는 중 (열릴 때가 아님)"))}
+                statuses.append(st)
+                continue
             if source_id == "kopis":
                 old_meta["kopis_last_ok"] = old_meta.get("kopis_last_try")
             statuses.append({"id": source_id, "name": source_name, "ok": True, "count": len(rows),
