@@ -4232,6 +4232,7 @@ html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):
   display:inline-flex!important;align-items:center;justify-content:center;gap:3px!important;box-sizing:border-box;white-space:nowrap!important}
 /* 2026-11-13: 위 inline-flex!important(#_ 2개)가 .hidden을 이겨서 순천여수권·무안목포권에도 '김대중컨벤션센터' 칩이 보이던 문제 → 숨김이 항상 이기게 */
 html body #chips>button.hidden:not(#_):not(#_):not(#_){display:none!important}
+.subchips .chipN{font-size:.85em;font-weight:700;opacity:.7;margin-left:2px}
 html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_){border-radius:999px!important}
 html body .seg:not(#_):not(#_){padding:3px!important;border-radius:12px!important}
 html body .seg>button:not(#_):not(#_){border-radius:9px!important;font-size:13px!important}
@@ -9019,6 +9020,8 @@ function renderLocal() {
   const evening = p => /^(1[89]|2\d):/.test(p.time || "");
   const weekend = p => /토|일|주말/.test(p.days || "");
   let progs = PROGRAMS.filter(gu).filter(p => !p.end || p.end >= t);
+  // 2026-11-13: 강좌 분류 버튼마다 개수 표시 (전체 N · 접수 중 N …)
+  const progAll = progs, progN = { "전체": progAll.length, "접수 중": progAll.filter(p => progState(p)[0] === "접수 중").length, "무료": progAll.filter(p => p.free).length, "저녁": progAll.filter(evening).length, "주말": progAll.filter(weekend).length };
   if (LOCAL_F === "접수 중") progs = progs.filter(p => progState(p)[0] === "접수 중");
   if (LOCAL_F === "무료") progs = progs.filter(p => p.free);
   if (LOCAL_F === "저녁") progs = progs.filter(evening);
@@ -9058,8 +9061,8 @@ function renderLocal() {
   <h3 id="quickLibraryAnchor" class="sub" style="margin-top:26px">🌿 가볍게 즐기는 동네 생활</h3>
   ${LIBS.length ? `<h3 class="sub libHead" style="margin-top:16px"><span class="libTitle">📚 동네 도서관</span><small class="libSub" style="font-weight:500;color:var(--muted)">오늘 ${openLibs.length}곳 운영 · 무료로 쉬어가기 좋아요</small></h3><div class="grid">${mainLibs.slice(0, 6).map(([l]) => libCard(l)).join("") || `<p class="empty">이 동네엔 공공·어린이 도서관 자료가 없어요. 아래 작은도서관을 살펴보세요.</p>`}</div>${mainLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${mainLibs.length - 6}곳 — 동네를 선택하면 해당 지역 도서관을 확인할 수 있어요.</p>` : ""}
    ${smallLibs.length ? `<details class="libSmallFold"${(window.__libSmallOpen ?? !mainLibs.length) ? " open" : ""} ontoggle="window.__libSmallOpen=this.open"><summary><h3 class="sub libHead libSmallHead"><span class="libTitle">🏠 작은도서관 · 무인 대출기 <em class="foldMark" aria-hidden="true">▾</em></span><small class="libSub" style="font-weight:500;color:var(--muted)">${smallLibs.length}곳 · 가기 전에 운영 여부 확인</small></h3></summary><div class="grid libSmall">${smallLibs.slice(0, 6).map(([l]) => libCard(l)).join("")}</div>${smallLibs.length > 6 ? `<p class="emptyNote">그 밖에 ${smallLibs.length - 6}곳 — 아파트·주민센터·종교시설 안 작은 공간이 많아요. 동네를 선택하면 가까운 곳부터 볼 수 있어요.</p>` : ""}</details>` : ""}` : ""}
-  ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progs.length}</h3>
-  <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f}</button>`).join("")}</div>
+  ${PROGRAMS.length ? `<h3 class="sub" style="margin-top:22px">✍️ 동네 강좌 ${progAll.length}${LOCAL_F !== "전체" ? ` <small style="font-weight:500;color:var(--muted)">· ${esc(LOCAL_F)} ${progs.length}</small>` : ""}</h3>
+  <div class="subchips">${["전체", "접수 중", "무료", "저녁", "주말"].map(f => `<button class="${f === LOCAL_F ? "active" : ""}" onclick="setLocalF('${jsq(f)}')">${f} <small class="chipN">${progN[f]}</small></button>`).join("")}</div>
   <div class="grid">${progs.slice(0, 30).map(progCard).join("") || (LOCAL_GU !== "전체" ? localFindCard(LOCAL_GU) : "<p class='empty'>이 조건에 맞는 강좌가 지금은 없네잉.</p>")}</div>
   ${LOCAL_GU === "전체" ? localMissingRow(progs) : ""}
   <div class="verify" style="margin-top:14px">행사는 기존 ‘일정’ 탭과 동일한 데이터를 사용해 중복 등록하지 않아요. 강좌는 구청·교육청 등이 공개한 공공데이터를 사용하며, 행사 시간·접수 기간·정원은 방문 전에 주최 기관에서 확인하세요.</div>` : ""}`;
