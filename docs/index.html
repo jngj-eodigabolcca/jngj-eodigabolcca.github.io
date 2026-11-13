@@ -5198,8 +5198,8 @@ html body #decideNow .dnTabs button i:not(#_){font-size:14px!important;line-heig
     <b>나들이 길에 한 끼 · 쉬어 갈 곳</b>
     <div class="foodQuickBtns">
       <button type="button" onclick="showTab('food')">🍲 맛집</button>
-      <button type="button" onclick="showTab('bakeries')">🥐 빵집</button>
-      <button type="button" onclick="showTab('cafes')">🐶 반려견 카페</button>
+      <button type="button" onclick="showTab('bakeries')">🥐 제과·제빵</button>
+      <button type="button" onclick="showTab('cafes')">🐶 멍카페</button>
     </div>
   </div>
 </section>
@@ -9222,7 +9222,7 @@ function renderFavs() {
   ${fd.length ? `<h3 class="sub">맛집</h3><div class="grid">${fd.map(foodCard).join("")}</div>` : ""}
   ${st.length ? `<h3 class="sub">숙소</h3><div class="grid">${st.map(stayCard).join("")}</div>` : ""}
   ${cf.length ? `<h3 class="sub">멍카페</h3><div class="grid">${cf.map(petCard).join("")}</div>` : ""}
-  ${bk.length ? `<h3 class="sub">빵집</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
+  ${bk.length ? `<h3 class="sub">제과·제빵</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
   ${visitedHtml()}`;
 }
 /* 찜 옮기기: 로그인 없이 링크 하나로 (#fav=…) — 받는 쪽은 기존 찜에 '합쳐요'(지우지 않음) */
@@ -9599,11 +9599,11 @@ const APP_FEATURES = [
   ["🧸 아이와", "아이와 갈 곳·볼 행사·과학 체험", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
   ["🌳 나들이", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
   ["🍽 맛집", "주변 식사", "맛집 식사 밥 먹을곳 음식점", () => { clearSearch(); showTab("food") }],
-  ["🥐 빵지순례", "빵집 모아 보기", "빵 빵집 베이커리 빵지순례", () => { clearSearch(); showTab("bakeries") }],
+  ["🥐 제과·제빵", "빵지순례 · 제과점 모아 보기", "빵 빵집 베이커리 빵지순례 제과 제빵 제과점", () => { clearSearch(); showTab("bakeries") }],
   ["🧺 전통시장", "시장 구경", "시장 전통시장 장날", () => { clearSearch(); showTab("markets") }],
   ["🏨 숙소", "묵을 곳", "숙소 호텔 모텔 펜션 게스트하우스 잠", () => { clearSearch(); showTab("stays") }],
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
-  ["🐶 멍카페", "강아지와 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페", () => { clearSearch(); showTab("cafes") }],
+  ["🐶 멍카페", "댕댕이랑 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페 댕댕이 댕댕", () => { clearSearch(); showTab("cafes") }],
   ["🏘 동네 강좌·도서관", "우리 동네 강좌와 도서관", "동네 강좌 도서관 수업 배우기 교실", () => { clearSearch(); showTab("local") }],
   ["🗺 지도", "지도에서 한눈에", "지도 위치 길찾기 근처", () => { clearSearch(); showTab("map") }],
   ["♡ 찜 목록", "찜해 둔 곳 보기", "찜 즐겨찾기 저장 하트", () => { clearSearch(); showTab("favorites") }],
@@ -10820,9 +10820,9 @@ function decisionPlaceType(p){
     const icon=({전시:'🎨',음악:'🎵',공연:'🎭',축제:'🎪',스포츠:'⚾'})[x.category]||'📌';
     return `${icon} ${x.category||'일정'}${x.subtype&&x.subtype!==x.category?' · '+x.subtype:''}`;
   }
-  if(p.kind==='cafe') return BAKERIES.includes(x) ? '🥐 빵집' : x.pet ? '🐶 반려견 동반 카페' : '☕ 카페';
+  if(p.kind==='cafe') return BAKERIES.includes(x) ? '🥐 제과·제빵' : x.pet ? '🐶 멍카페' : '☕ 카페';
   if(p.kind==='food') return '🍲 맛집';
-  if(p.kind==='bakery') return '🥐 빵집 · 빵지순례';
+  if(p.kind==='bakery') return '🥐 제과·제빵 · 빵지순례';
   if(p.kind==='stay') return '🛏 숙소';
   if(p.kind==='cinema') return '🎬 영화관';
   if(p.kind==='venue'){
@@ -11499,7 +11499,7 @@ window.shareItem = async (kind, id) => {
 function reportLongUrl(kind, id) {
   const x = findShared(kind, id) || {};
   const name = x.title || x.name || id;
-  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
+  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "제과·제빵" }[kind] || "정보";
   const title = `[정보 수정] ${what} · ${name}`;
   const body = `어떤 정보가 다른가요? (예: 문 닫음, 시간 바뀜, 주소 틀림)\n\n\n---\n항목: ${what} / ${name}\nID: ${id}\n앱에 적힌 정보 확인일: ${x.verified || "-"}`;
   if (/^mailto:/i.test(REPORT_URL)) return `${REPORT_URL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
@@ -11509,7 +11509,7 @@ function reportLongUrl(kind, id) {
 window.reportItem = (kind, id) => {
   const x = findShared(kind, id) || {};
   const name = x.title || x.name || id;
-  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
+  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "제과·제빵" }[kind] || "정보";
   const REASONS = kind === "e" ? ["날짜가 달라요", "취소·연기됐어요", "장소가 달라요", "요금이 달라요", "사진이 틀려요", "기타"] : ["문 닫았어요", "시간이 달라요", "주소·위치가 틀려요", "요금이 달라요", "사진이 틀려요", "기타"];
   const box = $("#modalContent"); let why = null;
   box.innerHTML = `<span class="eyebrow">REPORT</span><h3>⚠ 정보가 달라요</h3><p class="rvHint">${esc(what)} · <b>${esc(name)}</b><br>알려 주시면 확인해서 고칠게요. 이름 없이 보내져요.</p>
@@ -13331,12 +13331,12 @@ document.addEventListener("keydown",function(e){
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
-    bakeries: ["🥐", "빵집", "빵지순례"],
-    cafes:    ["🐶", "반려견 카페", ""],
+    bakeries: ["🥐", "제과·제빵", "빵지순례"],
+    cafes:    ["🐶", "멍카페", "댕댕이랑"],
     cinemas:  ["🎬", "영화관", ""],
     stays:    ["🏨", "숙소", ""],
     decide:   ["✨", "오늘 뭐하지?", "조건 골라 코스"],
-    today:    [CAL_TODAY, "오늘 열리는 것", ""],
+    today:    ["🎟", "오늘 열리는 것", "지금 볼 수 있는 행사"],
     weekend:  [CAL_WEEKEND, "이번 주말", ""],
     dayplan:  ["🧭", "오늘 하루 코스", "오전·오후·저녁"],
     favorites:["♡", "찜", "저장한 곳"],
