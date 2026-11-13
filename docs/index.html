@@ -8798,9 +8798,13 @@ function renderBakeries() {
   const gus = ["전체", ...new Set(BAKERIES.map(b => b.district))];
   const list = sortHome(BAKERIES.filter(b => BAKERY_GU === "전체" || b.district === BAKERY_GU)
     .sort((a,b) => String(a.name).localeCompare(String(b.name), "ko")));
+  // 출처: 카드마다 붙은 source를 모아 탭 위에도 한 줄로 (다른 탭처럼). 많으면 앞의 몇 개만 + '외 N곳'
+  const bSrc = (() => { const m = new Map(); BAKERIES.forEach(b => { const k = String(b.source || "").trim(); if (k) m.set(k, (m.get(k) || 0) + 1) });
+    const a = [...m.entries()].sort((x, y) => y[1] - x[1]).map(x => x[0]);
+    return a.length ? a.slice(0, 4).join(" · ") + (a.length > 4 ? ` 외 ${a.length - 4}곳` : "") : "각 가게가 공개한 정보" })();
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">BREAD TOUR · ${esc(RNAME())}</span><h2>오늘은 빵지순례 어때요?<small>지역 대표빵부터 오래된 로컬 제과점까지 · 무엇을 먹어야 하는지 바로 보여드려요</small></h2></div><span>${list.length}곳</span></div>
     <div class="subchips">${gus.map(g => `<button class="${g === BAKERY_GU ? "active" : ""}" onclick="setBakeryGu('${g}')">${g} <small class="chipN">${g === "전체" ? BAKERIES.length : BAKERIES.filter(b => b.district === g).length}</small></button>`).join("")}</div>
-    <div class="verify" style="margin-bottom:12px"><b>이렇게 골랐어요</b> · 지역 대표빵이 있거나 오래 이어온 동네 제과점을 모았어요. 별점·리뷰 수로 순위를 매기지 않고, ${HOME ? "내 동네에서 가까운 순" : "가나다순"}으로 보여드려요. 영업시간은 2026.10.06 확인값이라 빵 소진·임시휴무가 잦으니 출발 전 지도에서 다시 확인하세요.<br>목록에 없는 가게를 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.</div>
+    <div class="verify" style="margin-bottom:12px"><b>이렇게 골랐어요</b> · 지역 대표빵이 있거나 오래 이어온 동네 제과점을 모았어요. 별점·리뷰 수로 순위를 매기지 않고, ${HOME ? "내 동네에서 가까운 순" : "가나다순"}으로 보여드려요. 영업시간은 2026.10.06 확인값이라 빵 소진·임시휴무가 잦으니 출발 전 지도에서 다시 확인하세요.<br>목록에 없는 가게를 알려주시거나, 가게 주인이 빼 달라고 하실 때는 카드의 ⚠ 정보 수정으로 남겨 주세요.<br>출처: ${esc(bSrc)} · 가게마다 카드 아래에 출처와 확인일을 표시했어요.</div>
     ${paged("renderBakeries", list, bakeryCard, "<p class='empty'>이 권역에서 확인된 빵집이 아직 없어요.</p>")}`;
 }
 window.setBakeryGu = g => { BAKERY_GU = g; renderBakeries() };
