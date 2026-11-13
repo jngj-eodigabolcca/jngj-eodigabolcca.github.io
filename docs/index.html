@@ -4235,7 +4235,8 @@ html body #chips>button.hidden:not(#_):not(#_):not(#_){display:none!important}
 .calToday{display:inline-flex;flex-direction:column;width:1.08em;height:1.12em;border-radius:.2em;overflow:hidden;background:#fff;border:1.5px solid #cfd4dd;box-sizing:border-box;line-height:1;vertical-align:middle;font-style:normal;box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .calToday b{display:block;background:#e5484d;color:#fff;font-size:.3em;font-weight:800;text-align:center;padding:.18em 0 .14em;letter-spacing:-.02em}
 .calToday em{flex:1;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:.52em;color:#1f2937;letter-spacing:-.04em}
-#menuGlance .calToday{font-size:1.2em}
+.mgGrid .calToday{font-size:1.2em}
+.calWk b{background:#2563eb}
 .chipN{font-size:.85em;font-weight:700;opacity:.7;margin-left:2px}
 html body .choiceRow>button:not(#_):not(#_),html body .originBar>button:not(#_):not(#_),html body #chips>button:not(#_):not(#_),html body .nowChips>button:not(#_):not(#_){border-radius:999px!important}
 html body .seg:not(#_):not(#_){padding:3px!important;border-radius:12px!important}
@@ -13281,6 +13282,8 @@ document.addEventListener("keydown",function(e){
 
   /* 2026-11-13: 📅 이모지는 폰 글꼴에 'JUL 17'이 그려져 있어 오늘 날짜와 달라 보임 → 오늘 날짜가 찍히는 달력 아이콘 */
   const CAL_TODAY = (() => { const d = new Date(); return `<span class="calToday"><b>${d.getMonth() + 1}월</b><em>${d.getDate()}</em></span>` })();
+  // 이번 주말: 다가오는 토요일 날짜 (토·일이면 그 주 토요일)
+  const CAL_WEEKEND = (() => { const d = new Date(), w = d.getDay(); d.setDate(d.getDate() + (w === 0 ? -1 : 6 - w)); return `<span class="calToday calWk"><b>주말</b><em>${d.getDate()}</em></span>` })();
   /* ── 메뉴 목록 (한곳에서 관리) ── */
   const M = {
     events:   [CAL_TODAY, "일정", "전시·공연·축제"],
@@ -13289,6 +13292,7 @@ document.addEventListener("keydown",function(e){
     places:   ["🏛", "나들이", "산책·전시·체험"],
     kids:     ["👶", "아이랑", "행사·갈 곳"],
     indoor:   ["☔", "비 와도 실내", "오늘 문 연 곳"],
+    hood:     ["🏘", "동네서 시간 보내기", "행사·강좌·도서관"],
     local:    ["📚", "동네 도서관", "강좌·책"],
     markets:  ["🏮", "시장·장날", "오늘 장 서는 곳"],
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
@@ -13301,8 +13305,8 @@ document.addEventListener("keydown",function(e){
     cinemas:  ["🎬", "영화관", ""],
     stays:    ["🏨", "숙소", ""],
     decide:   ["✨", "오늘 뭐하지?", "조건 골라 코스"],
-    today:    ["📆", "오늘 열리는 것", ""],
-    weekend:  ["🗓", "이번 주말", ""],
+    today:    [CAL_TODAY, "오늘 열리는 것", ""],
+    weekend:  [CAL_WEEKEND, "이번 주말", ""],
     dayplan:  ["🧭", "오늘 하루 코스", "오전·오후·저녁"],
     favorites:["♡", "찜", "저장한 곳"],
     manual:   ["📖", "사용설명서", ""],
@@ -13310,12 +13314,12 @@ document.addEventListener("keydown",function(e){
     all:      ["☰", "전체 메뉴", "빠짐없이"]
   };
   const HOT = new Set(["stages"]);
-  const GLANCE = ["events", "stages", "popshows", "places", "kids", "indoor", "local", "markets", "food", "map", "weather", "all"];
+  const GLANCE = ["events", "stages", "popshows", "places", "kids", "indoor", "hood", "markets", "food", "map", "weather", "all"];
   const GROUPS = [
     ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
     ["공연·일정", ["events", "stages", "popshows"]],
     ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
-    ["우리 동네", ["local", "markets", "weather"]],
+    ["우리 동네", ["hood", "local", "markets", "weather"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["내 것·도움말", ["favorites", "manual", "review"]]
   ];
@@ -13325,6 +13329,10 @@ document.addEventListener("keydown",function(e){
   function go(k){
     gc("메뉴-" + (M[k] ? M[k][1] : k), "메뉴 · " + (M[k] ? M[k][1] : k));
     closeAll();
+    // 2026-11-13: '동네서 시간 보내기'는 동네 화면 맨 위로, '동네 도서관'은 그 화면의 도서관 칸으로
+    if (k === "hood" || k === "local") {
+      showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
+    }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
     if (k === "all") return openAll();
