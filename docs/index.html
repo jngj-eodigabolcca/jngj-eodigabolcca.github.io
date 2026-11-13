@@ -6915,6 +6915,9 @@ const DATES = [
   { id: "taebaek", region: "ys", emoji: "📖", name: "벌교 《태백산맥》 문학길 산책", area: "보성군 벌교읍", mood: "문학관 · 소설 속 골목 · 꼬막 한 상", rainOk: false,
     img: "https://tong.visitkorea.or.kr/cms/resource/36/3551236_image2_1.jpg",
     steps: [["10:00", "v:ys-taebaek-museum", "문학기행길 출발점"], ["10:40", "v:ys-hyunbuja", "소설 첫 장면의 집"], ["11:10", "t:소화다리 · 김범우의 집", "소설 속 인물의 자리 따라 걷기", "벌교 김범우의 집"], ["11:40", "v:ys-beolgyo-honggyo", "300년 된 무지개 돌다리"], ["12:30", "t:점심: 벌교 꼬막정식", "꼬막철(11~3월)이면 더 좋아요", "벌교 꼬막정식"], ["14:00", "t:보성여관", "소설 속 '남선여관' · 옛 여관 건물", "벌교 보성여관"], ["14:40", "v:ys-jungdo-bangjuk", "갈대 사이 방죽길 산책"], ["15:30", "v:m5-040", "4·9일이면 벌교장 구경"]] },
+  { id: "huigyeong", emoji: "🏮", name: "희경루 밤마실 데이트", area: "남구 광주공원", mood: "누각 바람 · 공원 포장마차 · 빛의 숲 야경", rainOk: false,
+    img: "",
+    steps: [["18:30", "v:hist-gj-huigyeongnu", "해 질 무렵 누각에 올라 바람 쐬기 · 누각 개방시간은 전통문화관 공지 확인"], ["19:30", "t:광주공원 포장마차 거리", "누각 아래 공원 앞 포차에서 한잔", "광주공원 포장마차"], ["21:00", "v:sajik", "광주천 건너 '빛의 숲' 야경 산책으로 마무리"]] },
   { id: "picnic", emoji: "🧺", name: "첨단 공원 피크닉 데이트", area: "광산구 · 북구 첨단", mood: "호수공원 · 과학관 · 피크닉", rainOk: false,
     img: "https://tong.visitkorea.or.kr/cms/resource/78/3366478_image2_1.jpg",
     steps: [["11:00", "v:science", "천체투영관 시간 맞춰서"], ["13:00", "c:어반피크닉", "피크닉 용품 빌려서"], ["13:30", "v:ssangam", "호수 둘레 잔디밭 피크닉"], ["16:00", "v:citizen-forest", "숲길 산책"]] },
@@ -7023,7 +7026,12 @@ window.dateCourse = id => {
 };
 
 /* 시간대별 후보 */
-const NIGHT_IDS = ["sajik", "yangnim-walk", "daein-market", "dongmyeong", "gwangju-theater", "jeonil245", "geumnamro", "pungam", "ssangam", "songjeong-market"];
+const NIGHT_IDS = ["hist-gj-huigyeongnu", "sajik", "yangnim-walk", "daein-market", "dongmyeong", "gwangju-theater", "jeonil245", "geumnamro", "pungam", "ssangam", "songjeong-market"];
+/* 철 따라 하루 플랜 오전 칸에 넣는 곳: id → 넣는 달 */
+const SEASON_REST = { "hist-gj-huigyeongnu": [5, 6, 9, 10] };
+/* 철 따라 하루 플랜 저녁 칸·데이트 코스에 넣는 곳(밤에 좋은 곳): id → 넣는 달. 늦가을·겨울·초봄 밤은 추워서 뺌 */
+const SEASON_NIGHT = { "hist-gj-huigyeongnu": [4, 5, 6, 7, 8, 9, 10], "huigyeong": [4, 5, 6, 7, 8, 9, 10] };
+const inNightSeason = id => { const ms = SEASON_NIGHT[id]; return !ms || ms.includes(Number(todayISO().slice(5, 7))) };
 function renderToday() {
   const el = document.getElementById("today"); if (!el) return;
   if (!VENUES.length) { el.innerHTML = `<div class="todayBox"><div class="todayTitle"><div><span class="eyebrow">TODAY · ${esc(RNAME())}</span><h2>오늘 하루 플랜 <em class="autoTag">자동</em><small>${esc(RNAME())}은 아직 받아온 장소 자료가 없어요</small></h2></div></div><div class="nowEmpty">🧭 자동 업데이트가 돌면 관광공사 자료로 ${esc(RNAME())}의 박물관·미술관·축제가 채워지고, 여기에 하루 플랜이 떠요. ${REGION === "gj" ? `인터넷 연결을 확인한 뒤 <button class="btn" onclick="location.reload()">↻ 다시 불러오기</button>` : `지금 바로 둘러보려면 <button class="btn" onclick="setRegion('gj')">🟢 광주권 보기</button>`}</div></div>`; return }
@@ -7207,6 +7215,11 @@ function renderToday() {
   // ① 오전: 날씨 좋으면 산책·숲·산, 궂으면 박물관·미술관
   let mPool = indoorDay ? VENUES.filter(v => /미술관|박물관|기념관|과학관|5·18|문학관/.test(v.kind) && (v.inout || "실내").includes("실내") && openNow(v) && v.image && fresh(v) && !emptyTripRisk(v))
     : VENUES.filter(v => ((v.walk && /공원·정원|근대문화유산|역사유적/.test(v.kind)) || /동물원/.test(v.kind) || (weekend && v.kind === "무등산 트레킹" && /입문|중급/.test(v.hours))) && v.image && openNow(v) && fresh(v) && !emptyTripRisk(v) && v.id !== "trail-info" && v.id !== "sajik");
+  // 🏯 누각에서 쉬어 가기 좋은 철(초여름 5~6월 · 초가을 9~10월)에만 오전 후보에 넣는 곳. 한여름·겨울엔 빼요.
+  //    31도 넘는 날·비 오는 날은 위에서 이미 실내 후보로 바뀌어서 여기 안 와요.
+  const restOk = v => { const ms = SEASON_REST[v.id]; return !ms || ms.includes(mm) };
+  mPool = mPool.filter(restOk);
+  if (!indoorDay) for (const v of VENUES) if (SEASON_REST[v.id] && restOk(v) && openNow(v) && fresh(v) && !mPool.includes(v)) mPool.push(v);
   const am = take(pickR(near(mPool), r));
   // ② 오후: 곧 끝나는 전시·오늘 열리는 행사 → 없으면 오전과 다른 동네 미술관·박물관
   // 오후: "오늘 실제로 볼 수 있는 전시" 중 곧 끝나는 것 먼저 → 없으면 오늘 열리는 축제
@@ -7220,7 +7233,7 @@ function renderToday() {
   const weeklyOk = e => { const wk = (e.time || "").match(/매주\s*([일월화수목금토])요일/); return !wk || wk[1] === d };
   // 저녁: 오늘 실제로 열리는 음악회·공연(시간 확인된 것) → 경기 → 없으면 야경
   const evening = EVENTS.filter(e => /음악|공연/.test(e.category) && e !== pmEv).map(e => [e, happensOn(e, t)]).filter(([, h]) => h && h.sure)[0]?.[0] || EVENTS.find(e => e.category === "스포츠" && e.start === t && e.end === t);
-  const nightPool = NIGHT_IDS.map(id => VENUES.find(v => v.id === id)).filter(v => v && fresh(v) && openNow(v) && (!indoorDay || (v.inout || "").includes("실내") || v.id === "sajik"));
+  const nightPool = NIGHT_IDS.map(id => VENUES.find(v => v.id === id)).filter(v => v && inNightSeason(v.id) && fresh(v) && openNow(v) && (!indoorDay || (v.inout || "").includes("실내") || v.id === "sajik"));
   // 광주 밖 권역: 이름·설명에 야경·야시장·밤 산책이 있는 곳 (순천 국가정원 야간, 여수 낭만포차·해상케이블카, 목포 해상W쇼 등)
   const nightAny = nightPool.length ? nightPool : VENUES.filter(v => fresh(v) && openNow(v) && /야경|야시장|야간|밤바다|낭만포차|케이블카|분수|조명|해상\s*W|불빛/.test([v.name, v.desc, v.note, v.hours, (v.tags || []).join(" ")].join(" ")) && (!indoorDay || (v.inout || "").includes("실내")));
   const nightV = !evening && take(pickR(near(nightAny), r));
@@ -7238,7 +7251,7 @@ function renderToday() {
   const evPlan = (e, slot, icon, extra) => { const dl = daysLeft(e); return { slot, icon, img: imgOf(e), title: e.title, desc: `${e.venue} · ${e.time || e.date}`, why: [extra || "", dl === 0 ? "오늘 마지막 날!" : dl != null && dl <= 10 ? `D-${dl} 마감` : "", tLabel(e)[1]].filter(Boolean), query: `${e.title} 보고 맛집 카페`, anchor: e, eventId: e.id, x: VENUES.find(v => v.id === e.venueId) || e } };
   const vPlan = (v, slot, icon, extra) => ({ slot, icon, img: v.image, title: v.name, desc: v.desc || v.note || v.hours, why: [extra, v.inout, /무료/.test(v.price || "") ? "무료" : "", openToday(v) === true ? "오늘 문 열어요" : ""].filter(Boolean), query: `${v.name} 보고 맛집 카페`, anchor: v, mapId: v.id, x: v });
   PLANS = [];
-  if (am) PLANS.push(Object.assign(vPlan(am, "🌅 오전엔 여기", indoorDay ? "🏛" : "🌳", indoorDay ? (rainy ? "비 와도 OK" : "시원·따뜻한 실내") : weekend ? "주말 아침 나들이" : "아침 공기 좋은 곳"), { meal: mealNear(am, "🍚 점심은 근처에서") }));
+  if (am) PLANS.push(Object.assign(vPlan(am, "🌅 오전엔 여기", indoorDay ? "🏛" : SEASON_REST[am.id] ? "🏯" : "🌳", indoorDay ? (rainy ? "비 와도 OK" : "시원·따뜻한 실내") : SEASON_REST[am.id] ? "누각에서 쉬어 가기 좋은 철" : weekend ? "주말 아침 나들이" : "아침 공기 좋은 곳"), { meal: mealNear(am, "🍚 점심은 근처에서") }));
   if (pmEv) PLANS.push(evPlan(pmEv, "☀️ 오후엔 여기", "🎨", "놓치면 아쉬워요"));
   else if (pmV) PLANS.push(vPlan(pmV, "☀️ 오후엔 여기", "🎨", "오후 전시 산책"));
   if (evening) PLANS.push(Object.assign(evPlan(evening, "🌙 저녁엔 여기", "🎶", "오늘 저녁"), { meal: mealNear(VENUES.find(v => v.id === evening.venueId), "🍖 저녁은 여기서") }));
@@ -7248,7 +7261,7 @@ function renderToday() {
   if (!OFF && PLANS.length === 3) PLANS[2].slot = "🌆 퇴근하고 여기";
 
   // 데이트 코스: 날씨 맞춰 3개 (매일 바뀜)
-  const dpool = DATES.filter(c => (c.region || "gj") === REGION && (indoorDay ? c.rainOk : !c.indoor));
+  const dpool = DATES.filter(c => (c.region || "gj") === REGION && inNightSeason(c.id) && (indoorDay ? c.rainOk : !c.indoor));
   const dates = []; const dr = rnd(Number(t.replace(/-/g, "")) + TODAY_SEED * 31);
   while (dates.length < Math.min(3, dpool.length)) { const c = pickR(dpool, dr); if (!dates.includes(c)) dates.push(c) }
   const closed = VENUES.filter(v => openToday(v) === false).length;
@@ -10222,7 +10235,7 @@ function recommend(t, forced = null, fixedMeal = null) {
     if (/ktx|srt|기차|당일치기|1박|2박|2일|3일|이틀|사흘|하루 코스|하루코스|하루 종일|여행 코스|일정 짜/.test(s)) return itinerary(s);
     if (/강아지|반려|멍멍|멍카페|애견|댕댕/.test(s)) return petList(s);
     if (/데이트|연인|커플/.test(s) || (/시장/.test(s) && /먹방|구경|투어/.test(s))) {
-      const map = [[/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시\s*(?:이후|넘어|부터|쯤|에)/, "yangnim"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "ys-night"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "mp-sunset"], [/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"],
+      const map = [[/희경루|광주공원\s*포(?:장마)?차/, "huigyeong"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시\s*(?:이후|넘어|부터|쯤|에)/, "yangnim"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "ys-night"], [/저녁|밤|야경|야간|퇴근|(?:1[7-9]|2[0-2]|[5-9])\s*시/, "mp-sunset"], [/양림|근대|펭귄/, "yangnim"], [/동명|acc|영화|극장|충장/, "acc"], [/무등산|증심사|보리밥/, "mudeung"], [/호수|광주호|정자|드라이브/, "lake"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마/, "rain"], [/시장|먹방|통닭/, "market"], [/피크닉|첨단|공원/, "picnic"],
         [/순천만|갈대|국가정원|노을/, "ys-bay"], [/여수|밤바다|오동도|케이블카|낭만포차|야경/, "ys-night"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마|아르떼/, "ys-indoor"], [/보성|녹차|차밭/, "ys-tea"], [/구례|지리산|화엄사|사성암/, "ys-gurye"], [/벌교|태백산맥|꼬막/, "taebaek"],
         [/근대|원도심|유달산|케이블카|중깐/, "mp-old"], [/갓바위|노을|바다|평화광장/, "mp-sunset"], [/비\s*(?:오|와|가|내|올)|우천|실내|빗길|장마|박물관/, "mp-indoor"], [/신안|퍼플|천사대교|드라이브/, "mp-purple"], [/강진|다산|가우도|청자/, "mp-gangjin"], [/해남|땅끝|대흥사|미황사/, "mp-haenam"]];
       // 현재 선택 권역의 코스만 후보로 사용한다. 예: 광주권에서 '연인'만 골랐는데 벌교 코스가 튀어나오는 일을 막는다.
@@ -10232,7 +10245,7 @@ function recommend(t, forced = null, fixedMeal = null) {
       const explicitOutdoorHint = /양림|근대|펭귄|동명|acc|영화|극장|충장|무등산|증심사|보리밥|호수|광주호|정자|드라이브|시장|먹방|통닭|피크닉|첨단|공원|순천만|갈대|국가정원|노을|여수|밤바다|오동도|케이블카|낭만포차|아르떼|보성|녹차|차밭|구례|지리산|화엄사|사성암|벌교|태백산맥|꼬막|원도심|유달산|중깐|갓바위|바다|평화광장|신안|퍼플|천사대교|강진|다산|가우도|청자|해남|땅끝|대흥사|미황사/;
       const explicitlyRequested = explicitOutdoorHint.test(s) && !/^(?:오늘\s*)?(?:여수|순천|목포|무안|광주)\s*(?:데이트|추천|어디|코스)/.test(s.trim());
       const allowHit = !rainyDate || !hitDate || hitDate.rainOk || explicitlyRequested;
-      const regionDates = DATES.filter(d => (d.region || "gj") === REGION && (rainyDate ? d.rainOk : !d.indoor));
+      const regionDates = DATES.filter(d => (d.region || "gj") === REGION && inNightSeason(d.id) && (rainyDate ? d.rainOk : !d.indoor));
       const pick = (hit && allowHit) ? hit[1] : pickR(regionDates, rnd(Number(todayISO().replace(/-/g, "")) + TODAY_SEED))?.id;
       if (pick) return dateCourse(pick);
     }
@@ -10833,7 +10846,7 @@ function initDecisionMiniMap(picks){
 function decisionDateHtml(sel){
   if(!/연인/.test((sel&&sel.with)||"")||typeof DATES==="undefined") return "";
   const rainy=!!(typeof WEATHER!=="undefined"&&WEATHER&&wxRainy());
-  let pool=DATES.filter(c=>(c.region||"gj")===REGION&&(rainy?c.rainOk:!c.indoor));
+  let pool=DATES.filter(c=>(c.region||"gj")===REGION&&inNightSeason(c.id)&&(rainy?c.rainOk:!c.indoor));
   if(!pool.length) pool=DATES.filter(c=>(c.region||"gj")===REGION);
   if(!pool.length) return "";
   const pick=pool.map(c=>[c,Math.random()]).sort((a,b)=>a[1]-b[1]).slice(0,3).map(a=>a[0]);
@@ -11186,6 +11199,7 @@ const HISTORY_ADD = [
   { id: "hist-ys-beolgyo", name: "보성 벌교 홍교", kind: "역사유적", district: "보성군", address: "전남 보성군 벌교읍 벌교리 154-1", phone: "061-850-5242", hours: "상시 개방", closed: "연중무휴", price: "무료", inout: "야외", aliases: ["벌교 홍교"], desc: "조선 영조 때 놓은 무지개 모양 3칸 돌다리(보물). 지금도 주민들이 건너다니고, 태백산맥문학관·소설 속 거리와 함께 걸어 보기 좋아요." },
   /* 광주권: 5·18 사적지 말고도 시·군마다 하나씩 */
   { id: "hist-gj-wolbong", name: "월봉서원 (빙월당)", kind: "역사유적", district: "광산구", address: "광주 광산구 광곡길 133", hours: "상시 개방", closed: "연중무휴", price: "무료", inout: "야외", aliases: ["월봉서원", "빙월당"], desc: "조선 성리학자 고봉 기대승을 모신 서원. 너브실 마을 백우산 기슭에 있어 산책 겸 들르기 좋아요." },
+  { id: "hist-gj-huigyeongnu", lat: 35.1428, lng: 126.9100, approx: true, name: "희경루 (광주공원)", kind: "역사유적", district: "남구", address: "광주 남구 구동 광주공원 안", hours: "누각 09:00–20:00 (철마다 다를 수 있어 전통문화관 공지 확인) · 광주공원은 밤에도 산책 가능", closed: "연중무휴", price: "무료", inout: "야외", aliases: ["희경루", "희경루 누각"], desc: "1451년 광주목 관아에 세운 누각으로 '동방제일루'라 불렸어요. 보물 「희경루 방회도」를 바탕으로 2023년 광주공원에 다시 지었어요. 누각에 올라 쉬어 갈 수 있고, 주말엔 앞마당에서 풍류 공연이 열리기도 해요. 공원 앞 포장마차 거리와 가까워 저녁 나들이로도 좋아요.", infoSource: "광주광역시·광주문화재단 전통문화관 발표", source: "광주광역시·광주문화재단 전통문화관 발표" },
   { id: "hist-gj-pochungsa", name: "포충사", kind: "역사유적", district: "남구", address: "광주 남구 포충로 767", hours: "3~9월 09:00–18:00 · 10~2월 09:00–17:00", closed: "제향 행사일", price: "무료 (주차 무료)", inout: "야외", aliases: ["포충사"], desc: "임진왜란 때 의병을 일으킨 고경명과 함께 싸운 이들을 모신 호남의 대표 사당. 10월 운영시간은 공식 안내에 없어 겨울 시간으로 잡았어요." },
   { id: "hist-jangseong-pilam", name: "필암서원 (유네스코 세계유산)", kind: "역사유적", district: "장성군", address: "전남 장성군 황룡면 필암서원로 184", hours: "09:00–18:00", closed: "토·일요일", price: "무료", inout: "야외", aliases: ["필암서원"], desc: "하서 김인후를 모신 서원. 대원군의 서원 철폐에도 살아남았고 2019년 '한국의 서원'으로 유네스코 세계유산에 올랐어요. 주말엔 문을 닫으니 평일에 가세요." },
   { id: "hist-damyang-soswaewon", name: "담양 소쇄원", kind: "역사유적", district: "담양군", address: "전남 담양군 가사문학면 소쇄원길 17", hours: "3~4·9~10월 09:00–18:00 · 5~8월 09:00–19:00 · 11~2월 09:00–17:00", closed: "연중무휴", price: "어른 2,000원 · 청소년 1,000원 · 어린이 700원 (담양군민·65세 이상·미취학 무료)", inout: "야외", aliases: ["소쇄원"], desc: "조선 선비 양산보가 지은 우리나라 대표 옛 정원(명승). 근처 식영정·가사문학관과 묶어 보기 좋아요." },
