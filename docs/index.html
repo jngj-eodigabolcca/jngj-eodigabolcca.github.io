@@ -33,6 +33,11 @@
   · 맨 끝 <style id="homeSlim20261106"> : 폰 홈 입구 정리(아이랑 카드·요런 게 4칸 숨김, 예시 버튼 한 줄) · 지금 바로 갈 곳 겹침 수정. 지우면 원래대로
   · 맨 끝 <script id="a11yKeys20261106"> : 카드·사진처럼 버튼이 아닌 칸도 키보드 Enter·Space로 누르기
   · 맨 끝 <script id="telLink20261112"> : 화면에 보이는 전화번호를 누르면 바로 전화 걸기(tel: 링크로 바꿈)
+  · 맨 끝 <style·script id="homeRedesign20261113"> : 하단 탭 고정(홈·일정·지도·찜·전체) · 전체 메뉴 창 · 홈 '와따, 요런 게 다 있당께' 메뉴 칸 ·
+      홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
+      오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
+      '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-13 본체 수정: 일정 카드 제목에서 '2026 '·'제N회' 떼고 《부제》는 작은 줄(cardTitle) · '관람료·시간 확인'(확인 필요) 배지는 카드에서 빼고 상세에만 · 놓치면 끝나요 0건 칸 안 그림 · '놓치면 내년'은 30일 안에 끝나는 것만 · 'N분 관람 가능'→'보통 N분쯤 둘러보기' · 주차 정보 없을 때 '근처 주차장 찾기'만 · 앱 버전 0.83
   · 검색 find() 안 2026-11-12 : 찾는 말이 어떤 곳의 이름이면, 다른 곳의 교통 칸(access)에만 나오는 곳은 결과에서 뺌
   · 자동 수집: 저장소 scripts/*.py + .github/workflows/update-data.yml (하루 2회, 결과는 docs/data/)
   · 개인정보: 회원가입·서버 저장 없음. 찜·방문 기록은 이용자 기기(localStorage)에만 저장
@@ -4754,7 +4759,8 @@ function renderDeadlineRush(){
   const {today,week,tickets}=deadlineLists();
   const card=(kind,cls,n,label,item,empty)=>`<button class="deadlineCard ${cls}" type="button" ${n?`onclick="deadlineList('${kind}')" aria-label="${esc(label)} ${n}개 모두 보기"`:''}><strong>${n}</strong><span>${label}</span><small>${item?esc(item.title)+(n>1?` 외 ${n-1}개`:''):empty}</small></button>`;
   const sec=document.getElementById('deadlineRush'); if(sec) sec.classList.toggle('hidden', !today.length && !week.length && !tickets.length);
-  box.innerHTML=card('today','hot',today.length,'오늘 마지막',today[0],'오늘 마감 없음')+card('week','',week.length,'일주일 안에 종료',week[0],'7일 내 마감 없음')+card('tickets','',tickets.length,'예매 임박',tickets[0],'예매 오픈 예정 없음');
+  // 2026-11-13: 0건 칸은 그리지 않음 (빈 상자가 화면만 차지하지 않게)
+  box.innerHTML=(today.length?card('today','hot',today.length,'오늘 마지막',today[0],''):'')+(week.length?card('week','',week.length,'일주일 안에 종료',week[0],''):'')+(tickets.length?card('tickets','',tickets.length,'예매 임박',tickets[0],''):'');
 }
 function runTheme(kind){
   if(kind==='pet'){ showTab('cafes'); setTimeout(()=>document.getElementById('cafesView')?.scrollIntoView({behavior:'smooth',block:'start'}),80); return; }
@@ -4782,7 +4788,7 @@ function parkLine(x, box = false) {
   const note = p.ok ? `<i>✓ ${esc(p.ok.split(" ")[0])} 확인</i>` : p.txt ? `<i>· 방문 전 확인</i>` : "";
   const sports = sportsScheduleLine(x);
   // 주차 정보가 없으면 큰 상자 대신 작은 한 줄만 (알려줄 게 없는 안내가 카드를 차지하지 않게)
-  if (!p.txt && !box) return trLine(x) + `<small class="pkLine pkNone">🅿️ 주차 정보 없음 · <a target="_blank" rel="noopener noreferrer" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
+  if (!p.txt && !box) return trLine(x) + `<small class="pkLine pkNone">🅿️ <a target="_blank" rel="noopener noreferrer" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 찾기 ↗</a></small>` + sports;
   return trLine(x) + `<small class="pkLine ${p.lvl}${box ? " pkBox" : ""}">🅿️ ${esc(p.txt || "주차 정보 없음 — 가기 전에 확인하쇼")} ${note}<a target="_blank" rel="noopener noreferrer" href="${p.q}" onclick="event.stopPropagation()">근처 주차장 ↗</a></small>` + sports;
 }
 /* 🚇 가까운 지하철역 (광주 도시철도 1호선 · 역 좌표: 위키백과) — 직선거리 기준이라 '약'으로 표시 */
@@ -6027,13 +6033,21 @@ function nowItems(dates) {
   dates.forEach(iso => mks.forEach(v => { if (out.some(o => o.v === v)) return; const nt = nightOn(v, iso); if (jangOn(v, iso) || nt) out.push({ k: "mk", v, iso, night: nt }) }));
   return out;
 }
+/* 2026-11-13: 카드 제목은 핵심부터 — 앞의 '2026 ', '제16회 ' 같은 꾸밈말을 떼고, 《부제》는 작은 줄로 (상세 화면 제목은 그대로) */
+function cardTitle(t) {
+  let m = String(t || "").replace(/^\s*\d{4}\s*년?\s+/, "").replace(/^\s*제\s*\d+\s*회\s*/, "").trim();
+  let sub = "";
+  const k = m.search(/[《「<\[(]/);
+  if (k > 4) { sub = m.slice(k).replace(/^[《「<\[(]\s*|\s*[》」>\])]\s*$/g, "").trim(); m = m.slice(0, k).trim() }
+  return { m: m || String(t || ""), sub };
+}
 function nowRow(e, h, iso) {
   const img = imgOf(e), dl = daysLeft(e), last = e.end === iso, tk0 = tLabel(e), tk = e.category === "전시" && tk0[0] === "unk" ? ["unk", "관람료·시간 확인"] : tk0;
   const dd = Number(iso.slice(8)), dayName = DAYC[isoDow(iso)], k = nowKind(e), [ic, cat] = NK[k];
   return `<article class="nowCard ${k === "mu" ? "mu" : k}" tabindex="0" onclick="detail('${jsq(e.id)}')">
    <div class="ncPic"${bg(img)}>${img ? `<i class="ncBlur"${bg(img)}></i><i class="ncFull"${bg(img)}></i>` : ""}<span class="ncIcon">${ic}</span><span class="ncCat">${cat}</span>${last ? `<span class="ncHot">${NOW_WHEN ? `${dd}일(${dayName}) 마지막 날` : "오늘 마지막 날!"}</span>` : dl != null && dl <= 14 ? `<span class="ncHot">D-${dl}</span>` : ""}</div>
-   <div class="ncBody"><b>${esc(e.title)}</b><small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
-    <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags"><em class="t-${tk[0]}">${esc(tk[1])}</em>${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
+   <div class="ncBody"><b title="${esc(e.title)}">${esc(cardTitle(e.title).m)}</b>${cardTitle(e.title).sub ? `<small class="ncSub">${esc(cardTitle(e.title).sub)}</small>` : ""}<small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
+    <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags">${tk[0] === "unk" ? "" : `<em class="t-${tk[0]}">${esc(tk[1])}</em>`}${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
     <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">🍽 코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
 }
 function nowMarket(v, iso, night) {
@@ -7166,7 +7180,7 @@ function tripCheck(x, kind, arrive, opt = {}) {
   if (usable < need) return { ok: false, why: `도착 뒤 ${usable}분뿐 (짧게 봐도 ${need}분 필요)` };
   const cut = H.lastIn != null ? `입장마감 ${tripHM(H.lastIn)} · ` : "";
   const view = Math.min(stay, usable), short = kind !== "food" && kind !== "cafe" && view < stay;   // 식당·카페도 마감 시각을 넘겨 머무르지 않게
-  return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${kind === "food" ? `${view}분 식사` : kind === "cafe" ? `${view}분 쉬기` : short ? `${view}분 짧게 보기` : `${view}분 관람 가능`}` };
+  return { ok: true, arrive: a, leave: a + view, stay: view, short, close: H.close, lastIn: H.lastIn, unsure: H.unsure, wait: a - arrive, note: `${tripHM(a)} 도착 · ${cut}${tripHM(H.close)} 마감 · ${kind === "food" ? `${view}분 식사` : kind === "cafe" ? `${view}분 쉬기` : short ? `${view}분 짧게 보기` : `보통 ${view}분쯤 둘러보기`}` };
 }
 /* 출발 시각 기준 한 곳 판정 (첫 장소용) */
 function tripFitsFrom(x, kind, opt = {}) {
@@ -9857,7 +9871,7 @@ function tripPlanPicks(list,selected){
     if(!r.ok){ if(!prev) return {picks:[],end:start+dur}; break }
     if(p.kind!=='event' && r.arrive>21*60+30){ if(!prev) return {picks:[],end:start+dur}; break } // 밤 9시 반 넘어 도착하는 곳은 빼기
     const stayCap = decStayCap(selected);
-    if((p.kind==='venue'||(p.kind==='event'&&r.start==null)) && r.stay>stayCap){ const cut=r.stay; r={...r,stay:stayCap,leave:r.arrive+stayCap,note:String(r.note||'').replace(`${cut}분 관람 가능`,`${stayCap}분쯤 둘러보기`).replace(`${cut}분쯤`,`${stayCap}분쯤`)} }
+    if((p.kind==='venue'||(p.kind==='event'&&r.start==null)) && r.stay>stayCap){ const cut=r.stay; r={...r,stay:stayCap,leave:r.arrive+stayCap,note:String(r.note||'').replace(`보통 ${cut}분쯤 둘러보기`,`보통 ${stayCap}분쯤 둘러보기`).replace(`${cut}분쯤`,`${stayCap}분쯤`)} }
     if(end==null) end=arr+dur; // 첫 장소에 도착한 뒤부터 고른 시간만큼
     if(prev && r.leave>end+20) break;                       // 고른 시간을 넘기는 뒤쪽 장소는 자르기
     if(!prev && r.leave>end) r={...r,leave:end,stay:Math.max(30,end-r.arrive)}; // 짧은 일정이면 첫 장소에서 고른 시간만큼만
@@ -10658,7 +10672,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "0.82 (11.06)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
+const APP_VER = "0.83 (11.13)"; // 숫자만 올려요 · 0.xx = 다듬는 중, 완성되면 1.0부터
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -12038,7 +12052,7 @@ html body .hero .impactGo.night{background:linear-gradient(135deg,#1f2d55,#3b3f8
       var x=o.x, badge = o.on
         ? '<span class="onBadge'+(o.left<=14?' hot':'')+'">'+(o.left===0?'오늘까지':'D-'+o.left)+'</span>'
         : '<span class="onBadge soon">'+o.until+'일 뒤 시작</span>';
-      var when = o.on ? mmdd(o.end)+'까지 · 놓치면 내년' : mmdd(o.start)+'부터';
+      var when = o.on ? mmdd(o.end)+(o.left<=30?'까지 · 놓치면 내년':'까지 · 지금이 제철') : mmdd(o.start)+'부터';   // 2026-11-13: '놓치면 내년'은 30일 안에 끝나는 것만
       return '<button class="weekendItem" type="button" data-q="'+h(x[1])+'"><span class="wNo">'+x[6]+'</span><span>'
         +'<span class="wTag">'+h(x[2])+' · '+when+'</span><b>'+h(x[0])+badge+'</b><small>'+h(x[7])+'</small>'
         +'<span class="spTip">💡 '+h(x[8])+' · 📍 지도 보기</span></span></button>';
@@ -12960,4 +12974,525 @@ a.telLink:active{opacity:.6}
   document.readyState==="loading" ? document.addEventListener("DOMContentLoaded",init) : init();
 })();
 </script>
+<!-- ── #homeRedesign20261113 : 숨은 문 없애기 · 메뉴 한눈에 · 하단 탭 고정 · 크리밍 말귀 넓히기 (이 블록만 지우면 원래대로) ──
+  · 오른쪽 '더 보기' 손잡이·하단 '빠른메뉴' 손잡이(3초 뒤 접힘) 대신 → 늘 보이는 하단 탭 5개: 홈 · 일정 · 지도 · 찜 · 전체
+    (예전 손잡이와 그 안 버튼은 지우지 않고 화면에서만 뺌. 전체 메뉴가 그 버튼들을 그대로 눌러서 같은 동작을 함)
+  · '전체'를 누르면 모든 메뉴를 한 화면에 (오늘 밤 뭐 들을랑가 · 대중가수 공연 · 시장·장날 · 동네 도서관 … 빠짐없이)
+  · 홈 첫 칸 '와따, 요런 게 다 있당께' : 자주 쓰는 메뉴 12개를 늘 보이게 (숨기지 않고 한눈에)
+  · 홈 순서: 메뉴 한눈에 → 오늘 뭐하지?(지금 바로 갈 곳이 맨 위) → 오늘 열리는 것 → 놓치면 끝나요 → 지금만 되는 것 → 나머지 그대로
+  · 동네 고르기 칸은 숨기지 않고 한 줄로 얇게
+  · 크리밍: 사투리·다른 말(애들·아그들·와이프·공짜·놀 데·있당가·인자…)과 '~말고/빼고'를 알아듣고,
+    답 위에 '긍께 요렇게 알아들었당께' 칩을 보여 줌 (칩을 누르면 그 조건을 빼고 다시 골라 줌)
+-->
+<style id="homeRedesign20261113">
+/* 1) 접히는 손잡이 두 개는 화면에서만 뺌 (버튼·동작은 그대로 남아 전체 메뉴가 씀) */
+html body #rightQuick,html body #quickDockV3,html body .navPeek{display:none!important}
+/* 2) 늘 보이는 하단 탭 */
+html body nav#appTabs{display:none}
+@media(max-width:899px){
+  html body nav#appTabs{position:fixed;left:0;right:0;bottom:0;z-index:950;display:grid;grid-template-columns:repeat(5,1fr);
+    background:rgba(255,255,255,.97);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-top:1px solid rgba(31,61,115,.12);box-shadow:0 -4px 18px rgba(16,32,60,.08);
+    padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));margin:0;height:auto;transform:none;opacity:1;visibility:visible}
+  html body nav#appTabs>button{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    min-height:52px;border-radius:12px;cursor:pointer;color:#5b6577;font:700 11.5px/1.2 Pretendard,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+  html body nav#appTabs>button i{font-style:normal;font-size:20px;line-height:24px}
+  html body nav#appTabs>button.on{color:#1f3d73;background:#eef3fb}
+  html body nav#appTabs>button:focus-visible{outline:3px solid #f39a25;outline-offset:-3px}
+  html body[data-tab]{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important}
+  :root[data-theme="dark"] html body nav#appTabs,:root[data-theme="dark"] body nav#appTabs{background:rgba(22,27,38,.97);border-top-color:rgba(255,255,255,.1)}
+  :root[data-theme="dark"] body nav#appTabs>button{color:#aab4c6}
+  :root[data-theme="dark"] body nav#appTabs>button.on{color:#fff;background:rgba(255,255,255,.1)}
+}
+@media(max-width:899px){html body #hero .photoCard:not(#_):not(#_){height:150px!important;min-height:0!important}}
+/* 3) 메뉴 한눈에 (홈 첫 칸) */
+html body #menuGlance{position:relative;z-index:12;margin:-30px 0 14px;background:#fff;border:1px solid rgba(31,61,115,.1);border-radius:22px;
+  padding:14px 12px 12px;box-shadow:0 10px 28px rgba(16,32,60,.08)}
+html body #menuGlance .mgHead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 4px 10px}
+html body #menuGlance .mgHead b{font-size:17px;color:#1d2a3f;letter-spacing:-.3px}
+html body #menuGlance .mgHead small{font-size:12px;color:#7a8394}
+html body .mgGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media(min-width:900px){html body #menuGlance .mgGrid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+html body .mgGrid>button{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;
+  padding:9px 2px 8px;border-radius:14px;background:#f6f8fc;cursor:pointer;text-align:center;min-height:74px;-webkit-tap-highlight-color:transparent}
+html body .mgGrid>button i{font-style:normal;font-size:24px;line-height:28px}
+html body .mgGrid>button span{font:750 12px/1.25 Pretendard,system-ui,sans-serif;color:#25324a;word-break:keep-all}
+html body .mgGrid>button small{font:500 10.5px/1.2 Pretendard,system-ui,sans-serif;color:#8a93a3;word-break:keep-all}
+html body .mgGrid>button.mgHot{background:#fff4e6}
+html body .mgGrid>button.mgHot span{color:#a2520a}
+html body .mgGrid>button.mgAll{background:#1f3d73}
+html body .mgGrid>button.mgAll span{color:#fff}
+html body .mgGrid>button:active{transform:scale(.97)}
+html body .mgGrid>button:focus-visible{outline:3px solid #f39a25;outline-offset:1px}
+html body #decideNow.decideWrap.mainDecision{margin-top:0!important}
+:root[data-theme="dark"] body #menuGlance{background:#1b2130;border-color:rgba(255,255,255,.08)}
+:root[data-theme="dark"] body .mgGrid>button{background:rgba(255,255,255,.06)}
+:root[data-theme="dark"] body .mgGrid>button span,:root[data-theme="dark"] body #menuGlance .mgHead b{color:#e8edf6}
+:root[data-theme="dark"] body .mgGrid>button.mgHot{background:rgba(243,154,37,.16)}
+:root[data-theme="dark"] body .mgGrid>button.mgHot span{color:#ffc27a}
+:root[data-theme="dark"] body .mgGrid>button.mgAll{background:#3a5fa8}
+/* 4) 전체 메뉴 (하단 탭 '전체') */
+html body #allMenu{position:fixed;inset:0;z-index:1200;display:none;background:rgba(14,22,38,.45)}
+html body #allMenu.show{display:block}
+html body #allMenu .amBox{position:absolute;left:0;right:0;bottom:0;max-height:86vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;
+  padding:16px 14px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 30px rgba(0,0,0,.18)}
+@media(min-width:900px){html body #allMenu .amBox{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:min(760px,92vw);border-radius:24px}}
+html body #allMenu .amHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:2px 4px 12px}
+html body #allMenu .amHead b{display:block;font-size:19px;color:#1d2a3f;letter-spacing:-.3px}
+html body #allMenu .amHead small{display:block;font-size:12.5px;color:#7a8394;margin-top:2px}
+html body #allMenu .amClose{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#f1f3f7;text-align:center;line-height:40px;font-size:20px;flex:none}
+html body #allMenu h3{font-size:13px;color:#7a8394;margin:14px 6px 7px;font-weight:800}
+html body #allMenu .mgGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(min-width:900px){html body #allMenu .mgGrid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+:root[data-theme="dark"] body #allMenu .amBox{background:#161b26}
+:root[data-theme="dark"] body #allMenu .amHead b{color:#e8edf6}
+:root[data-theme="dark"] body #allMenu .amClose{background:rgba(255,255,255,.1);color:#fff}
+body.allMenuOpen{overflow:hidden}
+/* 5) 동네 고르기: 숨기지 않고 한 줄로 (앞선 규칙이 #_ 두 번으로 세서 여기는 세 번) */
+@media(max-width:899px){
+  html body #homeBar .homeAsk:not(#_):not(#_):not(#_){display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:6px!important;padding:8px 10px!important;overflow:visible!important}
+  html body #homeBar .homeAsk>b:not(#_):not(#_):not(#_){font-size:12.5px!important;white-space:nowrap!important;flex:0 0 auto!important;margin:0!important}
+  html body #homeBar .homeAsk>select:not(#_):not(#_):not(#_){flex:1 1 auto!important;width:auto!important;min-width:0!important;margin:0!important}
+  html body #homeBar .homeAsk>button:not(#_):not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 9px!important;margin:0!important;font-size:12px!important}
+  html body #homeBar .homeAsk>.haText{display:none}
+}
+/* 6) 크리밍이 알아들은 조건 */
+html body #answer .crGot>b:not(#_):not(#_),html body .crGot>b{color:#1f3d73!important}
+html body #answer .crGot small:not(#_):not(#_){color:#5b6577!important}
+html body #answer .crGot small button:not(#_):not(#_){color:#1f3d73!important}
+html body .crGot{margin:0 0 12px;padding:11px 12px;border-radius:16px;background:#f3f7ff;border:1px solid #d9e4f7;color:#25324a}
+html body .crGot>b{display:block;font-size:13.5px;margin-bottom:7px}
+html body .crGotChips{display:flex;flex-wrap:wrap;gap:6px}
+html body .crGotChips button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #c9d7f0;
+  font:700 12.5px/1.2 Pretendard,system-ui,sans-serif;color:#1f3d73}
+html body .crGotChips button em{font-style:normal;color:#9aa6bb;font-weight:600}
+html body .crGotChips button.avoid{border-color:#f2c6bd;color:#a33b25}
+html body .crGot small{display:block;margin-top:8px;font-size:11.5px;color:#6b7588}
+html body .crGot small button{all:unset;cursor:pointer;color:#1f3d73;font-weight:800;text-decoration:underline}
+:root[data-theme="dark"] body .crGot{background:rgba(120,160,240,.1);border-color:rgba(120,160,240,.25);color:#e8edf6}
+:root[data-theme="dark"] body .crGotChips button{background:#1b2130;color:#cfe0ff;border-color:rgba(120,160,240,.3)}
+/* '고민 없이 지금 바로' 머리: 시계와 '↻ 다시'가 겹치던 것 → 나란히 (PC) */
+html body #nowStart .nowStartHead:not(#_):not(#_){display:flex!important;align-items:center!important;gap:8px!important}
+html body #nowStart .nowStartHead>div:first-child{flex:1 1 auto;min-width:0}
+html body #nowStart .nowStartHead .nowClock:not(#_):not(#_):not(#_),html body #nowStart .nowStartHead .nowRefresh:not(#_):not(#_):not(#_){position:static!important;transform:none!important;margin:0!important;flex:0 0 auto!important}
+/* 7) '오늘 뭐하지?' 안 추천 입구 4개 → 탭 하나로 (탭 이름은 늘 보임, 내용만 바뀜) */
+html body #decideNow .dnTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:12px 0 12px;padding:4px;background:#eef2f9;border-radius:16px}
+html body #decideNow .dnTabs button{all:unset;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;cursor:pointer;padding:7px 2px;border-radius:12px;
+  font:800 12px/1.2 Pretendard,system-ui,sans-serif;color:#4a5670;word-break:keep-all;-webkit-tap-highlight-color:transparent}
+html body #decideNow .dnTabs button i{font-style:normal;font-size:18px;line-height:22px}
+@media(min-width:900px){html body #decideNow .dnTabs button{flex-direction:row;justify-content:center;gap:6px;font-size:14px;padding:11px 6px}}
+html body #decideNow .dnTabs button.on{background:#fff;color:#1f3d73;box-shadow:0 2px 8px rgba(16,32,60,.12)}
+html body #decideNow .dnTabs button:focus-visible{outline:3px solid #f39a25;outline-offset:-2px}
+html body #decideNow .dnOff:not(#_):not(#_):not(#_){display:none!important}
+html body #decideNow .hbMoved{max-width:none!important;padding:0!important;margin:10px 0 0!important}
+html body #decideNow > section.block.mergedAsk,html body #decideNow > #today{margin-top:0!important}
+:root[data-theme="dark"] body #decideNow .dnTabs{background:rgba(255,255,255,.06)}
+:root[data-theme="dark"] body #decideNow .dnTabs button{color:#aab4c6}
+:root[data-theme="dark"] body #decideNow .dnTabs button.on{background:#2a3347;color:#fff}
+/* 8) 지금만 되는 것: 3개 먼저, 나머지는 'N개 더 보기' (몇 개 더 있는지 늘 보임) */
+html body #onlyNow .onMore{display:none!important}
+html body #onlyNow.onOpen .onMore{display:revert!important}
+html body #onlyNow .onMoreBtn{all:unset;box-sizing:border-box;display:block;width:100%;text-align:center;cursor:pointer;margin-top:8px;padding:11px;border-radius:14px;border:1px solid #e3e7ef;background:#fff;font:800 13px/1.2 Pretendard,system-ui,sans-serif;color:#1f3d73}
+/* 카드 부제(《…》)는 작은 줄로 */
+html body .nowCard .ncSub{display:block;font-size:11.5px;color:#7a8394;margin:-2px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* PC 위쪽 탭줄의 '전체 메뉴' 단추 */
+html body #tabs button.tabAll{font-weight:800}
+</style>
+<script id="homeRedesign20261113Js">
+(function(){
+  "use strict";
+  const $id = id => document.getElementById(id);
+  const gc = (p, t) => { try { window.goatcounter?.count?.({ path: p, title: t, event: true }) } catch (e) {} };
+  const hh = () => document.querySelector("header.top")?.offsetHeight || 0;
+  const toTop = el => { if (!el) return; window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - hh() - 10), behavior: "instant" }) };
+
+  /* ── 메뉴 목록 (한곳에서 관리) ── */
+  const M = {
+    events:   ["📅", "일정", "전시·공연·축제"],
+    stages:   ["🎼", "오늘 밤 뭐 들을랑가", "공연장 무대"],
+    popshows: ["🎤", "대중가수 공연", "콘서트·팬미팅"],
+    places:   ["🏛", "나들이", "산책·전시·체험"],
+    kids:     ["👶", "아이랑", "행사·갈 곳"],
+    indoor:   ["☔", "비 와도 실내", "오늘 문 연 곳"],
+    local:    ["📚", "동네 도서관", "강좌·책"],
+    markets:  ["🏮", "시장·장날", "오늘 장 서는 곳"],
+    food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
+    map:      ["🗺", "지도", "가까운 곳"],
+    weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
+    galleries:["🖼", "미술관·갤러리", ""],
+    museums:  ["🏺", "박물관", ""],
+    bakeries: ["🥐", "빵집", "빵지순례"],
+    cafes:    ["🐶", "반려견 카페", ""],
+    cinemas:  ["🎬", "영화관", ""],
+    stays:    ["🏨", "숙소", ""],
+    decide:   ["✨", "오늘 뭐하지?", "조건 골라 코스"],
+    today:    ["📆", "오늘 열리는 것", ""],
+    weekend:  ["🗓", "이번 주말", ""],
+    dayplan:  ["🧭", "오늘 하루 코스", "오전·오후·저녁"],
+    favorites:["♡", "찜", "저장한 곳"],
+    manual:   ["📖", "사용설명서", ""],
+    review:   ["💬", "후기 남기기", ""],
+    all:      ["☰", "전체 메뉴", "빠짐없이"]
+  };
+  const HOT = new Set(["stages"]);
+  const GLANCE = ["events", "stages", "popshows", "places", "kids", "indoor", "local", "markets", "food", "map", "weather", "all"];
+  const GROUPS = [
+    ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
+    ["공연·일정", ["events", "stages", "popshows"]],
+    ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
+    ["우리 동네", ["local", "markets", "weather"]],
+    ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
+    ["내 것·도움말", ["favorites", "manual", "review"]]
+  ];
+  const btn = k => { const [ic, nm, sub] = M[k]; return `<button type="button" data-go="${k}" class="${HOT.has(k) ? "mgHot" : ""}${k === "all" ? " mgAll" : ""}"><i aria-hidden="true">${ic}</i><span>${nm}</span>${sub && k !== "all" ? `<small>${sub}</small>` : ""}</button>` };
+
+  /* ── 메뉴 하나로 가기: 예전 빠른실행키가 하던 동작을 그대로 씀 ── */
+  function go(k){
+    gc("메뉴-" + (M[k] ? M[k][1] : k), "메뉴 · " + (M[k] ? M[k][1] : k));
+    closeAll();
+    const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
+    if (rail) { rail.click(); return }
+    if (k === "all") return openAll();
+    if (k === "decide") return window.goDecision ? goDecision() : (typeof showTab === "function" && showTab("home"));
+    if (k === "manual") return window.openUserManual?.();
+    if (k === "review") return window.openReview?.();
+    if (k === "indoor") {
+      try { PLACE_GROUP = "전체"; PLACE_IO = "실내"; PLACE_OPEN = true } catch (e) {}
+      showTab("places"); try { renderPlaces() } catch (e) {}
+      [60, 350, 800].forEach(ms => setTimeout(() => toTop($id("placesView")), ms)); return;
+    }
+    if (k === "today" || k === "weekend") {
+      window.ensureHome?.(); try { setNowWhen(k === "weekend" ? 2 : 0) } catch (e) {}
+      [120, 450, 900].forEach(ms => setTimeout(() => toTop($id("nowShow")), ms)); return;
+    }
+    if (k === "dayplan") { window.ensureHome?.(); setTab("plan"); [120, 450].forEach(ms => setTimeout(() => toTop(document.querySelector("#decideNow .dnTabs")), ms)); return }
+    if (typeof showTab === "function") { showTab(k); [80, 400].forEach(ms => setTimeout(() => toTop($id(k + "View")), ms)) }
+  }
+  window.goMenu = go;
+
+  /* ── 전체 메뉴 창 ── */
+  let lastFocus = null;
+  function buildAll(){
+    if ($id("allMenu")) return $id("allMenu");
+    const d = document.createElement("div"); d.id = "allMenu";
+    d.innerHTML = `<div class="amBox" role="dialog" aria-modal="true" aria-labelledby="amTitle">
+      <div class="amHead"><div><b id="amTitle">오매, 메뉴가 요로코롬 많당께</b><small>인자 여기서 다 찾아보쇼 · 누르면 바로 가요</small></div><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
+      ${GROUPS.map(([g, ks]) => `<h3>${g}</h3><div class="mgGrid">${ks.map(btn).join("")}</div>`).join("")}
+    </div>`;
+    document.body.appendChild(d);
+    d.addEventListener("click", e => { if (e.target === d || e.target.closest(".amClose")) closeAll(); const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go) });
+    return d;
+  }
+  function openAll(){
+    const d = buildAll(); lastFocus = document.activeElement;
+    d.classList.add("show"); document.body.classList.add("allMenuOpen");
+    document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === "all"));
+    setTimeout(() => d.querySelector(".amClose")?.focus(), 30);
+  }
+  function closeAll(){
+    const d = $id("allMenu"); if (!d || !d.classList.contains("show")) return;
+    d.classList.remove("show"); document.body.classList.remove("allMenuOpen");
+    syncTabs(); try { lastFocus?.focus?.({ preventScroll: true }) } catch (e) {}
+  }
+  window.openAllMenu = openAll;
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll() });
+
+  /* ── 하단 탭 5개 (늘 보임) ── */
+  const TABS = [["decide", "🏠", "홈"], ["events", "📅", "일정"], ["map", "🗺", "지도"], ["favorites", "♡", "찜"], ["all", "☰", "전체"]];
+  function syncTabs(){
+    const t = document.body.dataset.tab || "home", cur = (t === "home" || t === "decide") ? "decide" : t;
+    document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === cur));
+  }
+  function buildTabs(){
+    if ($id("appTabs")) return;
+    const n = document.createElement("nav"); n.id = "appTabs"; n.setAttribute("aria-label", "아래 메뉴");
+    n.innerHTML = TABS.map(([k, ic, nm]) => `<button type="button" data-go="${k}" aria-label="${nm}"><i aria-hidden="true">${ic}</i>${nm}</button>`).join("");
+    document.body.appendChild(n);
+    n.addEventListener("click", e => {
+      const b = e.target.closest("button[data-go]"); if (!b) return;
+      const k = b.dataset.go;
+      if (k === "all") { $id("allMenu")?.classList.contains("show") ? closeAll() : openAll(); return }
+      closeAll();
+      if (k === "decide") { window.goHome ? goHome() : showTab("home") }
+      else showTab(k);
+      gc("하단탭-" + b.textContent.trim(), "하단 탭");
+      syncTabs();
+    });
+    // 다른 곳에서 화면이 바뀌어도 탭 불빛을 맞춤
+    new MutationObserver(syncTabs).observe(document.body, { attributes: true, attributeFilter: ["data-tab"] });
+    syncTabs();
+  }
+  // PC 위쪽 탭줄에도 '전체 메뉴'
+  function addPcAll(){
+    const tabs = $id("tabs"); if (!tabs || tabs.querySelector(".tabAll")) return;
+    const b = document.createElement("button"); b.type = "button"; b.className = "tabAll"; b.innerHTML = "<i>☰</i>전체 메뉴";
+    b.addEventListener("click", e => { e.stopPropagation(); openAll() }); tabs.appendChild(b);
+  }
+
+  /* ── 홈: 메뉴 한눈에 + 순서 ── */
+  function buildGlance(){
+    let g = $id("menuGlance");
+    if (!g) {
+      g = document.createElement("section"); g.id = "menuGlance"; g.className = "homeOnly"; g.setAttribute("aria-label", "메뉴 한눈에");
+      g.innerHTML = `<div class="mgHead"><b>와따, 요런 게 다 있당께</b><small>겁나 많제? 눌러서 바로 가보쇼</small></div><div class="mgGrid">${GLANCE.map(btn).join("")}</div>`;
+      g.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go) });
+    }
+    return g;
+  }
+  function order(){
+    const main = document.querySelector("main"); if (!main) return;
+    const g = buildGlance();
+    const q = main.querySelector(":scope > .quickNavIntro");
+    const first = q ? q.nextElementSibling : main.firstElementChild;
+    if (g.parentNode !== main || (first !== g)) main.insertBefore(g, q ? q.nextSibling : main.firstChild);
+    // 오늘 뭐하지?(지금 바로 갈 곳이 맨 위) → 오늘 열리는 것 → 놓치면 끝나요 → 지금만 되는 것
+    const chain = ["localToday", "decideNow", "nowShow", "deadlineRush", "onlyNow"].map($id).filter(el => el && el.parentNode === main);
+    let after = g;
+    chain.forEach(el => { if (after.nextElementSibling !== el) after.insertAdjacentElement("afterend", el); after = el });
+    try { tabsDecide() } catch (e) { console.warn("[redesign dnTabs]", e) }
+    try { limitOnlyNow() } catch (e) {}
+  }
+
+  /* ── 크리밍 말귀 넓히기 ──
+     사투리·다른 말을 앱이 원래 알아듣는 말로 바꾼 뒤(원래 추천 규칙 그대로 사용), 알아들은 조건을 칩으로 보여 준다. */
+  const R = [
+    // [이름, 찾는 말, 칩 글자, 바꿀 말(없으면 그대로), 덧붙일 말]
+    ["kid", /애기들?|아기들?|애들|아그들|꼬맹이들?|유치원생?|초등학생|초딩|어린이집|딸내미|딸래미|아들내미|조카들?|우리\s*애|자녀|아이들?|어린이|유아/g, "👶 아이랑", "아이"],
+    ["couple", /여친|남친|여자\s*친구|남자\s*친구|애인|와이프|마누라|아내|남편|신랑|각시|썸|데이트|연인|커플/g, "❤️ 데이트", "데이트"],
+    ["parents", /어머니|아버지|어머님|아버님|엄마|아빠|할머니|할아버지|할매|할배|어르신|부모님?|효도/g, "👵 부모님과"],
+    ["pet", /댕댕이?|강쥐|멍뭉이|우리\s*개|반려견|반려동물|강아지|애견/g, "🐶 강아지랑", "강아지"],
+    ["alone", /혼자|혼놀|나\s*홀로/g, "🙋 혼자"],
+    ["friends", /친구들?|동창|모임/g, "👫 친구랑"],
+    ["free", /공짜|돈\s*안\s*(?:드는|들고|들이고|쓰고)|돈\s*없(?:이|어)?|0원|무료/g, "🆓 무료", "무료"],
+    ["wxIn", /비\s*(?:가\s*)?(?:온다|온대|오는|와서|오면|와|올|내리|오네)|비오는|장마|폭염|무더위|더워|덥다|더운|추워|춥다|추운|한파|쌀쌀|미세먼지|황사/g, "🏠 실내 (날씨)", null, "실내"],
+    ["indoor", /실내|안에서|에어컨/g, "🏠 실내"],
+    ["outdoor", /바람\s*쐬|햇볕|햇빛|날\s*좋|밖에서|야외|소풍|피크닉/g, "🌳 야외", null, "야외"],
+    ["now", /(?:^|\s)(?:인자|이자|지금|당장|바로)(?=\s|$|부터|가|는)/g, "⏱ 지금 나서기"],
+    ["evening", /퇴근\s*(?:하고|후|길)?|일\s*끝나고|저녁|밤에?|야간|야경/g, "🌙 저녁·밤", null, "저녁"],
+    ["moreh", /낼모레|모레/g, "📆 모레", "모레"],
+    ["tomorrow", /내일/g, "📆 내일"],
+    ["weekend", /주말|토요일|일요일/g, "🗓 주말"],
+    ["morning", /오전|아침/g, "🌅 오전"],
+    ["afternoon", /점심|오후/g, "☀️ 낮"],
+    ["food", /배고파|배고픈|출출|한\s*끼|밥집|밥\s*(?:먹|묵)|먹을\s*(?:데|곳)|맛있는\s*(?:거|데)|맛집|식사/g, "🍽 밥도", null, "맛집"],
+    ["cafe", /커피|카공|디저트|케이크|카페|찻집/g, "☕ 카페"],
+    ["exhibit", /그림|작품|전시회?|미술관?|갤러리|비엔날레/g, "🎨 전시"],
+    ["perf", /노래|음악|공연|콘서트|연주|뮤지컬|연극|국악|클래식|들을|버스킹/g, "🎵 공연", null, "공연"],
+    ["walk", /걷고\s*싶|걸을|걷기|산책|숲길?|둘레길/g, "🌿 산책", null, "산책"],
+    ["quiet", /조용한|한적한|사람\s*(?:없는|적은|안\s*많은)|호젓/g, "🤫 한적한 데", null, "산책"],
+    ["hike", /등산|산행|산에\s*(?:가|오르)|트레킹/g, "⛰ 등산"],
+    ["exp", /체험|만들기|과학|놀이/g, "🧪 체험"],
+    ["fest", /축제|행사/g, "🎪 축제·행사"],
+    ["market", /장날|오일장|5일장|전통시장|시장/g, "🏮 시장·장날"],
+    ["movie", /영화|극장/g, "🎬 영화"],
+    ["history", /역사|5\.?18|오월|유적|사적/g, "🏛 역사"],
+    ["museum", /박물관|기념관/g, "🏺 박물관"],
+    ["walkMove", /걸어서|도보/g, "🚶 걸어서"],
+    ["bus", /버스|지하철|대중교통/g, "🚌 대중교통"],
+    ["car", /차로|자차|운전|드라이브/g, "🚗 차로"]
+  ];
+  // 사투리로 '어디 갈 데 있어?' 하는 말 → 원래 앱이 알아듣는 '어디'를 덧붙임 (칩은 안 만듦)
+  const ASK_WORDS = /갈\s*데|가볼\s*데|놀\s*데|놀\s*거리|놀거리|볼\s*거리|볼거리|할\s*거\s*(?:리|없)|있당가|있으까|있소|있어라|있을랑가|할랑가|갈랑가|볼랑가|뭐하꼬|가꼬|심심/;
+  const FILLER = /(?:^|\s)(?:와따|오매|겁나|긍께|그랑께|근디|거시기)(?=\s|$|,|!)/g;
+  const NEG = /((?:[가-힣]+\s)?[가-힣]+\s(?:데|곳)|[가-힣A-Za-z0-9]+)\s*(?:은|는|이|가|을|를)?\s*(?:말고|빼고|제외하고|제외|싫어|싫고|안\s*가고|피해서)/g;
+
+  function areaChips(t){
+    const out = [];
+    try {
+      const names = new Set(["동구", "서구", "남구", "북구", "광산구"]);
+      Object.values(REGIONS || {}).forEach(r => (r.districts || []).forEach(d => names.add(d)));
+      names.forEach(d => { const short = d.replace(/[시군]$/, ""); if (t.includes(d) || (short.length >= 2 && new RegExp("(^|\\s)" + short + "(?=\\s|$|에|에서|으로|로|쪽)").test(t))) out.push(d) });
+      Object.entries(AREAS || {}).forEach(([k, gu]) => { if (t.includes(k)) out.push(k + "(" + gu + ")") });
+    } catch (e) {}
+    return [...new Set(out)].slice(0, 3);
+  }
+  function normalize(raw, off){
+    off = off || new Set();
+    let t = " " + String(raw || "").replace(/\s+/g, " ").trim() + " ";
+    const chips = [], adds = [];
+    t = t.replace(FILLER, " ").replace(/(^|\s)낼(?=[\s은에]|$)/g, "$1내일").replace(/토욜/g, "토요일").replace(/일욜/g, "일요일");
+    // '~말고/빼고'
+    t = t.replace(NEG, (m, w) => {
+      if (/^(?:그거|이거|저거|거기|여기)$/.test(w)) return " ";
+      const id = "neg:" + w; if (off.has(id)) return " ";
+      chips.push({ id, label: "🚫 " + w + " 빼고", avoid: true });
+      if (/야외|밖/.test(w)) adds.push("실내"); else if (/실내/.test(w)) adds.push("야외"); else if (/사람|북적|붐비|시끄/.test(w)) adds.push("산책");
+      return " ";
+    });
+    let has = new Set();
+    R.forEach(([id, re, label, rep, add]) => {
+      re.lastIndex = 0;
+      if (!re.test(t)) return; re.lastIndex = 0;
+      if (off.has(id)) { t = t.replace(re, " "); return }
+      if (id === "parents" && has.has("kid")) return;
+      if (id === "indoor" && has.has("wxIn")) return;
+      if ((id === "wxIn" || id === "indoor") && chips.some(c => c.avoid && /실내/.test(c.label))) return;   // '실내 말고'라고 했으면 날씨 때문에 실내를 덧붙이지 않음
+      if (id === "tomorrow" && has.has("moreh")) return;
+      has.add(id);
+      let lab = label;
+      if (id === "weekend") { const m = t.match(/토요일|일요일/); if (m) lab = "🗓 " + m[0] }
+      chips.push({ id, label: lab });
+      if (rep) t = t.replace(re, rep);
+      if (add) adds.push(add);
+    });
+    const tm = t.match(/(\d{1,2})\s*시(?:\s*(?:반|\d{1,2}\s*분))?/); if (tm && !off.has("hour")) chips.push({ id: "hour", label: "⏰ " + tm[0].replace(/\s+/g, "") });
+    else if (tm && off.has("hour")) t = t.replace(tm[0], " ");
+    areaChips(t).forEach(a => { const id = "area:" + a; if (off.has(id)) { t = t.replace(a.replace(/\(.*$/, ""), " ") } else chips.push({ id, label: "📍 " + a }) });
+    if (ASK_WORDS.test(t) && !/어디/.test(t)) adds.push("어디");
+    adds.forEach(a => { if (!t.includes(a)) t += " " + a });
+    return { raw: String(raw || ""), text: t.replace(/\s+/g, " ").trim(), chips };
+  }
+  window.creamNormalize = normalize;   // 점검용: creamNormalize("토욜 오전에 애들이랑 공짜로 놀 데 있당가")
+
+  let CUR = null, OFF = new Set();
+  function gotHtml(info){
+    if (!info) return "";
+    const chips = info.chips.map(c => `<button type="button" class="${c.avoid ? "avoid" : ""}" data-off="${esc(c.id)}" title="이 조건 빼고 다시 고르기">${esc(c.label)} <em aria-hidden="true">×</em><span class="srOnly">빼기</span></button>`).join("");
+    return info.chips.length
+      ? `<div class="crGot" id="crGot"><b>긍께 크리밍이 요렇게 알아들었당께</b><div class="crGotChips">${chips}</div><small>틀린 건 눌러서 빼거나, <button type="button" data-edit>✏️ 고쳐서 다시 물어보쇼</button></small></div>`
+      : `<div class="crGot" id="crGot"><b>오매, 딱 집은 조건이 없어서 인자 오늘 갈 만한 데로 골라봤소</b><small>요렇게 물어보면 겁나 잘 알아들어요: "토요일 오전 애들이랑 공짜로", "퇴근하고 조용한 데", "비 오면 실내 말고 영화" · <button type="button" data-edit>✏️ 다시 물어보기</button></small></div>`;
+  }
+  function paint(){
+    const a = $id("answer"); if (!a || !CUR) return;
+    if (a.querySelector("#crGot")) return;
+    a.insertAdjacentHTML("afterbegin", gotHtml(CUR));
+  }
+  function bindAnswer(){
+    const a = $id("answer"); if (!a || a.dataset.crGot) return; a.dataset.crGot = "1";
+    // 추천이 늦게 그려져도(지도·코스) 칩이 맨 위에 남게
+    new MutationObserver(() => { if (CUR && !a.querySelector("#crGot") && a.textContent.trim()) paint() }).observe(a, { childList: true });
+    a.addEventListener("click", e => {
+      const off = e.target.closest("[data-off]");
+      if (off) { OFF.add(off.dataset.off); run(CUR.raw, true); return }
+      if (e.target.closest("[data-edit]")) { const q = $id("aiq"); if (q) { q.value = CUR ? CUR.raw : ""; q.scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => q.focus(), 300) } }
+    });
+  }
+  function run(raw, keepOff){
+    raw = String(raw || "").trim(); if (!raw) return;
+    if (!keepOff) OFF = new Set();
+    const info = normalize(raw, OFF);
+    CUR = null; bindAnswer(); setTab("ask");
+    try { window.creamingLoading?.() } catch (e) {}
+    setTimeout(() => {
+      let done = false;
+      try { done = !!window.runDetailedNaturalQuery?.(info.text) } catch (e) { done = false }
+      if (!done) recommend(info.text);
+      CUR = info; paint();
+    }, 180);
+    gc("크리밍-질문", "크리밍 질문 (조건 " + info.chips.length + "개)");
+  }
+  window.creamAsk = run;
+  function hookAsk(){
+    const ask = $id("ask"), q = $id("aiq"); if (!ask || !q) return;
+    ask.onclick = () => run(q.value);
+    q.onkeydown = e => { if (e.key === "Enter" && !e.isComposing) run(q.value) };
+    // 위쪽 '뭐든 찾아보쇼잉' 칸: 문장이면 크리밍한테, 낱말이면 검색 (원래 방식 그대로, 말귀만 넓힘)
+    if (typeof window.isNaturalSearch === "function" && !window.isNaturalSearch.__wide) {
+      const o = window.isNaturalSearch;
+      window.isNaturalSearch = function(t){ t = String(t || "").trim(); return o(t) || (t.split(/\s+/).length >= 2 && (ASK_WORDS.test(t) || /이랑|하고|말고|빼고|싶|데\s*$|거\s*$/.test(t))) };
+      window.isNaturalSearch.__wide = true;
+    }
+    window.searchToGuide = function(text){
+      text = String(text == null ? ($id("search")?.value || "") : text).trim(); if (!text) return;
+      try { clearSearch() } catch (e) {} window.ensureHome?.();
+      q.value = text; run(text);
+      setTimeout(() => $id("aiBox")?.scrollIntoView({ behavior: "smooth", block: "start" }), 260);
+    };
+    ["search", "search2"].forEach(id => { const s = $id(id); if (s) s.placeholder = "뭐든 찾아보쇼잉 · 비엔날레, 애들이랑 놀 데" });
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])) }
+
+  /* ── 동네 고르기 한 줄: 글자만 짧게 (단추·동작은 그대로) ── */
+  function slimHomeBar(){
+    const hb = $id("homeBar"); if (!hb) return;
+    const fix = () => {
+      if (!matchMedia("(max-width:899px)").matches) return;
+      const a = hb.querySelector(".homeAsk"); if (!a || a.dataset.slim) return; a.dataset.slim = "1";
+      const b = a.querySelector(":scope>b"); if (b) b.textContent = "🏠 우리 동네";
+      [...a.childNodes].forEach(n => { if (n.nodeType === 3 && n.textContent.trim()) { const sp = document.createElement("span"); sp.className = "haText"; sp.textContent = n.textContent; a.replaceChild(sp, n) } });
+      const bt = a.querySelectorAll(":scope>button");
+      if (bt[0] && /위치/.test(bt[0].textContent)) { bt[0].textContent = "📍 내 위치"; bt[0].setAttribute("aria-label", "지금 위치로 동네 고르기") }
+      if (bt[1] && /나중/.test(bt[1].textContent)) { bt[1].textContent = "✕"; bt[1].setAttribute("aria-label", "나중에 고르기 (닫기)"); bt[1].title = "나중에" }
+    };
+    fix();
+    if (!hb.dataset.slimObs) { hb.dataset.slimObs = "1"; new MutationObserver(fix).observe(hb, { childList: true }) }
+  }
+
+  /* ── '오늘 뭐하지?' 탭: 지금 바로 · 조건 골라 · 물어보기 · 하루 코스 ── */
+  const DN = [["now", "🚀", "지금 바로"], ["cond", "🎛", "조건 골라"], ["ask", "💬", "크리밍한테"], ["plan", "🧭", "하루 코스"]];
+  let DN_CUR = "now", READY = false;
+  function dnParts(){
+    const dn = $id("decideNow"), d = dn && dn.querySelector(".decide"); if (!d) return null;
+    const hbWrap = $id("homeBar")?.parentElement;
+    return {
+      dn, d,
+      now: [$id("nowStart"), hbWrap].filter(Boolean),
+      cond: [".originBar", "#decisionWeather", ".decideGrid", "#detailSearch", ".decideAction"].map(q => d.querySelector(q)).filter(Boolean),
+      ask: [$id("aiBox")?.closest("section")].filter(Boolean),
+      plan: [$id("today")].filter(Boolean)
+    };
+  }
+  function setTab(k, scroll){
+    const p = dnParts(); if (!p) return; DN_CUR = k;
+    ["now", "cond", "ask", "plan"].forEach(x => p[x].forEach(el => el.classList.toggle("dnOff", x !== k)));
+    p.d.querySelectorAll(".dnTabs button").forEach(b => { const on = b.dataset.dn === k; b.classList.toggle("on", on); b.setAttribute("aria-selected", String(on)) });
+    if (k === "plan") { const t = $id("today"); if (t && t.classList.contains("isFolded")) t.querySelector(".foldBar")?.click() }
+    if (scroll) { const tb = p.d.querySelector(".dnTabs"); if (tb) setTimeout(() => toTop(tb), 30) }
+  }
+  window.decideTab = setTab;
+  function tabsDecide(){
+    const p = dnParts(); if (!p) return;
+    const top = p.d.querySelector(".decideTop");
+    let bar = p.d.querySelector(".dnTabs");
+    if (!bar) {
+      bar = document.createElement("div"); bar.className = "dnTabs"; bar.setAttribute("role", "tablist"); bar.setAttribute("aria-label", "오늘 뭐하지? 고르는 방법");
+      bar.innerHTML = DN.map(([k, ic, nm]) => `<button type="button" role="tab" data-dn="${k}"><i aria-hidden="true">${ic}</i>${nm}</button>`).join("");
+      bar.addEventListener("click", e => { const b = e.target.closest("[data-dn]"); if (!b) return; setTab(b.dataset.dn); gc("오늘뭐하지탭-" + b.dataset.dn, "오늘 뭐하지 탭") });
+    }
+    if (top && top.nextElementSibling !== bar) top.insertAdjacentElement("afterend", bar);
+    // 지금 바로 → 바로 아래 '우리 동네' 한 줄 (첫 추천을 본 다음에 묻기)
+    const ns = $id("nowStart"), hbWrap = $id("homeBar")?.parentElement;
+    if (ns && ns.parentNode === p.d && bar.nextElementSibling !== ns) bar.insertAdjacentElement("afterend", ns);
+    if (ns && hbWrap && hbWrap.id !== "mainContent" && ns.nextElementSibling !== hbWrap) { hbWrap.classList.add("hbMoved"); ns.insertAdjacentElement("afterend", hbWrap) }
+    // 하루 코스(#today)는 물어보기 다음 칸으로
+    const t = $id("today"), ask = $id("aiBox")?.closest("section");
+    if (t && t.parentNode !== p.dn) { (ask && ask.parentNode === p.dn ? ask : p.d).insertAdjacentElement("afterend", t) }
+    setTab(DN_CUR);
+  }
+  // 크리밍 추천이 그려지면(테마·날씨 단추·예시 단추 포함) '묻기' 탭으로
+  if (typeof window.recommend === "function" && !window.recommend.__dn) {
+    const o = window.recommend;
+    window.recommend = function(){ if (READY && DN_CUR !== "ask") setTab("ask"); return o.apply(this, arguments) };
+    window.recommend.__dn = true;
+  }
+  /* ── 지금만 되는 것: 3개 먼저 ── */
+  function limitOnlyNow(){
+    const on = $id("onlyNow"); if (!on) return;
+    const fix = () => {
+      const items = [...on.querySelectorAll(".weekendList > .weekendItem")];
+      items.forEach((b, i) => b.classList.toggle("onMore", i >= 3));
+      let mb = on.querySelector(".onMoreBtn");
+      if (items.length <= 3) { mb?.remove(); return }
+      if (!mb) { mb = document.createElement("button"); mb.type = "button"; mb.className = "onMoreBtn"; on.querySelector(".weekendList")?.insertAdjacentElement("afterend", mb) }
+      mb.textContent = on.classList.contains("onOpen") ? "접기 ▴" : `⏳ ${items.length - 3}개 더 보기 ▾`;
+      mb.onclick = () => { on.classList.toggle("onOpen"); fix() };
+    };
+    fix();
+    if (!on.dataset.limObs) { on.dataset.limObs = "1"; new MutationObserver(m => { if (m.some(r => [...r.addedNodes].some(n => n.nodeType === 1 && !n.classList?.contains("onMoreBtn")))) fix() }).observe(on, { childList: true, subtree: true }) }
+  }
+
+  /* ── 시작 ── */
+  function all(){
+    try { buildTabs() } catch (e) { console.warn("[redesign tabs]", e) }
+    try { slimHomeBar() } catch (e) {}
+    try { addPcAll() } catch (e) {}
+    try { order() } catch (e) { console.warn("[redesign order]", e) }
+    try { hookAsk() } catch (e) { console.warn("[redesign ask]", e) }
+  }
+  if (typeof window.arrangeHome === "function") { const o = window.arrangeHome; window.arrangeHome = function(){ const r = o.apply(this, arguments); try { order() } catch (e) {} return r } }
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", all) : all();
+  window.addEventListener("load", () => { all(); setTimeout(order, 1500); setTimeout(() => { order(); READY = true }, 3500) });
+})();
+</script>
+
 </body></html>
