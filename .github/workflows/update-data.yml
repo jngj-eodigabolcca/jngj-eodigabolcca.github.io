@@ -113,6 +113,13 @@ jobs:
           DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
         run: python scripts/enrich_places.py
 
+      - name: 약국·응급실·쉼터 수집 (국립중앙의료원)
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
+        run: python scripts/collect_care.py
+
       - name: 바뀐 데이터 저장
         run: |
           git config user.name "gwangju-eodi-bot"
