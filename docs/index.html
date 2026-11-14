@@ -12,10 +12,11 @@
   앱을 이관받는 기관은 원작자에게 별도로 허락을 받아야 캐릭터를 쓸 수 있습니다.
 -->
 <!--
-  ── 2026-11-13 구조 바뀜 ── 고칠 때는 이 파일(index.src.html) · app.css · js/ 를 고치고,
-     python3 tools/build.py docs 로 index.html 한 파일을 다시 만든다. (index.html을 직접 고치면 다음 빌드 때 덮어써짐)
-     스타일은 전부 app.css 한 파일(예전 <style> 블록 23개가 순서대로, 블록마다 '#이름' 머리말). 아래 지도의 블록 이름으로 찾으면 됨.
-     큰 스크립트는 js/NN-이름.js (원래 자리·순서 그대로 불러옴). 자세한 건 README-개발.md
+  ── 2026-11-15 기준: 이 index.html 한 파일이 원본입니다 ──
+     저장소(docs/)에는 이 파일만 있고 index.src.html · app.css · js/ · tools/build.py 는 없습니다.
+     그러니 고칠 때는 docs/index.html 을 직접 고치면 됩니다. (빌드 단계 없음)
+     예전 메모(2026-11-13 '원본을 나눠 build.py로 합친다')는 그 원본 파일들이 저장소에 없어 더 이상 쓰지 않습니다.
+     혹시 예전 원본이 다른 컴퓨터에서 나오더라도, 이 파일이 더 최신이므로 build.py로 덮어쓰지 마세요.
   ── 코드 지도 (인수인계용 · 2026-11-06 갱신) ──────────────────────────────
   이 파일 하나에 화면·스타일·동작·기본 자료가 모두 들어 있습니다(서버 없음, GitHub Pages로 배포).
   · <head> <style id="appStyles"> : 스타일 전부가 한곳에 있음 (2026-11-06에 흩어진 57개 블록을 원래 순서대로 합침)
@@ -13787,6 +13788,10 @@ document.addEventListener("keydown",function(e){
 .careTabs button,.careWhere button{border:1px solid var(--line2,#ddd);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:inherit;cursor:pointer}
 .careTabs button.on{background:#1f3d73;border-color:#1f3d73;color:#fff}
 .careWhere{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted,#6b6b6b)}
+.careWhere select{border:1px solid var(--line2,#ddd);background:transparent;color:inherit;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700;max-width:46%}
+.careWhere .careGeoMsg{flex:1 1 100%;padding:8px 10px;border-radius:10px;background:#fff4e0;color:#7a4a00;font-weight:600;line-height:1.5}
+:root[data-theme="dark"] .careWhere .careGeoMsg{background:#33270f;color:#ffd79a}
+:root[data-theme="dark"] .careWhere select{background:#1d2028;border-color:#343a46}
 .care119{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:#fdecea;border:1px solid #f3c2bc;color:#7d1d12;font-size:13.5px;font-weight:700}
 .care119 a{flex:0 0 auto;padding:6px 12px;border-radius:999px;background:#d93a26;color:#fff;text-decoration:none;font-weight:800}
 .careList{display:grid;gap:8px}
@@ -13827,7 +13832,7 @@ document.addEventListener("keydown",function(e){
   const telHref = t => "tel:" + String(t || "").replace(/[^\d+]/g, "");
   const items = j => Array.isArray(j) ? j : (j && Array.isArray(j.items) ? j.items : []);
   const upd = j => (j && !Array.isArray(j) && j.updated) ? String(j.updated).slice(0, 10) : "";
-  let CARE = null, CARE_P = null, POS = null;   // POS: '지금 위치'를 누른 경우에만, 이 화면을 쓰는 동안만
+  let CARE = null, CARE_P = null, POS = null, GU = "", GEO_MSG = "";   // POS: '내 위치'를 누른 경우에만 · GU: 이 창에서 고른 동네 (둘 다 저장 안 함)
 
   function loadCare() {
     return CARE_P ||= Promise.all(["pharmacies", "emergency", "shelters"].map(n => getJSON(n, null).catch(() => null)))
@@ -13838,7 +13843,7 @@ document.addEventListener("keydown",function(e){
   const isHoli = iso => typeof HOLIDAYS !== "undefined" && !!HOLIDAYS[iso];
   const keyOf = (iso, dow) => isHoli(iso) ? 8 : (dow === 0 ? 7 : dow);
   const hm = s => { s = String(s || "").replace(/\D/g, ""); if (s.length < 3) return null; s = s.padStart(4, "0"); const h = +s.slice(0, 2), m = +s.slice(2); return h > 48 || m > 59 ? null : h * 60 + m };
-  const fmt = m => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  const fmt = m => m === 1440 ? "24:00" : `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
   function span(x, key) {
     const raw = (x.h || {})[key]; if (!raw) return null;
     const [a, b] = String(raw).split("-"); const o = hm(a), c0 = hm(b); if (o == null || c0 == null) return null;
@@ -13850,15 +13855,24 @@ document.addEventListener("keydown",function(e){
     const today = span(x, keyOf(iso, dow)), yest = span(x, keyOf(y, (dow + 6) % 7));
     if (yest && yest.c > 1440 && m < yest.c - 1440) { const left = yest.c - 1440 - m; return { open: true, soon: left <= 60, txt: `${fmt(yest.c)}까지` } }
     if (!today) return { open: false, txt: isHoli(iso) ? "공휴일 영업 정보 없음" : "오늘 영업 정보 없음" };
+    if (today.o === 0 && today.c >= 1440) return { open: true, txt: "오늘 24시간" };
     if (m >= today.o && m < today.c) { const left = today.c - m; return { open: true, soon: left <= 60, txt: `오늘 ${fmt(today.o)}–${fmt(today.c)}` } }
     return { open: false, later: m < today.o, txt: m < today.o ? `오늘 ${fmt(today.o)}에 열어요` : `오늘은 ${fmt(today.c)}에 닫았어요` };
   }
 
   /* ── 거리: 지금 위치 → 고른 동네 → 권역 중심 ── */
+  const regionOf = gu => { for (const [k, R] of Object.entries(REGIONS)) if ((R.districts || []).includes(gu)) return k; return "" };
+  function guPoint(gu) {
+    const pts = [...(CARE ? CARE.ph : []), ...(CARE ? CARE.er : []), ...(CARE ? CARE.sh : [])].filter(x => x.district === gu && +x.lat && +x.lng);
+    if (pts.length) return { lat: pts.reduce((a, x) => a + +x.lat, 0) / pts.length, lng: pts.reduce((a, x) => a + +x.lng, 0) / pts.length };
+    try { const c = typeof guCenter === "function" ? guCenter(gu) : null; if (c) return c } catch (e) {}
+    return null;
+  }
   function refPoint(at) {
     if (at && at.lat) return at;
     if (POS) return POS;
-    try { if (typeof HOME !== "undefined" && HOME && HOME.lat) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
+    if (GU) { const c = guPoint(GU); if (c) return { ...c, label: `${GU} 기준` } }
+    try { if (typeof HOME !== "undefined" && HOME && HOME.lat && regionOf(HOME.gu) === REGION) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
     const R = REGIONS[REGION] || REGIONS.gj; return { lat: R.wx[0], lng: R.wx[1], label: `${R.hub} 중심 기준` };
   }
   const dist = (a, b) => { const R = 6371, r = Math.PI / 180, dl = (b.lat - a.lat) * r, dg = (b.lng - a.lng) * r; const h = Math.sin(dl / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dg / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)) };
@@ -13918,21 +13932,31 @@ document.addEventListener("keydown",function(e){
     const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
     box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
       ${k === "med" ? "" : `<div class="careTabs" role="tablist">${[["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>`}
-      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 내 위치로</button><span>동네 대신 지금 있는 곳에서 가까운 순 · 위치는 저장하지 않아요</span>`}</div>
+      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `
+        <select data-care-gu aria-label="동네 고르기"><option value="">${POS ? "📍 내 위치 기준" : "동네 바꾸기"}</option>${Object.values(REGIONS).map(R => `<optgroup label="${E(R.name)}">${R.districts.map(d => `<option value="${E(d)}"${!POS && d === (GU || (at.label || "").replace(/ 기준$/, "")) ? " selected" : ""}>${E(d)}</option>`).join("")}</optgroup>`).join("")}</select>
+        <button type="button" data-care-pos="1">📍 내 위치로</button>
+        ${GEO_MSG ? `<span class="careGeoMsg">${E(GEO_MSG)}</span>` : `<span>위치는 저장하지 않아요</span>`}`}</div>
       ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
     box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
+    const sel = box.querySelector("[data-care-gu]");
+    if (sel) sel.onchange = () => { if (!sel.value) return; GU = sel.value; POS = null; GEO_MSG = ""; render() };
     const pb = box.querySelector("[data-care-pos]");
     if (pb) pb.onclick = () => {
-      if (!navigator.geolocation) { typeof toast === "function" && toast("이 기기에서는 위치를 쓸 수 없어요"); return }
-      pb.textContent = "📍 위치 찾는 중…";
-      navigator.geolocation.getCurrentPosition(p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "지금 위치 기준" }; render() },
-        () => { pb.textContent = "📍 내 위치로"; typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요") },
-        { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+      const fail = m => { GEO_MSG = m; render() };
+      if (!window.isSecureContext) return fail("이 주소(http)에서는 위치를 쓸 수 없어요. 동네를 골라 주세요.");
+      if (!navigator.geolocation) return fail("이 기기·브라우저는 위치 찾기를 지원하지 않아요. 동네를 골라 주세요.");
+      pb.textContent = "📍 찾는 중…"; pb.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "내 위치 기준" }; GU = ""; GEO_MSG = ""; render() },
+        e => fail(e && e.code === 1 ? "위치 권한이 꺼져 있어요. 주소창 옆 자물쇠(또는 브라우저 설정 → 사이트 설정 → 위치)에서 이 사이트를 '허용'으로 바꾼 뒤 다시 눌러 주세요."
+          : "위치를 찾지 못했어요. 휴대폰 위치(GPS)가 켜져 있는지 확인하고 다시 눌러 주세요."),
+        { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 });
     };
   }
   window.openCare = async (kind = "med", at = null) => {
     const box = $c("modalContent"), md = $c("modal"); if (!box || !md) return;
     CUR = { kind, at: at && at.lat ? at : null };
+    GU = ""; GEO_MSG = "";   // 새로 열 때마다 지금 권역·우리 동네 기준으로 (내 위치는 한 번 찾으면 계속 씀)
     box.innerHTML = `<div class="careDoc"><p class="careNote">불러오는 중…</p></div>`;
     md.classList.remove("decisionMode"); md.classList.add("show"); document.body.classList.add("modal-open");
     if (typeof navPush === "function") navPush({ modal: "care" });
