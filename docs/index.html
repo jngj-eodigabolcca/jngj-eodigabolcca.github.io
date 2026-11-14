@@ -9663,7 +9663,8 @@ const APP_FEATURES = [
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
   ["🐶 멍카페", "댕댕이랑 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페 댕댕이 댕댕", () => { clearSearch(); showTab("cafes") }],
   ["🏘 동네 강좌·도서관", "우리 동네 강좌와 도서관", "동네 강좌 도서관 수업 배우기 교실", () => { clearSearch(); showTab("local") }],
-  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국, 가까운 응급실, 무더위·한파 쉼터", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기 쉼터 무더위쉼터 한파쉼터 폭염 한파", () => { clearSearch(); window.openCare?.("med") }],
+  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국과 가까운 응급실", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기", () => { clearSearch(); window.openCare?.("med") }],
+  ["🌡 무더위·한파 쉼터", "많이 덥거나 추울 때 가까운 쉼터", "쉼터 무더위쉼터 한파쉼터 폭염 한파 더위 추위", () => { clearSearch(); window.openCare?.(window.careSeason?.() || "heat") }],
   ["🗺 지도", "지도에서 한눈에", "지도 위치 길찾기 근처", () => { clearSearch(); showTab("map") }],
   ["♡ 찜 목록", "찜해 둔 곳 보기", "찜 즐겨찾기 저장 하트", () => { clearSearch(); showTab("favorites") }],
   ["📖 앱 사용설명서", "앱 소개·기능·이용방법", "사용설명서 설명서 도움말 사용법 이용방법", () => { clearSearch(); openUserManual() }],
@@ -13390,7 +13391,8 @@ document.addEventListener("keydown",function(e){
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
     map:      ["🗺", "지도", "가까운 곳"],
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
-    care:     ["🏥", "문 연 약국·응급실", "아플 때·쉼터"],
+    care:     ["🏥", "문 연 약국·응급실", "아플 때"],
+    shelter:  ["🌡", "쉼터", "무더위·한파"],   // 열면 무더위쉼터·한파쉼터 두 칸 (철에 맞는 칸이 먼저 열림)
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
     bakeries: ["🥐", "제과·제빵", "빵지순례"],
@@ -13412,7 +13414,7 @@ document.addEventListener("keydown",function(e){
     ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
     ["공연·일정", ["events", "stages", "popshows"]],
     ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
-    ["우리 동네", ["hood", "local", "markets", "weather", "care"]],
+    ["우리 동네", ["hood", "local", "markets", "weather", "care", "shelter"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["내 것·도움말", ["favorites", "manual", "review"]]
   ];
@@ -13427,6 +13429,7 @@ document.addEventListener("keydown",function(e){
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
     }
     if (k === "care") { window.openCare?.("med"); return }
+    if (k === "shelter") { window.openCare?.(window.careSeason?.() || "heat"); return }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
     if (k === "all") return openAll();
@@ -13454,7 +13457,7 @@ document.addEventListener("keydown",function(e){
     const d = document.createElement("div"); d.id = "allMenu";
     d.innerHTML = `<div class="amBox" role="dialog" aria-modal="true" aria-labelledby="amTitle">
       <div class="amHead"><div><b id="amTitle">오매, 메뉴가 요로코롬 많당께</b><small>인자 여기서 다 찾아보쇼 · 누르면 바로 가요</small></div><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
-      ${GROUPS.map(([g, ks]) => `<h3>${g}</h3><div class="mgGrid">${ks.map(btn).join("")}</div>`).join("")}
+      ${GROUPS.map(([g, ks]) => `<h3>${g}</h3><div class="mgGrid">${ks.filter(k => M[k]).map(btn).join("")}</div>`).join("")}
     </div>`;
     document.body.appendChild(d);
     d.addEventListener("click", e => { if (e.target === d || e.target.closest(".amClose")) closeAll(); const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go) });
@@ -13914,8 +13917,8 @@ document.addEventListener("keydown",function(e){
     const at = refPoint(CUR.at), k = CUR.kind;
     const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
     box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
-      <div class="careTabs" role="tablist">${[["med", "🏥 약국·응급실"], ["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
-      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 지금 위치로 찾기</button><span>위치는 이 기기 안에서 거리 계산에만 써요</span>`}</div>
+      ${k === "med" ? "" : `<div class="careTabs" role="tablist">${[["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>`}
+      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 내 위치로</button><span>동네 대신 지금 있는 곳에서 가까운 순 · 위치는 저장하지 않아요</span>`}</div>
       ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
     box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
     const pb = box.querySelector("[data-care-pos]");
@@ -13923,7 +13926,7 @@ document.addEventListener("keydown",function(e){
       if (!navigator.geolocation) { typeof toast === "function" && toast("이 기기에서는 위치를 쓸 수 없어요"); return }
       pb.textContent = "📍 위치 찾는 중…";
       navigator.geolocation.getCurrentPosition(p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "지금 위치 기준" }; render() },
-        () => { pb.textContent = "📍 지금 위치로 찾기"; typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요") },
+        () => { pb.textContent = "📍 내 위치로"; typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요") },
         { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
     };
   }
@@ -13937,6 +13940,7 @@ document.addEventListener("keydown",function(e){
     await loadCare(); render();
   };
 
+  window.careSeason = () => { const mo = Number(todayISO().slice(5, 7)); return (mo >= 11 || mo <= 3) ? "cold" : "heat" };
   /* 날씨 칸: 아주 덥거나 추운 날에만 쉼터 한 줄 */
   window.careWxLine = W => {
     if (!W) return "";
