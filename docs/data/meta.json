@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-14T09:27:55+09:00",
+  "updated_at": "2026-11-14T15:07:55+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 6,
+      "count": 7,
       "message": "정상 수집"
     },
     {
@@ -19,16 +19,16 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 102,
       "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 102건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "message": "지난 수집 실패 · 다음 실행 때 다시 시도 · 23시간 전 자료 102건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 33,
-      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
+      "count": 45,
+      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -50,7 +50,7 @@
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 6,
+      "count": 7,
       "message": "정상 수집"
     },
     {
@@ -63,16 +63,16 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 102,
       "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 102건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "message": "지난 수집 실패 · 다음 실행 때 다시 시도 · 23시간 전 자료 102건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 33,
-      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
+      "count": 45,
+      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -90,12 +90,12 @@
     }
   ],
   "counts": {
-    "total": 163,
-    "auto": 130,
+    "total": 176,
+    "auto": 143,
     "manual": 33
   },
   "manual_count": 97,
-  "events_count": 163,
+  "events_count": 176,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "local": {
     "holidays": {
@@ -109,7 +109,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-14T09:29:30+09:00",
+      "fetched_at": "2026-11-14T15:09:08+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -145,7 +145,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 284,
-      "fetched_at": "2026-11-14T09:29:30+09:00",
+      "fetched_at": "2026-11-14T15:09:08+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -178,7 +178,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-14T09:29:32+09:00",
+    "checked_at": "2026-11-14T15:09:10+09:00",
     "tourapi_calls": 4,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -228,6 +228,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-14T09:29:31+09:00"
+    "checked_at": "2026-11-14T15:09:09+09:00"
   }
 }
