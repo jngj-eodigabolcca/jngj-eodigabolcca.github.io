@@ -6619,7 +6619,7 @@ function renderWxTips() {
   <details class="wtDetails"><summary>👕 ${esc(wear.split("·")[0].trim())} · 챙길 것 ${mustN ? mustN + "개 필수" : "확인"} <span style="font-size:11px;font-weight:600;color:var(--muted)">자세히 보기</span></summary><div class="wtGrid">
    <div class="wtWear"><small>👕 오늘 옷차림</small><b>${esc(wear)}</b><p>${esc(wearTip)}</p>${gap >= 10 ? `<p>🌙 ${R && !R.late && R.slots.some(x => x.night) ? "저녁엔" : "아침저녁은"} ${lo}°까지 내려가요 — 낮 옷 위에 걸칠 겉옷 하나!</p>` : ""}${rainDay && !snow ? "<p>👟 젖어도 되는 신발, 밝은색 바지는 피하는 게 좋아요</p>" : ""}</div>
    <div class="wtList">${tips.map(t => `<div class="wtItem ${t.must ? "must" : ""}"><i>${t.i}</i><div><b>${esc(t.b)}</b><span>${esc(t.s)}</span></div></div>`).join("")}</div>
-  </div></details>`;
+  </div></details>${window.careWxLine ? careWxLine(W) : ""}`;
   WX_SHORT = [wear.split("·")[0], ...tips.filter(t => t.must).map(t => t.i)].join(" ");
   const hw = document.getElementById("wx");
   if (hw && /확인 중|준비 중/.test(hw.textContent)) hw.innerHTML = `<div class="wxTop"><span class="wxNow">${wn[0]} ${esc(wn[1])}</span><b>지금 ${W.now}°</b></div><small class="wxMeta">최고 ${W.max}° / 최저 ${W.min}° · 체감 ${W.feel ?? W.now}°</small>`;
@@ -9663,6 +9663,7 @@ const APP_FEATURES = [
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
   ["🐶 멍카페", "댕댕이랑 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페 댕댕이 댕댕", () => { clearSearch(); showTab("cafes") }],
   ["🏘 동네 강좌·도서관", "우리 동네 강좌와 도서관", "동네 강좌 도서관 수업 배우기 교실", () => { clearSearch(); showTab("local") }],
+  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국, 가까운 응급실, 무더위·한파 쉼터", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기 쉼터 무더위쉼터 한파쉼터 폭염 한파", () => { clearSearch(); window.openCare?.("med") }],
   ["🗺 지도", "지도에서 한눈에", "지도 위치 길찾기 근처", () => { clearSearch(); showTab("map") }],
   ["♡ 찜 목록", "찜해 둔 곳 보기", "찜 즐겨찾기 저장 하트", () => { clearSearch(); showTab("favorites") }],
   ["📖 앱 사용설명서", "앱 소개·기능·이용방법", "사용설명서 설명서 도움말 사용법 이용방법", () => { clearSearch(); openUserManual() }],
@@ -13389,6 +13390,7 @@ document.addEventListener("keydown",function(e){
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
     map:      ["🗺", "지도", "가까운 곳"],
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
+    care:     ["🏥", "문 연 약국·응급실", "아플 때·쉼터"],
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
     bakeries: ["🥐", "제과·제빵", "빵지순례"],
@@ -13410,7 +13412,7 @@ document.addEventListener("keydown",function(e){
     ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
     ["공연·일정", ["events", "stages", "popshows"]],
     ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
-    ["우리 동네", ["hood", "local", "markets", "weather"]],
+    ["우리 동네", ["hood", "local", "markets", "weather", "care"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["내 것·도움말", ["favorites", "manual", "review"]]
   ];
@@ -13424,6 +13426,7 @@ document.addEventListener("keydown",function(e){
     if (k === "hood" || k === "local") {
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
     }
+    if (k === "care") { window.openCare?.("med"); return }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
     if (k === "all") return openAll();
@@ -13768,6 +13771,193 @@ document.addEventListener("keydown",function(e){
   if (typeof window.arrangeHome === "function") { const o = window.arrangeHome; window.arrangeHome = function(){ const r = o.apply(this, arguments); try { order() } catch (e) {} return r } }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", all) : all();
   window.addEventListener("load", () => { all(); setTimeout(order, 1500); setTimeout(() => { order(); READY = true }, 3500) });
+})();
+</script>
+
+<style id="careStyle">
+/* 2026-11-14: 🏥 문 연 약국·응급실 · 🌡 무더위/한파 쉼터 */
+.careDoc{display:grid;gap:12px}
+.careDoc h2{margin:0;font-size:20px;line-height:1.3}
+.careDoc h2 small{display:block;margin-top:4px;font-size:12.5px;font-weight:600;color:var(--muted,#6b6b6b)}
+.careDoc h3{margin:6px 0 0;font-size:15px}
+.careTabs{display:flex;gap:6px;flex-wrap:wrap}
+.careTabs button,.careWhere button{border:1px solid var(--line2,#ddd);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:inherit;cursor:pointer}
+.careTabs button.on{background:#1f3d73;border-color:#1f3d73;color:#fff}
+.careWhere{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted,#6b6b6b)}
+.care119{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:#fdecea;border:1px solid #f3c2bc;color:#7d1d12;font-size:13.5px;font-weight:700}
+.care119 a{flex:0 0 auto;padding:6px 12px;border-radius:999px;background:#d93a26;color:#fff;text-decoration:none;font-weight:800}
+.careList{display:grid;gap:8px}
+.careItem{padding:11px 12px;border-radius:12px;border:1px solid var(--line2,#e3e3e3);background:var(--card,#fff);display:grid;gap:3px}
+.careItem b{font-size:15px}
+.careItem small{font-size:12.5px;color:var(--muted,#6b6b6b);line-height:1.45}
+.careItem .careSt{font-weight:800}
+.careItem .careSt.open{color:#1c7c54}.careItem .careSt.soon{color:#b86a00}.careItem .careSt.closed{color:#9a9a9a}
+.careBtns{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.careBtns a{padding:5px 11px;border-radius:999px;border:1px solid var(--line2,#ddd);font-size:12.5px;font-weight:700;text-decoration:none;color:inherit}
+.careBtns a.tel{background:#eef7f4;border-color:#cfe5dd;color:#134e4a}
+.careLinks{display:grid;gap:8px}
+.careLinks a{display:block;padding:11px 12px;border-radius:12px;border:1px solid var(--line2,#e3e3e3);text-decoration:none;color:inherit}
+.careLinks a b{display:block;font-size:14.5px}.careLinks a small{font-size:12.5px;color:var(--muted,#6b6b6b)}
+.careNote{margin:0;font-size:12px;line-height:1.55;color:var(--muted,#6b6b6b)}
+.careEmpty{margin:0;padding:10px 12px;border-radius:12px;background:#f6f4ef;font-size:13px;line-height:1.5}
+.careWx{display:flex;align-items:center;gap:8px;width:100%;margin-top:10px;padding:11px 14px;border-radius:14px;border:1px solid #f1c79a;background:#fff3e6;color:#8a4500;font-size:14px;font-weight:800;text-align:left;cursor:pointer}
+.careWx.cold{border-color:#b9d3f0;background:#eef5fd;color:#1d4f8a}
+.careWx span{margin-left:auto;font-weight:700;opacity:.8}
+.careNearBtn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 12px;border-radius:999px;border:1px solid var(--line2,#ddd);background:transparent;color:inherit;font-size:13px;font-weight:700;cursor:pointer}
+:root[data-theme="dark"] .care119{background:#3a1d19;border-color:#6b2f27;color:#ffc9c0}
+:root[data-theme="dark"] .careItem,:root[data-theme="dark"] .careLinks a{background:#1d2028;border-color:#343a46}
+:root[data-theme="dark"] .careBtns a.tel{background:#17302a;border-color:#2c5248;color:#9fe0cf}
+:root[data-theme="dark"] .careEmpty{background:#23252b}
+:root[data-theme="dark"] .careWx{background:#33230f;border-color:#6b4a1f;color:#ffcf99}
+:root[data-theme="dark"] .careWx.cold{background:#15253a;border-color:#2d4d75;color:#b9d8ff}
+:root[data-theme="dark"] .careTabs button.on{background:#3d5f9e;border-color:#3d5f9e}
+</style>
+<script id="careScript">
+/* 2026-11-14: 🏥 지금 문 연 약국·응급실 · 🌡 무더위쉼터 / 🧣 한파쉼터
+   자료: data/pharmacies.json · data/emergency.json (국립중앙의료원, 자동 수집)
+         data/shelters.json (행정안전부·시군 쉼터 목록, 해마다 갱신)
+   자료가 아직 없으면 공식 조회 누리집으로만 안내한다.
+   '지금 위치'는 이 기기 안에서 거리 계산에만 쓰고, 어디에도 보내거나 저장하지 않는다. */
+(function () {
+  const $c = id => document.getElementById(id);
+  const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const telHref = t => "tel:" + String(t || "").replace(/[^\d+]/g, "");
+  const items = j => Array.isArray(j) ? j : (j && Array.isArray(j.items) ? j.items : []);
+  const upd = j => (j && !Array.isArray(j) && j.updated) ? String(j.updated).slice(0, 10) : "";
+  let CARE = null, CARE_P = null, POS = null;   // POS: '지금 위치'를 누른 경우에만, 이 화면을 쓰는 동안만
+
+  function loadCare() {
+    return CARE_P ||= Promise.all(["pharmacies", "emergency", "shelters"].map(n => getJSON(n, null).catch(() => null)))
+      .then(([p, e, s]) => (CARE = { ph: items(p), er: items(e), sh: items(s), phUpd: upd(p), erUpd: upd(e), shUpd: upd(s) }));
+  }
+
+  /* ── 시간: 국립중앙의료원 요일 번호 1(월)~7(일), 8(공휴일) ── */
+  const isHoli = iso => typeof HOLIDAYS !== "undefined" && !!HOLIDAYS[iso];
+  const keyOf = (iso, dow) => isHoli(iso) ? 8 : (dow === 0 ? 7 : dow);
+  const hm = s => { s = String(s || "").replace(/\D/g, ""); if (s.length < 3) return null; s = s.padStart(4, "0"); const h = +s.slice(0, 2), m = +s.slice(2); return h > 48 || m > 59 ? null : h * 60 + m };
+  const fmt = m => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  function span(x, key) {
+    const raw = (x.h || {})[key]; if (!raw) return null;
+    const [a, b] = String(raw).split("-"); const o = hm(a), c0 = hm(b); if (o == null || c0 == null) return null;
+    return { o, c: c0 <= o ? c0 + 1440 : c0 };
+  }
+  function openInfo(x) {
+    const n = kstNow(), iso = todayISO(), dow = n.getUTCDay(), m = n.getUTCHours() * 60 + n.getUTCMinutes();
+    const y = new Date(Date.parse(iso + "T12:00:00Z") - 864e5).toISOString().slice(0, 10);
+    const today = span(x, keyOf(iso, dow)), yest = span(x, keyOf(y, (dow + 6) % 7));
+    if (yest && yest.c > 1440 && m < yest.c - 1440) { const left = yest.c - 1440 - m; return { open: true, soon: left <= 60, txt: `${fmt(yest.c)}까지` } }
+    if (!today) return { open: false, txt: isHoli(iso) ? "공휴일 영업 정보 없음" : "오늘 영업 정보 없음" };
+    if (m >= today.o && m < today.c) { const left = today.c - m; return { open: true, soon: left <= 60, txt: `오늘 ${fmt(today.o)}–${fmt(today.c)}` } }
+    return { open: false, later: m < today.o, txt: m < today.o ? `오늘 ${fmt(today.o)}에 열어요` : `오늘은 ${fmt(today.c)}에 닫았어요` };
+  }
+
+  /* ── 거리: 지금 위치 → 고른 동네 → 권역 중심 ── */
+  function refPoint(at) {
+    if (at && at.lat) return at;
+    if (POS) return POS;
+    try { if (typeof HOME !== "undefined" && HOME && HOME.lat) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
+    const R = REGIONS[REGION] || REGIONS.gj; return { lat: R.wx[0], lng: R.wx[1], label: `${R.hub} 중심 기준` };
+  }
+  const dist = (a, b) => { const R = 6371, r = Math.PI / 180, dl = (b.lat - a.lat) * r, dg = (b.lng - a.lng) * r; const h = Math.sin(dl / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dg / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)) };
+  const dTxt = d => d < 1 ? `약 ${Math.max(100, Math.round(d * 10) * 100)}m` : `약 ${d.toFixed(1)}km`;
+  const ranked = (list, at, maxKm) => list.filter(x => +x.lat && +x.lng).map(x => [x, dist(at, { lat: +x.lat, lng: +x.lng })]).filter(([, d]) => d <= maxKm).sort((a, b) => a[1] - b[1]);
+
+  const itemHtml = (x, d, st, extraTel) => `<div class="careItem"><b>${E(x.name)}</b>
+    <small>${E(dTxt(d))}${st ? ` · <span class="careSt ${st.open ? (st.soon ? "soon" : "open") : "closed"}">${st.open ? (st.soon ? "곧 닫아요 · " : "지금 열려 있어요 · ") : ""}${E(st.txt)}</span>` : ""}</small>
+    ${x.address ? `<small>📍 ${E(x.address)}</small>` : ""}${x.note ? `<small>${E(x.note)}</small>` : ""}
+    <div class="careBtns">${extraTel ? `<a class="tel" href="${telHref(extraTel)}">📞 응급실 ${E(extraTel)}</a>` : ""}${x.tel ? `<a class="${extraTel ? "" : "tel"}" href="${telHref(x.tel)}">📞 ${extraTel ? "대표" : "전화"} ${E(x.tel)}</a>` : ""}<a target="_blank" rel="noopener noreferrer" href="${E(mapLink(x.name + " " + (x.address || "")))}">지도 ↗</a></div></div>`;
+  const links = arr => `<div class="careLinks">${arr.map(([t, s, u]) => `<a target="_blank" rel="noopener noreferrer" href="${E(u)}"><b>${t} ↗</b><small>${s}</small></a>`).join("")}</div>`;
+
+  function medHtml(at) {
+    const iso = todayISO(), holi = isHoli(iso) ? HOLIDAYS[iso] : "";
+    let h = `<div class="care119"><span>🚑 숨쉬기 힘들거나 의식이 흐리면 망설이지 말고</span><a href="tel:119">119 전화</a></div>`;
+    if (CARE.ph.length) {
+      const all = ranked(CARE.ph, at, 8).map(([x, d]) => [x, d, openInfo(x)]);
+      const open = all.filter(a => a[2].open).slice(0, 6);
+      h += `<h3>💊 지금 문 연 약국${holi ? ` <small style="font-weight:600">(${E(holi)} · 공휴일 시간)</small>` : ""}</h3>`;
+      h += open.length ? `<div class="careList">${open.map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>`
+        : `<p class="careEmpty">가까운 곳(8km 안)에 지금 열려 있는 약국이 없어요.${all.length ? " 가장 가까운 약국의 여는 시간이에요." : ""}</p>${all.length ? `<div class="careList">${all.slice(0, 3).map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>` : ""}`;
+    }
+    if (CARE.er.length) {
+      const er = ranked(CARE.er, at, 40).slice(0, 3);
+      h += `<h3>🏥 가까운 응급실 <small style="font-weight:600">· 24시간</small></h3>`;
+      h += er.length ? `<div class="careList">${er.map(([x, d]) => itemHtml({ ...x, note: x.level || "" }, d, null, x.erTel)).join("")}</div>` : `<p class="careEmpty">40km 안에 등록된 응급실이 없어요.</p>`;
+    }
+    if (!CARE.ph.length || !CARE.er.length) {
+      h += `<h3>🔎 공식 조회로 바로 찾기</h3>` + links([
+        ...(!CARE.ph.length ? [["💊 휴일지킴이약국", "대한약사회 · 오늘 문 여는 약국 찾기", "https://www.pharm114.or.kr"]] : []),
+        ["🏥 응급의료포털 E-Gen", "국립중앙의료원 · 문 연 병원·약국·응급실", "https://www.e-gen.or.kr"]
+      ]);
+    }
+    const src = [CARE.phUpd && `약국 ${CARE.phUpd}`, CARE.erUpd && `응급실 ${CARE.erUpd}`].filter(Boolean).join(" · ");
+    if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
+    return h;
+  }
+
+  function shelterHtml(kind, at) {
+    const heat = kind === "heat", word = heat ? "무더위쉼터" : "한파쉼터";
+    let h = "";
+    const list = CARE.sh.filter(x => (x.type || "heat") === kind);
+    if (list.length) {
+      const near = ranked(list, at, 5).slice(0, 6);
+      h += near.length ? `<div class="careList">${near.map(([x, d]) => itemHtml({ ...x, note: [x.hours, x.facility].filter(Boolean).join(" · ") }, d, null)).join("")}</div>`
+        : `<p class="careEmpty">5km 안에 등록된 ${word}가 없어요.</p>`;
+    } else h += `<p class="careEmpty">${word} 목록을 아직 받아오지 못했어요. 아래 공식 누리집에서 가까운 쉼터를 찾을 수 있어요.</p>`;
+    h += links([["🗺 국민재난안전포털", `행정안전부 · ${word} 찾기`, "https://www.safekorea.go.kr"]]);
+    h += `<p class="careNote">${heat ? "경로당·주민센터 같은 곳이 많아요. " : ""}운영 기간과 시간은 쉼터마다 달라요. 문이 닫혀 있을 수 있으니 가기 전에 확인하세요.${CARE.shUpd ? `<br>출처: 행정안전부·시군 ${word} 목록 · ${E(CARE.shUpd)} 기준` : ""}</p>`;
+    return h;
+  }
+
+  let CUR = { kind: "med", at: null };
+  function render() {
+    const box = $c("modalContent"); if (!box || !CARE) return;
+    const at = refPoint(CUR.at), k = CUR.kind;
+    const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
+    box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
+      <div class="careTabs" role="tablist">${[["med", "🏥 약국·응급실"], ["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
+      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 지금 위치로 찾기</button><span>위치는 이 기기 안에서 거리 계산에만 써요</span>`}</div>
+      ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
+    box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
+    const pb = box.querySelector("[data-care-pos]");
+    if (pb) pb.onclick = () => {
+      if (!navigator.geolocation) { typeof toast === "function" && toast("이 기기에서는 위치를 쓸 수 없어요"); return }
+      pb.textContent = "📍 위치 찾는 중…";
+      navigator.geolocation.getCurrentPosition(p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "지금 위치 기준" }; render() },
+        () => { pb.textContent = "📍 지금 위치로 찾기"; typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요") },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+    };
+  }
+  window.openCare = async (kind = "med", at = null) => {
+    const box = $c("modalContent"), md = $c("modal"); if (!box || !md) return;
+    CUR = { kind, at: at && at.lat ? at : null };
+    box.innerHTML = `<div class="careDoc"><p class="careNote">불러오는 중…</p></div>`;
+    md.classList.remove("decisionMode"); md.classList.add("show"); document.body.classList.add("modal-open");
+    if (typeof navPush === "function") navPush({ modal: "care" });
+    try { typeof gc === "function" && gc("돌봄-" + kind, "약국·쉼터") } catch (e) {}
+    await loadCare(); render();
+  };
+
+  /* 날씨 칸: 아주 덥거나 추운 날에만 쉼터 한 줄 */
+  window.careWxLine = W => {
+    if (!W) return "";
+    const mon = Number(todayISO().slice(5, 7));
+    if (W.max >= 31 && mon >= 5 && mon <= 9) return `<button type="button" class="careWx" onclick="openCare('heat')">🌡 많이 더워요 — 가까운 무더위쉼터 보기<span>›</span></button>`;
+    if ((W.min <= -5 || W.max <= 0) && (mon >= 11 || mon <= 3)) return `<button type="button" class="careWx cold" onclick="openCare('cold')">🧣 많이 추워요 — 가까운 한파쉼터 보기<span>›</span></button>`;
+    return "";
+  };
+
+  /* 장소 자세히 보기: 맨 아래에 '이 근처 문 연 약국·응급실' 단추 하나 */
+  if (typeof placeProfile === "function" && !placeProfile.__care) {
+    const base = placeProfile;
+    placeProfile = function (v) {
+      const html = base.apply(this, arguments);
+      const c = typeof coordOf === "function" ? coordOf(v) : null;
+      if (!c || !c.lat) return html;
+      const at = JSON.stringify({ lat: +c.lat, lng: +c.lng, label: `${v.name} 근처` }).replace(/"/g, "&quot;");
+      return html + `<button type="button" class="careNearBtn" onclick="openCare('med', ${at})">🏥 이 근처 문 연 약국·응급실</button>`;
+    };
+    placeProfile.__care = true;
+  }
 })();
 </script>
 
