@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-16 우리 동네 오늘 머리에서 바로 동네 바꾸기(아래 오늘 뭐하지? 기준도 같이) · 그 칸과 오늘 뭐하지? 사이 간격 · 전체 메뉴를 동그란 색 아이콘으로 크게(넘치면 스크롤) · 제과·제빵 → 빵지순례
   · 2026-11-15 권역 바꿀 때 사는 동네도 권역마다 따로 기억(광주 동네 기준으로 순천·목포 거리를 재던 것 고침) · 계절 명소는 지금 권역에서 가까운 순 · '전체'에서 오늘 날씨 빼고(홈 사진 칸) 약국·응급실과 쉼터 나눔
   · 2026-11-15 홈 줄이기(#allMenuEasy20261115 안): 하단 '전체'와 겹치는 홈 메뉴 12칸만 숨김. '전체'에 지금만 되는 것·문화가 있는 날·계절 명소·새 소식 칸 추가(누르면 홈의 그 칸으로)
   · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기, 한 화면에 다 보이게(칸 설명 줄 숨김·폰 5칸·여백 줄임, 아이콘·글씨 크기는 11-13 그대로)(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
@@ -4840,6 +4841,44 @@ html body #nowShow .wkHint:not(#_):not(#_):not(#_){display:none!important}
 :root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot{background:rgba(243,154,37,.16);border-color:rgba(243,154,37,.3)}
 :root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>span{color:#ffc27a}
 :root[data-theme="dark"] body #allMenu .amNone{color:#c3cbda}
+/* ════ 2026-11-16 ════ */
+/* 우리 동네 오늘 ↔ 오늘 뭐하지? 간격 */
+html body main>#localToday:not([hidden]):not(#_):not(#_)+#decideNow.decideWrap.mainDecision:not(#_){margin-top:18px!important}
+/* 우리 동네 오늘: 머리에서 동네 바꾸기 */
+html body #localToday .ltHead{align-items:center}
+html body #localToday .ltGu{flex:0 1 auto;min-width:0}
+html body #localToday .ltGu select{max-width:150px;height:32px;padding:0 26px 0 10px;border-radius:999px;border:1px solid #d9e2f0;background:#f3f7ff;color:#1f3d73;font:800 13px/1.2 Pretendard,system-ui,sans-serif;text-overflow:ellipsis}
+html body #localToday .ltHint{margin:-4px 2px 8px;font-size:11.5px;color:#6b7486;line-height:1.4}
+:root[data-theme="dark"] body #localToday .ltGu select{background:#1b2130;border-color:rgba(120,160,240,.3);color:#cfe0ff}
+:root[data-theme="dark"] body #localToday .ltHint{color:#aab4c6}
+/* 전체 메뉴: 동그란 색 아이콘 + 아래 이름 (상자 없이, 크게 · 넘치면 스크롤) */
+html body #allMenu .amBody{padding:6px 14px 6px}
+html body #allMenu .amSec{margin:0 0 18px}
+html body #allMenu .amSec h3{margin:0 2px 10px;font-size:15px;font-weight:900;color:#16223a;letter-spacing:-.3px}
+html body #allMenu .mgGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:14px 4px!important}
+html body #allMenu .mgGrid>button{background:transparent!important;border:0!important;padding:0!important;gap:7px!important;min-height:0;border-radius:0;justify-content:flex-start}
+html body #allMenu .mgGrid>button>i{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;font-size:27px;line-height:1;background:var(--amc,#eef2f9);transition:transform .12s}
+html body #allMenu .mgGrid>button:active>i{transform:scale(.93)}
+html body #allMenu .mgGrid>button>i>.calToday{font-size:28px}
+html body #allMenu .mgGrid>button>span{font:750 12.5px/1.25 Pretendard,system-ui,sans-serif!important;color:#25324a!important;word-break:keep-all}
+html body #allMenu .mgGrid>button:nth-child(6n+1){--amc:#ffe9e1}
+html body #allMenu .mgGrid>button:nth-child(6n+2){--amc:#e5efff}
+html body #allMenu .mgGrid>button:nth-child(6n+3){--amc:#e3f5e9}
+html body #allMenu .mgGrid>button:nth-child(6n+4){--amc:#fff3d1}
+html body #allMenu .mgGrid>button:nth-child(6n+5){--amc:#efe7ff}
+html body #allMenu .mgGrid>button:nth-child(6n+6){--amc:#dff4f6}
+html body #allMenu .mgGrid>button.mgHot{--amc:#ffdcbc}
+html body #allMenu .mgGrid>button.mgHot>span{color:#9a4a05!important}
+html body #allMenu .mgGrid>button.mgHot::after{top:-2px!important;right:calc(50% - 34px)!important;font-size:9.5px!important;padding:3px 6px!important}
+@media(hover:hover){html body #allMenu .mgGrid>button:hover{background:transparent!important}html body #allMenu .mgGrid>button:hover>i{transform:scale(1.05)}}
+html body #allMenu .mgGrid>button:focus-visible{outline:none}
+html body #allMenu .mgGrid>button:focus-visible>i{outline:3px solid #f39a25;outline-offset:2px}
+@media(max-width:360px){html body #allMenu .mgGrid>button>i{width:48px;height:48px;font-size:24px}html body #allMenu .mgGrid>button>span{font-size:12px!important}}
+:root[data-theme="dark"] body #allMenu .amSec h3{color:#e8edf6}
+:root[data-theme="dark"] body #allMenu .mgGrid>button>i{background:rgba(255,255,255,.08)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button>span{color:#e8edf6!important}
+:root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>i{background:rgba(243,154,37,.22)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>span{color:#ffc27a!important}
 </style>
 <script>/* 히어로 문구 생성기 (headline.js) */
 /**
@@ -5305,7 +5344,7 @@ html body #decideNow .dnTabs button i:not(#_){font-size:14px!important;line-heig
     <b>나들이 길에 한 끼 · 쉬어 갈 곳</b>
     <div class="foodQuickBtns">
       <button type="button" onclick="showTab('food')">🍲 맛집</button>
-      <button type="button" onclick="showTab('bakeries')">🥐 제과·제빵</button>
+      <button type="button" onclick="showTab('bakeries')">🥐 빵지순례</button>
       <button type="button" onclick="showTab('cafes')">🐶 멍카페</button>
     </div>
   </div>
@@ -9339,7 +9378,7 @@ function renderFavs() {
   ${fd.length ? `<h3 class="sub">맛집</h3><div class="grid">${fd.map(foodCard).join("")}</div>` : ""}
   ${st.length ? `<h3 class="sub">숙소</h3><div class="grid">${st.map(stayCard).join("")}</div>` : ""}
   ${cf.length ? `<h3 class="sub">멍카페</h3><div class="grid">${cf.map(petCard).join("")}</div>` : ""}
-  ${bk.length ? `<h3 class="sub">제과·제빵</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
+  ${bk.length ? `<h3 class="sub">빵지순례</h3><div class="grid">${bk.map(bakeryCard).join("")}</div>` : ""}
   ${visitedHtml()}`;
 }
 /* 찜 옮기기: 로그인 없이 링크 하나로 (#fav=…) — 받는 쪽은 기존 찜에 '합쳐요'(지우지 않음) */
@@ -9762,7 +9801,7 @@ const APP_FEATURES = [
   ["🧸 아이와", "아이와 갈 곳·볼 행사·과학 체험", "아이 어린이 가족 키즈 체험 아기", () => { clearSearch(); showKids("전체") }],
   ["🌳 나들이", "공원·관광지·산책", "나들이 가볼곳 관광지 공원 산책", () => { clearSearch(); showTab("places") }],
   ["🍽 맛집", "주변 식사", "맛집 식사 밥 먹을곳 음식점", () => { clearSearch(); showTab("food") }],
-  ["🥐 제과·제빵", "빵지순례 · 제과점 모아 보기", "빵 빵집 베이커리 빵지순례 제과 제빵 제과점", () => { clearSearch(); showTab("bakeries") }],
+  ["🥐 빵지순례", "제과점·빵집 모아 보기", "빵 빵집 베이커리 빵지순례 제과 제빵 제과점", () => { clearSearch(); showTab("bakeries") }],
   ["🧺 전통시장", "시장 구경", "시장 전통시장 장날", () => { clearSearch(); showTab("markets") }],
   ["🏨 숙소", "묵을 곳", "숙소 호텔 모텔 펜션 게스트하우스 잠", () => { clearSearch(); showTab("stays") }],
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
@@ -10986,9 +11025,9 @@ function decisionPlaceType(p){
     const icon=({전시:'🎨',음악:'🎵',공연:'🎭',축제:'🎪',스포츠:'⚾'})[x.category]||'📌';
     return `${icon} ${x.category||'일정'}${x.subtype&&x.subtype!==x.category?' · '+x.subtype:''}`;
   }
-  if(p.kind==='cafe') return BAKERIES.includes(x) ? '🥐 제과·제빵' : x.pet ? '🐶 멍카페' : '☕ 카페';
+  if(p.kind==='cafe') return BAKERIES.includes(x) ? '🥐 빵지순례' : x.pet ? '🐶 멍카페' : '☕ 카페';
   if(p.kind==='food') return '🍲 맛집';
-  if(p.kind==='bakery') return '🥐 제과·제빵 · 빵지순례';
+  if(p.kind==='bakery') return '🥐 빵지순례';
   if(p.kind==='stay') return '🛏 숙소';
   if(p.kind==='cinema') return '🎬 영화관';
   if(p.kind==='venue'){
@@ -11665,7 +11704,7 @@ window.shareItem = async (kind, id) => {
 function reportLongUrl(kind, id) {
   const x = findShared(kind, id) || {};
   const name = x.title || x.name || id;
-  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "제과·제빵" }[kind] || "정보";
+  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
   const title = `[정보 수정] ${what} · ${name}`;
   const body = `어떤 정보가 다른가요? (예: 문 닫음, 시간 바뀜, 주소 틀림)\n\n\n---\n항목: ${what} / ${name}\nID: ${id}\n앱에 적힌 정보 확인일: ${x.verified || "-"}`;
   if (/^mailto:/i.test(REPORT_URL)) return `${REPORT_URL}?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
@@ -11675,7 +11714,7 @@ function reportLongUrl(kind, id) {
 window.reportItem = (kind, id) => {
   const x = findShared(kind, id) || {};
   const name = x.title || x.name || id;
-  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "제과·제빵" }[kind] || "정보";
+  const what = { e: "일정", v: "장소", f: "맛집", c: "멍카페", b: "빵집" }[kind] || "정보";
   const REASONS = kind === "e" ? ["날짜가 달라요", "취소·연기됐어요", "장소가 달라요", "요금이 달라요", "사진이 틀려요", "기타"] : ["문 닫았어요", "시간이 달라요", "주소·위치가 틀려요", "요금이 달라요", "사진이 틀려요", "기타"];
   const box = $("#modalContent"); let why = null;
   box.innerHTML = `<span class="eyebrow">REPORT</span><h3>⚠ 정보가 달라요</h3><p class="rvHint">${esc(what)} · <b>${esc(name)}</b><br>알려 주시면 확인해서 고칠게요. 이름 없이 보내져요.</p>
@@ -13258,7 +13297,11 @@ document.addEventListener("keydown",function(e){
     if(!c.lib && !c.prog && !c.mk && !c.free){ el.innerHTML=""; el.hidden=true; return }
     el.hidden=false;
     var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
-    el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b><small>'+esc(where)+(r.g?"":" · 사는 동네를 고르면 그 동네만")+'</small></div><div class="ltRow">'
+    var ds=[]; try{ ds=REGIONS[REGION].districts||[] }catch(e){}
+    var pick='<label class="ltGu"><select data-lt-gu aria-label="우리 동네 바꾸기 (아래 오늘 뭐하지? 추천도 같이 바뀜)"><option value="">'+esc((typeof RNAME==="function"?RNAME():"")+" 전체")+'</option>'
+      +ds.map(function(d){ return '<option value="'+esc(d)+'"'+(d===r.g?" selected":"")+'>🏠 '+esc(d)+'</option>' }).join("")
+      +'<option value="__gps">📍 지금 위치로</option></select></label>';
+    el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b>'+pick+'</div><p class="ltHint">여기서 동네를 바꾸면 아래 \'오늘 뭐하지?\' 추천도 같이 바뀌어요</p><div class="ltRow">'
       +cell("lib","📚",c.lib,"여는 도서관","오늘 여는 공공·어린이 도서관 (아직 문 열기 전인 곳 포함, 작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"여는 시장","오늘 여는 시장 (장날인 시장·야시장 + 매일 여는 상설시장, 정기 휴무 제외)")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
   }
   // 동네 탭을 열고 '📚 동네 도서관' 목록으로 바로 내려감 (숫자를 센 동네와 같은 동네로 맞춤)
@@ -13272,6 +13315,13 @@ document.addEventListener("keydown",function(e){
     };
     [80,350,850].forEach(function(ms){ setTimeout(goLib,ms) });
   };
+  document.addEventListener("change",function(ev){
+    var sel=ev.target.closest && ev.target.closest("#localToday [data-lt-gu]"); if(!sel) return;
+    var v=sel.value;
+    if(v==="__gps"){ window.useMyLocation && useMyLocation(); return }
+    if(!v){ window.clearHome && clearHome(); return }
+    window.setHome && setHome(v);
+  });
   document.addEventListener("click",function(ev){
     var b=ev.target.closest && ev.target.closest("#localToday [data-lt]"); if(!b) return;
     var k=b.dataset.lt;
@@ -13280,6 +13330,7 @@ document.addEventListener("keydown",function(e){
     else if(k==="mk"){ showTab("markets"); try{ MK.group="전체"; setMk("gu", guOf()||"전체") }catch(e){} }
     else if(k==="free"){ showTab("events"); setTimeout(function(){ var f=document.querySelector('#chips [data-filter="무료"]'); if(f) f.click() },60) }
   });
+  window.renderLocalToday=function(){ try{ render() }catch(e){} };
   function place(){
     var main=document.querySelector("main"), ns=document.getElementById("nowShow"); if(!main||!ns||ns.parentNode!==main) return;
     var el=document.getElementById("localToday");
@@ -13501,7 +13552,7 @@ document.addEventListener("keydown",function(e){
     shelter:  [(m => m >= 5 && m <= 9 ? "🌡" : "🧣")(new Date().getMonth() + 1), "쉼터", "무더위·한파"],
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
-    bakeries: ["🥐", "제과·제빵", "빵지순례"],
+    bakeries: ["🥐", "빵지순례", "제과점·빵집"],
     cafes:    ["🐶", "멍카페", "댕댕이랑"],
     cinemas:  ["🎬", "영화관", ""],
     stays:    ["🏨", "숙소", ""],
