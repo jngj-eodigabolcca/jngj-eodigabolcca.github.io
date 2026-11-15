@@ -41,7 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
-  · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기·묶음 바로가기·최근에 쓴 메뉴(한 줄 칩), 묶음마다 카드·빈칸 없이 칸 수 맞춤·설명 한 줄(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
+  · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기, 한 화면에 다 보이게(칸 설명 줄 숨김·폰 5칸·여백 줄임, 아이콘·글씨 크기는 11-13 그대로)(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
   · 2026-11-13 본체 수정: 일정 카드 제목에서 '2026 '·'제N회' 떼고 《부제》는 작은 줄(cardTitle) · '관람료·시간 확인'(확인 필요) 배지는 카드에서 빼고 상세에만 · 놓치면 끝나요 0건 칸 안 그림 · '놓치면 내년'은 30일 안에 끝나는 것만 · 'N분 관람 가능'→'보통 N분쯤 둘러보기' · 주차 정보 없을 때 '근처 주차장 찾기'만 · 앱 버전 0.83
   · 검색 find() 안 2026-11-12 : 찾는 말이 어떤 곳의 이름이면, 다른 곳의 교통 칸(access)에만 나오는 곳은 결과에서 뺌
   · 자동 수집: 저장소 scripts/*.py + .github/workflows/update-data.yml (하루 2회, 결과는 docs/data/)
@@ -4755,78 +4755,59 @@ html body #tabs button.tabAll{font-weight:800}
   html body nav#appTabs>button:active{transform:scale(.95)}
   :root[data-theme="dark"] body nav#appTabs>button.on::before{background:#9fc0ff}
 }
-/* 전체 메뉴 창 */
+/* 전체 메뉴 창: 한 화면에 다 들어오게 (아이콘·글씨 크기는 그대로, 설명 줄·여백만 줄임) */
 html body #allMenu{background:rgba(14,22,38,.52)}
-html body #allMenu.show .amBox{animation:amUp .22s ease-out}
-@keyframes amUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+html body #allMenu.show .amBox{animation:amUp .2s ease-out}
+@keyframes amUp{from{transform:translateY(30px);opacity:.5}to{transform:none;opacity:1}}
 @media(min-width:900px){html body #allMenu.show .amBox{animation:none}}
 @media(prefers-reduced-motion:reduce){html body #allMenu.show .amBox{animation:none}}
-html body #allMenu .amBox{max-height:90vh;padding:0 0 calc(18px + env(safe-area-inset-bottom,0px));background:#f2f4f8;overscroll-behavior:contain;transition:transform .15s}
-html body #allMenu .amTop{position:sticky;top:0;z-index:2;background:#fff;padding:8px 14px 10px;border-bottom:1px solid #e4e8f0;border-radius:24px 24px 0 0}
-html body #allMenu .amGrab{display:block;width:42px;height:5px;border-radius:5px;background:#cfd5e0;margin:0 auto 8px}
-@media(min-width:900px){html body #allMenu .amGrab{display:none}html body #allMenu .amTop{padding-top:16px}}
-html body #allMenu .amHead{align-items:center;margin:0 2px 10px}
-html body #allMenu .amHead b{color:#16223a}
-html body #allMenu .amHead small{color:#6b7486}
-html body #allMenu .amClose{color:#33405a}
+html body #allMenu .amBox{max-height:94vh;padding:0 0 calc(8px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain;transition:transform .15s}
+html body #allMenu .amTop{position:sticky;top:0;z-index:2;background:#fff;padding:6px 12px 8px;border-radius:24px 24px 0 0}
+html body #allMenu .amGrab{display:block;width:38px;height:4px;border-radius:4px;background:#cfd5e0;margin:0 auto 6px}
+@media(min-width:900px){html body #allMenu .amGrab{display:none}html body #allMenu .amTop{padding-top:14px}}
+html body #allMenu .amHead{display:flex;align-items:center;gap:8px;margin:0 0 2px}
+html body #allMenu .amHead b{flex:none;color:#16223a;font-size:16px;white-space:nowrap}
+html body #allMenu .amHead .amSearch{flex:1;min-width:0}
+html body #allMenu .amClose{width:34px;height:34px;line-height:34px;font-size:18px;color:#33405a}
 html body #allMenu .amClose:focus-visible{outline:3px solid #f39a25;outline-offset:2px}
-html body #allMenu .amSearch{display:flex;align-items:center;gap:8px;background:#f2f4f8;border:1.5px solid #dfe4ed;border-radius:12px;padding:0 6px 0 11px;min-height:40px}
+html body #allMenu .amSearch{display:flex;align-items:center;gap:6px;background:#f2f4f8;border:1.5px solid #dfe4ed;border-radius:12px;padding:0 5px 0 12px;min-height:38px}
 html body #allMenu .amSearch:focus-within{border-color:#1f3d73;background:#fff}
-html body #allMenu .amSearch input{all:unset;flex:1;min-width:0;font:600 16px/1.3 Pretendard,system-ui,sans-serif;color:#16223a;padding:7px 0}
-html body #allMenu .amSearch input::placeholder{color:#8a93a3}
+html body #allMenu .amSearch input{all:unset;flex:1;min-width:0;font:600 16px/1.3 Pretendard,system-ui,sans-serif;color:#16223a;padding:6px 0}
+html body #allMenu .amSearch input:focus,html body #allMenu .amSearch input:focus-visible{outline:0!important;box-shadow:none!important}
+html body #allMenu .amSearch input::placeholder{color:#8a93a3;font-size:14px}
 html body #allMenu .amSearch input::-webkit-search-cancel-button{display:none}
 html body #allMenu .amClear{all:unset;cursor:pointer;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:16px;background:#e2e7ef;color:#33405a}
 html body #allMenu .amClear[hidden]{display:none}
-html body #allMenu .amJump{display:flex;gap:5px;overflow-x:auto;margin:8px -14px 0;padding:0 14px 2px;scrollbar-width:none}
-html body #allMenu .amJump::-webkit-scrollbar{display:none}
-html body #allMenu .amJump button{all:unset;cursor:pointer;flex:none;display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:#eef2f9;color:#1f3d73;font:750 12px/1.2 Pretendard,system-ui,sans-serif;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-html body #allMenu .amJump button i{font-style:normal}
-html body #allMenu .amJump button:active{background:#dbe5f6}
-html body #allMenu .amJump button:focus-visible{outline:3px solid #f39a25;outline-offset:1px}
-html body #allMenu .amHideQ{display:none!important}
-html body #allMenu .amBody{padding:10px 10px 4px}
-html body #allMenu .amSec{background:#fff;border-radius:16px;padding:10px 8px 8px;margin:0 0 8px;border:1px solid #e6e9f0;scroll-margin-top:8px}
+html body #allMenu .amBody{padding:4px 10px 0}
+html body #allMenu .amSec{margin:0 0 8px}
 html body #allMenu .amSec[hidden]{display:none}
-html body #allMenu .amSec h3{display:flex;align-items:center;gap:7px;margin:0 4px 8px;font-size:13.5px;font-weight:800;color:#16223a;letter-spacing:-.2px}
-html body #allMenu .amSec h3 i{font-style:normal;font-size:14px}
-html body #allMenu .amSec h3 em{font-style:normal;font-size:11px;font-weight:700;color:#6b7486;background:#eef1f6;border-radius:999px;padding:1px 7px;margin-left:2px}
-html body #allMenu .amRecent{display:flex;align-items:center;gap:8px;margin:0 0 8px;padding:7px 8px 7px 12px;background:#fffaf2;border:1px solid #f3dfc2;border-radius:14px}
-html body #allMenu .amRecent[hidden]{display:none}
-html body #allMenu .amRecent>b{flex:none;font-size:12px;font-weight:800;color:#8a5a14;white-space:nowrap}
-html body #allMenu .amRcRow{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;min-width:0}
-html body #allMenu .amRcRow::-webkit-scrollbar{display:none}
-html body #allMenu .amRcRow button{all:unset;cursor:pointer;flex:none;display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid #f0dcbc;font:750 12px/1.2 Pretendard,system-ui,sans-serif;color:#5a4634;white-space:nowrap}
-html body #allMenu .amRcRow button i{font-style:normal}
-html body #allMenu .amRcRow button .calToday{font-size:15px}
-html body #allMenu .amRcRow button:focus-visible{outline:3px solid #f39a25;outline-offset:1px}
-/* 칸 채우기: 묶음마다 칸 수를 맞추고, 마지막 줄은 남은 칸이 나눠 채움 (빈칸 없음) */
-html body #allMenu .amSec .mgGrid{display:flex;flex-wrap:wrap;gap:6px}
-html body #allMenu .amSec .mgGrid>button{flex:1 1 calc((100% - (var(--cm,4) - 1) * 6px) / var(--cm,4));min-width:0}
-@media(max-width:379px){html body #allMenu .amSec .mgGrid>button{flex-basis:calc((100% - (var(--cs,3) - 1) * 6px) / var(--cs,3))}}
-@media(min-width:900px){html body #allMenu .amSec .mgGrid>button{flex-basis:calc((100% - (var(--cp,6) - 1) * 6px) / var(--cp,6))}}
-html body #allMenu.amQ .amSec .mgGrid>button{flex-grow:0}
-/* 칸 높이 고르게: 설명은 한 줄 */
-html body #allMenu .mgGrid>button small{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;box-sizing:border-box}
-/* 바로가기 줄: 오른쪽에 더 있으면 끝을 흐리게 */
-html body #allMenu .amJump{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
-html body #allMenu .amJump.amEnd{-webkit-mask-image:none;mask-image:none}
-html body #allMenu .mgGrid>button{background:#f5f7fb;border:1px solid #e8ecf3}
+html body #allMenu .amSec h3{margin:0 2px 4px;font-size:12px;font-weight:800;color:#5b6577}
+html body #allMenu .amSec h3 em{display:none}
+html body #allMenu .mgGrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+@media(min-width:900px){html body #allMenu .mgGrid{grid-template-columns:repeat(5,minmax(0,1fr))}html body #allMenu .amBox{width:min(620px,92vw)}}
+/* 화면이 낮은 폰: 여백만 더 줄임 */
+@media(max-height:760px){
+  html body #allMenu .amBox{max-height:96vh}
+  html body #allMenu .amTop{padding:4px 12px 6px}
+  html body #allMenu .amGrab{margin-bottom:4px}
+  html body #allMenu .amSearch{min-height:34px}
+  html body #allMenu .amSearch input{padding:4px 0}
+  html body #allMenu .amSec{margin-bottom:5px}
+  html body #allMenu .amSec h3{margin-bottom:3px;font-size:11.5px}
+  html body #allMenu .mgGrid{gap:3px}
+  html body #allMenu .mgGrid>button{padding:5px 1px 4px;gap:1px}
+}
+html body #allMenu .mgGrid>button{position:relative;min-height:0;padding:7px 2px 6px;gap:2px;border-radius:12px}
 html body #allMenu .mgGrid>button[hidden]{display:none}
+html body #allMenu .mgGrid>button small{display:none}
 html body #allMenu .mgGrid>button>span{color:#16223a}
-html body #allMenu .mgGrid>button small{color:#6b7486}
-html body #allMenu .mgGrid>button.mgHot{background:#fff1df;border-color:#f6d3a6}
 html body #allMenu .mgGrid>button.mgHot>span{color:#9a4a05}
-html body .mgGrid>button>i>.calToday{font-size:22px}
-html body #allMenu .amSearch input:focus,html body #allMenu .amSearch input:focus-visible{outline:0!important;box-shadow:none!important}
-html body #allMenu.amQ .amSec h3 em{display:none}
-html body #allMenu .mgGrid>button.mgHot::after{content:"인기";position:absolute;top:4px;right:4px;font:800 9px/1 Pretendard,system-ui,sans-serif;color:#fff;background:#e8730c;border-radius:999px;padding:2px 5px}
-html body #allMenu .mgGrid>button{position:relative}
-@media(hover:hover){html body #allMenu .mgGrid>button:hover{background:#eaf0fa;border-color:#c9d7f0}}
-html body #allMenu .amNone{margin:24px 8px;text-align:center;font-size:15px;line-height:1.6;color:#4c5669}
+html body #allMenu .mgGrid>button.mgHot::after{content:"인기";position:absolute;top:2px;right:2px;font:800 8.5px/1 Pretendard,system-ui,sans-serif;color:#fff;background:#e8730c;border-radius:999px;padding:2px 4px}
+@media(hover:hover){html body #allMenu .mgGrid>button:hover{background:#eaf0fa}}
+html body #allMenu .amNone{margin:18px 8px;text-align:center;font-size:14px;line-height:1.6;color:#4c5669}
 html body #allMenu .amNone[hidden]{display:none}
-html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-top:10px;padding:11px 18px;border-radius:999px;background:#1f3d73;color:#fff;font-weight:800;font-size:14px}
+html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-top:8px;padding:9px 16px;border-radius:999px;background:#1f3d73;color:#fff;font-weight:800;font-size:13px}
 /* 어두운 화면 */
-:root[data-theme="dark"] body #allMenu .amBox{background:#10141d}
 :root[data-theme="dark"] body #allMenu .amTop{background:#161b26;border-bottom-color:rgba(255,255,255,.08)}
 :root[data-theme="dark"] body #allMenu .amGrab{background:rgba(255,255,255,.25)}
 :root[data-theme="dark"] body #allMenu .amHead small{color:#aab4c6}
@@ -4834,14 +4815,7 @@ html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-t
 :root[data-theme="dark"] body #allMenu .amSearch:focus-within{border-color:#9fc0ff;background:rgba(255,255,255,.09)}
 :root[data-theme="dark"] body #allMenu .amSearch input{color:#e8edf6}
 :root[data-theme="dark"] body #allMenu .amClear{background:rgba(255,255,255,.14);color:#fff}
-:root[data-theme="dark"] body #allMenu .amJump button{background:rgba(120,160,240,.14);color:#cfe0ff}
-:root[data-theme="dark"] body #allMenu .amSec{background:#1b2130;border-color:rgba(255,255,255,.07)}
-:root[data-theme="dark"] body #allMenu .amSec h3{color:#e8edf6}
-:root[data-theme="dark"] body #allMenu .amSec h3 em{background:rgba(255,255,255,.1);color:#c3cbda}
-:root[data-theme="dark"] body #allMenu .amRecent{background:#231f18;border-color:rgba(243,154,37,.25)}
-:root[data-theme="dark"] body #allMenu .amRecent>b{color:#ffc27a}
-:root[data-theme="dark"] body #allMenu .amRcRow button{background:#1b2130;border-color:rgba(243,154,37,.3);color:#f1e3cf}
-:root[data-theme="dark"] body #allMenu .mgGrid>button{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.07)}
+:root[data-theme="dark"] body #allMenu .amSec h3{color:#aab4c6}
 :root[data-theme="dark"] body #allMenu .mgGrid>button>span{color:#eef2f8}
 :root[data-theme="dark"] body #allMenu .mgGrid>button small{color:#aab4c6}
 :root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot{background:rgba(243,154,37,.16);border-color:rgba(243,154,37,.3)}
@@ -13511,9 +13485,9 @@ document.addEventListener("keydown",function(e){
   const HOT = new Set(["stages"]);
   const GLANCE = ["events", "stages", "popshows", "places", "kids", "indoor", "hood", "markets", "food", "map", "weather", "all"];
   const GROUPS = [
-    ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
+    ["오늘 정하기", ["decide", "today", "weekend", "dayplan", "map"]],
     ["공연·일정", ["events", "stages", "popshows"]],
-    ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
+    ["나들이", ["places", "kids", "indoor", "galleries", "museums"]],
     ["우리 동네", ["hood", "local", "markets", "weather", "care"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["내 것·도움말", ["favorites", "manual", "review"]]
@@ -13523,7 +13497,7 @@ document.addEventListener("keydown",function(e){
   /* ── 메뉴 하나로 가기: 예전 빠른실행키가 하던 동작을 그대로 씀 ── */
   function go(k){
     gc("메뉴-" + (M[k] ? M[k][1] : k), "메뉴 · " + (M[k] ? M[k][1] : k));
-    closeAll(); try { addRecent(k) } catch (e) {}
+    closeAll();
     // 2026-11-13: '동네서 시간 보내기'는 동네 화면 맨 위로, '동네 도서관'은 그 화면의 도서관 칸으로
     if (k === "hood" || k === "local") {
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
@@ -13550,8 +13524,7 @@ document.addEventListener("keydown",function(e){
   window.goMenu = go;
 
   /* ── 전체 메뉴 창 ──
-     2026-11-15 보기 편하게: 메뉴 찾기 칸 · 묶음 바로가기 칩 · 최근에 쓴 메뉴 · 묶음마다 흰 카드 (아이콘·글씨 크기는 11-13 그대로) */
-  const G_ICON = { "오늘 정하기": "✨", "공연·일정": "🎵", "나들이": "🌿", "우리 동네": "🏘", "먹고 쉬기": "🍽", "내 것·도움말": "🙋" };
+     2026-11-15: 메뉴 찾기 칸 · 한 화면에 다 들어오게 촘촘히 (아이콘·글씨 크기는 11-13 그대로) */
   // 메뉴 찾기용 다른 말 (이름·설명 말고도 이 말로 찾아짐)
   const KW = {
     events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
@@ -13562,15 +13535,6 @@ document.addEventListener("keydown",function(e){
     cinemas: "영화 극장", stays: "숙소 호텔 잠 펜션 모텔", decide: "추천 코스 뭐하지", today: "오늘 행사", weekend: "주말 토요일 일요일",
     dayplan: "하루 코스 일정 짜기", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
   };
-  const RECENT_KEY = "allMenuRecent";
-  const getRecent = () => { try { return (JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") || []).filter(k => M[k] && k !== "all").slice(0, 4) } catch (e) { return [] } };
-  const addRecent = k => { if (!M[k] || k === "all") return; try { localStorage.setItem(RECENT_KEY, JSON.stringify([k, ...getRecent().filter(x => x !== k)].slice(0, 4))) } catch (e) {} };
-  function paintRecent(d){
-    const box = d.querySelector(".amRecent"); if (!box) return;
-    const r = getRecent();
-    box.hidden = !r.length;
-    box.querySelector(".amRcRow").innerHTML = r.map(k => `<button type="button" data-go="${k}"><i aria-hidden="true">${M[k][0]}</i>${M[k][1]}</button>`).join("");
-  }
   function filterAll(d, q){
     q = String(q || "").replace(/\s+/g, "").toLowerCase();
     let any = false;
@@ -13582,8 +13546,6 @@ document.addEventListener("keydown",function(e){
       });
       sec.hidden = !n; if (n) any = true;
     });
-    d.querySelector(".amRecent").classList.toggle("amHideQ", !!q);
-    d.querySelector(".amJump").classList.toggle("amHideQ", !!q);
     d.querySelector(".amNone").hidden = any;
     d.classList.toggle("amQ", !!q);
   }
@@ -13594,27 +13556,20 @@ document.addEventListener("keydown",function(e){
     d.innerHTML = `<div class="amBox" role="dialog" aria-modal="true" aria-labelledby="amTitle">
       <div class="amTop">
         <span class="amGrab" aria-hidden="true"></span>
-        <div class="amHead"><div><b id="amTitle">전체 메뉴</b><small>오매, 요로코롬 많당께 · 누르면 바로 가요</small></div><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
-        <label class="amSearch"><span aria-hidden="true">🔍</span><input type="search" enterkeyhint="search" autocomplete="off" placeholder="메뉴 찾기 (예: 약국, 빵, 공연)" aria-label="메뉴 찾기"><button type="button" class="amClear" aria-label="찾는 말 지우기" hidden>×</button></label>
-        <div class="amJump" role="navigation" aria-label="메뉴 묶음 바로가기">${GROUPS.map(([g], i) => `<button type="button" data-jump="amSec${i}"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}</button>`).join("")}</div>
+        <div class="amHead"><b id="amTitle">전체 메뉴</b><label class="amSearch"><input type="search" enterkeyhint="search" autocomplete="off" placeholder="메뉴 찾기 (약국, 빵…)" aria-label="메뉴 찾기"><button type="button" class="amClear" aria-label="찾는 말 지우기" hidden>×</button></label><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
       </div>
       <div class="amBody">
-        <div class="amRecent" hidden role="group" aria-label="최근에 쓴 메뉴"><b>🕘 최근</b><div class="amRcRow"></div></div>
-        ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}<em>${ks.length}</em></h3><div class="mgGrid" style="--cm:${ks.length <= 4 ? ks.length : 3};--cs:${ks.length === 4 ? 2 : Math.min(ks.length, 3)};--cp:${ks.length}">${ks.map(btn).join("")}</div></section>`).join("")}
-        <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼 🙏<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
+        ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h">${g}<em>${ks.length}</em></h3><div class="mgGrid">${ks.map(btn).join("")}</div></section>`).join("")}
+        <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
       </div>
     </div>`;
     document.body.appendChild(d);
     const inp = d.querySelector(".amSearch input"), clr = d.querySelector(".amClear");
     inp.addEventListener("input", () => { clr.hidden = !inp.value; filterAll(d, inp.value) });
     inp.addEventListener("keydown", e => { if (e.key === "Enter") { const f = d.querySelector(".amSec:not([hidden]) [data-go]:not([hidden])"); if (f) { e.preventDefault(); f.click() } } });
-    const jp = d.querySelector(".amJump"), jEnd = () => jp.classList.toggle("amEnd", jp.scrollLeft + jp.clientWidth >= jp.scrollWidth - 4);
-    jp.addEventListener("scroll", jEnd, { passive: true }); window.addEventListener("resize", jEnd); d._jEnd = jEnd;
     clr.addEventListener("click", () => { inp.value = ""; clr.hidden = true; filterAll(d, ""); inp.focus() });
     d.addEventListener("click", e => {
       if (e.target === d || e.target.closest(".amClose")) { closeAll(); return }
-      const j = e.target.closest("[data-jump]");
-      if (j) { const s = $id(j.dataset.jump), body = d.querySelector(".amBox"); if (s && body) body.scrollTo({ top: s.offsetTop - d.querySelector(".amTop").offsetHeight - 6, behavior: "smooth" }); return }
       if (e.target.closest(".amAsk")) { const q = inp.value; closeAll(); try { window.goDecision ? goDecision() : showTab("home"); setTimeout(() => { const a = $id("aiq"); if (a) { a.value = q; a.focus() } }, 400) } catch (er) {} return }
       const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go)
     });
@@ -13627,9 +13582,9 @@ document.addEventListener("keydown",function(e){
   }
   function openAll(){
     const d = buildAll(); lastFocus = document.activeElement;
-    try { const inp = d.querySelector(".amSearch input"); if (inp.value) { inp.value = ""; d.querySelector(".amClear").hidden = true; filterAll(d, "") } paintRecent(d) } catch (e) {}
+    try { const inp = d.querySelector(".amSearch input"); if (inp.value) { inp.value = ""; d.querySelector(".amClear").hidden = true; filterAll(d, "") } } catch (e) {}
     d.classList.add("show"); document.body.classList.add("allMenuOpen");
-    try { d.querySelector(".amBox").scrollTop = 0; d.querySelector(".amJump").scrollLeft = 0; d._jEnd?.() } catch (e) {}
+    try { d.querySelector(".amBox").scrollTop = 0 } catch (e) {}
     document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === "all"));
     setTimeout(() => d.querySelector(".amClose")?.focus(), 30);
   }
