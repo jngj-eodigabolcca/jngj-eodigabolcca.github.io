@@ -41,6 +41,8 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-15 권역 바꿀 때 사는 동네도 권역마다 따로 기억(광주 동네 기준으로 순천·목포 거리를 재던 것 고침) · 계절 명소는 지금 권역에서 가까운 순 · '전체'에서 오늘 날씨 빼고(홈 사진 칸) 약국·응급실과 쉼터 나눔
+  · 2026-11-15 홈 줄이기(#allMenuEasy20261115 안): 하단 '전체'와 겹치는 홈 메뉴 12칸만 숨김. '전체'에 지금만 되는 것·문화가 있는 날·계절 명소·새 소식 칸 추가(누르면 홈의 그 칸으로)
   · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기, 한 화면에 다 보이게(칸 설명 줄 숨김·폰 5칸·여백 줄임, 아이콘·글씨 크기는 11-13 그대로)(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
   · 2026-11-13 본체 수정: 일정 카드 제목에서 '2026 '·'제N회' 떼고 《부제》는 작은 줄(cardTitle) · '관람료·시간 확인'(확인 필요) 배지는 카드에서 빼고 상세에만 · 놓치면 끝나요 0건 칸 안 그림 · '놓치면 내년'은 30일 안에 끝나는 것만 · 'N분 관람 가능'→'보통 N분쯤 둘러보기' · 주차 정보 없을 때 '근처 주차장 찾기'만 · 앱 버전 0.83
   · 검색 find() 안 2026-11-12 : 찾는 말이 어떤 곳의 이름이면, 다른 곳의 교통 칸(access)에만 나오는 곳은 결과에서 뺌
@@ -4807,6 +4809,10 @@ html body #allMenu .mgGrid>button.mgHot::after{content:"인기";position:absolut
 html body #allMenu .amNone{margin:18px 8px;text-align:center;font-size:14px;line-height:1.6;color:#4c5669}
 html body #allMenu .amNone[hidden]{display:none}
 html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-top:8px;padding:9px 16px;border-radius:999px;background:#1f3d73;color:#fff;font-weight:800;font-size:13px}
+/* 홈 줄이기: 하단 '전체'와 똑같은 메뉴 12칸만 숨김 (지우지 않음). 날짜가 지나면 끝나는 것·알림·종류 칩은 홈에 그대로 */
+html body #menuGlance{display:none!important}
+/* '이번 주말 추천 보기' 단추는 바로 위 '이번 주말' 탭과 같은 곳으로 가서 숨김 */
+html body #nowShow .wkHint{display:none!important}
 /* 어두운 화면 */
 :root[data-theme="dark"] body #allMenu .amTop{background:#161b26;border-bottom-color:rgba(255,255,255,.08)}
 :root[data-theme="dark"] body #allMenu .amGrab{background:rgba(255,255,255,.25)}
@@ -6027,6 +6033,15 @@ function renderAll() {
 }
 window.setRegion = r => {
   if (!REGIONS[r] || r === REGION) return;
+  // 2026-11-15: 광주 동네를 골라 둔 채 순천·목포권으로 바꾸면 '동구 기준'으로 거리를 재던 것 → 권역마다 동네를 따로 기억
+  try {
+    if (typeof HOME !== "undefined" && HOME && HOME.gu && typeof regionOfGu === "function" && regionOfGu(HOME.gu) !== r) {
+      store.set("glm_home_" + regionOfGu(HOME.gu), HOME);
+      HOME = store.get("glm_home_" + r, null); store.set("glm_home", HOME);
+    } else if (typeof HOME !== "undefined" && !HOME) {
+      const h = store.get("glm_home_" + r, null); if (h) { HOME = h; store.set("glm_home", h) }
+    }
+  } catch (e) {}
   REGION = r; store.set("glm_region", r);
   // 다른 권역 출발지가 남아 있으면 이 권역 중심지로 (광주권인데 목포에서 출발로 계산하지 않게)
   if (typeof ORIGIN !== "undefined" && ORIGIN && ORIGIN_REGION[ORIGIN] !== r) { ORIGIN = null; try { localStorage.setItem("glm_origin", "null") } catch (e) {} }
@@ -6036,6 +6051,7 @@ window.setRegion = r => {
   if (MAP_READY) { Object.keys(MAP_LAYERS).forEach(drawLayer); updateMapCount(); MAP.setView(REGIONS[r].center, REGIONS[r].zoom) }
   if (MAP_READY) setTimeout(geocodeMissing, 1500);
   try { renderOriginBars(); renderNowStart() } catch (e) {}
+  try { window.renderSeason?.(); typeof renderHomeBar === "function" && renderHomeBar() } catch (e) {}
   const fromNm = originName(originKey());
   $("#answer").innerHTML = `${REGIONS[r].emoji} <b>${REGIONS[r].name}</b>으로 바꿨어요. 이제 <b>${esc(fromNm)}</b>에서 출발해 ${esc(REGIONS[r].name)} 안에서 골라드려요. 하고 싶은 걸 적거나 위 버튼을 눌러보쇼잉.<br><br><small>${esc(REGIONS[r].districts.join(" · "))}</small>`;
 };
@@ -9262,7 +9278,7 @@ function noticeItems() {
     if (jang.length) out.push({ p: 2, ic: "🧺", txt: `오늘 장날 · ${jang.map(v => v.name).slice(0, 3).join(", ")}`, on: `aiProfile('${jsq(jang[0].id)}')` });
   }
   // ④ 문화가 있는 날 (매주 수요일)
-  { const c = cultureInfo(); const go = `document.getElementById('cultureSpot')?.scrollIntoView({behavior:'smooth',block:'center'})`;
+  { const c = cultureInfo(); const go = `window.goMenu ? goMenu('culture') : document.getElementById('cultureSpot')?.scrollIntoView({behavior:'smooth',block:'center'})`;
     if (c.state === "today") out.push({ p: 1, ic: "🎫", txt: `오늘은 문화가 있는 날 · 박물관·미술관·공연 할인${c.movie ? " · 영화 17~21시 할인" : ""}`, on: go });
     else if (c.state === "tomorrow") out.push({ p: 3, ic: "🎫", txt: `내일(수)은 문화가 있는 날 · 박물관·공연 할인`, on: go }); }
   // ⑤ 관심 가수 새 공연
@@ -11538,7 +11554,7 @@ function renderHomeBar() {
     return;
   }
   if (!HOME && store.get("glm_home_skip", 0) && !HOME_EDIT) { el.innerHTML = `<span class="homeOn">🏠 <button type="button" onclick="editHome()" style="text-decoration:none;padding:0">사는 동네 고르기</button></span>`; return }
-  const opts = Object.entries(REGIONS).map(([r, R]) => `<optgroup label="${esc(R.name)}">${R.districts.map(d => `<option value="${d}" ${HOME && HOME.gu === d ? "selected" : ""}>${d}</option>`).join("")}</optgroup>`).join("");
+  const opts = Object.entries(REGIONS).sort(([a], [b]) => (b === REGION) - (a === REGION)).map(([r, R]) => `<optgroup label="${esc(R.name)}">${R.districts.map(d => `<option value="${d}" ${HOME && HOME.gu === d ? "selected" : ""}>${d}</option>`).join("")}</optgroup>`).join("");
   el.innerHTML = `<div class="homeAsk"><b>🏠 사는 동네를 고르면</b> 가까운 곳부터 보여드려요
     <select aria-label="사는 동네" onchange="HOME_EDIT=false;setHome(this.value)"><option value="">동네 고르기</option>${opts}</select>
     <button type="button" onclick="HOME_EDIT=false;useMyLocation()">📍 지금 위치로</button>
@@ -12934,9 +12950,11 @@ function renderSeason() {
   const [key, S] = cur, md = todayISO().slice(5);
   const state = sp => md < sp[4] ? "soon" : md > sp[5] ? "late" : "peak";
   const order = { peak: 0, soon: 1, late: 2 };
+  const hubKm = sp => { try { const R = REGIONS[REGION]; return km({ lat: R.wx[0], lng: R.wx[1] }, { lat: sp[1], lng: sp[2] }) } catch (e) { return null } };
   const dist = sp => { try { return homeKm({ lat: sp[1], lng: sp[2] }) } catch (e) { return null } };
+  const near = sp => { const d = dist(sp); return d != null ? d : hubKm(sp) };
   const list = SEASON_SPOTS[key].spots.map(sp => ({ sp, st: state(sp), d: dist(sp) }))
-    .sort((a, b) => order[a.st] - order[b.st] || ((a.d ?? 1e9) - (b.d ?? 1e9)) || a.sp[4].localeCompare(b.sp[4]));
+    .sort((a, b) => order[a.st] - order[b.st] || ((near(a.sp) ?? 1e9) - (near(b.sp) ?? 1e9)) || a.sp[4].localeCompare(b.sp[4]));
   const lab = { peak: "🔥 지금 절정", soon: "곧 물들어요", late: "막바지" };
   if (key === "spring") lab.soon = "곧 피어요";
   const mmdd = s => `${+s.slice(0, 2)}/${+s.slice(3)}`;
@@ -13466,7 +13484,8 @@ document.addEventListener("keydown",function(e){
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
     map:      ["🗺", "지도", "가까운 곳"],
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
-    care:     ["🏥", "문 연 약국·응급실", "아플 때·쉼터"],
+    care:     ["🏥", "문 연 약국·응급실", "아플 때"],
+    shelter:  [(m => m >= 5 && m <= 9 ? "🌡" : "🧣")(new Date().getMonth() + 1), "쉼터", "무더위·한파"],
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
     bakeries: ["🥐", "제과·제빵", "빵지순례"],
@@ -13480,17 +13499,21 @@ document.addEventListener("keydown",function(e){
     favorites:["♡", "찜", "저장한 곳"],
     manual:   ["📖", "사용설명서", ""],
     review:   ["💬", "후기 남기기", ""],
+    onlyNow:  ["⏳", "지금만 되는 것", "놓치면 1년"],
+    culture:  ["🎫", "문화가 있는 날", "매달 할인"],
+    season:   ["🍁", "계절 명소", "단풍·벚꽃"],
+    notice:   ["🔔", "새 소식", "찜·관심 가수"],
     all:      ["☰", "전체 메뉴", "빠짐없이"]
   };
   const HOT = new Set(["stages"]);
   const GLANCE = ["events", "stages", "popshows", "places", "kids", "indoor", "hood", "markets", "food", "map", "weather", "all"];
   const GROUPS = [
-    ["오늘 정하기", ["decide", "today", "weekend", "dayplan", "map"]],
-    ["공연·일정", ["events", "stages", "popshows"]],
-    ["나들이", ["places", "kids", "indoor", "galleries", "museums"]],
-    ["우리 동네", ["hood", "local", "markets", "weather", "care"]],
+    ["오늘 정하기", ["decide", "today", "weekend", "onlyNow", "culture"]],
+    ["공연·전시", ["events", "stages", "popshows", "galleries", "museums"]],
+    ["나들이", ["places", "kids", "indoor", "season", "dayplan"]],
+    ["우리 동네", ["hood", "local", "markets", "care", "shelter"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
-    ["내 것·도움말", ["favorites", "manual", "review"]]
+    ["지도·찜·도움말", ["map", "favorites", "notice", "manual", "review"]]
   ];
   const btn = k => { const [ic, nm, sub] = M[k]; return `<button type="button" data-go="${k}" class="${HOT.has(k) ? "mgHot" : ""}${k === "all" ? " mgAll" : ""}"><i aria-hidden="true">${ic}</i><span>${nm}</span>${sub && k !== "all" ? `<small>${sub}</small>` : ""}</button>` };
 
@@ -13503,6 +13526,16 @@ document.addEventListener("keydown",function(e){
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
     }
     if (k === "care") { window.openCare?.("med"); return }
+    if (k === "shelter") { const m = new Date().getMonth() + 1; window.openCare?.(m >= 5 && m <= 9 ? "heat" : "cold"); return }
+    // 2026-11-15: 홈 안의 칸으로 바로 가기 (칸이 비어 있으면 가까운 화면으로)
+    const HOMESEC = { onlyNow: "onlyNow", culture: "cultureSpot", season: "seasonPick", notice: "noticeBoard" };
+    if (HOMESEC[k]) {
+      const el = $id(HOMESEC[k]);
+      if (!el || el.hidden || !el.textContent.trim()) { showTab(k === "notice" ? "favorites" : k === "season" ? "places" : "events"); return }
+      try { window.goHome ? goHome() : showTab("home") } catch (e) {}
+      if (k === "season") window.unfoldHome?.("seasonPick");
+      [120, 450, 900].forEach(ms => setTimeout(() => toTop(el), ms)); return;
+    }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
     if (k === "all") return openAll();
@@ -13530,10 +13563,10 @@ document.addEventListener("keydown",function(e){
     events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
     places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈", indoor: "비 실내 우천 더위 추위",
     hood: "동네 강좌 도서관 주민", local: "도서관 책 강좌", markets: "시장 장날 오일장 야시장", food: "밥 식당 맛집 한끼 먹을",
-    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 쉼터 무더위",
+    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
     galleries: "미술 그림 전시 갤러리", museums: "박물관 역사 유물", bakeries: "빵 제과 제빵 빵집 디저트", cafes: "강아지 개 반려견 카페 멍",
     cinemas: "영화 극장", stays: "숙소 호텔 잠 펜션 모텔", decide: "추천 코스 뭐하지", today: "오늘 행사", weekend: "주말 토요일 일요일",
-    dayplan: "하루 코스 일정 짜기", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
+    dayplan: "하루 코스 일정 짜기", onlyNow: "지금만 1년 한정 시즌", culture: "문화가 있는 날 수요일 할인 영화", season: "계절 단풍 벚꽃 꽃 명소", notice: "알림 소식 새 공연 관심 가수", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
   };
   function filterAll(d, q){
     q = String(q || "").replace(/\s+/g, "").toLowerCase();
