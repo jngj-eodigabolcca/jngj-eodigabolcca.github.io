@@ -12,11 +12,10 @@
   앱을 이관받는 기관은 원작자에게 별도로 허락을 받아야 캐릭터를 쓸 수 있습니다.
 -->
 <!--
-  ── 2026-11-15 기준: 이 index.html 한 파일이 원본입니다 ──
-     저장소(docs/)에는 이 파일만 있고 index.src.html · app.css · js/ · tools/build.py 는 없습니다.
-     그러니 고칠 때는 docs/index.html 을 직접 고치면 됩니다. (빌드 단계 없음)
-     예전 메모(2026-11-13 '원본을 나눠 build.py로 합친다')는 그 원본 파일들이 저장소에 없어 더 이상 쓰지 않습니다.
-     혹시 예전 원본이 다른 컴퓨터에서 나오더라도, 이 파일이 더 최신이므로 build.py로 덮어쓰지 마세요.
+  ── 2026-11-13 구조 바뀜 ── 고칠 때는 이 파일(index.src.html) · app.css · js/ 를 고치고,
+     python3 tools/build.py docs 로 index.html 한 파일을 다시 만든다. (index.html을 직접 고치면 다음 빌드 때 덮어써짐)
+     스타일은 전부 app.css 한 파일(예전 <style> 블록 23개가 순서대로, 블록마다 '#이름' 머리말). 아래 지도의 블록 이름으로 찾으면 됨.
+     큰 스크립트는 js/NN-이름.js (원래 자리·순서 그대로 불러옴). 자세한 건 README-개발.md
   ── 코드 지도 (인수인계용 · 2026-11-06 갱신) ──────────────────────────────
   이 파일 하나에 화면·스타일·동작·기본 자료가 모두 들어 있습니다(서버 없음, GitHub Pages로 배포).
   · <head> <style id="appStyles"> : 스타일 전부가 한곳에 있음 (2026-11-06에 흩어진 57개 블록을 원래 순서대로 합침)
@@ -42,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기·묶음 바로가기·최근에 쓴 메뉴, 묶음마다 카드(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
   · 2026-11-13 본체 수정: 일정 카드 제목에서 '2026 '·'제N회' 떼고 《부제》는 작은 줄(cardTitle) · '관람료·시간 확인'(확인 필요) 배지는 카드에서 빼고 상세에만 · 놓치면 끝나요 0건 칸 안 그림 · '놓치면 내년'은 30일 안에 끝나는 것만 · 'N분 관람 가능'→'보통 N분쯤 둘러보기' · 주차 정보 없을 때 '근처 주차장 찾기'만 · 앱 버전 0.83
   · 검색 find() 안 2026-11-12 : 찾는 말이 어떤 곳의 이름이면, 다른 곳의 교통 칸(access)에만 나오는 곳은 결과에서 뺌
   · 자동 수집: 저장소 scripts/*.py + .github/workflows/update-data.yml (하루 2회, 결과는 docs/data/)
@@ -4746,6 +4746,86 @@ html body #onlyNow .onMoreBtn{all:unset;box-sizing:border-box;display:block;widt
 html body .nowCard .ncSub{display:block;font-size:11.5px;color:#7a8394;margin:-2px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* PC 위쪽 탭줄의 '전체 메뉴' 단추 */
 html body #tabs button.tabAll{font-weight:800}
+/* ════════════════ #allMenuEasy20261115 : 하단 탭·전체 메뉴 보기 편하게 (이 묶음만 지우면 11-13 모양으로) ════════════════ */
+/* 하단 탭: 크기는 그대로, 지금 화면만 위쪽 막대로 */
+@media(max-width:899px){
+  html body nav#appTabs>button{position:relative}
+  html body nav#appTabs>button.on{font-weight:800}
+  html body nav#appTabs>button.on::before{content:"";position:absolute;top:-4px;left:28%;right:28%;height:3px;border-radius:0 0 3px 3px;background:#1f3d73}
+  html body nav#appTabs>button:active{transform:scale(.95)}
+  :root[data-theme="dark"] body nav#appTabs>button.on::before{background:#9fc0ff}
+}
+/* 전체 메뉴 창 */
+html body #allMenu{background:rgba(14,22,38,.52)}
+html body #allMenu.show .amBox{animation:amUp .22s ease-out}
+@keyframes amUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@media(min-width:900px){html body #allMenu.show .amBox{animation:none}}
+@media(prefers-reduced-motion:reduce){html body #allMenu.show .amBox{animation:none}}
+html body #allMenu .amBox{max-height:90vh;padding:0 0 calc(18px + env(safe-area-inset-bottom,0px));background:#f2f4f8;overscroll-behavior:contain;transition:transform .15s}
+html body #allMenu .amTop{position:sticky;top:0;z-index:2;background:#fff;padding:8px 14px 10px;border-bottom:1px solid #e4e8f0;border-radius:24px 24px 0 0}
+html body #allMenu .amGrab{display:block;width:42px;height:5px;border-radius:5px;background:#cfd5e0;margin:0 auto 8px}
+@media(min-width:900px){html body #allMenu .amGrab{display:none}html body #allMenu .amTop{padding-top:16px}}
+html body #allMenu .amHead{align-items:center;margin:0 2px 10px}
+html body #allMenu .amHead b{color:#16223a}
+html body #allMenu .amHead small{color:#6b7486}
+html body #allMenu .amClose{color:#33405a}
+html body #allMenu .amClose:focus-visible{outline:3px solid #f39a25;outline-offset:2px}
+html body #allMenu .amSearch{display:flex;align-items:center;gap:8px;background:#f2f4f8;border:1.5px solid #dfe4ed;border-radius:12px;padding:0 6px 0 11px;min-height:40px}
+html body #allMenu .amSearch:focus-within{border-color:#1f3d73;background:#fff}
+html body #allMenu .amSearch input{all:unset;flex:1;min-width:0;font:600 16px/1.3 Pretendard,system-ui,sans-serif;color:#16223a;padding:7px 0}
+html body #allMenu .amSearch input::placeholder{color:#8a93a3}
+html body #allMenu .amSearch input::-webkit-search-cancel-button{display:none}
+html body #allMenu .amClear{all:unset;cursor:pointer;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:16px;background:#e2e7ef;color:#33405a}
+html body #allMenu .amClear[hidden]{display:none}
+html body #allMenu .amJump{display:flex;gap:5px;overflow-x:auto;margin:8px -14px 0;padding:0 14px 2px;scrollbar-width:none}
+html body #allMenu .amJump::-webkit-scrollbar{display:none}
+html body #allMenu .amJump button{all:unset;cursor:pointer;flex:none;display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;background:#eef2f9;color:#1f3d73;font:750 12px/1.2 Pretendard,system-ui,sans-serif;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+html body #allMenu .amJump button i{font-style:normal}
+html body #allMenu .amJump button:active{background:#dbe5f6}
+html body #allMenu .amJump button:focus-visible{outline:3px solid #f39a25;outline-offset:1px}
+html body #allMenu .amHideQ{display:none!important}
+html body #allMenu .amBody{padding:10px 10px 4px}
+html body #allMenu .amSec{background:#fff;border-radius:16px;padding:10px 8px 8px;margin:0 0 8px;border:1px solid #e6e9f0;scroll-margin-top:8px}
+html body #allMenu .amSec[hidden]{display:none}
+html body #allMenu .amSec h3{display:flex;align-items:center;gap:7px;margin:0 4px 8px;font-size:13.5px;font-weight:800;color:#16223a;letter-spacing:-.2px}
+html body #allMenu .amSec h3 i{font-style:normal;font-size:14px}
+html body #allMenu .amSec h3 em{font-style:normal;font-size:11px;font-weight:700;color:#6b7486;background:#eef1f6;border-radius:999px;padding:1px 7px;margin-left:2px}
+html body #allMenu .amRecent{background:#fffaf2;border-color:#f3dfc2}
+html body #allMenu .mgGrid>button{background:#f5f7fb;border:1px solid #e8ecf3}
+html body #allMenu .mgGrid>button[hidden]{display:none}
+html body #allMenu .mgGrid>button>span{color:#16223a}
+html body #allMenu .mgGrid>button small{color:#6b7486}
+html body #allMenu .mgGrid>button.mgHot{background:#fff1df;border-color:#f6d3a6}
+html body #allMenu .mgGrid>button.mgHot>span{color:#9a4a05}
+html body .mgGrid>button>i>.calToday{font-size:22px}
+html body #allMenu .amSearch input:focus,html body #allMenu .amSearch input:focus-visible{outline:0!important;box-shadow:none!important}
+html body #allMenu.amQ .amSec h3 em{display:none}
+html body #allMenu .mgGrid>button.mgHot::after{content:"인기";position:absolute;top:4px;right:4px;font:800 9px/1 Pretendard,system-ui,sans-serif;color:#fff;background:#e8730c;border-radius:999px;padding:2px 5px}
+html body #allMenu .mgGrid>button{position:relative}
+@media(hover:hover){html body #allMenu .mgGrid>button:hover{background:#eaf0fa;border-color:#c9d7f0}}
+html body #allMenu .amNone{margin:24px 8px;text-align:center;font-size:15px;line-height:1.6;color:#4c5669}
+html body #allMenu .amNone[hidden]{display:none}
+html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-top:10px;padding:11px 18px;border-radius:999px;background:#1f3d73;color:#fff;font-weight:800;font-size:14px}
+/* 어두운 화면 */
+:root[data-theme="dark"] body #allMenu .amBox{background:#10141d}
+:root[data-theme="dark"] body #allMenu .amTop{background:#161b26;border-bottom-color:rgba(255,255,255,.08)}
+:root[data-theme="dark"] body #allMenu .amGrab{background:rgba(255,255,255,.25)}
+:root[data-theme="dark"] body #allMenu .amHead small{color:#aab4c6}
+:root[data-theme="dark"] body #allMenu .amSearch{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+:root[data-theme="dark"] body #allMenu .amSearch:focus-within{border-color:#9fc0ff;background:rgba(255,255,255,.09)}
+:root[data-theme="dark"] body #allMenu .amSearch input{color:#e8edf6}
+:root[data-theme="dark"] body #allMenu .amClear{background:rgba(255,255,255,.14);color:#fff}
+:root[data-theme="dark"] body #allMenu .amJump button{background:rgba(120,160,240,.14);color:#cfe0ff}
+:root[data-theme="dark"] body #allMenu .amSec{background:#1b2130;border-color:rgba(255,255,255,.07)}
+:root[data-theme="dark"] body #allMenu .amSec h3{color:#e8edf6}
+:root[data-theme="dark"] body #allMenu .amSec h3 em{background:rgba(255,255,255,.1);color:#c3cbda}
+:root[data-theme="dark"] body #allMenu .amRecent{background:#231f18;border-color:rgba(243,154,37,.25)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.07)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button>span{color:#eef2f8}
+:root[data-theme="dark"] body #allMenu .mgGrid>button small{color:#aab4c6}
+:root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot{background:rgba(243,154,37,.16);border-color:rgba(243,154,37,.3)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>span{color:#ffc27a}
+:root[data-theme="dark"] body #allMenu .amNone{color:#c3cbda}
 </style>
 <script>/* 히어로 문구 생성기 (headline.js) */
 /**
@@ -9664,8 +9744,7 @@ const APP_FEATURES = [
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
   ["🐶 멍카페", "댕댕이랑 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페 댕댕이 댕댕", () => { clearSearch(); showTab("cafes") }],
   ["🏘 동네 강좌·도서관", "우리 동네 강좌와 도서관", "동네 강좌 도서관 수업 배우기 교실", () => { clearSearch(); showTab("local") }],
-  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국과 가까운 응급실", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기", () => { clearSearch(); window.openCare?.("med") }],
-  ["🌡 무더위·한파 쉼터", "많이 덥거나 추울 때 가까운 쉼터", "쉼터 무더위쉼터 한파쉼터 폭염 한파 더위 추위", () => { clearSearch(); window.openCare?.(window.careSeason?.() || "heat") }],
+  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국, 가까운 응급실, 무더위·한파 쉼터", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기 쉼터 무더위쉼터 한파쉼터 폭염 한파", () => { clearSearch(); window.openCare?.("med") }],
   ["🗺 지도", "지도에서 한눈에", "지도 위치 길찾기 근처", () => { clearSearch(); showTab("map") }],
   ["♡ 찜 목록", "찜해 둔 곳 보기", "찜 즐겨찾기 저장 하트", () => { clearSearch(); showTab("favorites") }],
   ["📖 앱 사용설명서", "앱 소개·기능·이용방법", "사용설명서 설명서 도움말 사용법 이용방법", () => { clearSearch(); openUserManual() }],
@@ -13392,8 +13471,7 @@ document.addEventListener("keydown",function(e){
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
     map:      ["🗺", "지도", "가까운 곳"],
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
-    care:     ["🏥", "문 연 약국·응급실", "아플 때"],
-    shelter:  ["🌡", "쉼터", "무더위·한파"],   // 열면 무더위쉼터·한파쉼터 두 칸 (철에 맞는 칸이 먼저 열림)
+    care:     ["🏥", "문 연 약국·응급실", "아플 때·쉼터"],
     galleries:["🖼", "미술관·갤러리", ""],
     museums:  ["🏺", "박물관", ""],
     bakeries: ["🥐", "제과·제빵", "빵지순례"],
@@ -13415,7 +13493,7 @@ document.addEventListener("keydown",function(e){
     ["오늘 정하기", ["decide", "today", "weekend", "dayplan"]],
     ["공연·일정", ["events", "stages", "popshows"]],
     ["나들이", ["places", "kids", "indoor", "galleries", "museums", "map"]],
-    ["우리 동네", ["hood", "local", "markets", "weather", "care", "shelter"]],
+    ["우리 동네", ["hood", "local", "markets", "weather", "care"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["내 것·도움말", ["favorites", "manual", "review"]]
   ];
@@ -13424,13 +13502,12 @@ document.addEventListener("keydown",function(e){
   /* ── 메뉴 하나로 가기: 예전 빠른실행키가 하던 동작을 그대로 씀 ── */
   function go(k){
     gc("메뉴-" + (M[k] ? M[k][1] : k), "메뉴 · " + (M[k] ? M[k][1] : k));
-    closeAll();
+    closeAll(); try { addRecent(k) } catch (e) {}
     // 2026-11-13: '동네서 시간 보내기'는 동네 화면 맨 위로, '동네 도서관'은 그 화면의 도서관 칸으로
     if (k === "hood" || k === "local") {
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
     }
     if (k === "care") { window.openCare?.("med"); return }
-    if (k === "shelter") { window.openCare?.(window.careSeason?.() || "heat"); return }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
     if (k === "all") return openAll();
@@ -13451,22 +13528,85 @@ document.addEventListener("keydown",function(e){
   }
   window.goMenu = go;
 
-  /* ── 전체 메뉴 창 ── */
+  /* ── 전체 메뉴 창 ──
+     2026-11-15 보기 편하게: 메뉴 찾기 칸 · 묶음 바로가기 칩 · 최근에 쓴 메뉴 · 묶음마다 흰 카드 (아이콘·글씨 크기는 11-13 그대로) */
+  const G_ICON = { "오늘 정하기": "✨", "공연·일정": "🎵", "나들이": "🌿", "우리 동네": "🏘", "먹고 쉬기": "🍽", "내 것·도움말": "🙋" };
+  // 메뉴 찾기용 다른 말 (이름·설명 말고도 이 말로 찾아짐)
+  const KW = {
+    events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
+    places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈", indoor: "비 실내 우천 더위 추위",
+    hood: "동네 강좌 도서관 주민", local: "도서관 책 강좌", markets: "시장 장날 오일장 야시장", food: "밥 식당 맛집 한끼 먹을",
+    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 쉼터 무더위",
+    galleries: "미술 그림 전시 갤러리", museums: "박물관 역사 유물", bakeries: "빵 제과 제빵 빵집 디저트", cafes: "강아지 개 반려견 카페 멍",
+    cinemas: "영화 극장", stays: "숙소 호텔 잠 펜션 모텔", decide: "추천 코스 뭐하지", today: "오늘 행사", weekend: "주말 토요일 일요일",
+    dayplan: "하루 코스 일정 짜기", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
+  };
+  const RECENT_KEY = "allMenuRecent";
+  const getRecent = () => { try { return (JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") || []).filter(k => M[k] && k !== "all").slice(0, 4) } catch (e) { return [] } };
+  const addRecent = k => { if (!M[k] || k === "all") return; try { localStorage.setItem(RECENT_KEY, JSON.stringify([k, ...getRecent().filter(x => x !== k)].slice(0, 4))) } catch (e) {} };
+  function paintRecent(d){
+    const box = d.querySelector(".amRecent"); if (!box) return;
+    const r = getRecent();
+    box.hidden = !r.length;
+    box.querySelector(".mgGrid").innerHTML = r.map(btn).join("");
+  }
+  function filterAll(d, q){
+    q = String(q || "").replace(/\s+/g, "").toLowerCase();
+    let any = false;
+    d.querySelectorAll(".amSec").forEach(sec => {
+      let n = 0;
+      sec.querySelectorAll("[data-go]").forEach(b => {
+        const k = b.dataset.go, hay = ((M[k] ? M[k][1] + M[k][2] : "") + (KW[k] || "")).replace(/\s+/g, "").toLowerCase();
+        const ok = !q || hay.includes(q); b.hidden = !ok; if (ok) n++;
+      });
+      sec.hidden = !n; if (n) any = true;
+    });
+    d.querySelector(".amRecent").classList.toggle("amHideQ", !!q);
+    d.querySelector(".amJump").classList.toggle("amHideQ", !!q);
+    d.querySelector(".amNone").hidden = any;
+    d.classList.toggle("amQ", !!q);
+  }
   let lastFocus = null;
   function buildAll(){
     if ($id("allMenu")) return $id("allMenu");
     const d = document.createElement("div"); d.id = "allMenu";
     d.innerHTML = `<div class="amBox" role="dialog" aria-modal="true" aria-labelledby="amTitle">
-      <div class="amHead"><div><b id="amTitle">오매, 메뉴가 요로코롬 많당께</b><small>인자 여기서 다 찾아보쇼 · 누르면 바로 가요</small></div><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
-      ${GROUPS.map(([g, ks]) => `<h3>${g}</h3><div class="mgGrid">${ks.filter(k => M[k]).map(btn).join("")}</div>`).join("")}
+      <div class="amTop">
+        <span class="amGrab" aria-hidden="true"></span>
+        <div class="amHead"><div><b id="amTitle">전체 메뉴</b><small>오매, 요로코롬 많당께 · 누르면 바로 가요</small></div><button type="button" class="amClose" aria-label="전체 메뉴 닫기">×</button></div>
+        <label class="amSearch"><span aria-hidden="true">🔍</span><input type="search" enterkeyhint="search" autocomplete="off" placeholder="메뉴 찾기 (예: 약국, 빵, 공연)" aria-label="메뉴 찾기"><button type="button" class="amClear" aria-label="찾는 말 지우기" hidden>×</button></label>
+        <div class="amJump" role="navigation" aria-label="메뉴 묶음 바로가기">${GROUPS.map(([g], i) => `<button type="button" data-jump="amSec${i}"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}</button>`).join("")}</div>
+      </div>
+      <div class="amBody">
+        <section class="amSec amRecent" hidden aria-label="최근에 쓴 메뉴"><h3><i aria-hidden="true">🕘</i>최근에 쓴 메뉴</h3><div class="mgGrid"></div></section>
+        ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}<em>${ks.length}</em></h3><div class="mgGrid">${ks.map(btn).join("")}</div></section>`).join("")}
+        <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼 🙏<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
+      </div>
     </div>`;
     document.body.appendChild(d);
-    d.addEventListener("click", e => { if (e.target === d || e.target.closest(".amClose")) closeAll(); const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go) });
+    const inp = d.querySelector(".amSearch input"), clr = d.querySelector(".amClear");
+    inp.addEventListener("input", () => { clr.hidden = !inp.value; filterAll(d, inp.value) });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") { const f = d.querySelector(".amSec:not([hidden]):not(.amRecent) [data-go]:not([hidden])"); if (f) { e.preventDefault(); f.click() } } });
+    clr.addEventListener("click", () => { inp.value = ""; clr.hidden = true; filterAll(d, ""); inp.focus() });
+    d.addEventListener("click", e => {
+      if (e.target === d || e.target.closest(".amClose")) { closeAll(); return }
+      const j = e.target.closest("[data-jump]");
+      if (j) { const s = $id(j.dataset.jump), body = d.querySelector(".amBox"); if (s && body) body.scrollTo({ top: s.offsetTop - d.querySelector(".amTop").offsetHeight - 6, behavior: "smooth" }); return }
+      if (e.target.closest(".amAsk")) { const q = inp.value; closeAll(); try { window.goDecision ? goDecision() : showTab("home"); setTimeout(() => { const a = $id("aiq"); if (a) { a.value = q; a.focus() } }, 400) } catch (er) {} return }
+      const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go)
+    });
+    // 손잡이를 아래로 끌면 닫힘 (폰)
+    let y0 = null; const top = d.querySelector(".amTop"), box = d.querySelector(".amBox");
+    top.addEventListener("touchstart", e => { if (e.target.closest("input,button")) return; y0 = e.touches[0].clientY }, { passive: true });
+    top.addEventListener("touchmove", e => { if (y0 == null) return; const dy = e.touches[0].clientY - y0; if (dy > 0) box.style.transform = `translateY(${dy}px)` }, { passive: true });
+    top.addEventListener("touchend", e => { if (y0 == null) return; const dy = (e.changedTouches[0]?.clientY || y0) - y0; y0 = null; box.style.transform = ""; if (dy > 90) closeAll() });
     return d;
   }
   function openAll(){
     const d = buildAll(); lastFocus = document.activeElement;
+    try { const inp = d.querySelector(".amSearch input"); if (inp.value) { inp.value = ""; d.querySelector(".amClear").hidden = true; filterAll(d, "") } paintRecent(d) } catch (e) {}
     d.classList.add("show"); document.body.classList.add("allMenuOpen");
+    try { d.querySelector(".amBox").scrollTop = 0; d.querySelector(".amJump").scrollLeft = 0 } catch (e) {}
     document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === "all"));
     setTimeout(() => d.querySelector(".amClose")?.focus(), 30);
   }
@@ -13788,10 +13928,6 @@ document.addEventListener("keydown",function(e){
 .careTabs button,.careWhere button{border:1px solid var(--line2,#ddd);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:inherit;cursor:pointer}
 .careTabs button.on{background:#1f3d73;border-color:#1f3d73;color:#fff}
 .careWhere{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted,#6b6b6b)}
-.careWhere select{border:1px solid var(--line2,#ddd);background:transparent;color:inherit;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700;max-width:46%}
-.careWhere .careGeoMsg{flex:1 1 100%;padding:8px 10px;border-radius:10px;background:#fff4e0;color:#7a4a00;font-weight:600;line-height:1.5}
-:root[data-theme="dark"] .careWhere .careGeoMsg{background:#33270f;color:#ffd79a}
-:root[data-theme="dark"] .careWhere select{background:#1d2028;border-color:#343a46}
 .care119{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;background:#fdecea;border:1px solid #f3c2bc;color:#7d1d12;font-size:13.5px;font-weight:700}
 .care119 a{flex:0 0 auto;padding:6px 12px;border-radius:999px;background:#d93a26;color:#fff;text-decoration:none;font-weight:800}
 .careList{display:grid;gap:8px}
@@ -13832,7 +13968,7 @@ document.addEventListener("keydown",function(e){
   const telHref = t => "tel:" + String(t || "").replace(/[^\d+]/g, "");
   const items = j => Array.isArray(j) ? j : (j && Array.isArray(j.items) ? j.items : []);
   const upd = j => (j && !Array.isArray(j) && j.updated) ? String(j.updated).slice(0, 10) : "";
-  let CARE = null, CARE_P = null, POS = null, GU = "", GEO_MSG = "";   // POS: '내 위치'를 누른 경우에만 · GU: 이 창에서 고른 동네 (둘 다 저장 안 함)
+  let CARE = null, CARE_P = null, POS = null;   // POS: '지금 위치'를 누른 경우에만, 이 화면을 쓰는 동안만
 
   function loadCare() {
     return CARE_P ||= Promise.all(["pharmacies", "emergency", "shelters"].map(n => getJSON(n, null).catch(() => null)))
@@ -13843,7 +13979,7 @@ document.addEventListener("keydown",function(e){
   const isHoli = iso => typeof HOLIDAYS !== "undefined" && !!HOLIDAYS[iso];
   const keyOf = (iso, dow) => isHoli(iso) ? 8 : (dow === 0 ? 7 : dow);
   const hm = s => { s = String(s || "").replace(/\D/g, ""); if (s.length < 3) return null; s = s.padStart(4, "0"); const h = +s.slice(0, 2), m = +s.slice(2); return h > 48 || m > 59 ? null : h * 60 + m };
-  const fmt = m => m === 1440 ? "24:00" : `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  const fmt = m => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
   function span(x, key) {
     const raw = (x.h || {})[key]; if (!raw) return null;
     const [a, b] = String(raw).split("-"); const o = hm(a), c0 = hm(b); if (o == null || c0 == null) return null;
@@ -13855,24 +13991,15 @@ document.addEventListener("keydown",function(e){
     const today = span(x, keyOf(iso, dow)), yest = span(x, keyOf(y, (dow + 6) % 7));
     if (yest && yest.c > 1440 && m < yest.c - 1440) { const left = yest.c - 1440 - m; return { open: true, soon: left <= 60, txt: `${fmt(yest.c)}까지` } }
     if (!today) return { open: false, txt: isHoli(iso) ? "공휴일 영업 정보 없음" : "오늘 영업 정보 없음" };
-    if (today.o === 0 && today.c >= 1440) return { open: true, txt: "오늘 24시간" };
     if (m >= today.o && m < today.c) { const left = today.c - m; return { open: true, soon: left <= 60, txt: `오늘 ${fmt(today.o)}–${fmt(today.c)}` } }
     return { open: false, later: m < today.o, txt: m < today.o ? `오늘 ${fmt(today.o)}에 열어요` : `오늘은 ${fmt(today.c)}에 닫았어요` };
   }
 
   /* ── 거리: 지금 위치 → 고른 동네 → 권역 중심 ── */
-  const regionOf = gu => { for (const [k, R] of Object.entries(REGIONS)) if ((R.districts || []).includes(gu)) return k; return "" };
-  function guPoint(gu) {
-    const pts = [...(CARE ? CARE.ph : []), ...(CARE ? CARE.er : []), ...(CARE ? CARE.sh : [])].filter(x => x.district === gu && +x.lat && +x.lng);
-    if (pts.length) return { lat: pts.reduce((a, x) => a + +x.lat, 0) / pts.length, lng: pts.reduce((a, x) => a + +x.lng, 0) / pts.length };
-    try { const c = typeof guCenter === "function" ? guCenter(gu) : null; if (c) return c } catch (e) {}
-    return null;
-  }
   function refPoint(at) {
     if (at && at.lat) return at;
     if (POS) return POS;
-    if (GU) { const c = guPoint(GU); if (c) return { ...c, label: `${GU} 기준` } }
-    try { if (typeof HOME !== "undefined" && HOME && HOME.lat && regionOf(HOME.gu) === REGION) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
+    try { if (typeof HOME !== "undefined" && HOME && HOME.lat) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
     const R = REGIONS[REGION] || REGIONS.gj; return { lat: R.wx[0], lng: R.wx[1], label: `${R.hub} 중심 기준` };
   }
   const dist = (a, b) => { const R = 6371, r = Math.PI / 180, dl = (b.lat - a.lat) * r, dg = (b.lng - a.lng) * r; const h = Math.sin(dl / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dg / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)) };
@@ -13931,32 +14058,22 @@ document.addEventListener("keydown",function(e){
     const at = refPoint(CUR.at), k = CUR.kind;
     const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
     box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
-      ${k === "med" ? "" : `<div class="careTabs" role="tablist">${[["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>`}
-      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `
-        <select data-care-gu aria-label="동네 고르기"><option value="">${POS ? "📍 내 위치 기준" : "동네 바꾸기"}</option>${Object.values(REGIONS).map(R => `<optgroup label="${E(R.name)}">${R.districts.map(d => `<option value="${E(d)}"${!POS && d === (GU || (at.label || "").replace(/ 기준$/, "")) ? " selected" : ""}>${E(d)}</option>`).join("")}</optgroup>`).join("")}</select>
-        <button type="button" data-care-pos="1">📍 내 위치로</button>
-        ${GEO_MSG ? `<span class="careGeoMsg">${E(GEO_MSG)}</span>` : `<span>위치는 저장하지 않아요</span>`}`}</div>
+      <div class="careTabs" role="tablist">${[["med", "🏥 약국·응급실"], ["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
+      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 지금 위치로 찾기</button><span>위치는 이 기기 안에서 거리 계산에만 써요</span>`}</div>
       ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
     box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
-    const sel = box.querySelector("[data-care-gu]");
-    if (sel) sel.onchange = () => { if (!sel.value) return; GU = sel.value; POS = null; GEO_MSG = ""; render() };
     const pb = box.querySelector("[data-care-pos]");
     if (pb) pb.onclick = () => {
-      const fail = m => { GEO_MSG = m; render() };
-      if (!window.isSecureContext) return fail("이 주소(http)에서는 위치를 쓸 수 없어요. 동네를 골라 주세요.");
-      if (!navigator.geolocation) return fail("이 기기·브라우저는 위치 찾기를 지원하지 않아요. 동네를 골라 주세요.");
-      pb.textContent = "📍 찾는 중…"; pb.disabled = true;
-      navigator.geolocation.getCurrentPosition(
-        p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "내 위치 기준" }; GU = ""; GEO_MSG = ""; render() },
-        e => fail(e && e.code === 1 ? "위치 권한이 꺼져 있어요. 주소창 옆 자물쇠(또는 브라우저 설정 → 사이트 설정 → 위치)에서 이 사이트를 '허용'으로 바꾼 뒤 다시 눌러 주세요."
-          : "위치를 찾지 못했어요. 휴대폰 위치(GPS)가 켜져 있는지 확인하고 다시 눌러 주세요."),
-        { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 });
+      if (!navigator.geolocation) { typeof toast === "function" && toast("이 기기에서는 위치를 쓸 수 없어요"); return }
+      pb.textContent = "📍 위치 찾는 중…";
+      navigator.geolocation.getCurrentPosition(p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "지금 위치 기준" }; render() },
+        () => { pb.textContent = "📍 지금 위치로 찾기"; typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요") },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
     };
   }
   window.openCare = async (kind = "med", at = null) => {
     const box = $c("modalContent"), md = $c("modal"); if (!box || !md) return;
     CUR = { kind, at: at && at.lat ? at : null };
-    GU = ""; GEO_MSG = "";   // 새로 열 때마다 지금 권역·우리 동네 기준으로 (내 위치는 한 번 찾으면 계속 씀)
     box.innerHTML = `<div class="careDoc"><p class="careNote">불러오는 중…</p></div>`;
     md.classList.remove("decisionMode"); md.classList.add("show"); document.body.classList.add("modal-open");
     if (typeof navPush === "function") navPush({ modal: "care" });
@@ -13964,7 +14081,6 @@ document.addEventListener("keydown",function(e){
     await loadCare(); render();
   };
 
-  window.careSeason = () => { const mo = Number(todayISO().slice(5, 7)); return (mo >= 11 || mo <= 3) ? "cold" : "heat" };
   /* 날씨 칸: 아주 덥거나 추운 날에만 쉼터 한 줄 */
   window.careWxLine = W => {
     if (!W) return "";
