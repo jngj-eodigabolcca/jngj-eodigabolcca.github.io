@@ -41,7 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
-  · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기·묶음 바로가기·최근에 쓴 메뉴, 묶음마다 카드(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
+  · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기·묶음 바로가기·최근에 쓴 메뉴(한 줄 칩), 묶음마다 카드·빈칸 없이 칸 수 맞춤·설명 한 줄(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
   · 2026-11-13 본체 수정: 일정 카드 제목에서 '2026 '·'제N회' 떼고 《부제》는 작은 줄(cardTitle) · '관람료·시간 확인'(확인 필요) 배지는 카드에서 빼고 상세에만 · 놓치면 끝나요 0건 칸 안 그림 · '놓치면 내년'은 30일 안에 끝나는 것만 · 'N분 관람 가능'→'보통 N분쯤 둘러보기' · 주차 정보 없을 때 '근처 주차장 찾기'만 · 앱 버전 0.83
   · 검색 find() 안 2026-11-12 : 찾는 말이 어떤 곳의 이름이면, 다른 곳의 교통 칸(access)에만 나오는 곳은 결과에서 뺌
   · 자동 수집: 저장소 scripts/*.py + .github/workflows/update-data.yml (하루 2회, 결과는 docs/data/)
@@ -4790,7 +4790,26 @@ html body #allMenu .amSec[hidden]{display:none}
 html body #allMenu .amSec h3{display:flex;align-items:center;gap:7px;margin:0 4px 8px;font-size:13.5px;font-weight:800;color:#16223a;letter-spacing:-.2px}
 html body #allMenu .amSec h3 i{font-style:normal;font-size:14px}
 html body #allMenu .amSec h3 em{font-style:normal;font-size:11px;font-weight:700;color:#6b7486;background:#eef1f6;border-radius:999px;padding:1px 7px;margin-left:2px}
-html body #allMenu .amRecent{background:#fffaf2;border-color:#f3dfc2}
+html body #allMenu .amRecent{display:flex;align-items:center;gap:8px;margin:0 0 8px;padding:7px 8px 7px 12px;background:#fffaf2;border:1px solid #f3dfc2;border-radius:14px}
+html body #allMenu .amRecent[hidden]{display:none}
+html body #allMenu .amRecent>b{flex:none;font-size:12px;font-weight:800;color:#8a5a14;white-space:nowrap}
+html body #allMenu .amRcRow{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;min-width:0}
+html body #allMenu .amRcRow::-webkit-scrollbar{display:none}
+html body #allMenu .amRcRow button{all:unset;cursor:pointer;flex:none;display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:999px;background:#fff;border:1px solid #f0dcbc;font:750 12px/1.2 Pretendard,system-ui,sans-serif;color:#5a4634;white-space:nowrap}
+html body #allMenu .amRcRow button i{font-style:normal}
+html body #allMenu .amRcRow button .calToday{font-size:15px}
+html body #allMenu .amRcRow button:focus-visible{outline:3px solid #f39a25;outline-offset:1px}
+/* 칸 채우기: 묶음마다 칸 수를 맞추고, 마지막 줄은 남은 칸이 나눠 채움 (빈칸 없음) */
+html body #allMenu .amSec .mgGrid{display:flex;flex-wrap:wrap;gap:6px}
+html body #allMenu .amSec .mgGrid>button{flex:1 1 calc((100% - (var(--cm,4) - 1) * 6px) / var(--cm,4));min-width:0}
+@media(max-width:379px){html body #allMenu .amSec .mgGrid>button{flex-basis:calc((100% - (var(--cs,3) - 1) * 6px) / var(--cs,3))}}
+@media(min-width:900px){html body #allMenu .amSec .mgGrid>button{flex-basis:calc((100% - (var(--cp,6) - 1) * 6px) / var(--cp,6))}}
+html body #allMenu.amQ .amSec .mgGrid>button{flex-grow:0}
+/* 칸 높이 고르게: 설명은 한 줄 */
+html body #allMenu .mgGrid>button small{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 3px;box-sizing:border-box}
+/* 바로가기 줄: 오른쪽에 더 있으면 끝을 흐리게 */
+html body #allMenu .amJump{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+html body #allMenu .amJump.amEnd{-webkit-mask-image:none;mask-image:none}
 html body #allMenu .mgGrid>button{background:#f5f7fb;border:1px solid #e8ecf3}
 html body #allMenu .mgGrid>button[hidden]{display:none}
 html body #allMenu .mgGrid>button>span{color:#16223a}
@@ -4820,6 +4839,8 @@ html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-t
 :root[data-theme="dark"] body #allMenu .amSec h3{color:#e8edf6}
 :root[data-theme="dark"] body #allMenu .amSec h3 em{background:rgba(255,255,255,.1);color:#c3cbda}
 :root[data-theme="dark"] body #allMenu .amRecent{background:#231f18;border-color:rgba(243,154,37,.25)}
+:root[data-theme="dark"] body #allMenu .amRecent>b{color:#ffc27a}
+:root[data-theme="dark"] body #allMenu .amRcRow button{background:#1b2130;border-color:rgba(243,154,37,.3);color:#f1e3cf}
 :root[data-theme="dark"] body #allMenu .mgGrid>button{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.07)}
 :root[data-theme="dark"] body #allMenu .mgGrid>button>span{color:#eef2f8}
 :root[data-theme="dark"] body #allMenu .mgGrid>button small{color:#aab4c6}
@@ -13479,7 +13500,7 @@ document.addEventListener("keydown",function(e){
     cinemas:  ["🎬", "영화관", ""],
     stays:    ["🏨", "숙소", ""],
     decide:   ["✨", "오늘 뭐하지?", "조건 골라 코스"],
-    today:    ["🎟", "오늘 열리는 것", "지금 볼 수 있는 행사"],
+    today:    ["🎟", "오늘 열리는 것", "지금 볼 행사"],
     weekend:  [CAL_WEEKEND, "이번 주말", ""],
     dayplan:  ["🧭", "오늘 하루 코스", "오전·오후·저녁"],
     favorites:["♡", "찜", "저장한 곳"],
@@ -13548,7 +13569,7 @@ document.addEventListener("keydown",function(e){
     const box = d.querySelector(".amRecent"); if (!box) return;
     const r = getRecent();
     box.hidden = !r.length;
-    box.querySelector(".mgGrid").innerHTML = r.map(btn).join("");
+    box.querySelector(".amRcRow").innerHTML = r.map(k => `<button type="button" data-go="${k}"><i aria-hidden="true">${M[k][0]}</i>${M[k][1]}</button>`).join("");
   }
   function filterAll(d, q){
     q = String(q || "").replace(/\s+/g, "").toLowerCase();
@@ -13578,15 +13599,17 @@ document.addEventListener("keydown",function(e){
         <div class="amJump" role="navigation" aria-label="메뉴 묶음 바로가기">${GROUPS.map(([g], i) => `<button type="button" data-jump="amSec${i}"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}</button>`).join("")}</div>
       </div>
       <div class="amBody">
-        <section class="amSec amRecent" hidden aria-label="최근에 쓴 메뉴"><h3><i aria-hidden="true">🕘</i>최근에 쓴 메뉴</h3><div class="mgGrid"></div></section>
-        ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}<em>${ks.length}</em></h3><div class="mgGrid">${ks.map(btn).join("")}</div></section>`).join("")}
+        <div class="amRecent" hidden role="group" aria-label="최근에 쓴 메뉴"><b>🕘 최근</b><div class="amRcRow"></div></div>
+        ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h"><i aria-hidden="true">${G_ICON[g] || "•"}</i>${g}<em>${ks.length}</em></h3><div class="mgGrid" style="--cm:${ks.length <= 4 ? ks.length : 3};--cs:${ks.length === 4 ? 2 : Math.min(ks.length, 3)};--cp:${ks.length}">${ks.map(btn).join("")}</div></section>`).join("")}
         <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼 🙏<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
       </div>
     </div>`;
     document.body.appendChild(d);
     const inp = d.querySelector(".amSearch input"), clr = d.querySelector(".amClear");
     inp.addEventListener("input", () => { clr.hidden = !inp.value; filterAll(d, inp.value) });
-    inp.addEventListener("keydown", e => { if (e.key === "Enter") { const f = d.querySelector(".amSec:not([hidden]):not(.amRecent) [data-go]:not([hidden])"); if (f) { e.preventDefault(); f.click() } } });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") { const f = d.querySelector(".amSec:not([hidden]) [data-go]:not([hidden])"); if (f) { e.preventDefault(); f.click() } } });
+    const jp = d.querySelector(".amJump"), jEnd = () => jp.classList.toggle("amEnd", jp.scrollLeft + jp.clientWidth >= jp.scrollWidth - 4);
+    jp.addEventListener("scroll", jEnd, { passive: true }); window.addEventListener("resize", jEnd); d._jEnd = jEnd;
     clr.addEventListener("click", () => { inp.value = ""; clr.hidden = true; filterAll(d, ""); inp.focus() });
     d.addEventListener("click", e => {
       if (e.target === d || e.target.closest(".amClose")) { closeAll(); return }
@@ -13606,7 +13629,7 @@ document.addEventListener("keydown",function(e){
     const d = buildAll(); lastFocus = document.activeElement;
     try { const inp = d.querySelector(".amSearch input"); if (inp.value) { inp.value = ""; d.querySelector(".amClear").hidden = true; filterAll(d, "") } paintRecent(d) } catch (e) {}
     d.classList.add("show"); document.body.classList.add("allMenuOpen");
-    try { d.querySelector(".amBox").scrollTop = 0; d.querySelector(".amJump").scrollLeft = 0 } catch (e) {}
+    try { d.querySelector(".amBox").scrollTop = 0; d.querySelector(".amJump").scrollLeft = 0; d._jEnd?.() } catch (e) {}
     document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === "all"));
     setTimeout(() => d.querySelector(".amClose")?.focus(), 30);
   }
