@@ -4812,7 +4812,20 @@ html body #allMenu .amAsk{all:unset;cursor:pointer;display:inline-block;margin-t
 /* 홈 줄이기: 하단 '전체'와 똑같은 메뉴 12칸만 숨김 (지우지 않음). 날짜가 지나면 끝나는 것·알림·종류 칩은 홈에 그대로 */
 html body #menuGlance{display:none!important}
 /* '이번 주말 추천 보기' 단추는 바로 위 '이번 주말' 탭과 같은 곳으로 가서 숨김 */
-html body #nowShow .wkHint{display:none!important}
+html body #nowShow .wkHint:not(#_):not(#_):not(#_){display:none!important}
+/* '오늘 열리는 것' 홈 카드 낮게 (글씨·아이콘 크기는 그대로): 장소·시간·주차를 한 줄로 이어 붙이고, 종류 칩은 한 줄로 밀어 보기 */
+@media(max-width:759px){
+  html body #nowShow .nowHead h2 small:not(#_):not(#_){display:none}
+  html body #nowShow .nowChips:not(#_):not(#_):not(#_){display:flex!important;flex-wrap:nowrap!important;overflow-x:auto;gap:6px!important;scrollbar-width:none;padding-bottom:1px}
+  html body #nowShow .nowChips::-webkit-scrollbar{display:none}
+  html body #nowShow .nowChips>button:not(#_):not(#_):not(#_){flex:0 0 auto!important;width:auto!important;padding:0 12px!important;min-height:36px;height:36px!important;white-space:nowrap}
+  html body #nowShow .nowCard .ncPic:not(#_):not(#_){flex:0 0 100px!important}
+  html body #nowShow .nowCard .ncPic .ncHot:not(#_):not(#_){white-space:nowrap;padding-left:7px!important;padding-right:7px!important;left:5px!important;right:auto!important;max-width:none}
+  html body #nowShow .nowCard .ncBody:not(#_):not(#_){display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:baseline;align-content:flex-start;column-gap:8px;row-gap:2px}
+  html body #nowShow .nowCard .ncBody>*:not(#_){flex:0 0 100%;min-width:0;margin-top:0;margin-bottom:0}
+  html body #nowShow .nowCard .ncBody>.ncVenue:not(#_):not(#_),html body #nowShow .nowCard .ncBody>.ncMeta:not(#_):not(#_),html body #nowShow .nowCard .ncBody>.pkLine:not(#_):not(#_){flex:0 1 auto;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html body #nowShow .nowCard .ncBody>.ncBtns:not(#_):not(#_){margin-top:4px}
+}
 /* 어두운 화면 */
 :root[data-theme="dark"] body #allMenu .amTop{background:#161b26;border-bottom-color:rgba(255,255,255,.08)}
 :root[data-theme="dark"] body #allMenu .amGrab{background:rgba(255,255,255,.25)}
