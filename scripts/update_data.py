@@ -963,7 +963,12 @@ def std_csv_events():
         try:
             api_rows, api_note = _std_api_rows(label, must)
         except Exception as e:
-            api_rows, api_note = None, scrub(f"API 실패 ({str(e)[:80]})")
+            # 403 등은 본문의 이유(SERVICE_ACCESS_DENIED_ERROR 등)를 뽑아 짧게 남긴다 (잘려서 이유가 안 보이던 것)
+            em = str(e)
+            why = re.findall(r'"?(?:returnAuthMsg|errMsg|returnReasonCode|resultMsg)"?\s*[:=]?\s*"?([A-Za-z0-9_ .가-힣-]{2,60})', em)
+            code = re.match(r"HTTP \d+", em)
+            parts = list(dict.fromkeys(([code.group(0)] if code else []) + [w.strip() for w in why if w.strip()]))
+            api_rows, api_note = None, scrub("API 실패 (" + (" · ".join(parts) if parts else em[:80]) + ")")
         if api_rows is not None:
             rows_iter, fname = api_rows, api_note
         else:
