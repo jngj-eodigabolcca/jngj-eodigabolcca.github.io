@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-17 저녁 코스: 한 곳뿐이면 '저녁·카페 → 밤 산책'으로 앞에 붙임(decisionVariedPicks) · 코스 짜기에서 시간 못 맞춘 행사는 이유+'내일 기준으로 다시 짜기' · 크리밍 '오늘' 목록은 지금 시각에 갈 수 있는 것만 · ♡ 뒤 캘린더 묻는 창 세로 깨짐 고침(#calAskFix20261117) · 키즈카페 '번호 찾기'
   · 2026-11-16 아이랑 어디 갈까?에 '🧸 키즈카페' 칸: docs/data/kidscafes.json(수집기가 기타유원시설업 CSV에서 만듦) · 장소 목록과 섞지 않음(kcSection·kcCard)
   · 맨 끝 <style·script id="mobileEase20261116"> : 폰에서 내리면 위쪽 머리말 숨김(검색창만 남음) · 일정 화면 칩 한 줄 · 0개 칩 흐리게
   · 2026-11-16 우리 동네 오늘 머리에서 그 칸의 동네만 따로 바꾸기(glm_lt_gu_권역, 안 골랐으면 사는 동네를 따름) · 그 칸과 오늘 뭐하지? 사이 간격 · 전체 메뉴를 동그란 색 아이콘으로 크게(넘치면 스크롤) · 제과·제빵 → 빵지순례
@@ -5245,6 +5246,13 @@ html body .baseGu:focus-within{outline:3px solid #f39a25;outline-offset:2px}
 :root[data-theme="dark"] body .baseGu{background:#17302a;border-color:#2c5248;color:#9fe0cf}
 :root[data-theme="dark"] body .baseGu u{color:#9fe0cf}
 </style>
+<style id="calAskFix20261117">
+/* 2026-11-17: ♡ 찜 뒤 '캘린더에도 넣을까요?' 창 — 폰에서 글자 칸이 한 글자 폭으로 줄어 세로로 늘어지던 것 → 글 한 줄, 버튼은 아래 한 줄 */
+html body #calAsk:not(#_):not(#_){background:#16261f!important;flex-wrap:wrap!important;width:min(92vw,380px)!important;max-width:92vw!important;row-gap:8px!important;column-gap:8px!important;box-sizing:border-box}
+html body #calAsk:not(#_):not(#_)>span{flex:1 1 100%!important;min-width:0!important;width:auto!important;writing-mode:horizontal-tb!important;word-break:keep-all!important;overflow-wrap:anywhere;line-height:1.45;font-size:14px}
+html body #calAsk:not(#_):not(#_)>span small{display:block;margin-top:2px}
+html body #calAsk:not(#_):not(#_)>button{flex:1 1 0!important;min-width:0!important;min-height:40px;font-size:14px!important;padding:8px 10px!important}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8677,10 +8685,11 @@ function renderKids() {
    장소 목록(VENUES)과 섞지 않고 이 칸에서만 보여 줌 → 나들이·추천 코스에는 끼어들지 않음 */
 const KC_SUB = "키즈카페";
 function kcCard(v) {
-  const tel = v.phone ? `<a class="miniBtn" href="tel:${esc(v.phone.replace(/[^\d+]/g, ""))}">📞 전화</a>` : "";
+  // 2026-11-17: 공공데이터에 전화번호가 없는 가게가 많아(96곳 중 60곳) → '번호 찾기'로 네이버 지도 가게 정보(전화·영업시간)로 바로
+  const tel = v.phone ? `<a class="miniBtn" href="tel:${esc(v.phone.replace(/[^\d+]/g, ""))}">📞 전화</a>` : `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">📞 번호 찾기 ↗</a>`;
   return `<div class="listCard place kcCard"><div class="listMain"><div class="kindRow">${homeTag(v)}<span class="kind">🧸 키즈카페·실내놀이터</span><span class="kind">🏠 실내</span></div>
   <h3>${esc(v.name)}</h3>
-  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>시간·요금</dt><dd>가게마다 달라요 · 가기 전에 전화나 지도에서 확인</dd></dl>
+  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>시간·요금</dt><dd>가게마다 달라요 · 가기 전에 ${v.phone ? "전화나 " : ""}지도에서 확인</dd></dl>
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">네이버 지도 ↗</a>${tel}</div></div></div>`;
 }
@@ -10211,13 +10220,23 @@ function aiPlaceCard(v, w) {
   <div class="acBtns"><button onclick="aiProfile('${jsq(v.id)}')">자세히</button><button onclick="showOnMap('venue','${jsq(v.id)}')">지도</button></div></div></article>`;
 }
 window.aiProfile = id => { const v = VENUES.find(x => x.id === id) || ALL.VENUES.find(x => x.id === id); if (v) { $("#aiq").value = v.name; $("#answer").innerHTML = placeProfile(v); document.querySelector(".ai").scrollIntoView({ behavior: "smooth", block: "start" }) } };
+window.aiCourseTomorrow = id => { const e = EVENTS.find(x => x.id === id); if (e) recommend(`내일 ${e.title} 보고 맛집 카페`, e) };
 window.aiCourse = id => { const e = EVENTS.find(x => x.id === id); if (e) recommend(`${e.title} 보고 맛집 카페`, e) };
 
 /* 목록형 질문: "오늘 볼만한 미술전시회", "이번 주말 무료 공연", "아이와 갈 곳" … */
 function listMode(s) {
   const w = whenOf(s), free = /무료/.test(s), kid = /아이|유아|가족|어린이/.test(s);
   let title = "", evs = [], pls = [];
-  const evFilter = f => EVENTS.filter(e => activeIn(e, w) && f(e) && ticketOf(e).status !== "판매종료" && !isCancelled(e));
+  // 2026-11-17: '오늘'이면 기간 안이어도 오늘 안 열리는 것(예: 토요일만 하는 공연)은 빼기
+  const isToday = w.label === "오늘" && w.from === todayISO();
+  const DOWC = "일월화수목금토";
+  const dayTextOk = e => {   // '매주 토요일 15:00', '토요일 ~ 일요일(12:00…)'처럼 요일만 여는 행사
+    const m = String(e.time || "").trim().match(/^(?:매주\s*)?([월화수목금토일]요일(?:\s*[~\-·,]\s*[월화수목금토일]요일)*)/); if (!m) return true;
+    const ds = [...m[1].matchAll(/[월화수목금토일](?=요일)/g)].map(x => DOWC.indexOf(x[0])), today = kstNow().getUTCDay();
+    if (/[~\-]/.test(m[1]) && ds.length === 2) { for (let d = ds[0]; ; d = (d + 1) % 7) { if (d === today) return true; if (d === ds[1]) return false } }
+    return ds.includes(today);
+  };
+  const evFilter = f => EVENTS.filter(e => activeIn(e, w) && (!isToday || (happensOn(e, w.from) !== false && dayTextOk(e))) && f(e) && ticketOf(e).status !== "판매종료" && !isCancelled(e));
   if (/미술|전시|그림|아트|작품/.test(s)) {
     title = `${w.label} 볼 수 있는 전시`;
     evs = evFilter(e => e.category === "전시" && (!/미술|그림|아트/.test(s) || e.subtype !== "박람회"));
@@ -10233,6 +10252,14 @@ function listMode(s) {
   else if (kid) { title = `${w.label} 아이와 갈 곳`; pls = VENUES.filter(v => (v.kind === "동물원·테마파크" || v.kids) && openOn(v, w.days[0]) !== false); evs = evFilter(e => (e.tags || []).includes("가족")) }
   else { title = `${w.label} 볼만한 것`; evs = evFilter(() => true); pls = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, w.days[0]) !== false && v.image).slice(0, 6) }
   if (free) { evs = evs.filter(isFree); pls = pls.filter(v => /^무료/.test(v.price || "")) }
+  // 2026-11-17: 오늘이면 지금 시각에 출발해서 아직 볼 수 있는 것만 (저녁 8시에 낮 전시·끝난 공연이 그대로 나오던 것)
+  let lateN = 0;
+  if (isToday) {
+    const st = tripNowMin(), fit = (x, k) => { try { const r = tripFitsFrom(x, k, { start: st, move: s }); return r.ok || /확인 안 됨/.test((r.note || "") + (r.why || "")) } catch (e) { return true } };   // 시간을 모르는 건 빼지 않음
+    const e0 = evs.length + pls.length;
+    evs = evs.filter(e => fit(e, "event")); pls = pls.filter(v => fit(v, "venue"));
+    lateN = e0 - evs.length - pls.length;
+  }
   if (kid && pls.length) pls.sort((a, b) => (!!b.kids - !!a.kids));
   const gu = (s.match(/(동구|서구|남구|북구|광산구)/) || [])[1]; if (gu) { evs = evs.filter(e => e.district === gu); pls = pls.filter(v => v.district === gu) }
   evs.sort((a, b) => { const sa = !a.start || a.start <= todayISO(), sb = !b.start || b.start <= todayISO(); if (sa !== sb) return sb - sa; return (daysLeft(a) ?? 999) - (daysLeft(b) ?? 999) });
@@ -10241,7 +10268,8 @@ function listMode(s) {
   $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>${esc(title)}</b><span>${evs.length + pls.length}곳</span></div>
    ${evs.length ? `<h4>${/전시/.test(title) ? "지금 열리는 전시" : "일정"} ${evs.length}</h4><div class="acGrid">${evs.map(aiEventCard).join("")}</div>` : ""}
    ${pls.length ? `<h4>${/전시/.test(title) ? "상설·소장품을 볼 수 있는 미술관" : "갈 만한 곳"} ${pls.length}</h4><div class="acGrid">${pls.map(v => aiPlaceCard(v, w)).join("")}</div>` : ""}
-   ${!evs.length && !pls.length ? `<p class="pfNone">조건에 맞는 곳이 아직 없어요. 조건을 바꿔보세요 (예: '이번 주말', '무료' 빼기).</p>` : ""}
+   ${lateN ? `<p class="pfNote">⏰ 지금(${tripHM(tripNowMin())}) 출발하면 시간에 못 맞추는 ${lateN}곳은 뺐어요. <button class="btn" type="button" onclick="$('#aiq').value='내일 ${jsq(s.replace(/['"\\]/g, "").replace(/오늘|지금|저녁|밤|이따/g, "").trim())}';listMode('내일 ${jsq(s.replace(/['"\\]/g, "").replace(/오늘|지금|저녁|밤|이따/g, "").trim())}')">📅 내일 것 보기 →</button></p>` : ""}
+   ${!evs.length && !pls.length ? `<p class="pfNone">${lateN ? "지금 시각엔 갈 수 있는 곳이 마땅치 않아요. 내일 것을 보거나, '저녁 맛집'·'야경'처럼 늦게까지 여는 곳으로 물어보세요." : "조건에 맞는 곳이 아직 없어요. 조건을 바꿔보세요 (예: '이번 주말', '무료' 빼기)."}</p>` : ""}
    ${closed.length ? `<p class="pfNote">${w.label} 휴관: ${closed.map(v => esc(v.name)).join(", ")}</p>` : ""}
    <p class="pfNote">정렬: 진행 중 → 곧 끝나는 순 · 자동 업데이트를 켜면 새 전시·공연이 매일 더해져요.</p></div>`;
 }
@@ -10682,7 +10710,9 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (wantStay) { const h = /ktx|기차|송정/.test(s) ? STAYS.find(h => h.area === "송정역") : ((anchor && nearest(anchor, STAYS, 15)?.[0]) || STAYS.find(h => h.district === gu) || STAYS[0]); if (h) out.push({ t: "숙소", name: h.name, sub: `${h.area} · ${h.best}`, d: h.district, x: h }) }
   if (!out.length) EVENTS.filter(e => !tripIsNowQuery(s) || tripFitsFrom(e, "event", { start: tripStartFromText(s) ?? tripNowMin(), move: s }).ok).slice(0, 2).forEach(e => out.push({ t: "볼거리", name: e.title, sub: `${e.venue} · ${e.date}`, d: e.district, x: e }));
   // ⏰ 지금(또는 말한 시각) 출발 기준 도착·관람 가능 시각을 붙이고, 시간이 안 맞는 곳은 코스에서 뺀다
-  let tripHead = "";
+  let tripHead = "", lateDrop = null;
+  // 2026-11-17: 시간이 안 맞아 빠졌을 때 '내일 기준으로 다시 보기' (밤에 코스 짜기를 누르면 빈 코스·엉뚱한 식당만 나오던 것)
+  const tmrBtn = `<button class="btn" type="button" onclick="${forced && forced.id && EVENTS.includes(forced) ? `aiCourseTomorrow('${jsq(forced.id)}')` : `$('#aiq').value='내일 ${jsq(t.replace(/['"\\]/g, ""))}';recommend('내일 ${jsq(t.replace(/['"\\]/g, ""))}')`}">📅 내일 기준으로 다시 짜기 →</button>`;
   if (tripIsNowQuery(s) && out.length) {
     const kindOf = x => FOOD.includes(x) ? "food" : CAFES.includes(x) ? "cafe" : CINEMAS.includes(x) ? "cinema" : STAYS.includes(x) ? "stay" : (x.title && !x.name) ? "event" : "venue";
     const t0 = tripStartFromText(s) ?? tripNowMin();
@@ -10695,12 +10725,12 @@ function recommend(t, forced = null, fixedMeal = null) {
       if (prev) { leg = tripLegMin(prev, o.x, s, tt); if (leg == null || (leg > (/자동차|자차|차로/.test(s) ? 60 : 75) && !FOOD.includes(o.x))) { out.splice(i, 1); i--; continue } }
       else { firstLeg = tripFirstLeg(o.x, { move: s, from: originC, fromLabel: originName, start: tt }); leg = firstLeg.min }
       const r = tripCheck(o.x, k, tt + leg);
-      if (!r.ok) { out.splice(i, 1); i--; continue }
+      if (!r.ok) { if (forced && o.x === forced) lateDrop = { name: o.name, note: r.note || "" }; out.splice(i, 1); i--; continue }
       o.sub = `⏰ ${prev ? "이동 약 " + leg + "분 → " : ""}${r.note}${r.unsure && !/확인/.test(r.note) ? " · 가기 전 확인" : ""}${o.sub ? " · " + o.sub : ""}`; tt = r.leave; prev = o.x;
     }
     if (firstLeg) tripHead = `🚩 ${tripHM(t0)} ${firstLeg.from || "출발지 미정"}에서 출발 → 첫 장소까지 약 ${firstLeg.min}분` ;
-    if (!out.length) { $("#answer").innerHTML = `<b>🕓 지금 출발하면 제대로 볼 수 있는 곳이 마땅치 않아요</b><p class="pfNote">이동시간과 입장마감·폐관 시각을 따져보니, 남은 시간 안에 충분히 둘러볼 곳을 찾지 못했어요. 야경·산책·맛집처럼 늦게까지 여는 곳으로 다시 물어보세요.</p>`; scrollAI?.(); return; }
   }
+  if (!out.length) { $("#answer").innerHTML = `<b>🕓 지금 출발하면 제대로 볼 수 있는 곳이 마땅치 않아요</b><p class="pfNote">${lateDrop ? `'${esc(lateDrop.name)}'${josa2(lateDrop.name, "은", "는")} 지금 출발하면 시간에 못 맞춰요${lateDrop.note ? ` (${esc(lateDrop.note)})` : ""}. ` : ""}이동시간과 입장마감·폐관 시각을 따져보니, 오늘 남은 시간 안에 충분히 둘러볼 곳을 찾지 못했어요. 저녁엔 문 닫은 곳이 많아요 — 내일 기준으로 짜 보거나, 야경·산책·맛집처럼 늦게까지 여는 곳으로 다시 물어보세요.</p><div class="drLinks">${tmrBtn}</div>`; scrollAI?.(); return; }
 
   // 동선 요약: 좌표가 있는 곳끼리 실제 거리
   const pts = out.filter(o => o.x && coordOf(o.x));
@@ -10709,7 +10739,8 @@ function recommend(t, forced = null, fixedMeal = null) {
   const firstX = out.find(o => o.x && !o.link)?.x;
   if (!tripHead && firstX) { const o0 = tripOriginInfo({}); if (o0.label) tripHead = `🚩 ${o0.label}에서 출발 기준` }
   const head = [rain ? "☔ 실내 위주" : outdoor ? "🌤 야외 위주" : "", firstX && tripDistrictOf(firstX) ? `${tripDistrictOf(firstX)} 일대 코스` : ""].filter(Boolean).join(" · ");
-  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener noreferrer" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
+  const lateHtml = lateDrop ? `<p class="pfNote" style="margin:6px 0 8px">⏰ <b>'${esc(lateDrop.name)}'${josa2(lateDrop.name, "은", "는")} 지금 출발하면 시간에 못 맞춰서 뺐어요</b>${lateDrop.note ? ` (${esc(lateDrop.note)})` : ""}. 아래는 대신 지금 갈 수 있는 곳이에요.<br>${tmrBtn}</p>` : "";
+  $("#answer").innerHTML = `<b>추천 코스${head ? " · " + esc(head) : ""}</b>${lateHtml}${tripHead ? `<div class="tripClock">${esc(tripHead)}</div>` : ""}<ol class="course">${out.slice(0,4).map(o => o.link ? `<li><span>${esc(o.t || "+")}</span><div><a target="_blank" rel="noopener noreferrer" href="${safeUrl(o.link)}"><b>${esc(o.name)}</b></a>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>` : `<li><span>${esc(o.t)}</span><div><b>${esc(o.name)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ""}${o.why ? `<small style="color:#ffe1a8;margin-top:4px">${esc(o.why)}</small>` : ""}</div></li>`).join("")}</ol><small>${note}${fixedMeal ? " · 앞 화면에서 본 식당을 그대로 유지했어요." : " · 같은 조건으로 다시 추천하면 다른 후보 조합을 우선 보여드려요."}</small>`;
 }
 /* 🏯 역사 유적: 세 권역 모두 같은 방식 — 한 곳만 무작위로 뽑지 않고, 오늘 갈 수 있는 곳을 가까운 순으로 모두 보여준다 */
 function historyList(s) {
@@ -11015,8 +11046,26 @@ function decisionVariedPicks(selected){
     if(!pool.length)break;
     best.push(pool[0].p);
   }
-  const result=tripPlanPicks(best,selected).picks;
+  let result=tripPlanPicks(best,selected).picks;
   if(result.length<original.length&&duration<=180)return original;
+  // 2026-11-17: 저녁(예: 20시)엔 첫 장소가 '밤 산책'으로 잡히고 그 뒤엔 문 연 곳이 없어 한 곳짜리 코스가 됐음
+  //   → 한 곳뿐이면 '저녁 먹고(또는 카페) → 그 장소' 순서로 앞에 한 곳을 붙여 본다 (가는 시간·영업시간 그대로 검사)
+  if(result.length<2&&!pet&&mm!=="none"){
+    const pre=[];
+    if(mm!=="cafe")for(const f of FOOD.filter(f=>!kid||decKidFoodOk(f)))pre.push(wrap('food',f));
+    if(mm!=="meal"||duration>=180)for(const c of [...CAFES,...BAKERIES].filter(c=>!c.pet||!kid))pre.push(wrap('cafe',c));
+    let top=null;
+    for(const p of pre){
+      if(best.some(q=>decSameSite(q.x,p.x)))continue;
+      const d=kmAny(p.x,result[0].x); if(d==null||d>radius)continue;
+      const r=tripPlanPicks([p,...result],selected).picks;
+      if(r.length!==result.length+1)continue;
+      if(p.kind==='food'&&!decMealOk(r[0].plan.arrive))continue;
+      const sc=-r[r.length-1].plan.arrive-d*4+(p.kind==='food'&&mm==="meal"?30:0)-(recent.includes(aiItemKey(p.x))?25:0)+Math.random()*12;
+      if(!top||sc>top.sc)top={r,sc};
+    }
+    if(top)result=top.r;
+  }
   // '밥 꼭': 식당이 빠졌으면 마지막 장소 근처 밥집을 붙이거나(시간이 되면) 마지막 장소와 바꿔 넣는다
   if(mm==="meal"&&!pet&&result.length&&!result.some(p=>p.kind==='food')){
     const foods=FOOD.filter(f=>!kid||decKidFoodOk(f)).map(f=>wrap('food',f));
