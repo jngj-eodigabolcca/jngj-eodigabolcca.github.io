@@ -11,7 +11,7 @@
 """
 
 from __future__ import annotations
-import csv, hashlib, io, html, os, json, re, time, urllib.error, urllib.parse, urllib.request
+import csv, hashlib, io, html, math, os, json, re, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -963,12 +963,7 @@ def std_csv_events():
         try:
             api_rows, api_note = _std_api_rows(label, must)
         except Exception as e:
-            # 403 등은 본문의 이유(SERVICE_ACCESS_DENIED_ERROR 등)를 뽑아 짧게 남긴다 (잘려서 이유가 안 보이던 것)
-            em = str(e)
-            why = re.findall(r'"?(?:returnAuthMsg|errMsg|returnReasonCode|resultMsg)"?\s*[:=]?\s*"?([A-Za-z0-9_ .가-힣-]{2,60})', em)
-            code = re.match(r"HTTP \d+", em)
-            parts = list(dict.fromkeys(([code.group(0)] if code else []) + [w.strip() for w in why if w.strip()]))
-            api_rows, api_note = None, scrub("API 실패 (" + (" · ".join(parts) if parts else em[:80]) + ")")
+            api_rows, api_note = None, scrub(f"API 실패 ({str(e)[:80]})")
         if api_rows is not None:
             rows_iter, fname = api_rows, api_note
         else:
@@ -1631,6 +1626,84 @@ def recurring_events():
     return out
 
 
+
+# ───────── 🧸 키즈카페·실내놀이터 (2026-11-16) ─────────
+# 자료: 행정안전부 「전국기타유원시설업소표준데이터」(지방행정 인허가 · 키즈카페 등 기타유원시설업, 매일 갱신)
+#   https://www.data.go.kr/en/data/15124679/standard.do → URL(file.localdata.go.kr)에서 CSV를 받아 저장소 맨 바깥에 올림
+#   (파일 이름 상관없음 · 첫 줄에 '문화체육업종명'·'사업장명'·'영업상태명'이 있으면 알아봄 · 가끔 새로 올리면 됨)
+# 같은 업종에 오락실·캠핑장·물놀이장도 섞여 있어 이름으로 키즈카페·실내놀이터만 고른다. 영업 중인 곳만.
+# 결과: docs/data/kidscafes.json (앱 '아이랑 어디 갈까?' → '🧸 키즈카페' 칸)
+OUT_KIDSCAFES = DATA_DIR / "kidscafes.json"
+# EPSG:5174 (Bessel 중부원점 TM, 보정계수 없음) → WGS84
+def tm5174_to_wgs84(x, y):
+    a=6377397.155; f=1/299.1528128; e2=2*f-f*f
+    lat0=math.radians(38.0); lon0=math.radians(127.0028902777778); k0=1.0; FE=200000.0; FN=500000.0
+    def M(phi):
+        return a*((1-e2/4-3*e2**2/64-5*e2**3/256)*phi-(3*e2/8+3*e2**2/32+45*e2**3/1024)*math.sin(2*phi)+(15*e2**2/256+45*e2**3/1024)*math.sin(4*phi)-(35*e2**3/3072)*math.sin(6*phi))
+    m=M(lat0)+(y-FN)/k0
+    mu=m/(a*(1-e2/4-3*e2**2/64-5*e2**3/256)); e1=(1-math.sqrt(1-e2))/(1+math.sqrt(1-e2))
+    p1=mu+(3*e1/2-27*e1**3/32)*math.sin(2*mu)+(21*e1**2/16-55*e1**4/32)*math.sin(4*mu)+(151*e1**3/96)*math.sin(6*mu)+(1097*e1**4/512)*math.sin(8*mu)
+    ep2=e2/(1-e2); C1=ep2*math.cos(p1)**2; T1=math.tan(p1)**2; N1=a/math.sqrt(1-e2*math.sin(p1)**2); R1=a*(1-e2)/(1-e2*math.sin(p1)**2)**1.5; D=(x-FE)/(N1*k0)
+    lat=p1-(N1*math.tan(p1)/R1)*(D*D/2-(5+3*T1+10*C1-4*C1*C1-9*ep2)*D**4/24+(61+90*T1+298*C1+45*T1*T1-252*ep2-3*C1*C1)*D**6/720)
+    lon=lon0+(D-(1+2*T1+C1)*D**3/6+(5-2*C1+28*T1-3*C1*C1+8*ep2+24*T1*T1)*D**5/120)/math.cos(p1)
+    # Bessel → WGS84 (7변수, EPSG:5174 towgs84)
+    X0,Y0,Z0=-115.80,474.99,674.11; rx,ry,rz=[math.radians(s/3600) for s in (1.16,-2.31,-1.63)]; s=6.43e-6
+    N=a/math.sqrt(1-e2*math.sin(lat)**2); h=0
+    X=(N+h)*math.cos(lat)*math.cos(lon); Y=(N+h)*math.cos(lat)*math.sin(lon); Z=(N*(1-e2)+h)*math.sin(lat)
+    X2=X0+(1+s)*(X - rz*Y + ry*Z); Y2=Y0+(1+s)*(rz*X + Y - rx*Z); Z2=Z0+(1+s)*(-ry*X + rx*Y + Z)
+    a2=6378137.0; f2=1/298.257223563; e22=2*f2-f2*f2; p=math.hypot(X2,Y2); lat2=math.atan2(Z2,p*(1-e22))
+    for _ in range(6):
+        N2=a2/math.sqrt(1-e22*math.sin(lat2)**2); lat2=math.atan2(Z2+e22*N2*math.sin(lat2),p)
+    return round(math.degrees(lat2),6), round(math.degrees(math.atan2(Y2,X2)),6)
+
+KC_EXCLUDE = re.compile(r"오락|게임|GAME|코인|COIN|ARCADE|아케이드|캠핑|야영|글램핑|풀빌라|리조트|워터|물놀이|물체험|썰매|풀장|수영|촬영장|치유센터|정원|문구|하천|VR|브이알|클라임|야구장|시네마|더섬|에코|관광|농수산|하우스|공룡공원|아이스|해상체험|드라이빙|스테이|힐링파크|오랑쥬|놀이동산|베리팜|포레스트|광장|드론", re.I)
+KC_INCLUDE = re.compile(r"키즈|kids|베이비|주니어|플레이|play|팡팡|방방|점핑|점프|트램|바운스|다쿵|월드킹|코코몽|타요|큐리|와글|무키무키|코코별|키키카카|헬로파크|히어로|롤리폴리|리틀펀트|바니바니|블럭랜드|위치스|퐁퐁|루미잼|델꼬|호호펀|아이플러스|아이즐링|키즈캐슬|조이|구구단|허니비|메르시|쁘띠놀|킨더|러블레싱|옐로우지브라|스페이스파크|반짝반짝|에어빌리지|휴파크|하이점프|박스플레이|볼락스|나르샤|어린이체험", re.I)
+
+def _kc_phone(v):
+    d = re.sub(r"\D", "", v or "")
+    if len(d) < 9:
+        return ""
+    if d.startswith("02"):
+        return f"02-{d[2:-4]}-{d[-4:]}"
+    return f"{d[:3]}-{d[3:-4]}-{d[-4:]}" if len(d) in (10, 11) else d
+
+def build_kidscafes():
+    """기타유원시설업 CSV → 광주·전남 영업 중 키즈카페 목록 (kidscafes.json). 파일이 없으면 아무것도 안 함."""
+    got = _std_csv_files(("문화체육업종명", "사업장명", "영업상태명"))
+    if not got:
+        return None, "기타유원시설업 CSV 없음"
+    _, fname, text = got
+    items = []
+    for r in csv.DictReader(io.StringIO(text)):
+        r = {(k or "").strip(): (v or "").strip() for k, v in r.items()}
+        nm = re.sub(r"\s+", " ", r.get("사업장명", "")).strip()
+        if r.get("영업상태명") not in ("영업/정상", "영업", "정상") or not nm:
+            continue
+        if KC_EXCLUDE.search(nm) or not KC_INCLUDE.search(nm):
+            continue
+        addr = re.sub(r"\s+", " ", r.get("도로명주소") or r.get("지번주소") or "").strip()
+        if not in_region(addr):
+            continue
+        lat = lng = None
+        try:
+            x, y = float(r.get("좌표정보(X)") or 0), float(r.get("좌표정보(Y)") or 0)
+            if x and y:
+                lat, lng = tm5174_to_wgs84(x, y)
+        except (TypeError, ValueError):
+            pass
+        rides = re.sub(r"\s+", " ", r.get("놀이기구수내역", "")).strip(" ,")
+        items.append({
+            "id": "kc-" + (r.get("관리번호") or hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10]),
+            "name": nm, "kind": "키즈카페", "district": district_from_addr(addr), "address": addr,
+            "phone": _kc_phone(r.get("전화번호")), "lat": lat, "lng": lng,
+            "rides": rides if rides and not re.fullmatch(r"[\d\s]+", rides) else "",
+            "since": (r.get("인허가일자") or "")[:10], "inout": "실내",
+        })
+    items.sort(key=lambda v: (v["district"], v["name"]))
+    write_json(OUT_KIDSCAFES, {"updated": TODAY_ISO, "source": "행정안전부 지방행정 인허가(기타유원시설업) · " + fname, "items": items})
+    return len(items), f"키즈카페 {len(items)}곳 ({fname})"
+
+
 def main():
     global VENUES
     data = embedded_data()
@@ -1738,6 +1811,11 @@ def main():
         "events_count": len(merged),
         "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
     }
+    try:                                             # 🧸 키즈카페 (실패해도 일정 수집과 무관)
+        n_kc, kc_note = build_kidscafes()
+        meta["kidscafes"] = {"count": n_kc or 0, "message": kc_note}
+    except Exception as e:
+        meta["kidscafes"] = {"count": 0, "message": scrub(f"키즈카페 만들기 실패 ({str(e)[:120]})")}
     for k in ("local", "place_fill", "kopis_last_try", "kopis_last_ok"):   # 다른 수집기가 남긴 기록은 유지
         if k in old_meta:
             meta[k] = old_meta[k]
