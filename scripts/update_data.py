@@ -829,6 +829,69 @@ def culture_events():
 STD_NOTE = ""
 STD_WINDOW_DAYS = 60          # 오늘부터 이 기간 안에 열리거나 진행 중인 것만
 
+# 2026-11-16: 표준데이터를 API로 먼저 받는다 (CSV를 매달 다시 올리지 않아도 최신 자료) → 안 되면 위 CSV를 읽는다.
+#   공공데이터포털에서 아래 두 API를 '활용신청'(자동 승인)하면 기존 인증키(DATA_GO_KR_KEY) 그대로 쓴다.
+#   · 전국공연행사정보표준데이터  https://www.data.go.kr/data/15013106/standard.do
+#   · 전국문화축제표준데이터      https://www.data.go.kr/data/15013104/standard.do
+#   API 영문 항목 이름 → CSV 한글 열 이름으로 바꿔서, 아래 변환 코드를 CSV와 똑같이 쓴다.
+#   (축제 쪽 영문 이름은 표준 규칙으로 짐작한 것 · 다르면 meta.json 에 '항목 이름 다름: …'이 남으니 여기만 고치면 됨)
+STD_API = {
+    "공연행사": ("https://api.data.go.kr/openapi/tn_pubr_public_pblprfr_event_info_api", {
+        "eventNm": "행사명", "opar": "장소", "eventCo": "행사내용", "eventStartDate": "행사시작일자",
+        "eventEndDate": "행사종료일자", "eventStartTime": "행사시작시각", "chrgeInfo": "요금정보", "admfee": "관람요금",
+        "mnnstNm": "주관기관명", "auspcInsttNm": "주최기관명", "phoneNumber": "전화번호", "homepageUrl": "홈페이지주소",
+        "rdnmadr": "소재지도로명주소", "lnmadr": "소재지지번주소", "latitude": "위도", "longitude": "경도",
+        "instt_nm": "제공기관명"}),
+    "문화축제": ("https://api.data.go.kr/openapi/tn_pubr_public_cltur_fstvl_api", {
+        "fstvlNm": "축제명", "opar": "개최장소", "fstvlStartDate": "축제시작일자", "fstvlEndDate": "축제종료일자",
+        "fstvlCo": "축제내용", "mnnst": "주관기관명", "mnnstNm": "주관기관명", "auspcInstt": "주최기관명",
+        "auspcInsttNm": "주최기관명", "phoneNumber": "전화번호", "homepageUrl": "홈페이지주소", "relateInfo": "관련정보",
+        "rdnmadr": "소재지도로명주소", "lnmadr": "소재지지번주소", "latitude": "위도", "longitude": "경도",
+        "instt_nm": "제공기관명"}),
+}
+STD_API_MAX_PAGES = 40        # 1쪽 1000건 · 전국 자료라도 넉넉함 (하루 2번 × 두 종류 = 개발계정 한도 안)
+
+def _std_api_rows(label, must):
+    """표준데이터 API에서 전국 자료를 받아 CSV와 같은 한글 열 이름의 행 목록으로 돌려준다. 못 받으면 (None, 이유)."""
+    if not DATA_KEY:
+        return None, "인증키 없음"
+    url, fmap = STD_API[label]
+    rows, page, total = [], 1, None
+    while page <= STD_API_MAX_PAGES:
+        q = {"serviceKey": DATA_KEY, "pageNo": str(page), "numOfRows": "1000", "type": "json"}
+        raw = http_get(url + "?" + urllib.parse.urlencode(q), timeout=40).decode("utf-8", "replace").strip()
+        if not raw.startswith("{"):
+            # 인증 실패 등은 XML 로 오는 경우가 많다 → 이유만 짧게
+            m = re.search(r"<(?:returnAuthMsg|resultMsg|errMsg)>([^<]+)<", raw)
+            return None, "API 응답 이상: " + (m.group(1) if m else raw[:80])
+        j = json.loads(raw)
+        resp = j.get("response", j)
+        hdr = resp.get("header", {}) or {}
+        code = str(hdr.get("resultCode", "00")).strip()
+        if code == "03":                      # NODATA
+            break
+        if code not in ("00", "0", "000"):
+            return None, f"API 오류 {code} {hdr.get('resultMsg', '')}".strip()
+        body = resp.get("body", {}) or {}
+        items = body.get("items", [])
+        if isinstance(items, dict):
+            items = items.get("item", [])
+        if isinstance(items, dict):
+            items = [items]
+        for it in items or []:
+            rows.append({fmap.get(k, k): ("" if v is None else str(v)) for k, v in it.items()})
+        try:
+            total = int(body.get("totalCount") or 0)
+        except (TypeError, ValueError):
+            total = 0
+        if not items or page * 1000 >= total:
+            break
+        page += 1
+    if rows and not any(all(rw.get(m) for m in must) for rw in rows[:50]):
+        keys = sorted({k for rw in rows[:5] for k in rw})[:14]
+        return None, "항목 이름 다름: " + ",".join(keys)
+    return rows, f"API {len(rows)}행"
+
 def _std_csv_files(must_have):
     files = []
     for d in (ROOT / "raw", ROOT):
@@ -896,13 +959,22 @@ def std_csv_events():
               time=("행사시작시각",), price=("요금정보", "관람요금"), provider=("제공기관명",))),
     ]
     for label, must, festival, col in kinds:
-        got = _std_csv_files(must)
-        if not got:
-            notes.append(f"{label} CSV 없음")
-            continue
-        _, fname, text = got
+        # ① API 로 먼저 (매일 최신) → ② 안 되면 저장소에 올린 CSV
+        try:
+            api_rows, api_note = _std_api_rows(label, must)
+        except Exception as e:
+            api_rows, api_note = None, scrub(f"API 실패 ({str(e)[:80]})")
+        if api_rows is not None:
+            rows_iter, fname = api_rows, api_note
+        else:
+            got = _std_csv_files(must)
+            if not got:
+                notes.append(f"{label} CSV 없음 · {api_note}")
+                continue
+            _, csv_name, text = got
+            rows_iter, fname = csv.DictReader(io.StringIO(text)), f"{csv_name} · {api_note}"
         n_in = 0
-        for r in csv.DictReader(io.StringIO(text)):
+        for r in rows_iter:
             r = {(k or "").strip(): (v or "") for k, v in r.items()}
             title = clean_api_text(_std_pick(r, *col["title"]))
             start = _std_date(_std_pick(r, *col["start"]))
