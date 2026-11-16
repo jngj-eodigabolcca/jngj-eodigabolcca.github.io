@@ -9948,7 +9948,7 @@ function renderSearch() {
         : /^(시장|전통시장)$/.test(category) ? D.VENUES.filter(x => venueIsMarket(x) && categoryMatches(x))
         : category === "가볼곳" ? D.VENUES.filter(categoryMatches) : [];
       const an = category === "축제" ? D.ANNUAL.filter(categoryMatches) : [];
-      return { ev, pl, an, fd: [], bk: [], st: [], cf: [], lb: [], pg: [], cn: [],
+      return { ev, pl, an, fd: [], bk: [], st: [], cf: [], lb: [], pg: [], cn: [], kc: [],
         n: ev.length + pl.length + an.length };
     }
     const ev = islandVisitIntent
@@ -9977,10 +9977,14 @@ function renderSearch() {
     const pg = off ? [] : sortHome(D.PROGRAMS.filter(x => hits(q.replace(/강좌|배우기|수업|교실/g, " ").trim() || q, x, ["name", "org", "place", "district", "desc", "target", "days"])));
     const cn = off ? [] : D.CINEMAS.filter(x => hitsAll(q, x));
     const an = off ? [] : D.ANNUAL.filter(x => hitsAll(q, x));
-    return { ev, pl, fd, bk, st, cf, lb, pg, cn, an, n: ev.length + pl.length + fd.length + bk.length + st.length + cf.length + lb.length + pg.length + cn.length + an.length };
+    // 2026-11-16: 키즈카페 — '키즈·키카·실내놀이터·방방' 같은 말이면 그 말을 빼고 남은 말(동네 등)로 거르기
+    const KCW = /키즈\s*카페|키즈|키카|실내\s*놀이터|놀이\s*카페|방방|트램펄?폴?린|점핑/g;
+    const kcQ = KCW.test(q) ? q.replace(KCW, " ").trim() : null;
+    const kc = off ? [] : sortHome((D.KIDSCAFES || []).filter(x => kcQ !== null ? (!kcQ || hits(kcQ, x, ["name", "district", "address"])) : hits(q, x, ["name"])));
+    return { ev, pl, fd, bk, st, cf, lb, pg, cn, an, kc, n: ev.length + pl.length + fd.length + bk.length + st.length + cf.length + lb.length + pg.length + cn.length + an.length + kc.length };
   };
   // 권역과 상관없이 앱 안의 자료를 전부 찾고, 지금 고른 권역 것을 먼저 보여 준다 (예: 광주권에서 '나로호' → 고흥)
-  const SDATA = { EVENTS: ALL.EVENTS, VENUES: ALL.VENUES, FOOD: ALL.FOOD || [], BAKERIES: ALL.BAKERIES || [], STAYS: ALL.STAYS || [], CAFES: ALL.CAFES || [], LIBS: ALL.LIBS || [], PROGRAMS: ALL.PROGRAMS || [], CINEMAS: ALL.CINEMAS || [], ANNUAL: ANNUAL || [] };
+  const SDATA = { EVENTS: ALL.EVENTS, VENUES: ALL.VENUES, FOOD: ALL.FOOD || [], BAKERIES: ALL.BAKERIES || [], STAYS: ALL.STAYS || [], CAFES: ALL.CAFES || [], LIBS: ALL.LIBS || [], PROGRAMS: ALL.PROGRAMS || [], CINEMAS: ALL.CINEMAS || [], ANNUAL: ANNUAL || [], KIDSCAFES: ALL.KIDSCAFES || [] };
   let R = find(SDATA, q), fixNote = "";
   // 2026-11-13: 하나도 안 나오면 ① 오타·초성 고쳐서 ② 그래도 없으면 가장 잘 맞는 한 단어로 다시 찾기
   if (!category && !islandVisitIntent && !islandExpoIntent && !R.n) {
@@ -9999,15 +10003,15 @@ function renderSearch() {
   const allKey = q + "|" + REGION;                 // 권역을 바꾸거나 다른 말을 찾으면 다시 '우리 권역만'
   if (window.SEARCH_ALL_Q !== allKey) window.SEARCH_ALL_Q = null;
   // 우리 권역에는 없고 다른 권역에만 있으면, 굳이 한 번 더 누르게 하지 않고 바로 보여 준다
-  const everyHit0 = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an"].flatMap(k => R[k]);
+  const everyHit0 = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an", "kc"].flatMap(k => R[k]);
   const autoAll = !everyHit0.some(mine) && everyHit0.length > 0;
   const showAll = window.SEARCH_ALL_Q === allKey || autoAll;
   const here = a => showAll ? a.filter(mine).concat(a.filter(x => !mine(x))) : a.filter(mine);
-  const [ev, pl, fd, bk, st, cf, lb, pg, cn, an] = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an"].map(k => here(R[k]))
-    .map((a, i) => category || [6, 7].includes(i) ? a : strongFirst(q, a));
+  const [ev, pl, fd, bk, st, cf, lb, pg, cn, an, kc] = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an", "kc"].map(k => here(R[k]))
+    .map((a, i) => category || [6, 7, 10].includes(i) ? a : strongFirst(q, a));
   const hitCount = a => (category || !shortQuery(q)) ? a.length : a.filter(x => strongHit(q, x)).length || "";
-  const allHits = [...ev, ...pl, ...fd, ...bk, ...st, ...cf, ...lb, ...pg, ...cn, ...an];
-  const everyHit = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an"].flatMap(k => R[k]);
+  const allHits = [...ev, ...pl, ...fd, ...bk, ...st, ...cf, ...lb, ...pg, ...cn, ...an, ...kc];
+  const everyHit = ["ev", "pl", "fd", "bk", "st", "cf", "lb", "pg", "cn", "an", "kc"].flatMap(k => R[k]);
   const otherRegions = [...new Set(everyHit.filter(x => !mine(x)).map(regionOfItem))].filter(r => REGIONS[r]);
   const otherN = everyHit.filter(x => !mine(x)).length;
   const mineN = allHits.filter(mine).length;
@@ -10019,7 +10023,7 @@ function renderSearch() {
   sv.classList.remove("hidden");
   sv.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">SEARCH</span><h2>'${esc(q)}' 검색 결과</h2></div><span>${n}개</span></div>
   ${q.split(/\s+/).length >= 2 ? `<div class="verify"><b>✨ 문장으로 찾으시나요?</b> 단어별 검색 결과는 아래에 그대로 보여드려요. 날씨·시간·동행 조건을 고려한 코스가 필요하면 <button type="button" class="btn" onclick="searchToGuide()">이 문장으로 맞춤 추천받기 →</button></div>` : ""}
-  <div class="jump">${[["앱 기능", ft.length, "sft"], ["나들이", hitCount(pl) || 0, "sp"], ["일정", hitCount(ev) || 0, "se"], ["맛집", hitCount(fd) || 0, "sf"], ["빵지순례", hitCount(bk) || 0, "sb"], ["숙소", hitCount(st) || 0, "ss"], ["멍카페", hitCount(cf) || 0, "sc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", hitCount(cn) || 0, "scn"], ["해마다 축제", hitCount(an) || 0, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
+  <div class="jump">${[["앱 기능", ft.length, "sft"], ["나들이", hitCount(pl) || 0, "sp"], ["일정", hitCount(ev) || 0, "se"], ["맛집", hitCount(fd) || 0, "sf"], ["빵지순례", hitCount(bk) || 0, "sb"], ["숙소", hitCount(st) || 0, "ss"], ["멍카페", hitCount(cf) || 0, "sc"], ["키즈카페", kc.length, "skc"], ["도서관", lb.length, "slb"], ["동네 강좌", pg.length, "spg"], ["영화관", hitCount(cn) || 0, "scn"], ["해마다 축제", hitCount(an) || 0, "san"]].filter(x => x[1]).map(x => `<a href="#${x[2]}" onclick="event.preventDefault();document.getElementById('${x[2]}').scrollIntoView({behavior:'smooth'})">${x[0]} ${x[1]}</a>`).join("")}<button onclick="clearSearch()">✕ 검색 지우기</button></div>
   ${fixNote ? `<p class="emptyNote">${fixNote}</p>` : ""}
   ${otherRegions.length ? `<p class="emptyNote">📍 ${autoAll ? `${esc(RNAME())}에는 없어서 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) 결과 ${otherN}개를 보여 드려요.` : showAll ? `${esc(RNAME())} ${mineN}개를 먼저 보여 주고, 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")}) ${otherN}개도 같이 보여 드려요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=null;renderSearch()">${esc(RNAME())}만 보기</a>` : `${mineN ? `${esc(RNAME())} 결과만 보여 드려요.` : `${esc(RNAME())}에는 없어요.`} 다른 권역(${otherRegions.map(r => REGIONS[r].name).join("·")})에 ${otherN}개 더 있어요. <a href="#" onclick="event.preventDefault();window.SEARCH_ALL_Q=$('#search').value.trim()+'|'+REGION;renderSearch()">다른 권역도 보기</a>`} ${otherRegions.map(r => `<a href="#" onclick="event.preventDefault();setRegion('${r}')">${REGIONS[r].emoji} ${REGIONS[r].name}으로 바꾸기</a>`).join(" ")}</p>` : ""}
   ${ft.length ? `<h3 class="sub" id="sft">🧭 앱 기능 바로가기 ${ft.length}</h3><div class="grid">${ft.map(featureCard).join("")}</div>` : ""}
@@ -10030,6 +10034,7 @@ function renderSearch() {
   ${bk.length ? `<h3 class="sub" id="sb">🥐 빵지순례 ${hitCount(bk)}</h3>${hitSection(category || /빵/.test(q) ? "" : q, bk, bakeryCard)}` : ""}
   ${st.length ? `<h3 class="sub" id="ss">숙소 ${hitCount(st)}</h3>${hitSection(category ? "" : q, st, stayCard)}` : ""}
   ${cf.length ? `<h3 class="sub" id="sc">멍카페 ${hitCount(cf)}</h3>${hitSection(category ? "" : q, cf, petCard)}` : ""}
+  ${kc.length ? `<h3 class="sub" id="skc">🧸 키즈카페·실내놀이터 ${kc.length}</h3><div class="grid">${kc.slice(0, 24).map(kcCard).join("")}</div>${kc.length > 24 ? `<p class="emptyNote">${kc.length - 24}곳 더 있어요 — '북구 키즈카페'처럼 동네를 붙여 찾거나 <a href="#" onclick="event.preventDefault();clearSearch();showKids(KC_SUB)">🧸 아이랑 어디 갈까?</a>에서 보세요.</p>` : ""}` : ""}
   ${lb.length ? `<h3 class="sub" id="slb">📚 도서관 ${lb.length}</h3><div class="grid">${lb.slice(0, 24).map(libCard).join("")}</div>${lb.length > 24 ? `<p class="emptyNote">${lb.length - 24}곳 더 있어요 — '북구 도서관'처럼 동네를 붙여 찾거나 <a href="#" onclick="event.preventDefault();clearSearch();showTab('local')">🏘 동네 탭</a>에서 보세요.</p>` : ""}` : ""}
   ${pg.length ? `<h3 class="sub" id="spg">✍️ 동네 강좌 ${pg.length}</h3><div class="grid">${pg.slice(0, 24).map(progCard).join("")}</div>` : ""}
   ${cn.length ? `<h3 class="sub" id="scn">🎬 영화관 ${hitCount(cn)}</h3>${hitSection(category ? "" : q, cn, cinemaCard)}` : ""}
