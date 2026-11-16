@@ -14032,6 +14032,7 @@ document.addEventListener("keydown",function(e){
 .careDoc h2 small{display:block;margin-top:4px;font-size:12.5px;font-weight:600;color:var(--muted,#6b6b6b)}
 .careDoc h3{margin:6px 0 0;font-size:15px}
 .careTabs{display:flex;gap:6px;flex-wrap:wrap}
+.careTabs[hidden]{display:none!important}
 .careTabs button,.careWhere button{border:1px solid var(--line2,#ddd);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:inherit;cursor:pointer}
 .careTabs button.on{background:#1f3d73;border-color:#1f3d73;color:#fff}
 .careWhere{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--muted,#6b6b6b)}
@@ -14160,12 +14161,13 @@ document.addEventListener("keydown",function(e){
   }
 
   let CUR = { kind: "med", at: null };
+  /* 2026-11-16: 메뉴에서 '문 연 약국·응급실'과 '쉼터'를 나눔 → 약국 창엔 탭 없이 약국·응급실만, 쉼터 창엔 무더위·한파 탭만 */
   function render() {
     const box = $c("modalContent"); if (!box || !CARE) return;
     const at = refPoint(CUR.at), k = CUR.kind;
     const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
     box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
-      <div class="careTabs" role="tablist">${[["med", "🏥 약국·응급실"], ["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
+      <div class="careTabs" role="tablist"${k === "med" ? " hidden" : ""}>${[["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
       <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 지금 위치로 찾기</button><span>위치는 이 기기 안에서 거리 계산에만 써요</span>`}</div>
       ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
     box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
