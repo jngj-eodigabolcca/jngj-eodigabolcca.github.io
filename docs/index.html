@@ -41,7 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
-  · 2026-11-16 우리 동네 오늘 머리에서 바로 동네 바꾸기(아래 오늘 뭐하지? 기준도 같이) · 그 칸과 오늘 뭐하지? 사이 간격 · 전체 메뉴를 동그란 색 아이콘으로 크게(넘치면 스크롤) · 제과·제빵 → 빵지순례
+  · 2026-11-16 우리 동네 오늘 머리에서 그 칸의 동네만 따로 바꾸기(glm_lt_gu_권역, 안 골랐으면 사는 동네를 따름) · 그 칸과 오늘 뭐하지? 사이 간격 · 전체 메뉴를 동그란 색 아이콘으로 크게(넘치면 스크롤) · 제과·제빵 → 빵지순례
   · 2026-11-15 권역 바꿀 때 사는 동네도 권역마다 따로 기억(광주 동네 기준으로 순천·목포 거리를 재던 것 고침) · 계절 명소는 지금 권역에서 가까운 순 · '전체'에서 오늘 날씨 빼고(홈 사진 칸) 약국·응급실과 쉼터 나눔
   · 2026-11-15 홈 줄이기(#allMenuEasy20261115 안): 하단 '전체'와 겹치는 홈 메뉴 12칸만 숨김. '전체'에 지금만 되는 것·문화가 있는 날·계절 명소·새 소식 칸 추가(누르면 홈의 그 칸으로)
   · 맨 끝 #allMenuEasy20261115 (appStyles 끝 + homeRedesign20261113Js 안 buildAll) : 전체 메뉴 창에 메뉴 찾기, 한 화면에 다 보이게(칸 설명 줄 숨김·폰 5칸·여백 줄임, 아이콘·글씨 크기는 11-13 그대로)(아이콘·글씨 크기는 그대로), 손잡이 끌어 닫기 · 하단 탭은 지금 화면 표시 막대만
@@ -12010,7 +12010,7 @@ initNav();
    <div class="manualItem"><strong>♡ 즐겨찾기·상세정보</strong><p>관심 있는 장소를 저장하고 운영시간·요금·공식 안내를 확인해요.</p></div>
    <div class="manualItem"><strong>🚶 지금 출발·오늘 결정</strong><p>오늘의 추천과 조건별 추천을 살펴보고, 마음에 드는 항목을 눌러 상세정보·이동 경로를 확인해요. 추천은 참고용이므로 운영 여부는 출발 전에 확인하세요.</p></div>
    <div class="manualItem"><strong>🛒 시장·📚 동네도서관</strong><p>아래 '전체' 메뉴의 '우리 동네' 묶음에서 시장·장날 또는 동네 도서관을 골라 목록을 확인하고, 필요한 항목을 눌러 위치·관련 정보를 살펴보세요.</p></div>
-   <div class="manualItem"><strong>🏘 우리 동네 오늘·동네 바꾸기</strong><p>홈의 '우리 동네 오늘'에서 오늘 여는 도서관·접수 중 강좌·여는 시장·무료 행사 수를 봐요. '🏠 ○○ 기준 바꾸기'로 동네를 고르면 '오늘 뭐하지?' 추천도 그 동네에서 가까운 순으로 함께 바뀌어요. 권역마다 고른 동네를 따로 기억해요.</p></div>
+   <div class="manualItem"><strong>🏘 우리 동네 오늘·동네 바꾸기</strong><p>홈의 '우리 동네 오늘'에서 오늘 여는 도서관·접수 중 강좌·여는 시장·무료 행사 수를 봐요. 오른쪽 '바꾸기'로 이 칸의 동네만 바꿀 수 있고, '오늘 뭐하지?'의 '○○ 기준 바꾸기'는 추천을 가까운 순으로 보여 줄 기준 동네를 따로 정해요. 둘 다 권역마다 고른 동네를 기억해요.</p></div>
    <div class="manualItem"><strong>🏥 약국·응급실·쉼터</strong><p>'전체' 메뉴의 '우리 동네'에서 지금 문 연 약국·응급실, 그리고 계절에 맞는 무더위쉼터·한파쉼터를 가까운 순으로 찾아요. 숨쉬기 힘들거나 의식이 흐리면 바로 119에 전화하세요.</p></div>
    <div class="manualItem"><strong>🌤 오늘 날씨</strong><p>홈 위쪽 사진 칸을 누르면 오늘 날씨와 옷차림·챙길 것을 볼 수 있어요. '전체' 메뉴 찾기 칸에 '날씨'를 쳐도 나와요.</p></div>
    <div class="manualItem"><strong>🎤 관심 가수·공연 알림</strong><p>대중공연에서 가수를 찾아 관심 가수로 저장하거나 알림을 설정할 수 있어요. 브라우저·기기 알림 권한과 앱 실행 상태에 따라 알림 동작은 달라질 수 있으니 공식 예매처도 확인하세요.</p></div>
@@ -12351,7 +12351,7 @@ window.openPrivacy = function(){
   <p><b>이 앱은 회원가입·로그인을 요구하지 않으며, 제보·후기에서 이름이나 연락처를 입력받지 않습니다. 다만 외부 서비스 접속 시 IP 주소 등 접속정보가 해당 서비스에 전달될 수 있습니다.</b></p>
   <h4>1. 이 기기 안에만 저장하는 것</h4>
   <p>아래 내용은 쓰시는 휴대폰·PC의 브라우저 안에만 저장되고, 운영자를 포함해 누구에게도 전송되지 않아요.</p>
-  <ul><li>찜한 일정·장소 및 선택한 지역·출발지 관련 설정</li><li>고른 권역, 선택한 동네(권역마다 따로 기억) 또는 GPS로 판별한 행정구역의 대표 좌표(정밀 GPS 좌표는 저장하지 않음)</li><li>관심 가수, 새 공연·문화 소식 알림 설정과 확인 상태</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li><li>화면 밝기 선택, 날씨 등 일부 조회 결과의 임시 저장정보</li><li>후기 중복 제출 방지를 위한 마지막 작성일, 동네 선택 안내의 숨김 여부 등 이용 편의 설정</li></ul>
+  <ul><li>찜한 일정·장소 및 선택한 지역·출발지 관련 설정</li><li>고른 권역, 선택한 동네('우리 동네 오늘' 동네 포함, 권역마다 따로 기억) 또는 GPS로 판별한 행정구역의 대표 좌표(정밀 GPS 좌표는 저장하지 않음)</li><li>관심 가수, 새 공연·문화 소식 알림 설정과 확인 상태</li><li>지도 표시 설정, 주소→좌표 변환 결과(다시 찾지 않으려고 저장)</li><li>화면 밝기 선택, 날씨 등 일부 조회 결과의 임시 저장정보</li><li>후기 중복 제출 방지를 위한 마지막 작성일, 동네 선택 안내의 숨김 여부 등 이용 편의 설정</li></ul>
   <p>이 정보는 기기 브라우저의 사이트 데이터에 보관되며, 사용자가 삭제하거나 브라우저 정책에 따라 지워질 수 있어요. 지우려면 브라우저 설정에서 이 사이트의 '사이트 데이터 삭제'를 선택하세요. 삭제하면 찜과 일부 설정이 초기화될 수 있습니다.</p>
   <h4>2. 위치 정보</h4>
   <p>'지금 위치로'나 지도의 '내 위치'를 <b>직접 누를 때만</b> 브라우저가 허락을 물은 뒤 위치를 써요. 가까운 곳부터 보여주는 데 사용합니다. 정밀 GPS 좌표를 앱 저장소에 저장하거나 주소검색 API에 전달하지 않으며, 외부 지도 타일 서비스에는 화면에 표시된 지도 영역 및 접속정보가 전달될 수 있습니다. 허락하지 않아도 동네를 골라 똑같이 쓸 수 있어요.</p>
@@ -13292,7 +13292,14 @@ document.addEventListener("keydown",function(e){
 
 <script id="local20261109Js">
 (function(){
-  function guOf(){ try { return (typeof HOME!=="undefined" && HOME && HOME.gu && REGIONS[REGION].districts.includes(HOME.gu)) ? HOME.gu : "" } catch(e){ return "" } }
+  // 2026-11-16: '우리 동네 오늘'은 자기 동네를 따로 기억 (권역마다). 여기서 한 번도 안 골랐으면 사는 동네(HOME)를 따름
+  var LT_KEY=function(){ return "glm_lt_gu_"+(typeof REGION!=="undefined"?REGION:"gj") };
+  function guOf(){ try {
+    var v=store.get(LT_KEY(),null), ds=REGIONS[REGION].districts;
+    if(v==="__all") return "";
+    if(v && ds.includes(v)) return v;
+    return (typeof HOME!=="undefined" && HOME && HOME.gu && ds.includes(HOME.gu)) ? HOME.gu : "";
+  } catch(e){ return "" } }
   function counts(){
     var t=todayISO(), g=guOf(), inGu=function(x){ return !g || x.district===g };
     var c={lib:0,prog:0,mk:0,free:0};
@@ -13309,10 +13316,10 @@ document.addEventListener("keydown",function(e){
     el.hidden=false;
     var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
     var ds=[]; try{ ds=REGIONS[REGION].districts||[] }catch(e){}
-    var pick='<label class="ltGu"><span>🏠 '+(r.g?esc(r.g)+' 기준':'동네 고르기')+'</span><u>'+(r.g?'바꾸기':'▾')+'</u><select data-lt-gu aria-label="우리 동네 바꾸기 (아래 오늘 뭐하지? 추천도 같이 바뀜)"><option value="">'+esc((typeof RNAME==="function"?RNAME():"")+" 전체")+'</option>'
-      +ds.map(function(d){ return '<option value="'+esc(d)+'"'+(d===r.g?" selected":"")+'>🏠 '+esc(d)+'</option>' }).join("")
-      +'<option value="__gps">📍 지금 위치로</option></select></label>';
-    el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b>'+pick+'</div><p class="ltHint">여기서 동네를 바꾸면 아래 \'오늘 뭐하지?\' 추천도 같이 바뀌어요</p><div class="ltRow">'
+    var pick='<label class="ltGu"><span>🏠 '+(r.g?esc(r.g)+' 기준':'동네 고르기')+'</span><u>'+(r.g?'바꾸기':'▾')+'</u><select data-lt-gu aria-label="우리 동네 오늘: 동네 바꾸기"><option value="">'+esc((typeof RNAME==="function"?RNAME():"")+" 전체")+'</option>'
+      +ds.map(function(d){ return '<option value="'+esc(d)+'"'+(d===r.g?" selected":"")+'>'+esc(d)+'</option>' }).join("")
+      +'</select></label>';
+    el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b>'+pick+'</div><div class="ltRow">'
       +cell("lib","📚",c.lib,"여는 도서관","오늘 여는 공공·어린이 도서관 (아직 문 열기 전인 곳 포함, 작은도서관 제외)")+cell("prog","✍️",c.prog,"접수 중 강좌")+cell("mk","🏮",c.mk,"여는 시장","오늘 여는 시장 (장날인 시장·야시장 + 매일 여는 상설시장, 정기 휴무 제외)")+cell("free","🆓",c.free,"무료 행사")+'</div></div>';
   }
   // 동네 탭을 열고 '📚 동네 도서관' 목록으로 바로 내려감 (숫자를 센 동네와 같은 동네로 맞춤)
@@ -13328,10 +13335,8 @@ document.addEventListener("keydown",function(e){
   };
   document.addEventListener("change",function(ev){
     var sel=ev.target.closest && ev.target.closest("#localToday [data-lt-gu]"); if(!sel) return;
-    var v=sel.value;
-    if(v==="__gps"){ window.useMyLocation && useMyLocation(); return }
-    if(!v){ window.clearHome && clearHome(); return }
-    window.setHome && setHome(v);
+    try{ store.set(LT_KEY(), sel.value||"__all") }catch(e){}
+    render();
   });
   document.addEventListener("click",function(ev){
     var b=ev.target.closest && ev.target.closest("#localToday [data-lt]"); if(!b) return;
