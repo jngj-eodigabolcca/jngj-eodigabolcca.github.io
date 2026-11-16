@@ -4846,10 +4846,14 @@ html body #nowShow .wkHint:not(#_):not(#_):not(#_){display:none!important}
 html body main>#localToday:not([hidden]):not(#_):not(#_)+#decideNow.decideWrap.mainDecision:not(#_){margin-top:18px!important}
 /* 우리 동네 오늘: 머리에서 동네 바꾸기 */
 html body #localToday .ltHead{align-items:center}
-html body #localToday .ltGu{flex:0 1 auto;min-width:0}
-html body #localToday .ltGu select{max-width:150px;height:32px;padding:0 26px 0 10px;border-radius:999px;border:1px solid #d9e2f0;background:#f3f7ff;color:#1f3d73;font:800 13px/1.2 Pretendard,system-ui,sans-serif;text-overflow:ellipsis}
+/* 동네 바꾸기: '오늘 뭐하지?'의 '○○ 기준 · 바꾸기'와 같은 작은 알약 모양. 누르면 바로 동네 목록 */
+html body #localToday .ltGu{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:#eef7f4;border:1px solid #cfe5dd;color:#134e4a;font:700 12px/1.4 Pretendard,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+html body #localToday .ltGu u{color:#3f8f7f;text-decoration:underline}
+html body #localToday .ltGu select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px;border:0;margin:0;padding:0}
+html body #localToday .ltGu:focus-within{outline:3px solid #f39a25;outline-offset:2px}
 html body #localToday .ltHint{margin:-4px 2px 8px;font-size:11.5px;color:#6b7486;line-height:1.4}
-:root[data-theme="dark"] body #localToday .ltGu select{background:#1b2130;border-color:rgba(120,160,240,.3);color:#cfe0ff}
+:root[data-theme="dark"] body #localToday .ltGu{background:#17302a;border-color:#2c5248;color:#9fe0cf}
+:root[data-theme="dark"] body #localToday .ltGu u{color:#9fe0cf}
 :root[data-theme="dark"] body #localToday .ltHint{color:#aab4c6}
 /* 전체 메뉴: 동그란 색 아이콘 + 아래 이름 (상자 없이, 크게 · 넘치면 스크롤) */
 html body #allMenu .amBody{padding:6px 14px 6px}
@@ -4861,13 +4865,13 @@ html body #allMenu .mgGrid>button>i{display:grid;place-items:center;width:54px;h
 html body #allMenu .mgGrid>button:active>i{transform:scale(.93)}
 html body #allMenu .mgGrid>button>i>.calToday{font-size:28px}
 html body #allMenu .mgGrid>button>span{font:750 12.5px/1.25 Pretendard,system-ui,sans-serif!important;color:#25324a!important;word-break:keep-all}
-html body #allMenu .mgGrid>button:nth-child(6n+1){--amc:#ffe9e1}
-html body #allMenu .mgGrid>button:nth-child(6n+2){--amc:#e5efff}
-html body #allMenu .mgGrid>button:nth-child(6n+3){--amc:#e3f5e9}
-html body #allMenu .mgGrid>button:nth-child(6n+4){--amc:#fff3d1}
-html body #allMenu .mgGrid>button:nth-child(6n+5){--amc:#efe7ff}
-html body #allMenu .mgGrid>button:nth-child(6n+6){--amc:#dff4f6}
-html body #allMenu .mgGrid>button.mgHot{--amc:#ffdcbc}
+html body #allMenu .mgGrid>button:nth-child(6n+1){--amc:#ffbea6}
+html body #allMenu .mgGrid>button:nth-child(6n+2){--amc:#b2ccff}
+html body #allMenu .mgGrid>button:nth-child(6n+3){--amc:#a6e3ba}
+html body #allMenu .mgGrid>button:nth-child(6n+4){--amc:#ffd866}
+html body #allMenu .mgGrid>button:nth-child(6n+5){--amc:#cbb6ff}
+html body #allMenu .mgGrid>button:nth-child(6n+6){--amc:#9fdfe9}
+html body #allMenu .mgGrid>button.mgHot{--amc:#ffab66}
 html body #allMenu .mgGrid>button.mgHot>span{color:#9a4a05!important}
 html body #allMenu .mgGrid>button.mgHot::after{top:-2px!important;right:calc(50% - 34px)!important;font-size:9.5px!important;padding:3px 6px!important}
 @media(hover:hover){html body #allMenu .mgGrid>button:hover{background:transparent!important}html body #allMenu .mgGrid>button:hover>i{transform:scale(1.05)}}
@@ -4875,7 +4879,9 @@ html body #allMenu .mgGrid>button:focus-visible{outline:none}
 html body #allMenu .mgGrid>button:focus-visible>i{outline:3px solid #f39a25;outline-offset:2px}
 @media(max-width:360px){html body #allMenu .mgGrid>button>i{width:48px;height:48px;font-size:24px}html body #allMenu .mgGrid>button>span{font-size:12px!important}}
 :root[data-theme="dark"] body #allMenu .amSec h3{color:#e8edf6}
-:root[data-theme="dark"] body #allMenu .mgGrid>button>i{background:rgba(255,255,255,.08)}
+:root[data-theme="dark"] body #allMenu .mgGrid>button>i{background:rgba(255,255,255,.14)}
+html body #allMenu:not(.amQ) .amExtra{display:none}
+@media(min-width:900px){html body #allMenu .amBr{display:none}}
 :root[data-theme="dark"] body #allMenu .mgGrid>button>span{color:#e8edf6!important}
 :root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>i{background:rgba(243,154,37,.22)}
 :root[data-theme="dark"] body #allMenu .mgGrid>button.mgHot>span{color:#ffc27a!important}
@@ -11833,6 +11839,8 @@ function initNav() {
   window.addEventListener("popstate", e => {
     if (LEAVING) return;
     const st = e.state || {};
+    // 0) 전체 메뉴가 열려 있으면 메뉴만 닫기 (2026-11-16)
+    { const am = document.getElementById("allMenu"); if (am && am.classList.contains("show")) { window.closeAllMenu?.("pop"); return } }
     // 1) 열린 상세창이 있으면 닫기
     if ($("#modal").classList.contains("show")) { closeModal(true); return }
     // 2) 검색 결과를 보고 있으면 닫기
@@ -13298,7 +13306,7 @@ document.addEventListener("keydown",function(e){
     el.hidden=false;
     var cell=function(k,ic,n,lab,tip){ return '<button type="button" data-lt="'+k+'" class="'+(n?"":"zero")+'"'+(tip?' title="'+tip+'" aria-label="'+tip+' '+n+'곳"':'')+'><i aria-hidden="true">'+ic+'</i><strong>'+n+'</strong><span>'+lab+'</span></button>' };
     var ds=[]; try{ ds=REGIONS[REGION].districts||[] }catch(e){}
-    var pick='<label class="ltGu"><select data-lt-gu aria-label="우리 동네 바꾸기 (아래 오늘 뭐하지? 추천도 같이 바뀜)"><option value="">'+esc((typeof RNAME==="function"?RNAME():"")+" 전체")+'</option>'
+    var pick='<label class="ltGu"><span>🏠 '+(r.g?esc(r.g)+' 기준':'동네 고르기')+'</span><u>'+(r.g?'바꾸기':'▾')+'</u><select data-lt-gu aria-label="우리 동네 바꾸기 (아래 오늘 뭐하지? 추천도 같이 바뀜)"><option value="">'+esc((typeof RNAME==="function"?RNAME():"")+" 전체")+'</option>'
       +ds.map(function(d){ return '<option value="'+esc(d)+'"'+(d===r.g?" selected":"")+'>🏠 '+esc(d)+'</option>' }).join("")
       +'<option value="__gps">📍 지금 위치로</option></select></label>';
     el.innerHTML='<div class="ltBox"><div class="ltHead"><b>🏘 우리 동네 오늘</b>'+pick+'</div><p class="ltHint">여기서 동네를 바꾸면 아래 \'오늘 뭐하지?\' 추천도 같이 바뀌어요</p><div class="ltRow">'
@@ -13579,12 +13587,14 @@ document.addEventListener("keydown",function(e){
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["지도·찜·도움말", ["map", "favorites", "notice", "manual", "review"]]
   ];
-  const btn = k => { const [ic, nm, sub] = M[k]; return `<button type="button" data-go="${k}" class="${HOT.has(k) ? "mgHot" : ""}${k === "all" ? " mgAll" : ""}"><i aria-hidden="true">${ic}</i><span>${nm}</span>${sub && k !== "all" ? `<small>${sub}</small>` : ""}</button>` };
+  const BRK = { today: "오늘|열리는 것", onlyNow: "지금만|되는 것", culture: "문화가|있는 날", dayplan: "오늘|하루 코스", stages: "오늘 밤|뭐 들을랑가", popshows: "대중가수|공연", galleries: "미술관·|갤러리", hood: "동네서|시간 보내기", care: "문 연|약국·응급실" };
+  const nmHtml = k => BRK[k] ? BRK[k].split("|").map(x => x.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]))).join('<br class="amBr">') : M[k][1];
+  const btn = k => { const [ic, nm, sub] = M[k]; return `<button type="button" data-go="${k}" class="${HOT.has(k) ? "mgHot" : ""}${k === "all" ? " mgAll" : ""}"><i aria-hidden="true">${ic}</i><span>${nmHtml(k)}</span>${sub && k !== "all" ? `<small>${sub}</small>` : ""}</button>` };
 
   /* ── 메뉴 하나로 가기: 예전 빠른실행키가 하던 동작을 그대로 씀 ── */
   function go(k){
     gc("메뉴-" + (M[k] ? M[k][1] : k), "메뉴 · " + (M[k] ? M[k][1] : k));
-    closeAll();
+    closeAll("nav");
     // 2026-11-13: '동네서 시간 보내기'는 동네 화면 맨 위로, '동네 도서관'은 그 화면의 도서관 칸으로
     if (k === "hood" || k === "local") {
       showTab("local"); [80, 400, 800].forEach(ms => setTimeout(() => toTop(k === "hood" ? $id("localView") : ($id("quickLibraryAnchor") || $id("localView"))), ms)); return;
@@ -13657,6 +13667,7 @@ document.addEventListener("keydown",function(e){
       </div>
       <div class="amBody">
         ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h">${g}<em>${ks.length}</em></h3><div class="mgGrid">${ks.map(btn).join("")}</div></section>`).join("")}
+        <section class="amSec amExtra" aria-label="그 밖에"><h3>그 밖에</h3><div class="mgGrid">${["weather"].map(btn).join("")}</div></section>
         <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
       </div>
     </div>`;
@@ -13679,18 +13690,28 @@ document.addEventListener("keydown",function(e){
   }
   function openAll(){
     const d = buildAll(); lastFocus = document.activeElement;
+    if (d.classList.contains("show")) return;
+    try { if (typeof navPush === "function") navPush({ amOpen: 1 }) } catch (e) {}
     try { const inp = d.querySelector(".amSearch input"); if (inp.value) { inp.value = ""; d.querySelector(".amClear").hidden = true; filterAll(d, "") } } catch (e) {}
     d.classList.add("show"); document.body.classList.add("allMenuOpen");
     try { d.querySelector(".amBox").scrollTop = 0 } catch (e) {}
     document.querySelectorAll("#appTabs button").forEach(b => b.classList.toggle("on", b.dataset.go === "all"));
     setTimeout(() => d.querySelector(".amClose")?.focus(), 30);
   }
-  function closeAll(){
+  // how: "pop" 뒤로가기로 닫힘 · "nav" 메뉴를 눌러 다른 화면으로 감(기록 칸을 지금 화면으로 바꿔 둠) · 그 밖 ×·바깥·Esc(기록 한 칸 되돌림)
+  function closeAll(how){
     const d = $id("allMenu"); if (!d || !d.classList.contains("show")) return;
     d.classList.remove("show"); document.body.classList.remove("allMenuOpen");
+    try {
+      if (history.state && history.state.amOpen) {
+        if (how === "nav") history.replaceState({ glm: 1, tab: (typeof CUR_TAB !== "undefined" ? CUR_TAB : "home"), idx: history.state.idx }, "");
+        else if (how !== "pop") history.back();
+      }
+    } catch (e) {}
     syncTabs(); try { lastFocus?.focus?.({ preventScroll: true }) } catch (e) {}
   }
   window.openAllMenu = openAll;
+  window.closeAllMenu = closeAll;
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll() });
 
   /* ── 하단 탭 5개 (늘 보임) ── */
@@ -13708,7 +13729,7 @@ document.addEventListener("keydown",function(e){
       const b = e.target.closest("button[data-go]"); if (!b) return;
       const k = b.dataset.go;
       if (k === "all") { $id("allMenu")?.classList.contains("show") ? closeAll() : openAll(); return }
-      closeAll();
+      closeAll("nav");
       if (k === "decide") { window.goHome ? goHome() : showTab("home") }
       else showTab(k);
       gc("하단탭-" + b.textContent.trim(), "하단 탭");
