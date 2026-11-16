@@ -5227,6 +5227,14 @@ html body #decideNow .dnTabs button i:not(#_){font-size:14px!important;line-heig
 .weakMore[open]>summary{margin-bottom:10px}
 :root[data-theme="dark"] .weakMore>summary{background:#231e14;border-color:#5f4d2c;color:#e0c79a}
 </style>
+<style id="kidsQuick3_20261116">
+/* 2026-11-16: 홈 '아이랑 어디 갈까?' 칸에 키즈카페 숫자 — 칸 크기는 그대로, 버튼 3개가 한 줄에 들어가게 '›'와 여백만 줄임 */
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3{display:flex!important;flex-wrap:nowrap;gap:4px!important}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i{flex:1 1 auto;justify-content:center;white-space:nowrap;gap:3px;padding:4px 7px!important;font-size:12.5px!important;min-width:0}
+html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i em{font-size:13.5px}
+@media(max-width:400px){html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i{padding:3px 5px!important;font-size:11.5px!important;letter-spacing:-.3px}html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i em{font-size:12.5px}}
+@media(max-width:355px){html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 .kqArr{display:none}html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i{padding:3px 4px!important}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8631,7 +8639,8 @@ function kidsEvRow(x) {
 function renderKidsQuick() {
   const el = document.getElementById("kidsQuickSub"); if (!el) return;
   const ev = EVENTS.filter(isKidsEvent).length, pl = VENUES.filter(isKidsPlace).length;
-  el.innerHTML = `<i class="kqLink" onclick="event.stopPropagation();kidsEventsAll()" title="아이와 볼 행사로 바로 가기">🎈 행사 <em>${ev || "—"}</em> ›</i><i class="kqLink" onclick="event.stopPropagation();showKids('전체');kidsScrollToPlaces()" title="아이와 갈 곳으로 바로 가기">📍 갈 곳 <em>${pl ? pl + "곳" : "—"}</em> ›</i>`;   // 2026-11-11: 행사·갈 곳을 눌러 그 칸으로 바로
+  el.innerHTML = `<i class="kqLink" onclick="event.stopPropagation();kidsEventsAll()" title="아이와 볼 행사로 바로 가기">🎈 행사 <em>${ev || "—"}</em><span class="kqArr"> ›</span></i><i class="kqLink" onclick="event.stopPropagation();showKids('전체');kidsScrollToPlaces()" title="아이와 갈 곳으로 바로 가기">📍 갈 곳 <em>${pl ? pl + "곳" : "—"}</em><span class="kqArr"> ›</span></i>${KIDSCAFES.length ? `<i class="kqLink kqKc" onclick="event.stopPropagation();showKids(KC_SUB)" title="키즈카페·실내놀이터로 바로 가기">🧸 키즈카페 <em>${KIDSCAFES.length}</em><span class="kqArr"> ›</span></i>` : ""}`;   // 2026-11-11: 행사·갈 곳을 눌러 그 칸으로 바로 · 2026-11-16: 키즈카페 칸 추가
+  el.classList.toggle("kq3", !!KIDSCAFES.length);
 }
 function renderKids() {
   renderKidsQuick();
