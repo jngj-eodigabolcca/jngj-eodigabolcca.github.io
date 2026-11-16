@@ -5235,6 +5235,16 @@ html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i em{f
 @media(max-width:400px){html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i{padding:3px 5px!important;font-size:11.5px!important;letter-spacing:-.3px}html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i em{font-size:12.5px}}
 @media(max-width:355px){html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 .kqArr{display:none}html body .concertQuickAccess .kidsQuickHome:not(#_):not(#_) .kqChips.kq3 i{padding:3px 4px!important}}
 </style>
+<style id="baseGu20261116">
+/* 2026-11-16: 키즈카페 목록 '○○ 기준 · 가까운 순 바꾸기' — 우리 동네 오늘 동네 칸과 같은 모양 */
+html body .kcBar{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+html body .baseGu{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:#eef7f4;border:1px solid #cfe5dd;color:#134e4a;font:700 12px/1.4 Pretendard,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+html body .baseGu u{color:#3f8f7f;text-decoration:underline}
+html body .baseGu select:not(#_):not(#_){position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:0;cursor:pointer;font-size:16px;border:0;margin:0;padding:0}
+html body .baseGu:focus-within{outline:3px solid #f39a25;outline-offset:2px}
+:root[data-theme="dark"] body .baseGu{background:#17302a;border-color:#2c5248;color:#9fe0cf}
+:root[data-theme="dark"] body .baseGu u{color:#9fe0cf}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8674,12 +8684,18 @@ function kcCard(v) {
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">네이버 지도 ↗</a>${tel}</div></div></div>`;
 }
+/* 2026-11-16: 가까운 순 기준 동네 — '우리 동네 오늘'의 동네 칸과 같은 모양. 바꾸면 '오늘 뭐하지?' 기준 동네(HOME)도 같이 바뀜 */
+function homeBasePill() {
+  let ds = []; try { ds = REGIONS[REGION].districts || [] } catch (e) {}
+  const on = !!(HOME && HOME.gu);
+  return `<label class="baseGu"><span>${on ? (HOME.src === "gps" ? "📍 " : "🏠 ") + esc(HOME.gu) + " 기준 · 가까운 순" : "🏠 사는 동네 고르기"}</span><u>${on ? "바꾸기" : "▾"}</u><select aria-label="가까운 순 기준 동네 바꾸기" onchange="this.value&&setHome(this.value)"><option value="">${on ? "기준 동네 바꾸기" : "동네 고르기"}</option>${ds.map(d => `<option value="${esc(d)}"${on && d === HOME.gu ? " selected" : ""}>${esc(d)}</option>`).join("")}</select></label>`;
+}
 function kcSection() {
   const gus = ["전체", ...new Set(KIDSCAFES.map(v => v.district).filter(Boolean))];
   const pick = KIDS_GU === "전체" || gus.includes(KIDS_GU) ? KIDS_GU : "전체";
   const list = sortHome(KIDSCAFES.filter(v => pick === "전체" || v.district === pick));
   return `<h3 class="sub" id="kidsPlaces">🧸 키즈카페·실내놀이터 ${list.length}</h3>
-  <div class="filterBar"><select aria-label="동네 선택" onchange="setKids('gu',this.value)">${gus.map(g => `<option ${g === pick ? "selected" : ""} value="${esc(g)}">${g === "전체" ? "모든 동네" : esc(g)} (${g === "전체" ? KIDSCAFES.length : KIDSCAFES.filter(v => v.district === g).length})</option>`).join("")}</select></div>
+  <div class="filterBar kcBar"><select aria-label="동네 선택" onchange="setKids('gu',this.value)">${gus.map(g => `<option ${g === pick ? "selected" : ""} value="${esc(g)}">${g === "전체" ? "모든 동네" : esc(g)} (${g === "전체" ? KIDSCAFES.length : KIDSCAFES.filter(v => v.district === g).length})</option>`).join("")}</select>${homeBasePill()}</div>
   ${paged("renderKids", list, kcCard, "<p class='empty'>이 동네엔 등록된 키즈카페가 없어요. '모든 동네'로 바꿔 보세요.</p>")}
   <div class="verify" style="margin-top:12px">${HOME ? "내 동네에서 가까운 순" : "동네·이름 순"}이에요. 행정안전부 인허가 자료(기타유원시설업)에서 지금 영업 중인 곳만 골랐어요. 음식점으로만 신고한 곳은 빠질 수 있고, 운영시간·요금·나이 제한은 가게마다 달라요.</div>`;
 }
