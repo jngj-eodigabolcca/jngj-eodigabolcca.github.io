@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-16 아이랑 어디 갈까?에 '🧸 키즈카페' 칸: docs/data/kidscafes.json(수집기가 기타유원시설업 CSV에서 만듦) · 장소 목록과 섞지 않음(kcSection·kcCard)
   · 맨 끝 <style·script id="mobileEase20261116"> : 폰에서 내리면 위쪽 머리말 숨김(검색창만 남음) · 일정 화면 칩 한 줄 · 0개 칩 흐리게
   · 2026-11-16 우리 동네 오늘 머리에서 그 칸의 동네만 따로 바꾸기(glm_lt_gu_권역, 안 골랐으면 사는 동네를 따름) · 그 칸과 오늘 뭐하지? 사이 간격 · 전체 메뉴를 동그란 색 아이콘으로 크게(넘치면 스크롤) · 제과·제빵 → 빵지순례
   · 2026-11-15 권역 바꿀 때 사는 동네도 권역마다 따로 기억(광주 동네 기준으로 순천·목포 거리를 재던 것 고침) · 계절 명소는 지금 권역에서 가까운 순 · '전체'에서 오늘 날씨 빼고(홈 사진 칸) 약국·응급실과 쉼터 나눔
@@ -5483,6 +5484,7 @@ document.documentElement.style.setProperty("--creaming", `url("${CREAMING_SRC}")
 document.querySelectorAll(".logo img, img.navHomeIcon").forEach(img => { const swap = () => { img.src = CREAMING_SRC; img.style.objectFit = "contain"; img.style.padding = "3px" }; if (img.complete && !img.naturalWidth) swap(); else img.addEventListener("error", swap, { once: true }) });   // 아이콘 파일이 없거나 이미 실패했어도 크리밍으로
 document.querySelectorAll(".js-creaming-src").forEach(img=>{img.src=CREAMING_SRC;});
 /* 광주 LIFE MAP v3 — 일정(자동수집) · 미술관/박물관 · 광주맛집 · 지도 · 영화 · 카페 */
+let KIDSCAFES = [];   // 🧸 키즈카페 (docs/data/kidscafes.json · 2026-11-16)
 let FLAGS = {}, PROGRAMS = [], LIBS = [], ANNUAL = [], EVENTS = [], CAFES = [], CINEMAS = [], VENUES = [], FOOD = [], BAKERIES = [], STAYS = [], META = null;
 let FILTER = "전체", PLACE_KIND = "전체", FOOD_GU = "전체", MAP = null, MAP_LAYERS = {}, MAP_READY = false;
 const store = {
@@ -6039,6 +6041,7 @@ function applyRegion() {
   EVENTS = ALL.EVENTS.filter(inRegion); VENUES = ALL.VENUES.filter(inRegion); FOOD = ALL.FOOD.filter(inRegion); BAKERIES = ALL.BAKERIES.filter(inRegion);
   CAFES = ALL.CAFES.filter(inRegion); CINEMAS = ALL.CINEMAS.filter(inRegion); STAYS = ALL.STAYS.filter(inRegion);
   PROGRAMS = (ALL.PROGRAMS || []).filter(inRegion); LIBS = (ALL.LIBS || []).filter(inRegion);
+  KIDSCAFES = (ALL.KIDSCAFES || []).filter(inRegion);
 }
 function regionCount(r) { const keep = REGION; REGION = r; const n = ALL.EVENTS.filter(inRegion).length + ALL.VENUES.filter(inRegion).length; REGION = keep; return n }
 function renderRegionBar() {
@@ -6187,6 +6190,7 @@ async function load() {
   const NAME_PIC_FIX = [[/백수\s*해안/, "https://tong.visitkorea.or.kr/cms/resource/04/4057304_image2_1.jpg"]];
   V0 = V0.map(v => { const f = NAME_PIC_FIX.find(([re]) => re.test(v.name || "")); return f ? { ...v, image: f[1], imageCredit: "한국관광공사" } : v });
   V0 = attachPetInfo(applyHistoryBoost(applyKidsMuseumBoost(V0)), PET0);
+  try { const K0 = await getJSON("kidscafes", null); ALL.KIDSCAFES = (K0 && Array.isArray(K0.items)) ? K0.items : [] } catch { ALL.KIDSCAFES = [] }
   META = META0; Object.assign(ALL, { EVENTS: E0, CAFES: C0, CINEMAS: M0, VENUES: V0, FOOD: F0, BAKERIES: B0, STAYS: S0 });
   // 끝난 일정은 데이터 갱신이 늦어도 화면에서 자동으로 뺀다.
   const t = todayISO();
@@ -8639,16 +8643,36 @@ function renderKids() {
   const evs = EVENTS.filter(isKidsEvent).sort((a, b) => ((a.start && a.start > t) - (b.start && b.start > t)) || String(a.start || "").localeCompare(String(b.start || "")));
   const d = DAY_KO[kstNow().getUTCDay()];
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH KIDS · ${esc(RNAME())}</span><h2 class="kidsHeadTitle"><svg class="kidsDuo creamingHead kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="${CREAMING_SRC}" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg>아이랑 어디 갈까?<small>크리밍이랑 손잡고 · 아이와 볼 행사와 갈 곳을 모았어요</small></h2></div><span>${base.length}곳</span></div>
-  <div class="kidsScienceNav kidsTop" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">${CR_IC} 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === KIDS_SUB ? "selected" : ""}" onclick="setKids('sub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}</div>
+  <div class="kidsScienceNav kidsTop" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">${CR_IC} 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === KIDS_SUB ? "selected" : ""}" onclick="setKids('sub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}${KIDSCAFES.length ? `<button type="button" class="${KIDS_SUB === KC_SUB ? "selected" : ""}" onclick="setKids('sub','${KC_SUB}')">🧸 ${KC_SUB}<small>${KIDSCAFES.length}</small></button>` : ""}</div>
   ${evs.length ? `<h3 class="sub" id="kidsEvents">${CAL_IC} 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.map(kidsEvRow).join("")}</div>` : ""}
-  <h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
+  ${KIDS_SUB === KC_SUB ? kcSection() : `<h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
   <div class="filterBar">
     <div class="seg">${["전체", "실내", "야외"].map(x => `<button class="${x === KIDS_IO ? "on" : ""}" onclick="setKids('io','${x}')">${x === "실내" ? "🏠 실내" : x === "야외" ? "🌤 야외" : "실내·야외 모두"} <small class="chipN">${kidsN('io', x)}</small></button>`).join("")}</div>
     <select aria-label="구 선택" onchange="setKids('gu',this.value)">${DIST_OPTS().map(g => `<option ${g === KIDS_GU ? "selected" : ""} value="${g}">${distLabel(g)} (${kidsN('gu', g)})</option>`).join("")}</select>
     <label class="chk"><input type="checkbox" ${KIDS_OPEN ? "checked" : ""} onchange="setKids('open',this.checked)"> 오늘(${d}) 문 연 곳만</label>
   </div>
   ${paged("renderKids", list, placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
-  <div class="verify" style="margin-top:12px">유아휴게실·유모차 대여·체험 예약은 시설마다 달라요. 가기 전에 한 번 확인하쇼.</div>`;
+  <div class="verify" style="margin-top:12px">유아휴게실·유모차 대여·체험 예약은 시설마다 달라요. 가기 전에 한 번 확인하쇼.</div>`}`;
+}
+/* 🧸 키즈카페·실내놀이터 (2026-11-16): 행정안전부 인허가 자료(기타유원시설업) 중 영업 중인 곳.
+   장소 목록(VENUES)과 섞지 않고 이 칸에서만 보여 줌 → 나들이·추천 코스에는 끼어들지 않음 */
+const KC_SUB = "키즈카페";
+function kcCard(v) {
+  const tel = v.phone ? `<a class="miniBtn" href="tel:${esc(v.phone.replace(/[^\d+]/g, ""))}">📞 전화</a>` : "";
+  return `<div class="listCard place kcCard"><div class="listMain"><div class="kindRow">${homeTag(v)}<span class="kind">🧸 키즈카페·실내놀이터</span><span class="kind">🏠 실내</span></div>
+  <h3>${esc(v.name)}</h3>
+  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>시간·요금</dt><dd>가게마다 달라요 · 가기 전에 전화나 지도에서 확인</dd></dl>
+  <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
+  <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">네이버 지도 ↗</a>${tel}</div></div></div>`;
+}
+function kcSection() {
+  const gus = ["전체", ...new Set(KIDSCAFES.map(v => v.district).filter(Boolean))];
+  const pick = KIDS_GU === "전체" || gus.includes(KIDS_GU) ? KIDS_GU : "전체";
+  const list = sortHome(KIDSCAFES.filter(v => pick === "전체" || v.district === pick));
+  return `<h3 class="sub" id="kidsPlaces">🧸 키즈카페·실내놀이터 ${list.length}</h3>
+  <div class="filterBar"><select aria-label="동네 선택" onchange="setKids('gu',this.value)">${gus.map(g => `<option ${g === pick ? "selected" : ""} value="${esc(g)}">${g === "전체" ? "모든 동네" : esc(g)} (${g === "전체" ? KIDSCAFES.length : KIDSCAFES.filter(v => v.district === g).length})</option>`).join("")}</select></div>
+  ${paged("renderKids", list, kcCard, "<p class='empty'>이 동네엔 등록된 키즈카페가 없어요. '모든 동네'로 바꿔 보세요.</p>")}
+  <div class="verify" style="margin-top:12px">${HOME ? "내 동네에서 가까운 순" : "동네·이름 순"}이에요. 행정안전부 인허가 자료(기타유원시설업)에서 지금 영업 중인 곳만 골랐어요. 음식점으로만 신고한 곳은 빠질 수 있고, 운영시간·요금·나이 제한은 가게마다 달라요.</div>`;
 }
 function kidsScrollToPlaces() { setTimeout(() => { const h = document.getElementById("kidsPlaces"); if (!h) return; const hh = document.querySelector("header.top")?.offsetHeight || 0; window.scrollTo({ top: Math.max(0, h.getBoundingClientRect().top + scrollY - hh - 12), behavior: "smooth" }) }, 380) }
 window.setKids = (k, v) => { if (k === "sub") KIDS_SUB = v; if (k === "io") KIDS_IO = v; if (k === "gu") KIDS_GU = v; if (k === "open") KIDS_OPEN = v; renderKids(); if (k === "sub") kidsScrollToPlaces() };
@@ -13646,7 +13670,7 @@ document.addEventListener("keydown",function(e){
   // 메뉴 찾기용 다른 말 (이름·설명 말고도 이 말로 찾아짐)
   const KW = {
     events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
-    places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈", indoor: "비 실내 우천 더위 추위",
+    places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈 키즈카페 실내놀이터 방방 트램폴린", indoor: "비 실내 우천 더위 추위",
     hood: "동네 강좌 도서관 주민", local: "도서관 책 강좌", markets: "시장 장날 오일장 야시장", food: "밥 식당 맛집 한끼 먹을",
     map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
     galleries: "미술 그림 전시 갤러리", museums: "박물관 역사 유물", bakeries: "빵 제과 제빵 빵집 디저트", cafes: "강아지 개 반려견 카페 멍",
