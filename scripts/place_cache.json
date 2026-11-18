@@ -7782,7 +7782,9 @@
     "lat": 35.147274,
     "lng": 126.920808,
     "geoSrc": "OpenStreetMap(주소)",
-    "checked": "2026-11-18"
+    "checked": "2026-11-18",
+    "imgTried": "2026-11-18",
+    "imgTriedV": 2
   },
   "venues|ACC 하늘마당 (국립아시아문화전당 야외)|광주 동구 문화전당로 38|wiki": {
     "v": 1,
@@ -7808,7 +7810,9 @@
     "lat": 35.203375,
     "lng": 126.872325,
     "geoSrc": "OpenStreetMap(이름)",
-    "checked": "2026-11-18"
+    "checked": "2026-11-18",
+    "imgTried": "2026-11-18",
+    "imgTriedV": 2
   },
   "venues|양산호수공원|광주 북구 양산동 양산호수공원|wiki": {
     "v": 1,

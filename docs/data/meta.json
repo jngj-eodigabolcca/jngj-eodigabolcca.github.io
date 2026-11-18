@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-18T15:15:55+09:00",
+  "updated_at": "2026-11-18T15:21:57+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -19,9 +19,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 94,
       "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 94건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "message": "지난 수집 실패 · 다음 실행 때 다시 시도 · 11시간 전 자료 94건 사용"
     },
     {
       "id": "culture",
@@ -63,9 +63,9 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 94,
       "ok": false,
-      "count": 0,
-      "message": "수집 실패 · 지난 자료 94건 유지 (HTTP 400 Bad Request · 400 Bad Request Request Blocked)"
+      "message": "지난 수집 실패 · 다음 실행 때 다시 시도 · 11시간 전 자료 94건 사용"
     },
     {
       "id": "culture",
@@ -117,7 +117,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-18T15:18:28+09:00",
+      "fetched_at": "2026-11-18T15:23:18+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 284,
-      "fetched_at": "2026-11-18T15:18:28+09:00",
+      "fetched_at": "2026-11-18T15:23:18+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,10 +186,10 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-18T15:18:30+09:00",
-    "tourapi_calls": 21,
-    "osm_lookups": 4,
-    "wiki_lookups": 3,
+    "checked_at": "2026-11-18T15:23:20+09:00",
+    "tourapi_calls": 8,
+    "osm_lookups": 0,
+    "wiki_lookups": 0,
     "unfinished": false,
     "lists": {
       "venues": {
@@ -200,11 +200,11 @@
         "with_image": 255
       },
       "restaurants": {
-        "total": 75,
-        "with_coords": 33,
+        "total": 261,
+        "with_coords": 219,
         "coords_filled": 33,
-        "hours_filled": 16,
-        "with_image": 14
+        "hours_filled": 201,
+        "with_image": 153
       },
       "bakeries": {
         "total": 15,
@@ -236,6 +236,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-18T15:18:29+09:00"
+    "checked_at": "2026-11-18T15:23:19+09:00"
   }
 }
