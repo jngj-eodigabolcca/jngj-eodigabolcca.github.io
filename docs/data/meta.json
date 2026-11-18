@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-18T09:49:14+09:00",
+  "updated_at": "2026-11-18T10:03:51+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -28,7 +28,7 @@
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 30,
-      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -72,7 +72,7 @@
       "name": "문화정보원 전시·체험",
       "ok": true,
       "count": 30,
-      "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
+      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
     },
     {
       "id": "gma",
@@ -103,7 +103,7 @@
   },
   "shelters": {
     "count": 9205,
-    "message": "cold: 9205곳 (전국 55924줄 · 56쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR)"
+    "message": "cold: 9205곳 · 좌표 9205 · 시간 1201 (전국 55924줄 · 56쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT)"
   },
   "local": {
     "holidays": {
@@ -117,7 +117,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-18T09:54:50+09:00",
+      "fetched_at": "2026-11-18T10:09:53+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 284,
-      "fetched_at": "2026-11-18T09:54:50+09:00",
+      "fetched_at": "2026-11-18T10:09:53+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,7 +186,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-18T09:54:52+09:00",
+    "checked_at": "2026-11-18T10:09:55+09:00",
     "tourapi_calls": 3,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -236,6 +236,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-18T09:54:51+09:00"
+    "checked_at": "2026-11-18T10:09:54+09:00"
   }
 }
