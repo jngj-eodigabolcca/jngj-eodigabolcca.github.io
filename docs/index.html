@@ -5361,6 +5361,12 @@ html body .careGu select:not(#_):not(#_){position:absolute;inset:0;width:100%;he
 :root[data-theme="dark"] body .careGu{background:#17302a;border-color:#2c5248;color:#9fe0cf}
 :root[data-theme="dark"] body .careGu u{color:#9fe0cf}
 </style>
+<style id="careMore20261118">
+html body details.careMore{margin:4px 0 14px}
+html body details.careMore>summary{cursor:pointer;list-style:none;display:inline-flex;padding:8px 13px;border-radius:999px;border:1px solid var(--line,#e3e6ee);font-size:13px;font-weight:700;color:var(--muted,#667085)}
+html body details.careMore>summary::-webkit-details-marker{display:none}
+html body details.careMore[open]>summary{margin-bottom:10px}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -14454,8 +14460,8 @@ document.addEventListener("keydown",function(e){
   let CARE = null, CARE_P = null, POS = null;   // POS: '지금 위치'를 누른 경우에만, 이 화면을 쓰는 동안만
 
   function loadCare() {
-    return CARE_P ||= Promise.all(["pharmacies", "emergency", "shelters"].map(n => getJSON(n, null).catch(() => null)))
-      .then(([p, e, s]) => (CARE = { ph: items(p), er: items(e), sh: items(s), phUpd: upd(p), erUpd: upd(e), shUpd: upd(s) }));
+    return CARE_P ||= Promise.all(["pharmacies", "emergency", "shelters", "clinics"].map(n => getJSON(n, null).catch(() => null)))
+      .then(([p, e, s, c]) => (CARE = { ph: items(p), er: items(e), sh: items(s), cl: items(c), phUpd: upd(p), erUpd: upd(e), shUpd: upd(s) }));
   }
 
   /* ── 시간: 국립중앙의료원 요일 번호 1(월)~7(일), 8(공휴일) ── */
@@ -14472,9 +14478,9 @@ document.addEventListener("keydown",function(e){
     const n = kstNow(), iso = todayISO(), dow = n.getUTCDay(), m = n.getUTCHours() * 60 + n.getUTCMinutes();
     const y = new Date(Date.parse(iso + "T12:00:00Z") - 864e5).toISOString().slice(0, 10);
     const today = span(x, keyOf(iso, dow)), yest = span(x, keyOf(y, (dow + 6) % 7));
-    if (yest && yest.c > 1440 && m < yest.c - 1440) { const left = yest.c - 1440 - m; return { open: true, soon: left <= 60, txt: `${fmt(yest.c)}까지` } }
+    if (yest && yest.c > 1440 && m < yest.c - 1440) { const left = yest.c - 1440 - m; return { open: true, soon: left <= 60, txt: `🌙 심야 · ${fmt(yest.c)}까지` } }
     if (!today) return { open: false, txt: isHoli(iso) ? "공휴일 영업 정보 없음" : "오늘 영업 정보 없음" };
-    if (m >= today.o && m < today.c) { const left = today.c - m; return { open: true, soon: left <= 60, txt: `오늘 ${fmt(today.o)}–${fmt(today.c)}` } }
+    if (m >= today.o && m < today.c) { const left = today.c - m; return { open: true, soon: left <= 60, txt: `${today.c >= 22 * 60 ? "🌙 심야 · " : ""}오늘 ${fmt(today.o)}–${fmt(today.c)}` } }   // 2026-11-18: 밤 10시 넘어서까지 하는 곳(공공심야약국 등) 표시
     return { open: false, later: m < today.o, txt: m < today.o ? `오늘 ${fmt(today.o)}에 열어요` : `오늘은 ${fmt(today.c)}에 닫았어요` };
   }
 
@@ -14503,17 +14509,58 @@ document.addEventListener("keydown",function(e){
     const iso = todayISO(), holi = isHoli(iso) ? HOLIDAYS[iso] : "";
     let h = `<div class="care119"><span>🚑 숨쉬기 힘들거나 의식이 흐리면 망설이지 말고</span><a href="tel:119">119 전화</a></div>`;
     if (CARE.ph.length) {
-      const all = ranked(CARE.ph, at, 8).map(([x, d]) => [x, d, openInfo(x)]);
-      const open = all.filter(a => a[2].open).slice(0, 6);
-      h += `<h3>💊 지금 문 연 약국${holi ? ` <small style="font-weight:600">(${E(holi)} · 공휴일 시간)</small>` : ""}</h3>`;
-      h += open.length ? `<div class="careList">${open.map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>`
-        : `<p class="careEmpty">가까운 곳(8km 안)에 지금 열려 있는 약국이 없어요.${all.length ? " 가장 가까운 약국의 여는 시간이에요." : ""}</p>${all.length ? `<div class="careList">${all.slice(0, 3).map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>` : ""}`;
+      // 2026-11-18: 평일 낮엔 동네 약국이 거의 다 열려 있으니 → 심야약국(밤 10시 넘어까지)·주말/공휴일 문 여는 약국 위주로
+      const n = kstNow(), dow = n.getUTCDay(), mnow = n.getUTCHours() * 60 + n.getUTCMinutes();
+      const off = dow === 0 || dow === 6 || !!holi, dayName = holi || (dow === 0 ? "일요일" : dow === 6 ? "토요일" : "");
+      const all = ranked(CARE.ph, at, 10).map(([x, d]) => [x, d, openInfo(x)]);
+      const todaySpan = x => span(x, keyOf(iso, dow));
+      const late = all.filter(([x]) => { const t = todaySpan(x); return t && t.c >= 22 * 60 });
+      const list = (arr, k) => `<div class="careList">${arr.slice(0, k).map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>`;
+      const openNow = all.filter(a => a[2].open);
+      if (off) {
+        const todayOpen = all.filter(([x]) => todaySpan(x)).sort((a, b) => (b[2].open - a[2].open) || (a[1] - b[1]));
+        h += `<h3>🗓 오늘(${E(dayName)}) 문 여는 약국 <small style="font-weight:600">· 주말·휴일 당번</small></h3>`;
+        h += todayOpen.length ? list(todayOpen, 6) : `<p class="careEmpty">가까운 곳(10km 안)에 오늘 문 연다고 신고한 약국이 없어요. 아래 휴일지킴이약국에서 당번 약국을 찾아보세요.</p>`;
+      } else if (mnow >= 21 * 60 || mnow < 7 * 60) {
+        h += `<h3>🌙 지금 문 연 심야약국</h3>`;
+        h += openNow.length ? list(openNow, 6) : `<p class="careEmpty">가까운 곳(10km 안)에 지금 열려 있는 약국이 없어요.${all.length ? " 가장 가까운 약국의 여는 시간이에요." : ""}</p>${openNow.length || !all.length ? "" : list(all, 3)}`;
+      } else {
+        h += `<h3>🌙 오늘 밤늦게까지 여는 약국 <small style="font-weight:600">· 심야약국</small></h3><p class="careNote" style="margin-top:-4px">평일 낮엔 동네 약국 대부분이 열려 있어서, 밤 10시 넘어서까지 하는 곳만 모았어요.</p>`;
+        h += late.length ? list(late, 5) : `<p class="careEmpty">가까운 곳(10km 안)에 밤 10시 넘어까지 하는 약국이 없어요.</p>`;
+        if (openNow.length) h += `<details class="careMore"><summary>지금 문 연 가까운 약국 ${Math.min(3, openNow.length)}곳 보기</summary>${list(openNow, 3)}</details>`;
+      }
+    }
+    // 2026-11-18: 🩺 일요일·공휴일에 문 여는 병·의원 (data/clinics.json · 국립중앙의료원)
+    if ((CARE.cl || []).length) {
+      const n3 = kstNow(), d3 = n3.getUTCDay(), offToday = d3 === 0 || d3 === 6 || !!holi;
+      const cl = ranked(CARE.cl, at, 12);
+      const cTxt = (x, key) => { const t = span(x, key); return t ? `${fmt(t.o)}–${fmt(t.c)}` : "" };
+      const note = x => [x.kind, x.dept].filter(Boolean).join(" · ");
+      if (offToday) {
+        const rows = cl.map(([x, d]) => [x, d, openInfo(x)]).filter(([x]) => span(x, keyOf(iso, d3))).sort((a, b) => (b[2].open - a[2].open) || (a[1] - b[1]));
+        h += `<h3>🩺 오늘 문 여는 병·의원 <small style="font-weight:600">· ${holi ? "공휴일" : d3 === 6 ? "토요일" : "일요일"} 진료</small></h3>`;
+        h += rows.length ? `<div class="careList">${rows.slice(0, 6).map(([x, d, st]) => itemHtml({ ...x, note: note(x) }, d, st)).join("")}</div>` : `<p class="careEmpty">가까운 곳(12km 안)에 오늘 진료한다고 신고한 병·의원이 없어요.</p>`;
+        if (d3 === 6 && !holi) {   // 토요일엔 내일(일요일) 문 여는 곳도 미리
+          const sun = cl.filter(([x]) => span(x, 7));
+          if (sun.length) h += `<details class="careMore"><summary>🩺 내일(일요일) 문 여는 병·의원 보기</summary><div class="careList">${sun.slice(0, 5).map(([x, d]) => itemHtml({ ...x, note: [`일요일 ${cTxt(x, 7)}`, note(x)].filter(Boolean).join(" · ") }, d, null)).join("")}</div></details>`;
+        }
+      } else {
+        // 평일: 주말·공휴일에 문 여는 곳 미리 보기 (일요일 진료하는 곳 먼저)
+        const wk = cl.filter(([x]) => span(x, 6) || span(x, 7)).sort((a, b) => (!!span(b[0], 7) - !!span(a[0], 7)) || (a[1] - b[1]));
+        if (wk.length) {
+          const listH = `<div class="careList">${wk.slice(0, 6).map(([x, d]) => itemHtml({ ...x, note: [cTxt(x, 6) && `토 ${cTxt(x, 6)}`, cTxt(x, 7) && `일 ${cTxt(x, 7)}`, cTxt(x, 8) && `공휴일 ${cTxt(x, 8)}`, note(x)].filter(Boolean).join(" · ") }, d, null)).join("")}</div>`;
+          h += `<details class="careMore"><summary>🩺 주말·공휴일에 문 여는 병·의원 미리 보기</summary>${listH}</details>`;
+        }
+      }
     }
     if (CARE.er.length) {
       const er = ranked(CARE.er, at, 40).slice(0, 3);
       h += `<h3>🏥 가까운 응급실 <small style="font-weight:600">· 24시간</small></h3>`;
       h += er.length ? `<div class="careList">${er.map(([x, d]) => itemHtml({ ...x, note: x.level || "" }, d, null, x.erTel)).join("")}</div>` : `<p class="careEmpty">40km 안에 등록된 응급실이 없어요.</p>`;
     }
+    { const n2 = kstNow(), d2 = n2.getUTCDay(), m2 = n2.getUTCHours() * 60 + n2.getUTCMinutes();
+      if (CARE.ph.length && CARE.er.length && (d2 === 0 || d2 === 6 || holi || m2 >= 21 * 60 || m2 < 7 * 60))
+        h += `<h3>🔎 당번 약국 공식 조회</h3>` + links([["💊 휴일지킴이약국", "대한약사회 · 오늘 문 여는 당번 약국", "https://www.pharm114.or.kr"]]); }
     if (!CARE.ph.length || !CARE.er.length) {
       h += `<h3>🔎 공식 조회로 바로 찾기</h3>` + links([
         ...(!CARE.ph.length ? [["💊 휴일지킴이약국", "대한약사회 · 오늘 문 여는 약국 찾기", "https://www.pharm114.or.kr"]] : []),
@@ -14521,7 +14568,7 @@ document.addEventListener("keydown",function(e){
       ]);
     }
     const src = [CARE.phUpd && `약국 ${CARE.phUpd}`, CARE.erUpd && `응급실 ${CARE.erUpd}`].filter(Boolean).join(" · ");
-    if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
+    if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·병의원·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
     return h;
   }
 
