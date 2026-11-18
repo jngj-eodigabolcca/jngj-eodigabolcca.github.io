@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-18T10:03:51+09:00",
+  "updated_at": "2026-11-18T11:04:11+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -21,14 +21,14 @@
       "name": "KOPIS 공연",
       "count": 94,
       "ok": true,
-      "message": "하루 한 번만 받아요 · 6시간 전 자료 94건 사용"
+      "message": "하루 한 번만 받아요 · 7시간 전 자료 94건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 30,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "count": 42,
+      "message": "정상 수집 (기간별 조회 · 14쪽 읽음)"
     },
     {
       "id": "gma",
@@ -65,14 +65,14 @@
       "name": "KOPIS 공연",
       "count": 94,
       "ok": true,
-      "message": "하루 한 번만 받아요 · 6시간 전 자료 94건 사용"
+      "message": "하루 한 번만 받아요 · 7시간 전 자료 94건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 30,
-      "message": "정상 수집 (기간별 조회 · 5쪽 읽음)"
+      "count": 42,
+      "message": "정상 수집 (기간별 조회 · 14쪽 읽음)"
     },
     {
       "id": "gma",
@@ -90,20 +90,20 @@
     }
   ],
   "counts": {
-    "total": 170,
-    "auto": 143,
+    "total": 182,
+    "auto": 155,
     "manual": 27
   },
   "manual_count": 96,
-  "events_count": 170,
+  "events_count": 182,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "kidscafes": {
     "count": 96,
     "message": "키즈카페 96곳 (전국기타유언시설업소표준데이터.csv)"
   },
   "shelters": {
-    "count": 9205,
-    "message": "cold: 9205곳 · 좌표 9205 · 시간 1201 (전국 55924줄 · 56쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT)"
+    "count": 18931,
+    "message": "cold: 7일 안에 받은 자료 사용 / heat: 9726곳 · 좌표 9726 · 시간 138 (전국 62929줄 · 63쪽 · 항목 DTL_ADRES,XCORD,LO,CHCK_MATTER_WKEND_HDAY_OPN_AT,WKEND_HDAY_OPER_BEGIN_TIME,MODF_TIME,ARCD,WKDAY_OPER_BEGIN_TIME,YEAR,USE_PSBL_NMPR,CHCK_MATTER_NIGHT_OPN_AT,RSTR_NM,WKEND_HDAY_OPER_END_TIME,CHCK_MATTER_STAYNG_PSBL_AT,MNGDPT_CD,COLR_HOLD_ARCNDTN,RN_DTL_ADRES,INPT_TIME,DTL_POSITION,WKDAY_OPER_END_TIME,FCLTY_SCLAS,COLR_HOLD_ELEFN,AR,YCORD)"
   },
   "local": {
     "holidays": {
@@ -117,7 +117,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-18T10:09:53+09:00",
+      "fetched_at": "2026-11-18T11:17:45+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 284,
-      "fetched_at": "2026-11-18T10:09:53+09:00",
+      "fetched_at": "2026-11-18T11:17:45+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,7 +186,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-18T10:09:55+09:00",
+    "checked_at": "2026-11-18T11:17:48+09:00",
     "tourapi_calls": 3,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -236,6 +236,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-18T10:09:54+09:00"
+    "checked_at": "2026-11-18T11:17:46+09:00"
   }
 }
