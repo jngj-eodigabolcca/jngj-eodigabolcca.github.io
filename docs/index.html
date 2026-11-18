@@ -41,6 +41,8 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-18 저녁 전체 메뉴 '계절 명소' 아이콘이 달마다 🌸·🌻·🍁·❄️ 로 바뀜
+  · 2026-11-18 저녁 첫 화면 문구: 지금 관측이 비면 비로 보고(curWet) 비 올 때·올 예정일 때 '볕 좋을 때'류 문구 안 나오게
   · 2026-11-18 오후 약국·응급실 화면 119 아래 바로가기(💊약국·🏥응급실·🩺병의원·🐾동물병원, careJump) · 화면 아래 "🐾 반려동물이 아플 때"(vetHtml, 메뉴 검색 '동물병원'도 여기로) · 크리밍: 동물병원·강아지 아파요 → 전남대 동물병원 24시 응급센터 + 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
   · 2026-11-18 코스 제목 한 줄·지역 칩 가로(#alHeadFix20261118) · '시장 구경하고 먹방'은 권역마다 오늘 열린 시장+근처 밥집(marketPickToday) · 오늘 뭐하지 탭 고른 칸 진하게(#dnTabsOn20261118) · 크리밍 그때그때 질문 3개+🎲(askIdeas) · 키즈카페·도서관·장날 물으면 그 목록으로(kidsCafeAI·libraryAI) · 첫 화면 문구에 공휴일·선거·수능·기념일·축제·기온·일교차·미세먼지 등 · 검색창 예시 돌아가며 · '이번 주말 공연'처럼 언제+무엇 검색은 날짜별 목록 · 관리자 점검표 폰 줄맞춤
   · 2026-11-17 저녁 코스: 한 곳뿐이면 '저녁·카페 → 밤 산책'으로 앞에 붙임(decisionVariedPicks) · 코스 짜기에서 시간 못 맞춘 행사는 이유+'내일 기준으로 다시 짜기' · 크리밍 '오늘' 목록은 지금 시각에 갈 수 있는 것만 · ♡ 뒤 캘린더 묻는 창 세로 깨짐 고침(#calAskFix20261117) · 키즈카페 '번호 찾기'
@@ -7566,7 +7568,9 @@ function renderToday() {
   const part = h < 5 ? "dawn" : h < 11 ? "morning" : h < 14 ? "lunch" : h < 18 ? "afternoon" : "night";
   const inMonths = ([a, b]) => a <= b ? mm >= a && mm <= b : mm >= a || mm <= b;
   const seasonHiRaw = GREET_SEASON.filter(([r]) => inMonths(r)).flatMap(([, x]) => x[part] || []);
-  const weatherKind = WEATHER && (WEATHER.rest?.nowWet || (!WEATHER.rest && WMO(WEATHER.cur ?? WEATHER.code)[2])) ? "rain" : hot ? "hot" : cold ? "cold" : rainy ? "rainLater" : "normal";
+  // 2026-11-18: 날씨 카드에 '비 · 지금'이 떴는데 문구는 '볕 좋을 때'가 나오던 것 — 시간별 예보가 말라도 지금 관측이 비면 비로 봄
+  const curWet = !!(WEATHER && WEATHER.cur != null && WMO(Number(WEATHER.cur))[2]);
+  const weatherKind = WEATHER && (WEATHER.rest?.nowWet || curWet || (!WEATHER.rest && WMO(WEATHER.cur ?? WEATHER.code)[2])) ? "rain" : hot ? "hot" : cold ? "cold" : rainy ? "rainLater" : "normal";
   const fairOnly = /하늘|꽃 핀|봄바람|단풍|걷기 좋|선선하니|선선해졌네/;
   const hiBase = (GREET_HI[part] || []).filter(x => !(weatherKind === "rain" && fairOnly.test(x)));
   const seasonHi = weatherKind === "normal" ? seasonHiRaw : [];
@@ -7615,17 +7619,18 @@ function renderToday() {
     const short = x => String(x).replace(/\[[^\]]*\]|\([^)]*\)|20\d\d년?|제\s*\d+\s*회/g, "").replace(/\s+/g, " ").trim();
     fest.map(e => short(e.title)).filter(x => x.length >= 3 && x.length <= 9).slice(0, 3).forEach(n => sp.push([n, "지금 열렸당께, 가볼랑가?"]));
     // 오늘 기온 — 나가고 싶게
-    if (WEATHER && WEATHER.max != null && weatherKind !== "rain") {
+    if (WEATHER && WEATHER.max != null && weatherKind !== "rain" && weatherKind !== "rainLater") {
       const mx = Math.round(Number(WEATHER.max)), nw = Math.round(Number(WEATHER.now));
       if (!night && mx >= 15 && mx <= 25) sp.push(["오늘 낮 " + mx + "도", "걷기 딱 좋당께, 나가보소"], ["낮 최고 " + mx + "도", "이런 날 집에 있으믄 손해여"]);
       else if (!night && mx >= 8 && mx < 15) sp.push(["낮엔 " + mx + "도까지 오른당께", "볕 좋을 때 한 바퀴 어쩌요?"], ["지금 " + nw + "도, 겉옷 하나 걸치고", "가볍게 나가보장께"]);
       else if (mx < 8) sp.push(["오늘 최고 " + mx + "도, 쌀쌀허네", "따순 전시관 가서 몸 녹이소"], ["춥다고 집에만 있지 말고", "국밥 묵고 실내 구경 가소"]);
       else if (mx >= 30) sp.push(["낮 최고 " + mx + "도", "시원한 실내로 피신허자"]);
       if (night && nw >= 12 && nw <= 24) sp.push(["밤인데도 " + nw + "도", "밤 산책 하기 딱이여"]);
-    } else if (WEATHER && weatherKind === "rain") sp.push(["비 와도 괜찮당께", "지붕 있는 데 골라줄게잉"]);
+    } else if (WEATHER && weatherKind === "rain") sp.push(["비 와도 괜찮당께", "지붕 있는 데 골라줄게잉"], ["비 오는 날엔", "따순 전시관이 최고여"], ["빗소리 들으믄서", "실내 구경 어쩌요?"]);
+    else if (WEATHER && weatherKind === "rainLater") sp.push(["이따 비 온당께", "우산 챙기고 실내로 가보소"], ["비 소식 있응께", "지붕 있는 데로 골라볼랑가?"]);
     // 2026-11-18: 날씨를 더 다양하게 — 일교차·체감·바람·자외선·미세먼지·비 확률·안개·이슬비·눈·영하
     if (WEATHER) { try {
-      const W = WEATHER, mx = Math.round(+W.max), mn = Math.round(+W.min), nw = Math.round(+W.now), fl = Math.round(+W.feel), pp = +W.pp || 0, wc = +(W.cur ?? W.code), dry = weatherKind !== "rain";
+      const W = WEATHER, mx = Math.round(+W.max), mn = Math.round(+W.min), nw = Math.round(+W.now), fl = Math.round(+W.feel), pp = +W.pp || 0, wc = +(W.cur ?? W.code), dry = weatherKind !== "rain" && weatherKind !== "rainLater";
       if (mx - mn >= 10) sp.push(["아침 " + mn + "도, 낮 " + mx + "도", "일교차 크당께 겉옷 챙겨 나가소"]);
       if (Number.isFinite(fl) && nw - fl >= 4) sp.push(["체감은 " + fl + "도여", "바람막이 걸치고 나가보소"]);
       if (+W.wind >= 30) sp.push(["바람이 겁나 부네", "오늘은 실내 구경이 낫겄소"]);
@@ -7645,7 +7650,11 @@ function renderToday() {
     for (let i = sp.length - 1; i >= 0; i--) if (sp[i][0].length > 13 || sp[i][1].length > 16) sp.splice(i, 1);
     if (sp.length && Math.random() < 0.75) { const pk = sp[Math.floor(Math.random() * sp.length)]; GP[gKey] = Object.assign([pk[0], pk[1]], { mix: 1, sp: 1 }) }
   } catch (e) {} }
-  const greet = GP[gKey];
+  let greet = GP[gKey];
+  // 마지막 안전장치: 비가 오거나 올 건데 '볕·맑음·비 소식 없음' 같은 문구면 비 문구로 바꿈
+  const SUNNY_RX = /볕|햇볕|햇살|쨍|맑|구름 한 점|비 소식 없|파랗|별 보기|걷기 딱|걷기 좋|하늘|단풍|나들이 날씨|산책|숲길|등산|산에|소풍|돗자리|드라이브|야경|노을|해돋이|자전거|캠핑|꽃구경|바닷가|해변/;
+  if ((weatherKind === "rain" || weatherKind === "rainLater") && SUNNY_RX.test(greet.join(" ")))
+    greet = GP[gKey] = Object.assign(weatherKind === "rain" ? ["비 와도 괜찮당께", "지붕 있는 데 골라줄게잉"] : ["이따 비 온당께", "우산 챙기고 실내로 가보소"], { mix: 1, sp: 1 });
   $("#greet").innerHTML = `${esc(greet[0])}<br><em>${esc(greet[1])}</em>`;
   $("#dateBadge").innerHTML = `<b>${mm}.${dd} ${d}</b><span>${HOLI ? HOLI + " · 쉬는 날이여!" : OFF ? "주말이여, 놀러 가야제!" : HOLIDAYS[isoPlus(1)] ? "내일은 " + HOLIDAYS[isoPlus(1)] + "!" : cultureInfo().state === "today" ? "🎫 문화가 있는 날" : RNAME()}</span>`;
   $("#wx").innerHTML = WEATHER ? `<div class="wxTop"><span class="wxNow">${wxNowIcon(WEATHER)} ${WMO(WEATHER.cur ?? WEATHER.code)[1]}</span><b>지금 ${WEATHER.now}°</b></div><small class="wxMeta">최고 ${WEATHER.max}° / 최저 ${WEATHER.min}°${WEATHER.rest ? "" : ` · 비 올 확률 ${WEATHER.pp}%`}</small>${WEATHER.rest ? `<small class="wxMeta">${esc(wxUmbrellaLine(WEATHER))}</small>` : ""}<small class="wxHint">${rainy ? "☔ 오늘은 실내 위주로 골랐어요" : hot ? "🥵 더운 날이라 실내·저녁 위주로 골랐어요" : cold ? "🧣 추운 날이라 실내 위주로 골랐어요" : "🌤 나들이하기 좋은 날!"}</small>${WX_SHORT ? `<small class="wxWear">👕 ${esc(WX_SHORT)} · 자세히 ›</small>` : ""}` : `날씨 정보 준비 중<small class="wxMeta">인터넷 연결 시 표시돼요</small>`;
@@ -14050,7 +14059,7 @@ document.addEventListener("keydown",function(e){
     review:   ["💬", "후기 남기기", ""],
     onlyNow:  ["⏳", "지금만 되는 것", "놓치면 1년"],
     culture:  ["🎫", "문화가 있는 날", "매달 할인"],
-    season:   ["🍁", "계절 명소", "단풍·벚꽃"],
+    season:   (m => m >= 2 && m <= 5 ? ["🌸", "계절 명소", "봄꽃·벚꽃"] : m >= 9 && m <= 11 ? ["🍁", "계절 명소", "단풍"] : m >= 6 && m <= 8 ? ["🌻", "계절 명소", "여름 꽃·숲"] : ["❄️", "계절 명소", "겨울 풍경"])(new Date().getMonth() + 1),   // 2026-11-18 계절 따라 아이콘
     notice:   ["🔔", "새 소식", "찜·관심 가수"],
     all:      ["☰", "전체 메뉴", "빠짐없이"]
   };
