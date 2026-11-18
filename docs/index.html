@@ -41,7 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
-  · 2026-11-18 오후 크리밍: 동물병원·강아지 아파요 → 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
+  · 2026-11-18 오후 약국·응급실 화면 아래 "🐾 반려동물이 아플 때"(vetHtml, 메뉴 검색 '동물병원'도 여기로) · 크리밍: 동물병원·강아지 아파요 → 전남대 동물병원 24시 응급센터 + 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
   · 2026-11-18 코스 제목 한 줄·지역 칩 가로(#alHeadFix20261118) · '시장 구경하고 먹방'은 권역마다 오늘 열린 시장+근처 밥집(marketPickToday) · 오늘 뭐하지 탭 고른 칸 진하게(#dnTabsOn20261118) · 크리밍 그때그때 질문 3개+🎲(askIdeas) · 키즈카페·도서관·장날 물으면 그 목록으로(kidsCafeAI·libraryAI) · 첫 화면 문구에 공휴일·선거·수능·기념일·축제·기온·일교차·미세먼지 등 · 검색창 예시 돌아가며 · '이번 주말 공연'처럼 언제+무엇 검색은 날짜별 목록 · 관리자 점검표 폰 줄맞춤
   · 2026-11-17 저녁 코스: 한 곳뿐이면 '저녁·카페 → 밤 산책'으로 앞에 붙임(decisionVariedPicks) · 코스 짜기에서 시간 못 맞춘 행사는 이유+'내일 기준으로 다시 짜기' · 크리밍 '오늘' 목록은 지금 시각에 갈 수 있는 것만 · ♡ 뒤 캘린더 묻는 창 세로 깨짐 고침(#calAskFix20261117) · 키즈카페 '번호 찾기'
   · 2026-11-16 아이랑 어디 갈까?에 '🧸 키즈카페' 칸: docs/data/kidscafes.json(수집기가 기타유원시설업 CSV에서 만듦) · 장소 목록과 섞지 않음(kcSection·kcCard)
@@ -5368,6 +5368,19 @@ html body details.careMore>summary{cursor:pointer;list-style:none;display:inline
 html body details.careMore>summary::-webkit-details-marker{display:none}
 html body details.careMore[open]>summary{margin-bottom:10px}
 </style>
+<style id="vet20261118">
+.vetBox .vet24:not(#_){display:block;margin:10px 0 6px;padding:13px 14px;border-radius:14px;background:#1f3d73;color:#fff!important;font-weight:800;font-size:15px;text-align:center;text-decoration:none}
+.vetBox .vetNote:not(#_){margin:6px 2px;font-size:13px;line-height:1.55;color:#4a5568}
+.vetBox .vetNote b:not(#_){color:#b42318}
+.vetBox .vetDay:not(#_){display:inline-block;margin:4px 0 2px;padding:8px 12px;border-radius:12px;border:1.5px solid #d5dbe6;color:#1f3d73!important;font-weight:700;font-size:13px;text-decoration:none;background:#fff}
+.vetBox .vetMain:not(#_){margin:8px 0 0}
+#answer .vetBox .vetNote:not(#_){color:rgba(255,255,255,.88)}
+#answer .vetBox .vetNote b:not(#_){color:#ffd28a}
+#answer .vetBox .vet24:not(#_){background:#ffd28a;color:#1b2a44!important}
+[data-theme=dark] .vetBox .vetNote:not(#_){color:#c9d2e0}
+[data-theme=dark] .vetBox .vetDay:not(#_){background:transparent;color:#cfe0ff!important;border-color:#3a4a66}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .vetBox .vetNote:not(#_){color:#c9d2e0}html:not([data-theme=light]) .vetBox .vetDay:not(#_){background:transparent;color:#cfe0ff!important;border-color:#3a4a66}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -10074,7 +10087,7 @@ const APP_FEATURES = [
   ["🎬 영화관", "극장 모아 보기", "영화 영화관 극장 cgv 메가박스 롯데시네마", () => { clearSearch(); showTab("cinemas") }],
   ["🐶 멍카페", "댕댕이랑 갈 수 있는 카페", "강아지 반려견 애견 펫 멍카페 카페 댕댕이 댕댕", () => { clearSearch(); showTab("cafes") }],
   ["🏘 동네 강좌·도서관", "우리 동네 강좌와 도서관", "동네 강좌 도서관 수업 배우기 교실", () => { clearSearch(); showTab("local") }],
-  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국, 가까운 응급실, 무더위·한파 쉼터", "약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기 쉼터 무더위쉼터 한파쉼터 폭염 한파", () => { clearSearch(); window.openCare?.("med") }],
+  ["🏥 문 연 약국·응급실", "주말·밤에 문 연 약국, 가까운 응급실, 24시 동물병원, 무더위·한파 쉼터", "동물병원 24시동물병원 애견병원 강아지 고양이 반려동물 수의사 약국 응급실 병원 아플때 아파 휴일약국 야간약국 공휴일약국 응급 열 감기 쉼터 무더위쉼터 한파쉼터 폭염 한파", () => { clearSearch(); window.openCare?.("med") }],
   ["🗺 지도", "지도에서 한눈에", "지도 위치 길찾기 근처", () => { clearSearch(); showTab("map") }],
   ["♡ 찜 목록", "찜해 둔 곳 보기", "찜 즐겨찾기 저장 하트", () => { clearSearch(); showTab("favorites") }],
   ["📖 앱 사용설명서", "앱 소개·기능·이용방법", "사용설명서 설명서 도움말 사용법 이용방법", () => { clearSearch(); openUserManual() }],
@@ -10766,6 +10779,19 @@ function libraryAI(s) {
    <p class="pfNote"><button class="btn" type="button" onclick="showTab('local')">🏘 동네 탭에서 도서관·강좌 다 보기 →</button></p></div>`;
   scrollAI?.();
 }
+/* 반려동물이 아플 때 — 크리밍 대답과 '문 연 약국·응급실' 화면에서 같이 씀 */
+function vetHtml(gu, big) {
+  gu = gu || HOME?.gu || "";
+  const area = gu ? (GJ_GU.includes(gu) ? "광주 " + gu : gu) : ({ gj: "광주", ys: "순천", mp: "목포" }[REGION] || "광주");
+  // 2026-11-18: 24시간 병원이 먼저 보이게 — 확실한 24시(전남대) 카드 → 근처 24시 찾기 큰 버튼 → 일반 동물병원은 작게
+  return `<div class="vetBox">${big ? `<div class="alHead"><b>🌙 ${esc(area)} 24시 동물병원</b></div>` : `<h3>🌙 24시 동물병원 · 반려동물이 아플 때</h3>`}
+     <div class="listCard vetMain"><div class="listMain"><div class="kindRow"><span class="kind">🚑 365일 24시간 응급</span><span class="gu">광주 북구</span></div>
+      <b>전남대학교 동물병원 24시 응급의료센터</b><small>대학 동물병원 응급센터 · 밤·주말·공휴일에도 응급 진료${REGION !== "gj" ? ` · ${esc(area)}에서는 멀어요. 근처 24시 병원부터 찾아보세요` : ""}</small>
+      <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink("전남대학교 동물병원")}">📞 전화·길찾기 ↗</a></div></div></div>
+     <a class="vet24" target="_blank" rel="noopener noreferrer" href="${mapLink("24시 동물병원 " + area)}">🌙 근처 24시 동물병원 모두 보기 ↗</a>
+     <p class="vetNote">이름에 '24시'가 있어도 야간 진료를 그만두었거나 요일마다 다른 곳이 있어요. <b>가기 전에 꼭 전화로 지금 진료 되는지</b> 물어보세요. 119는 사람 응급만 받아요.</p>
+     <a class="vetDay" target="_blank" rel="noopener noreferrer" href="${mapLink("동물병원 " + area)}">🐾 낮 진료 · 가까운 동물병원 ↗</a></div>`;
+}
 /* 밤에 가볼 곳 (지금 권역 · 야경·야시장·밤바다·조명 명소 · 오늘 쉬는 곳 빼고 · 사는 동네 가까운 순) */
 function nightAI(s) {
   const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || null;
@@ -10812,15 +10838,10 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (!forced && /빵지순례|빵집|베이커리|제과점|빵\s*투어/.test(s)) return bakeryListAI(s);
   // 2026-11-18: 물어본 뜻대로 — 키즈카페·도서관·장날을 물었는데 공원 코스가 나오던 것
   if (!forced && /키즈\s*카페|키카|실내\s*놀이터|방방|트램펄?폴?린/.test(s)) return kidsCafeAI(s);
-  // 2026-11-18: 동물병원 — 진료 시간이 있는 네이버 지도로 바로 (앱엔 동물병원 자료를 따로 두지 않음)
+  // 2026-11-18: 동물병원 — 전남대 24시 응급센터 + 진료 시간이 있는 네이버 지도로 바로 (앱엔 동물병원 자료를 따로 두지 않음)
   if (!forced && (/동물\s*병원|수의사|24시\s*동물|애견\s*병원|반려\s*동물\s*병원/.test(s) || (/강아지|댕댕|멍멍|개가|고양이|냥이|반려/.test(s) && /아파|아픈|아프|다쳤|다친|토해|토했|설사|열이|병원|응급|숨|경련|먹었/.test(s)))) {
-    const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || HOME?.gu || "";
-    const area = gu ? (GJ_GU.includes(gu) ? "광주 " + gu : gu) : ({ gj: "광주", ys: "순천", mp: "목포" }[REGION] || "광주");
-    const btn = (q, t) => `<a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(q)}">${t} ↗</a>`;
-    $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🐾 ${esc(area)} 동물병원</b></div>
-     <p class="pfNote">동물병원은 진료 시간·야간 진료가 병원마다 달라서, 시간과 후기가 함께 나오는 네이버 지도로 바로 찾아드릴게요. 밤이나 휴일엔 <b>24시 동물병원</b>부터 보세요. 가기 전에 꼭 전화로 진료 되는지 물어보세요.</p>
-     <p class="pfNote" style="display:flex;flex-wrap:wrap;gap:8px">${btn("24시 동물병원 " + area, "🌙 24시 동물병원")}${btn("동물병원 " + area, "🐾 가까운 동물병원")}</p>
-     <p class="pfNote">💡 119는 사람 응급만 받아요. 숨을 잘 못 쉬거나 경련, 이물질을 삼킨 것 같으면 바로 24시 동물병원에 전화하세요.</p></div>`;
+    const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || "";
+    $("#answer").innerHTML = `<div class="aiList">${vetHtml(gu, true)}</div>`;
     scrollAI?.(); return;
   }
   // 2026-11-18: 크리밍에게 약국·병원·쉼터를 물었는데 나들이 코스가 나오던 것 → 바로 약국·응급실·쉼터 화면으로
@@ -14064,7 +14085,7 @@ document.addEventListener("keydown",function(e){
     events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
     places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈 키즈카페 실내놀이터 방방 트램폴린", indoor: "비 실내 우천 더위 추위",
     hood: "동네 강좌 도서관 주민", local: "도서관 책 강좌", markets: "시장 장날 오일장 야시장", food: "밥 식당 맛집 한끼 먹을",
-    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
+    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파 동물병원 24시동물병원 애견병원 강아지아파 고양이아파 반려동물 수의사", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
     galleries: "미술 그림 전시 갤러리", museums: "박물관 역사 유물", bakeries: "빵 제과 제빵 빵집 디저트", cafes: "강아지 개 반려견 카페 멍",
     cinemas: "영화 극장", stays: "숙소 호텔 잠 펜션 모텔", decide: "추천 코스 뭐하지", today: "오늘 행사", weekend: "주말 토요일 일요일",
     dayplan: "하루 코스 일정 짜기", onlyNow: "지금만 1년 한정 시즌", culture: "문화가 있는 날 수요일 할인 영화", season: "계절 단풍 벚꽃 꽃 명소", notice: "알림 소식 새 공연 관심 가수", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
@@ -14609,6 +14630,7 @@ document.addEventListener("keydown",function(e){
         ["🏥 응급의료포털 E-Gen", "국립중앙의료원 · 문 연 병원·약국·응급실", "https://www.e-gen.or.kr"]
       ]);
     }
+    { const g = careGu(); h += `<div class="careVet">${vetHtml((REGIONS[REGION]?.districts || []).includes(g) ? g : "", false)}</div>` }   // 2026-11-18 반려동물 아플 때
     const src = [CARE.phUpd && `약국 ${CARE.phUpd}`, CARE.erUpd && `응급실 ${CARE.erUpd}`].filter(Boolean).join(" · ");
     if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·병의원·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
     return h;
