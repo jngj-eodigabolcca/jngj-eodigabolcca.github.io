@@ -24,6 +24,8 @@ OUT_META = DATA_DIR / "meta.json"
 
 DATA_KEY = urllib.parse.unquote( os.environ.get("DATA_GO_KR_KEY", "").strip())
 KOPIS_KEY = os.environ.get("KOPIS_API_KEY", "").strip()
+SAFETY_KEY = os.environ.get("SAFETY_DATA_KEY", "").strip()        # 재난안전데이터 공유플랫폼(safetydata.go.kr) 한파쉼터 키
+SAFETY_HEAT_KEY = os.environ.get("SAFETY_HEAT_KEY", "").strip() or SAFETY_KEY   # 무더위쉼터 키(따로 받았으면)
 
 KST = timezone(timedelta(hours=9))
 NOW = datetime.now(KST)
@@ -181,7 +183,7 @@ def match_venue(name, addr=""):
 def scrub(text) -> str:
     """공개되는 meta.json 에 인증키가 절대 찍히지 않게 지운다."""
     t = str(text)
-    for k in {DATA_KEY, KOPIS_KEY, urllib.parse.quote(DATA_KEY or "", safe=""), urllib.parse.quote_plus(DATA_KEY or "")}:
+    for k in {DATA_KEY, KOPIS_KEY, SAFETY_KEY, SAFETY_HEAT_KEY, urllib.parse.quote(DATA_KEY or "", safe=""), urllib.parse.quote_plus(DATA_KEY or "")}:
         if k and len(k) > 8:
             t = t.replace(k, "***")
     return re.sub(r"(serviceKey|ServiceKey|service)=[^&\s]+", r"\1=***", t)
@@ -1693,7 +1695,8 @@ def build_kidscafes():
             pass
         rides = re.sub(r"\s+", " ", r.get("놀이기구수내역", "")).strip(" ,")
         items.append({
-            "id": "kc-" + (r.get("관리번호") or hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10]),
+            # 관리번호는 시·군마다 따로 매겨서 겹침 → 지자체 코드를 붙여야 가게마다 하나 (2026-11-17)
+            "id": "kc-" + ((r.get("개방자치단체코드", "") + "-" + r["관리번호"]) if r.get("관리번호") else hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10]),
             "name": nm, "kind": "키즈카페", "district": district_from_addr(addr), "address": addr,
             "phone": _kc_phone(r.get("전화번호")), "lat": lat, "lng": lng,
             "rides": rides if rides and not re.fullmatch(r"[\d\s]+", rides) else "",
@@ -1702,6 +1705,121 @@ def build_kidscafes():
     items.sort(key=lambda v: (v["district"], v["name"]))
     write_json(OUT_KIDSCAFES, {"updated": TODAY_ISO, "source": "행정안전부 지방행정 인허가(기타유원시설업) · " + fname, "items": items})
     return len(items), f"키즈카페 {len(items)}곳 ({fname})"
+
+
+# ════════════════ 한파쉼터·무더위쉼터 (재난안전데이터 공유플랫폼) · 2026-11-18 ════════════════
+# 앱의 '🧣 한파쉼터 / 🌡 무더위쉼터' 칸이 읽는 docs/data/shelters.json 을 만든다.
+# 공유플랫폼 자료는 월 1회 바뀌므로, 7일 안에 받아 둔 게 있으면 다시 받지 않는다(호출 수 아끼기).
+# 응답 항목 이름이 문서마다 조금씩 달라서, 이름·주소·위도·경도 칸을 값 모양으로 찾아낸다.
+OUT_SHELTERS = DATA_DIR / "shelters.json"
+SAFETY_BASE = "https://www.safetydata.go.kr/V2/api/"
+SHELTER_APIS = [("cold", "DSSP-IF-10804", lambda: SAFETY_KEY)]   # 무더위쉼터는 승인 후 ("heat", "DSSP-IF-…", lambda: SAFETY_HEAT_KEY) 추가
+
+def _sd_rows(j):
+    """응답 JSON 안에서 '자료 줄 목록'을 찾아 돌려준다 (body / items / item 어디에 있든)."""
+    best = []
+    def walk(x):
+        nonlocal best
+        if isinstance(x, list) and x and all(isinstance(r, dict) for r in x[:5]):
+            if len(x) > len(best):
+                best = x
+        elif isinstance(x, dict):
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+    walk(j)
+    return best
+
+def _sd_total(j):
+    def walk(x):
+        if isinstance(x, dict):
+            for k, v in x.items():
+                if k.lower() in ("totalcount", "total_count", "totcnt") and str(v).isdigit():
+                    return int(v)
+                r = walk(v)
+                if r is not None:
+                    return r
+        return None
+    return walk(j)
+
+def _sd_pick(row):
+    """한 줄에서 이름·주소·위도·경도·운영시간·인원을 값 모양으로 고른다."""
+    nm = addr = hours = ""; lat = lng = None; cap = ""; kind = ""
+    for k, v in row.items():
+        ku, sv = str(k).upper(), str(v if v is not None else "").strip()
+        if not sv:
+            continue
+        try:
+            fv = float(sv)
+        except ValueError:
+            fv = None
+        if fv is not None and 33 <= fv <= 39 and lat is None and ("LAT" in ku or ku in ("LA", "Y", "YCRD", "LAT_CRD") or ku.endswith("_LA")):
+            lat = fv; continue
+        if fv is not None and 124 <= fv <= 132 and lng is None and ("LOT" in ku or "LON" in ku or "LNG" in ku or ku in ("LO", "X", "XCRD") or ku.endswith("_LO")):
+            lng = fv; continue
+        if ("ADDR" in ku or "ADRES" in ku or "ADR" in ku) and len(sv) > len(addr) and re.search(r"[시군구]\s", sv + " "):
+            addr = sv; continue
+        if ("NM" in ku or "NAME" in ku) and not nm and not re.search(r"(CTPV|SGG|SIDO|SIGUN|EMD|TYPE|SE_|_SE|CLSF|CL_)", ku):
+            nm = sv; continue
+        if ("CL" in ku or "TYPE" in ku or "SE" in ku) and ("NM" in ku) and not kind:
+            kind = sv; continue
+        if ("CPCT" in ku or "PSBL" in ku or "NOPE" in ku or "PERSON" in ku) and sv.isdigit():
+            cap = sv; continue
+        if re.fullmatch(r"\d{1,2}:?\d{2}", sv) or re.fullmatch(r"\d{4}", sv):
+            hours = (hours + "~" + (sv if ":" in sv else sv[:2] + ":" + sv[2:])) if hours else (sv if ":" in sv else sv[:2] + ":" + sv[2:])
+    return nm, addr, lat, lng, hours, cap, kind
+
+def build_shelters():
+    old = {}
+    try:
+        old = json.loads(OUT_SHELTERS.read_text(encoding="utf-8"))
+    except Exception:
+        old = {}
+    old_items = old.get("items", []) if isinstance(old, dict) else []
+    fresh = isinstance(old, dict) and old.get("updated", "") >= (NOW - timedelta(days=7)).strftime("%Y-%m-%d")
+    notes, items = [], [x for x in old_items]
+    for typ, api, keyf in SHELTER_APIS:
+        key = keyf()
+        if not key:
+            notes.append(f"{typ}: 키 없음(SAFETY_DATA_KEY)"); continue
+        if fresh and any(x.get("type") == typ for x in old_items):
+            notes.append(f"{typ}: 7일 안에 받은 자료 사용"); continue
+        got, fields, page, total = [], [], 1, None
+        while page <= 120:
+            url = SAFETY_BASE + api + "?" + urllib.parse.urlencode({"serviceKey": key, "pageNo": page, "numOfRows": 1000, "returnType": "json"})
+            j = json.loads(http_get(url, timeout=40).decode("utf-8", "replace"))
+            rows = _sd_rows(j)
+            if total is None:
+                total = _sd_total(j)
+            if not rows:
+                if page == 1:
+                    raise RuntimeError(scrub("자료 줄을 못 찾음 · " + json.dumps(j, ensure_ascii=False)[:200]))
+                break
+            if not fields:
+                fields = list(rows[0].keys())
+            for r in rows:
+                nm, addr, lat, lng, hours, cap, kind = _sd_pick(r)
+                if not nm or not (in_region(addr) or (lat and lng and 33.8 <= lat <= 35.6 and 125.0 <= lng <= 127.9 and not addr)):
+                    continue
+                got.append({"id": f"{typ}-" + hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10], "type": typ, "name": nm,
+                            "address": addr, "district": district_from_addr(addr), "lat": lat, "lng": lng,
+                            "hours": ("평일 " + hours) if hours else "", "facility": " · ".join(x for x in (kind, f"{cap}명" if cap else "") if x)})
+            if total is not None and page * 1000 >= total:
+                break
+            if len(rows) < 1000:
+                break
+            page += 1
+            time.sleep(0.4)
+        if got:
+            items = [x for x in items if x.get("type") != typ] + got
+        notes.append(f"{typ}: {len(got)}곳 (전국 {total or '?'}줄 · {page}쪽 · 항목 {','.join(fields[:14])})")
+    items.sort(key=lambda x: (x.get("type", ""), x.get("district", ""), x.get("name", "")))
+    if items != old_items or not fresh:
+        write_json(OUT_SHELTERS, {"updated": TODAY_ISO if any("곳 (" in n for n in notes) else old.get("updated", TODAY_ISO) if isinstance(old, dict) else TODAY_ISO,
+                                  "source": "행정안전부 재난안전데이터 공유플랫폼 (한파쉼터·무더위쉼터)", "items": items})
+    return len(items), " / ".join(notes)
 
 
 def main():
@@ -1816,6 +1934,13 @@ def main():
         meta["kidscafes"] = {"count": n_kc or 0, "message": kc_note}
     except Exception as e:
         meta["kidscafes"] = {"count": 0, "message": scrub(f"키즈카페 만들기 실패 ({str(e)[:120]})")}
+    try:
+        n_sh, sh_note = build_shelters()
+        meta["shelters"] = {"count": n_sh or 0, "message": sh_note}
+        log(f"✔ 쉼터 {n_sh}곳 · {sh_note}")
+    except Exception as e:
+        meta["shelters"] = {"count": 0, "message": scrub(f"쉼터 수집 실패: {e}")[:300]}
+        log("  ⚠ 쉼터 수집 실패:", scrub(str(e))[:200])
     for k in ("local", "place_fill", "kopis_last_try", "kopis_last_ok"):   # 다른 수집기가 남긴 기록은 유지
         if k in old_meta:
             meta[k] = old_meta[k]
