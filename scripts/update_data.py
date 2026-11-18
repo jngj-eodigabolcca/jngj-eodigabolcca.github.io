@@ -1717,6 +1717,16 @@ PFC_PLACES = [("A013", "놀이제공영업소"), ("A004", "식품접객업소")]
 PFC_FOOD_OK = re.compile(r"키즈|키카|kids|놀이터|놀이카페|플레이|play|점핑|점프|방방|트램|바운스|볼풀|어린이|아이|베이비|팡팡|랜드|파크", re.I)
 PFC_FOOD_NO = re.compile(r"한우|고기|갈비|삼겹|정육|식당|가든|뷔페|부페|회관|횟집|오리|치킨|피자|버거|맥도날드|롯데리아|아웃백|애슐리|빕스|쿠우쿠우|놀이방")
 
+PFC_ALL_NO = re.compile(r"호텔|모텔|펜션|리조트\s*\d|\d{3}호$|감자탕|샤브|오리$|소금집|이바돔|채선당|식당|가든|뷔페|부페|명품관")
+
+def _pfc_clean(n):
+    n = re.sub(r"\(주\)|㈜|주식회사|\(.*?(CO|co)\.?,?\s*LTD\.?\)", "", str(n))
+    n = re.sub(r"\s*-\s*", " ", n)
+    for _ in range(3):
+        n = re.sub(r"\s*(\s내|놀이시설|어린이|실내)\s*$", "", n).strip()   # 끝에 붙은 '내 어린이 실내' 같은 꼬리만 떼고 '실내놀이터'는 그대로
+    n = re.sub(r"점\s*내$", "점", n)
+    return re.sub(r"\s{2,}", " ", n).strip()
+
 def _kc_norm(n):
     n = re.sub(r"\(.*?\)|주식회사|\(주\)|㈜|유한회사|놀이시설|놀이터|키즈카페|키즈 카페|kids ?cafe|점$|\s+", "", str(n or ""), flags=re.I)
     return n.lower()
@@ -1760,13 +1770,19 @@ def _pfc_kidscafes(have):
                     continue
                 if code == "A004" and (not PFC_FOOD_OK.search(nm) or PFC_FOOD_NO.search(nm)):
                     continue                                   # 고깃집·패밀리레스토랑 놀이방 등은 빼고 키즈카페다운 곳만
-                if KC_EXCLUDE.search(nm):
+                if KC_EXCLUDE.search(nm) or PFC_ALL_NO.search(nm):
+                    continue
+                if low.get("clsgymd") or low.get("operyncd") in ("N", "02"):
+                    continue                                   # 폐쇄일이 있거나 운영 안 함
+                nm = _pfc_clean(nm)
+                if not nm:
                     continue
                 key = _kc_norm(nm)
                 a24 = re.sub(r"\s+", "", addr)[:24]
-                if key in known_names or a24 in known_addr or key in seen:
+                key2 = re.sub(r"\d+호점$|[12]호$", "", key)
+                if key in known_names or a24 in known_addr or key in seen or key2 in seen or ("a:" + a24) in seen:
                     continue
-                seen.add(key)
+                seen.update({key, key2, "a:" + a24})
                 lat = lng = None
                 for k, v in low.items():
                     try:
@@ -1778,7 +1794,7 @@ def _pfc_kidscafes(have):
                     if lng is None and ("lot" in k or "lng" in k or "lon" in k or k.endswith("_x") or k == "x") and 124 <= f <= 132:
                         lng = round(f, 6)
                 out.append({"id": "kcp-" + (low.get("pfctsn") or hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10]),
-                            "name": re.sub(r"\s*놀이시설$", "", nm), "kind": "키즈카페", "district": district_from_addr(addr), "address": addr,
+                            "name": nm, "kind": "키즈카페", "district": district_from_addr(addr), "address": addr,
                             "phone": "", "lat": lat, "lng": lng, "rides": "", "since": (low.get("instldt") or low.get("instlymd") or "")[:10],
                             "inout": "실내", "src": "놀이시설·" + label})
             if len(rows) < 100:
