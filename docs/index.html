@@ -5350,6 +5350,9 @@ html body .hasFoldIn>.foldIn{position:absolute;top:0;right:0;z-index:2;border:1p
 :root[data-theme="dark"] body .hasFoldIn>.foldIn{background:#1c1f26;border-color:#323844;color:#aab4c6}
 html body .hasFoldIn>.foldIn:focus-visible{outline:3px solid #f39a25;outline-offset:2px}
 </style>
+<style id="kcPrice20261118">
+html body .kcCard .kcPriceNote{display:block;font-size:12px;color:var(--muted,#6b7486);margin-top:2px}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8871,7 +8874,7 @@ function kcCard(v) {
   const tel = v.phone ? `<a class="miniBtn" href="tel:${esc(v.phone.replace(/[^\d+]/g, ""))}">📞 전화</a>` : `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">📞 번호 찾기 ↗</a>`;
   return `<div class="listCard place kcCard"><div class="listMain"><div class="kindRow">${homeTag(v)}<span class="kind">🧸 키즈카페·실내놀이터</span><span class="kind">🏠 실내</span></div>
   <h3>${esc(v.name)}</h3>
-  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>시간·요금</dt><dd>가게마다 달라요 · 가기 전에 ${v.phone ? "전화나 " : ""}지도에서 확인</dd></dl>
+  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>요금(보통)</dt><dd>${/무인/.test(v.name) ? "아이 2시간 1만원 안팎 · 보호자 무료 (무인 키즈카페 보통 요금)" : "아이 2시간 1만~1만8천원 · 보호자 4~5천원(음료 포함 많음)"}<small class="kcPriceNote">2026년 보통 시세예요 · 이 가게 요금은 ${v.phone ? "전화나 " : ""}지도에서 확인</small></dd><dt>시간</dt><dd>가게마다 달라요 · 지도에서 확인</dd></dl>
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">네이버 지도 ↗</a>${tel}</div></div></div>`;
 }
@@ -8888,7 +8891,7 @@ function kcSection() {
   return `<h3 class="sub" id="kidsPlaces">🧸 키즈카페·실내놀이터 ${list.length}</h3>
   <div class="filterBar kcBar"><select aria-label="동네 선택" onchange="setKids('gu',this.value)">${gus.map(g => `<option ${g === pick ? "selected" : ""} value="${esc(g)}">${g === "전체" ? "모든 동네" : esc(g)} (${g === "전체" ? KIDSCAFES.length : KIDSCAFES.filter(v => v.district === g).length})</option>`).join("")}</select>${homeBasePill()}</div>
   ${paged("renderKids", list, kcCard, "<p class='empty'>이 동네엔 등록된 키즈카페가 없어요. '모든 동네'로 바꿔 보세요.</p>")}
-  <div class="verify" style="margin-top:12px">${HOME ? "내 동네에서 가까운 순" : "동네·이름 순"}이에요. 행정안전부 인허가 자료(기타유원시설업)에서 지금 영업 중인 곳만 골랐어요. 음식점으로만 신고한 곳은 빠질 수 있고, 운영시간·요금·나이 제한은 가게마다 달라요.</div>`;
+  <div class="verify" style="margin-top:12px">${HOME ? "내 동네에서 가까운 순" : "동네·이름 순"}이에요. 행정안전부 인허가 자료(기타유원시설업)에서 지금 영업 중인 곳만 골랐어요. 음식점으로만 신고한 곳은 빠질 수 있고, 운영시간·요금·나이 제한은 가게마다 달라요. 카드의 '요금(보통)'은 동네 키즈카페 보통 시세라 이 가게 요금과 다를 수 있어요.</div>`;
 }
 function kidsScrollToPlaces() { setTimeout(() => { const h = document.getElementById("kidsPlaces"); if (!h) return; const hh = document.querySelector("header.top")?.offsetHeight || 0; window.scrollTo({ top: Math.max(0, h.getBoundingClientRect().top + scrollY - hh - 12), behavior: "smooth" }) }, 380) }
 window.setKids = (k, v) => { if (k === "sub") KIDS_SUB = v; if (k === "io") KIDS_IO = v; if (k === "gu") KIDS_GU = v; if (k === "open") KIDS_OPEN = v; renderKids(); if (k === "sub") kidsScrollToPlaces() };
