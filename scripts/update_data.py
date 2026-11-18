@@ -1800,7 +1800,7 @@ def _pfc_kidscafes(have):
                 if low.get("clsgymd") or low.get("operyncd") in ("N", "02"):
                     continue                                   # 폐쇄일이 있거나 운영 안 함
                 nm = _pfc_clean(nm)
-                if not nm:
+                if not nm or PFC_ALL_NO.search(nm):
                     continue
                 key = _kc_norm(nm)
                 a24 = re.sub(r"\s+", "", addr)[:24]
