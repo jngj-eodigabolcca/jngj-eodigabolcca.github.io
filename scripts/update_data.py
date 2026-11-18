@@ -1713,7 +1713,8 @@ def build_kidscafes():
 # 응답 항목 이름이 문서마다 조금씩 달라서, 이름·주소·위도·경도 칸을 값 모양으로 찾아낸다.
 OUT_SHELTERS = DATA_DIR / "shelters.json"
 SAFETY_BASE = "https://www.safetydata.go.kr/V2/api/"
-SHELTER_APIS = [("cold", "DSSP-IF-10804", lambda: SAFETY_KEY)]   # 무더위쉼터는 승인 후 ("heat", "DSSP-IF-…", lambda: SAFETY_HEAT_KEY) 추가
+SHELTER_APIS = [("cold", "DSSP-IF-10804", lambda: SAFETY_KEY),        # 한파쉼터
+                ("heat", "DSSP-IF-10942", lambda: SAFETY_HEAT_KEY)]   # 무더위쉼터 (2026-11-18 승인 · 키가 따로면 SAFETY_HEAT_KEY)
 
 _SD_HOST = []   # 한 번 통한 주소는 이번 실행 내내 그대로 씀
 
