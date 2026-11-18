@@ -83,6 +83,8 @@ jobs:
         env:
           DATA_GO_KR_KEY: ${{ secrets.DATA_GO_KR_KEY }}
           KOPIS_API_KEY: ${{ secrets.KOPIS_API_KEY }}
+          SAFETY_DATA_KEY: ${{ secrets.SAFETY_DATA_KEY }}
+          SAFETY_HEAT_KEY: ${{ secrets.SAFETY_HEAT_KEY }}
           KOPIS_FORCE: ${{ inputs.kopis_force && '1' || '0' }}
         run: python scripts/update_data.py
 
