@@ -41,7 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
-  · 2026-11-18 오후 약국·응급실 화면 아래 "🐾 반려동물이 아플 때"(vetHtml, 메뉴 검색 '동물병원'도 여기로) · 크리밍: 동물병원·강아지 아파요 → 전남대 동물병원 24시 응급센터 + 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
+  · 2026-11-18 오후 약국·응급실 화면 119 아래 바로가기(💊약국·🏥응급실·🩺병의원·🐾동물병원, careJump) · 화면 아래 "🐾 반려동물이 아플 때"(vetHtml, 메뉴 검색 '동물병원'도 여기로) · 크리밍: 동물병원·강아지 아파요 → 전남대 동물병원 24시 응급센터 + 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
   · 2026-11-18 코스 제목 한 줄·지역 칩 가로(#alHeadFix20261118) · '시장 구경하고 먹방'은 권역마다 오늘 열린 시장+근처 밥집(marketPickToday) · 오늘 뭐하지 탭 고른 칸 진하게(#dnTabsOn20261118) · 크리밍 그때그때 질문 3개+🎲(askIdeas) · 키즈카페·도서관·장날 물으면 그 목록으로(kidsCafeAI·libraryAI) · 첫 화면 문구에 공휴일·선거·수능·기념일·축제·기온·일교차·미세먼지 등 · 검색창 예시 돌아가며 · '이번 주말 공연'처럼 언제+무엇 검색은 날짜별 목록 · 관리자 점검표 폰 줄맞춤
   · 2026-11-17 저녁 코스: 한 곳뿐이면 '저녁·카페 → 밤 산책'으로 앞에 붙임(decisionVariedPicks) · 코스 짜기에서 시간 못 맞춘 행사는 이유+'내일 기준으로 다시 짜기' · 크리밍 '오늘' 목록은 지금 시각에 갈 수 있는 것만 · ♡ 뒤 캘린더 묻는 창 세로 깨짐 고침(#calAskFix20261117) · 키즈카페 '번호 찾기'
   · 2026-11-16 아이랑 어디 갈까?에 '🧸 키즈카페' 칸: docs/data/kidscafes.json(수집기가 기타유원시설업 CSV에서 만듦) · 장소 목록과 섞지 않음(kcSection·kcCard)
@@ -5380,6 +5380,23 @@ html body details.careMore[open]>summary{margin-bottom:10px}
 [data-theme=dark] .vetBox .vetNote:not(#_){color:#c9d2e0}
 [data-theme=dark] .vetBox .vetDay:not(#_){background:transparent;color:#cfe0ff!important;border-color:#3a4a66}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) .vetBox .vetNote:not(#_){color:#c9d2e0}html:not([data-theme=light]) .vetBox .vetDay:not(#_){background:transparent;color:#cfe0ff!important;border-color:#3a4a66}}
+</style>
+<style id="careJump20261118">
+.careJump:not(#_){display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin:10px 0 4px}
+.careJump button:not(#_){display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:14px;border:1.5px solid #d5dbe6;background:#fff;color:#1f3d73;font:800 14px/1.2 Pretendard,system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.careJump button span:not(#_){font-size:22px;line-height:1}
+.careJump button:active:not(#_){transform:scale(.95);background:#dfe6f3}
+.careJump button.on:not(#_){background:#1f3d73!important;border-color:#1f3d73!important;color:#fff!important;box-shadow:0 3px 10px rgba(31,61,115,.35)}
+.careJump button:not(#_){transition:transform .12s,background .15s,color .15s}
+@keyframes cjFlash{0%,35%{background:#ffe08a;box-shadow:0 0 0 6px #ffe08a}100%{background:transparent;box-shadow:0 0 0 6px transparent}}
+.cjFlash:not(#_){animation:cjFlash 1.8s ease-out;border-radius:8px}
+.careJump:not(#_){position:sticky;top:-18px;z-index:5;background:var(--card,#fff);padding:12px 0 8px;margin-top:2px;box-shadow:0 6px 8px -8px rgba(0,0,0,.25)}
+.cjFlash:not(#_){color:#1b2a44!important}.cjFlash *:not(#_){color:#1b2a44!important}
+[data-theme=dark] .careJump:not(#_){background:#121a26}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .careJump:not(#_){background:#121a26}}
+.cjAnchor:not(#_){display:block;height:0;scroll-margin-top:96px}
+[data-theme=dark] .careJump button:not(#_){background:#1b2433;border-color:#3a4a66;color:#dbe6ff}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .careJump button:not(#_){background:#1b2433;border-color:#3a4a66;color:#dbe6ff}}
 </style>
 </head>
 <body data-tab="home" data-screen="home">
@@ -10792,6 +10809,18 @@ function vetHtml(gu, big) {
      <p class="vetNote">이름에 '24시'가 있어도 야간 진료를 그만두었거나 요일마다 다른 곳이 있어요. <b>가기 전에 꼭 전화로 지금 진료 되는지</b> 물어보세요. 119는 사람 응급만 받아요.</p>
      <a class="vetDay" target="_blank" rel="noopener noreferrer" href="${mapLink("동물병원 " + area)}">🐾 낮 진료 · 가까운 동물병원 ↗</a></div>`;
 }
+/* 약국·응급실 화면 안에서 해당 칸으로 이동 (접힌 병·의원 목록은 펼치기) */
+function careJump(k, btn) {
+  const el = document.getElementById("cj-" + k); if (!el) return;
+  // 누른 버튼은 진하게 남기고(다른 버튼은 원래대로), 간 곳 제목은 잠깐 노랗게 반짝 — 눌렸는지 확실히 보이게
+  const bar = btn ? btn.closest(".careJump") : document.querySelector(".careJump");
+  bar?.querySelectorAll("button").forEach(b => { const on = b.dataset.cj === k; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on) });
+  try { navigator.vibrate?.(15) } catch (e) {}
+  const nx = el.nextElementSibling; if (nx && nx.tagName === "DETAILS") nx.open = true;
+  const tgt = nx && nx.tagName === "DETAILS" ? nx.querySelector("summary") : nx && nx.classList.contains("careVet") ? nx.querySelector("h3") : nx;
+  if (tgt) { tgt.classList.remove("cjFlash"); void tgt.offsetWidth; tgt.classList.add("cjFlash"); setTimeout(() => tgt.classList.remove("cjFlash"), 1800) }
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 /* 밤에 가볼 곳 (지금 권역 · 야경·야시장·밤바다·조명 명소 · 오늘 쉬는 곳 빼고 · 사는 동네 가까운 순) */
 function nightAI(s) {
   const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || null;
@@ -14632,6 +14661,19 @@ document.addEventListener("keydown",function(e){
     }
     { const g = careGu(); h += `<div class="careVet">${vetHtml((REGIONS[REGION]?.districts || []).includes(g) ? g : "", false)}</div>` }   // 2026-11-18 반려동물 아플 때
     const src = [CARE.phUpd && `약국 ${CARE.phUpd}`, CARE.erUpd && `응급실 ${CARE.erUpd}`].filter(Boolean).join(" · ");
+    // 2026-11-18: 119 아래 바로가기 — 약국·응급실·병의원·동물병원 칸으로 한 번에
+    {
+      const mark = (key, re) => { const m = h.slice(1).search(re); if (m < 0) return false; const at = m + 1; h = h.slice(0, at) + `<span class="cjAnchor" id="cj-${key}"></span>` + h.slice(at); return true };
+      const has = {
+        ph: mark("ph", /<h3>[^<]*약국/),
+        er: mark("er", /<h3>🏥 가까운 응급실/),
+        cl: mark("cl", /<h3>🩺|<details class="careMore"><summary>🩺/),
+        vet: mark("vet", /<div class="careVet">/)
+      };
+      const B = [["ph", "💊", "약국"], ["er", "🏥", "응급실"], ["cl", "🩺", "병·의원"], ["vet", "🐾", "동물병원"]].filter(([k]) => has[k]);
+      const bar = `<nav class="careJump" aria-label="바로가기">${B.map(([k, e, t]) => `<button type="button" data-cj="${k}" onclick="careJump('${k}', this)"><span>${e}</span>${t}</button>`).join("")}</nav>`;
+      h = h.replace(/(<div class="care119">[\s\S]*?<\/div>)/, "$1" + bar);
+    }
     if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·병의원·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
     return h;
   }
