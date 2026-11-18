@@ -1715,6 +1715,26 @@ OUT_SHELTERS = DATA_DIR / "shelters.json"
 SAFETY_BASE = "https://www.safetydata.go.kr/V2/api/"
 SHELTER_APIS = [("cold", "DSSP-IF-10804", lambda: SAFETY_KEY)]   # 무더위쉼터는 승인 후 ("heat", "DSSP-IF-…", lambda: SAFETY_HEAT_KEY) 추가
 
+_SD_HOST = []   # 한 번 통한 주소는 이번 실행 내내 그대로 씀
+
+def _sd_get(qs):
+    """공유플랫폼은 해외(GitHub 서버)에서 접속하면 보안 연결(SSL)이 느리거나 끊기는 일이 있어,
+    https → http, www 있는/없는 주소를 차례로 길게 기다리며 두 번씩 시도한다 (2026-11-18: handshake timed out)."""
+    bases = _SD_HOST or ["https://www.safetydata.go.kr/V2/api/", "http://www.safetydata.go.kr/V2/api/", "https://safetydata.go.kr/V2/api/"]
+    last = None
+    for base in bases:
+        for attempt in range(2):
+            try:
+                body = http_get(base + qs, timeout=90)
+                if not _SD_HOST:
+                    _SD_HOST.append(base)
+                return body
+            except Exception as e:
+                last = e
+                log(f"  ⚠ 쉼터 접속 재시도 ({base.split('/')[2]} · {attempt + 1}번째): {scrub(str(e))[:120]}")
+                time.sleep(5)
+    raise RuntimeError(f"공유플랫폼 접속 안 됨 (https·http 모두 시도) · {scrub(str(last))[:160]}")
+
 def _sd_rows(j):
     """응답 JSON 안에서 '자료 줄 목록'을 찾아 돌려준다 (body / items / item 어디에 있든)."""
     best = []
@@ -1788,8 +1808,8 @@ def build_shelters():
             notes.append(f"{typ}: 7일 안에 받은 자료 사용"); continue
         got, fields, page, total = [], [], 1, None
         while page <= 120:
-            url = SAFETY_BASE + api + "?" + urllib.parse.urlencode({"serviceKey": key, "pageNo": page, "numOfRows": 1000, "returnType": "json"})
-            j = json.loads(http_get(url, timeout=40).decode("utf-8", "replace"))
+            qs = api + "?" + urllib.parse.urlencode({"serviceKey": key, "pageNo": page, "numOfRows": 1000, "returnType": "json"})
+            j = json.loads(_sd_get(qs).decode("utf-8", "replace"))
             rows = _sd_rows(j)
             if total is None:
                 total = _sd_total(j)
