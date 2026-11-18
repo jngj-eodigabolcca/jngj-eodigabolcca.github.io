@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-18T09:39:43+09:00",
+  "updated_at": "2026-11-18T09:49:14+09:00",
   "auto_update": true,
   "sources": [
     {
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 1,
+      "count": 5,
       "message": "정상 수집"
     },
     {
@@ -50,7 +50,7 @@
       "id": "tourapi",
       "name": "관광공사 행사·축제",
       "ok": true,
-      "count": 1,
+      "count": 5,
       "message": "정상 수집"
     },
     {
@@ -90,20 +90,20 @@
     }
   ],
   "counts": {
-    "total": 168,
-    "auto": 141,
+    "total": 170,
+    "auto": 143,
     "manual": 27
   },
   "manual_count": 96,
-  "events_count": 168,
+  "events_count": 170,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "kidscafes": {
     "count": 96,
     "message": "키즈카페 96곳 (전국기타유언시설업소표준데이터.csv)"
   },
   "shelters": {
-    "count": 0,
-    "message": "쉼터 수집 실패: <urlopen error _ssl.c:994: The handshake operation timed out>"
+    "count": 9205,
+    "message": "cold: 9205곳 (전국 55924줄 · 56쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR)"
   },
   "local": {
     "holidays": {
@@ -117,7 +117,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-18T09:43:05+09:00",
+      "fetched_at": "2026-11-18T09:54:50+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 284,
-      "fetched_at": "2026-11-18T09:43:05+09:00",
+      "fetched_at": "2026-11-18T09:54:50+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,7 +186,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-18T09:43:07+09:00",
+    "checked_at": "2026-11-18T09:54:52+09:00",
     "tourapi_calls": 3,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -236,6 +236,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-18T09:43:06+09:00"
+    "checked_at": "2026-11-18T09:54:51+09:00"
   }
 }
