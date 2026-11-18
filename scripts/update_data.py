@@ -1707,7 +1707,18 @@ def build_kidscafes():
         extra, pfc_note = _pfc_kidscafes(items)
         items += extra
     except Exception as e:
-        pfc_note = scrub(f"놀이시설 자료 실패: {e}")[:160]
+        pfc_note = scrub(f"놀이시설 자료 실패: {e}")[:120]
+        try:                                                  # 실패하면 지난번에 받아둔 놀이시설 키즈카페를 그대로 이어 씀
+            old = json.loads(OUT_KIDSCAFES.read_text(encoding="utf-8")).get("items", [])
+            have = {_kc_norm(v["name"]) for v in items}
+            keep = [v for v in old if str(v.get("src", "")).startswith("놀이시설") and _kc_norm(v.get("name")) not in have
+                    and not PFC_ALL_NO.search(v.get("name", ""))]
+            for v in keep:
+                v["name"] = _pfc_clean(v["name"])
+            items += keep
+            pfc_note += f" · 지난 자료 {len(keep)}곳 유지"
+        except Exception:
+            pass
     items.sort(key=lambda v: (v["district"], v["name"]))
     write_json(OUT_KIDSCAFES, {"updated": TODAY_ISO, "source": "행정안전부 지방행정 인허가(기타유원시설업) · 행정안전부 어린이놀이시설 정보 · " + fname, "items": items})
     return len(items), f"키즈카페 {len(items)}곳 (인허가 {n_csv} + {pfc_note})"
@@ -1731,6 +1742,20 @@ def _kc_norm(n):
     n = re.sub(r"\(.*?\)|주식회사|\(주\)|㈜|유한회사|놀이시설|놀이터|키즈카페|키즈 카페|kids ?cafe|점$|\s+", "", str(n or ""), flags=re.I)
     return n.lower()
 
+def _pfc_get(qs):
+    """GitHub 서버에서 공공데이터포털 https 연결이 가끔 멈춰서, 몇 번 다시 해보고 안 되면 http로도 시도."""
+    last = None
+    for base in (PFC_URL, PFC_URL.replace("https://", "http://")):
+        for t in range(3):
+            try:
+                return http_get(base + "?" + qs, timeout=60).decode("utf-8", "replace")
+            except urllib.error.HTTPError:
+                raise
+            except Exception as e:
+                last = e
+                time.sleep(3 + 4 * t)
+    raise last
+
 def _pfc_kidscafes(have):
     """행정안전부 어린이놀이시설 정보(설치장소: 놀이제공영업소·식품접객업소)에서 광주·전남 실내 키즈카페를 찾아,
     이미 있는 가게(이름·주소·좌표가 같은 곳)는 빼고 새 곳만 돌려준다."""
@@ -1743,7 +1768,7 @@ def _pfc_kidscafes(have):
         page = 1
         while page <= 60:
             qs = urllib.parse.urlencode({"serviceKey": DATA_KEY, "pageIndex": page, "recordCountPerPage": 100, "instlPlaceCd": code, "returnType": "json", "type": "json"})
-            raw = http_get(PFC_URL + "?" + qs, timeout=40).decode("utf-8", "replace")
+            raw = _pfc_get(qs)
             try:
                 j = json.loads(raw)
             except ValueError:
