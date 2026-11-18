@@ -5343,6 +5343,13 @@ html body #quick .qDice:not(#_){min-width:44px;padding-left:10px!important;paddi
  html body .adminTbl td:nth-child(4):empty{display:none}
 }
 </style>
+<style id="foldIn20261118">
+/* 홈 접는 칸: 펼치면 칸 안 제목 오른쪽 위에 작은 '접기 ▴' (위에 따로 있던 제목 줄은 숨김) */
+html body .hasFoldIn{position:relative}
+html body .hasFoldIn>.foldIn{position:absolute;top:0;right:0;z-index:2;border:1px solid var(--line,#e3e6ee);background:var(--card,#fff);color:var(--muted,#667085);font:700 13px/1 Pretendard,system-ui,sans-serif;padding:7px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+:root[data-theme="dark"] body .hasFoldIn>.foldIn{background:#1c1f26;border-color:#323844;color:#aab4c6}
+html body .hasFoldIn>.foldIn:focus-visible{outline:3px solid #f39a25;outline-offset:2px}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -13404,6 +13411,16 @@ window.renderSeason = renderSeason;
     bar.setAttribute("aria-expanded", String(isOpen));
     const txt = label(sec, id), sub = isOpen ? "접기 ▴" : "펼치기 ▾";
     if (bar.dataset.t !== txt + sub) { bar.dataset.t = txt + sub; bar.innerHTML = ""; const b = document.createElement("span"); b.textContent = txt; const s = document.createElement("small"); s.textContent = sub; bar.append(b, s) }
+    // 2026-11-18: 펼쳤을 때 제목 줄(foldBar)과 칸 안 제목이 두 번 나오던 것 → 펼치면 위 줄은 숨기고, 칸 안 제목 오른쪽에 '접기 ▴'
+    bar.style.display = isOpen ? "none" : "";
+    const h2 = sec.querySelector(":scope > :not(.foldBar) h2");
+    const head = h2 && (h2.closest(".sectionHead, .weekendHead, .dateHead, .todayTitle, .seasonHead") || h2.parentElement);
+    sec.querySelectorAll(".foldIn").forEach(x => { if (!isOpen || !head || !head.contains(x)) x.remove() });
+    if (isOpen && head && !head.querySelector(".foldIn")) {
+      const fb = document.createElement("button"); fb.type = "button"; fb.className = "foldIn"; fb.textContent = "접기 ▴"; fb.setAttribute("aria-expanded", "true");
+      fb.onclick = e => { e.stopPropagation(); open[id] = false; save(); paint(id); const t = sec.getBoundingClientRect().top; if (t < 0) window.scrollBy({ top: t - 80, behavior: "smooth" }) };
+      head.classList.add("hasFoldIn"); head.appendChild(fb);
+    }
   }
   window.unfoldHome = id => { if (FOLD[id] && !open[id]) { open[id] = true; save(); paint(id) } };
   function init(){
