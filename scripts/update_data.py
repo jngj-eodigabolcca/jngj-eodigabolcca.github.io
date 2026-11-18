@@ -1764,7 +1764,35 @@ def _sd_total(j):
         return None
     return walk(j)
 
+def _hm(v):
+    d = re.sub(r"\D", "", str(v or ""))
+    if len(d) == 3: d = "0" + d
+    return f"{d[:2]}:{d[2:4]}" if len(d) >= 4 and int(d[:2]) <= 24 else ""
+
 def _sd_pick(row):
+    """한 줄에서 이름·주소·위도·경도·운영시간·인원을 고른다.
+    2026-11-18 실제 항목: REARE_NM(쉼터명) · RONA_DADDR(도로명주소)/DADDR · WKDY_OPER_BGNG_HR/…END_HR(평일 시간) ·
+    UTZTN_PSBLTY_TNOP(이용가능인원) · FCLTY_SCLAS/FCLT_TYPE(시설 종류) · LAT/LOT(위도·경도). 모르는 이름이면 아래 값 모양 규칙으로."""
+    R = {str(k).upper(): v for k, v in row.items()}
+    g = lambda *ks: next((str(R[k]).strip() for k in ks if k in R and str(R[k] or "").strip()), "")
+    nm, addr = g("REARE_NM", "RSTR_NM", "SHNT_NM", "FCLTY_NM"), g("RONA_DADDR", "DADDR", "RN_DTL_ADRES", "DTL_ADRES")
+    b0, e0 = _hm(g("WKDY_OPER_BGNG_HR", "WKDY_OPER_BGNG_TM")), _hm(g("WKDY_OPER_END_HR", "WKDY_OPER_END_TM"))
+    cap, kind = g("UTZTN_PSBLTY_TNOP", "USE_PSBL_NOPE"), g("FCLTY_SCLAS", "FCLTY_MCLAS", "FCLT_TYPE")
+    if kind.isdigit(): kind = ""
+    lat = lng = None
+    for k in ("LAT", "LA", "YCORD", "Y"):
+        try: lat = float(R[k]); break
+        except (KeyError, TypeError, ValueError): pass
+    for k in ("LOT", "LO", "LON", "XCORD", "X"):
+        try: lng = float(R[k]); break
+        except (KeyError, TypeError, ValueError): pass
+    if lat is not None and not (33 <= lat <= 39): lat = None
+    if lng is not None and not (124 <= lng <= 132): lng = None
+    if nm and addr and lat is not None and lng is not None:
+        return nm, addr, lat, lng, (f"{b0}~{e0}" if b0 and e0 else ""), cap, kind
+    return _sd_pick_guess(row)
+
+def _sd_pick_guess(row):
     """한 줄에서 이름·주소·위도·경도·운영시간·인원을 값 모양으로 고른다."""
     nm = addr = hours = ""; lat = lng = None; cap = ""; kind = ""
     for k, v in row.items():
@@ -1798,7 +1826,7 @@ def build_shelters():
     except Exception:
         old = {}
     old_items = old.get("items", []) if isinstance(old, dict) else []
-    fresh = isinstance(old, dict) and old.get("updated", "") >= (NOW - timedelta(days=7)).strftime("%Y-%m-%d")
+    fresh = isinstance(old, dict) and old.get("v") == 2 and old.get("updated", "") >= (NOW - timedelta(days=7)).strftime("%Y-%m-%d")   # v2: 항목 이름 맞춤(11-18)
     notes, items = [], [x for x in old_items]
     for typ, api, keyf in SHELTER_APIS:
         key = keyf()
@@ -1823,9 +1851,10 @@ def build_shelters():
                 nm, addr, lat, lng, hours, cap, kind = _sd_pick(r)
                 if not nm or not (in_region(addr) or (lat and lng and 33.8 <= lat <= 35.6 and 125.0 <= lng <= 127.9 and not addr)):
                     continue
-                got.append({"id": f"{typ}-" + hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10], "type": typ, "name": nm,
-                            "address": addr, "district": district_from_addr(addr), "lat": lat, "lng": lng,
-                            "hours": ("평일 " + hours) if hours else "", "facility": " · ".join(x for x in (kind, f"{cap}명" if cap else "") if x)})
+                it = {"id": f"{typ}-" + hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10], "type": typ, "name": nm,
+                      "address": addr, "district": district_from_addr(addr), "lat": round(lat, 5) if lat else lat, "lng": round(lng, 5) if lng else lng,
+                      "hours": ("평일 " + hours) if hours else "", "facility": " · ".join(x for x in (kind, f"{cap}명" if cap and cap != "0" else "") if x)}
+                got.append({k: v for k, v in it.items() if v not in ("", None)})
             if total is not None and page * 1000 >= total:
                 break
             if len(rows) < 1000:
@@ -1834,11 +1863,14 @@ def build_shelters():
             time.sleep(0.4)
         if got:
             items = [x for x in items if x.get("type") != typ] + got
-        notes.append(f"{typ}: {len(got)}곳 (전국 {total or '?'}줄 · {page}쪽 · 항목 {','.join(fields[:14])})")
+        nxy = sum(1 for x in got if x.get("lat") and x.get("lng")); nhr = sum(1 for x in got if x.get("hours"))
+        notes.append(f"{typ}: {len(got)}곳 · 좌표 {nxy} · 시간 {nhr} (전국 {total or '?'}줄 · {page}쪽 · 항목 {','.join(fields[:24])})")
     items.sort(key=lambda x: (x.get("type", ""), x.get("district", ""), x.get("name", "")))
     if items != old_items or not fresh:
-        write_json(OUT_SHELTERS, {"updated": TODAY_ISO if any("곳 (" in n for n in notes) else old.get("updated", TODAY_ISO) if isinstance(old, dict) else TODAY_ISO,
-                                  "source": "행정안전부 재난안전데이터 공유플랫폼 (한파쉼터·무더위쉼터)", "items": items})
+        doc = {"v": 2, "updated": TODAY_ISO if any("곳 (" in n for n in notes) else old.get("updated", TODAY_ISO) if isinstance(old, dict) else TODAY_ISO,
+               "source": "행정안전부 재난안전데이터 공유플랫폼 (한파쉼터·무더위쉼터)", "items": items}
+        OUT_SHELTERS.parent.mkdir(parents=True, exist_ok=True)
+        OUT_SHELTERS.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 9천 곳이 넘어 빈칸 없이 작게
     return len(items), " / ".join(notes)
 
 
