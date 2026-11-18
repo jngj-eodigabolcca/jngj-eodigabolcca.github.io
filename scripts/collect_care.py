@@ -13,6 +13,7 @@
   1) 공공데이터포털(data.go.kr)에서 아래 두 서비스 '활용신청'
      - 국립중앙의료원_전국 약국 정보 조회 서비스
      - 국립중앙의료원_전국 응급의료기관 정보 조회 서비스
+     - 국립중앙의료원_전국 병·의원 찾기 서비스 (2026-11-18 · 일요일·공휴일 진료 병·의원)
   2) 발급받은 '일반 인증키(Decoding)'를 GitHub 저장소 Secrets에 DATA_GO_KR_KEY 로 저장
   3) .github/workflows/update-data.yml 의 기존 수집 단계 뒤에 한 줄 추가:
        python scripts/collect_care.py
@@ -39,6 +40,8 @@ NOW = datetime.now(KST).strftime("%Y-%m-%dT%H:%M:%S+09:00")
 
 PH_URL = "https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
 ER_URL = "https://apis.data.go.kr/B552657/ErmctInfoInqireService/getEgytListInfoInqire"
+# 2026-11-18: 일요일·공휴일에 문 여는 병·의원 (국립중앙의료원_전국 병·의원 찾기 서비스 · QT=7 일요일, 8 공휴일)
+CL_URL = "https://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncListInfoInqire"
 # 통합특별시 출범 뒤 기관 자료의 시·도 이름이 바뀌었을 수 있어 셋 다 물어보고 합친다 (겹치면 하나로)
 SIDO = ["광주광역시", "전라남도", "전남광주통합특별시"]
 REGION_RE = re.compile(r"광주|전남|전라남도")
@@ -193,6 +196,36 @@ def shelters():
     return out, bool(files)
 
 
+def clinics(key):
+    """토요일(QT=6)·일요일(QT=7)·공휴일(QT=8)에 진료한다고 신고한 병·의원만. 응급실·약국은 따로 있으니 빼지 않아도 겹치지 않음."""
+    seen, out, fails = {}, [], 0
+    for sido in SIDO:
+        for qt in ("6", "7", "8"):   # 6 토요일 · 7 일요일 · 8 공휴일
+            try:
+                rows = fetch_all(CL_URL, key, {"Q0": sido, "QT": qt})
+            except Exception as e:
+                fails += 1
+                log("병·의원", sido, qt, "건너뜀:", e)
+                continue
+            for it in rows:
+                hid = it.get("hpid") or (it.get("dutyName", "") + it.get("dutyAddr", ""))
+                addr = it.get("dutyAddr", "")
+                if not REGION_RE.search(addr):
+                    continue
+                h = hours(it)
+                if not (h.get("6") or h.get("7") or h.get("8")):
+                    continue
+                if hid in seen:
+                    continue
+                seen[hid] = 1
+                out.append({"id": hid, "name": it.get("dutyName", ""), "address": addr, "district": district(addr),
+                            "tel": it.get("dutyTel1", ""), "kind": it.get("dutyDivNam", ""), "dept": (it.get("dgidIdName") or "")[:60],
+                            "lat": num(it.get("wgs84Lat")), "lng": num(it.get("wgs84Lon")), "h": h})
+    if fails == len(SIDO) * 3:
+        raise RuntimeError("병·의원 서비스 응답 없음 (활용신청 확인)")
+    return out
+
+
 def save(name, rows, source):
     path = os.path.join(OUT, f"{name}.json")
     old = 0
@@ -220,6 +253,10 @@ def main():
     if key:
         save("pharmacies", pharmacies(key), "국립중앙의료원 전국 약국 정보 조회 서비스")
         save("emergency", emergency(key), "국립중앙의료원 전국 응급의료기관 정보 조회 서비스")
+        try:
+            save("clinics", clinics(key), "국립중앙의료원 전국 병·의원 찾기 서비스 (토·일·공휴일 진료)")
+        except Exception as e:
+            log("병·의원 건너뜀:", e)
     else:
         log("DATA_GO_KR_KEY 가 없어 약국·응급실은 건너뜀")
     rows, had = shelters()
