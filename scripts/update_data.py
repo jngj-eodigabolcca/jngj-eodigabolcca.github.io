@@ -1702,9 +1702,91 @@ def build_kidscafes():
             "rides": rides if rides and not re.fullmatch(r"[\d\s]+", rides) else "",
             "since": (r.get("인허가일자") or "")[:10], "inout": "실내",
         })
+    n_csv, pfc_note = len(items), ""
+    try:                                                      # 2026-11-18: 어린이놀이시설 자료로 '음식점으로 신고한 키즈카페'까지
+        extra, pfc_note = _pfc_kidscafes(items)
+        items += extra
+    except Exception as e:
+        pfc_note = scrub(f"놀이시설 자료 실패: {e}")[:160]
     items.sort(key=lambda v: (v["district"], v["name"]))
-    write_json(OUT_KIDSCAFES, {"updated": TODAY_ISO, "source": "행정안전부 지방행정 인허가(기타유원시설업) · " + fname, "items": items})
-    return len(items), f"키즈카페 {len(items)}곳 ({fname})"
+    write_json(OUT_KIDSCAFES, {"updated": TODAY_ISO, "source": "행정안전부 지방행정 인허가(기타유원시설업) · 행정안전부 어린이놀이시설 정보 · " + fname, "items": items})
+    return len(items), f"키즈카페 {len(items)}곳 (인허가 {n_csv} + {pfc_note})"
+
+PFC_URL = "https://apis.data.go.kr/1741000/pfc3/getPfctInfo3"
+PFC_PLACES = [("A013", "놀이제공영업소"), ("A004", "식품접객업소")]
+PFC_FOOD_OK = re.compile(r"키즈|키카|kids|놀이터|놀이카페|플레이|play|점핑|점프|방방|트램|바운스|볼풀|어린이|아이|베이비|팡팡|랜드|파크", re.I)
+PFC_FOOD_NO = re.compile(r"한우|고기|갈비|삼겹|정육|식당|가든|뷔페|부페|회관|횟집|오리|치킨|피자|버거|맥도날드|롯데리아|아웃백|애슐리|빕스|쿠우쿠우|놀이방")
+
+def _kc_norm(n):
+    n = re.sub(r"\(.*?\)|주식회사|\(주\)|㈜|유한회사|놀이시설|놀이터|키즈카페|키즈 카페|kids ?cafe|점$|\s+", "", str(n or ""), flags=re.I)
+    return n.lower()
+
+def _pfc_kidscafes(have):
+    """행정안전부 어린이놀이시설 정보(설치장소: 놀이제공영업소·식품접객업소)에서 광주·전남 실내 키즈카페를 찾아,
+    이미 있는 가게(이름·주소·좌표가 같은 곳)는 빼고 새 곳만 돌려준다."""
+    if not DATA_KEY:
+        return [], "놀이시설: 키 없음"
+    known_names = {_kc_norm(v["name"]) for v in have}
+    known_addr = {re.sub(r"\s+", "", v.get("address", ""))[:24] for v in have if v.get("address")}
+    out, fields, seen, total_rows = [], [], set(), 0
+    for code, label in PFC_PLACES:
+        page = 1
+        while page <= 60:
+            qs = urllib.parse.urlencode({"serviceKey": DATA_KEY, "pageIndex": page, "recordCountPerPage": 100, "instlPlaceCd": code, "returnType": "json", "type": "json"})
+            raw = http_get(PFC_URL + "?" + qs, timeout=40).decode("utf-8", "replace")
+            try:
+                j = json.loads(raw)
+            except ValueError:
+                raise RuntimeError("JSON 아님 · " + re.sub(r"\s+", " ", raw)[:160])
+            rows = _sd_rows(j)
+            if not rows:
+                break
+            total_rows += len(rows)
+            if not fields:
+                fields = list(rows[0].keys())
+            for r in rows:
+                R = {str(k): ("" if v is None else str(v).strip()) for k, v in r.items()}
+                low = {k.lower(): v for k, v in R.items()}
+                nm = low.get("pfctnm") or next((v for k, v in low.items() if k.endswith("nm") and "plc" not in k and "place" not in k and v), "")
+                addr = next((low[k] for k in ("ronaaddr", "rnaddr", "roadaddr", "lotnoaddr", "addr") if low.get(k)), "") or \
+                       next((v for k, v in low.items() if "addr" in k and v), "")
+                if not nm or not in_region(addr):
+                    continue
+                st = " ".join(v for k, v in low.items() if any(w in k for w in ("use", "opr", "oper", "stts", "prhb")))
+                if re.search(r"이용금지|폐쇄|철거|휴업|폐업", st):
+                    continue
+                io = " ".join(v for k, v in low.items() if "idrodr" in k or "inout" in k or "inner" in k)
+                if re.search(r"실외|야외", io) and not re.search(r"실내", io):
+                    continue
+                if code == "A004" and (not PFC_FOOD_OK.search(nm) or PFC_FOOD_NO.search(nm)):
+                    continue                                   # 고깃집·패밀리레스토랑 놀이방 등은 빼고 키즈카페다운 곳만
+                if KC_EXCLUDE.search(nm):
+                    continue
+                key = _kc_norm(nm)
+                a24 = re.sub(r"\s+", "", addr)[:24]
+                if key in known_names or a24 in known_addr or key in seen:
+                    continue
+                seen.add(key)
+                lat = lng = None
+                for k, v in low.items():
+                    try:
+                        f = float(v)
+                    except ValueError:
+                        continue
+                    if lat is None and ("lat" in k or k.endswith("_y") or k == "y") and 33 <= f <= 39:
+                        lat = round(f, 6)
+                    if lng is None and ("lot" in k or "lng" in k or "lon" in k or k.endswith("_x") or k == "x") and 124 <= f <= 132:
+                        lng = round(f, 6)
+                out.append({"id": "kcp-" + (low.get("pfctsn") or hashlib.sha1((nm + addr).encode("utf-8")).hexdigest()[:10]),
+                            "name": re.sub(r"\s*놀이시설$", "", nm), "kind": "키즈카페", "district": district_from_addr(addr), "address": addr,
+                            "phone": "", "lat": lat, "lng": lng, "rides": "", "since": (low.get("instldt") or low.get("instlymd") or "")[:10],
+                            "inout": "실내", "src": "놀이시설·" + label})
+            if len(rows) < 100:
+                break
+            page += 1
+            time.sleep(0.3)
+    nxy = sum(1 for x in out if x["lat"] and x["lng"])
+    return out, f"놀이시설 새로 {len(out)} · 좌표 {nxy} (받은 줄 {total_rows} · 항목 {','.join(fields[:20])})"
 
 
 # ════════════════ 한파쉼터·무더위쉼터 (재난안전데이터 공유플랫폼) · 2026-11-18 ════════════════
