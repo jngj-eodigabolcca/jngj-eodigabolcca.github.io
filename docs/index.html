@@ -5353,6 +5353,14 @@ html body .hasFoldIn>.foldIn:focus-visible{outline:3px solid #f39a25;outline-off
 <style id="kcPrice20261118">
 html body .kcCard .kcPriceNote{display:block;font-size:12px;color:var(--muted,#6b7486);margin-top:2px}
 </style>
+<style id="careGu20261118">
+html body .careGuRow{margin:2px 0 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+html body .careGu{position:relative;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:#eef7f4;border:1px solid #cfe5dd;color:#134e4a;font:700 12px/1.4 Pretendard,system-ui,sans-serif;white-space:nowrap;cursor:pointer}
+html body .careGu u{color:#3f8f7f;text-decoration:underline}
+html body .careGu select:not(#_):not(#_){position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:0;cursor:pointer;font-size:16px;border:0;margin:0;padding:0}
+:root[data-theme="dark"] body .careGu{background:#17302a;border-color:#2c5248;color:#9fe0cf}
+:root[data-theme="dark"] body .careGu u{color:#9fe0cf}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -14471,9 +14479,13 @@ document.addEventListener("keydown",function(e){
   }
 
   /* ── 거리: 지금 위치 → 고른 동네 → 권역 중심 ── */
+  // 2026-11-18: 이 창 안에서 기준 동네 바꾸기 ('우리 동네 오늘'처럼 · 권역마다 이 기기에 기억 · 사는 동네와는 따로)
+  const careGuKey = () => "glm_care_gu_" + (typeof REGION !== "undefined" ? REGION : "gj");
+  const careGu = () => { try { return localStorage.getItem(careGuKey()) || "" } catch (e) { return "" } };
   function refPoint(at) {
     if (at && at.lat) return at;
     if (POS) return POS;
+    try { const g = careGu(), c = g && typeof guCenter === "function" ? guCenter(g) : null; if (c && c.lat) return { lat: +c.lat, lng: +c.lng, label: `${g} 기준` } } catch (e) {}
     try { if (typeof HOME !== "undefined" && HOME && HOME.lat) return { lat: +HOME.lat, lng: +HOME.lng, label: `${HOME.gu} 기준` } } catch (e) {}
     const R = REGIONS[REGION] || REGIONS.gj; return { lat: R.wx[0], lng: R.wx[1], label: `${R.hub} 중심 기준` };
   }
@@ -14533,11 +14545,29 @@ document.addEventListener("keydown",function(e){
     const box = $c("modalContent"); if (!box || !CARE) return;
     const at = refPoint(CUR.at), k = CUR.kind;
     const title = k === "med" ? "🏥 지금 문 연 약국 · 응급실" : k === "heat" ? "🌡 가까운 무더위쉼터" : "🧣 가까운 한파쉼터";
-    box.innerHTML = `<div class="careDoc"><h2>${title}<small>${E(at.label || "")} · 가까운 순</small></h2>
+    let ds = []; try { ds = REGIONS[REGION].districts || [] } catch (e) {}
+    const curGu = POS ? "__pos" : careGu();
+    const pick = `<label class="baseGu careGu"><span>${POS ? "📍" : "🏠"} ${E(at.label || "")} · 가까운 순</span><u>바꾸기</u><select aria-label="기준 동네 바꾸기"><option value="">${E((HOME && HOME.gu) ? HOME.gu + " (사는 동네)" : "사는 동네·권역 중심")}</option>${navigator.geolocation ? `<option value="__pos"${curGu === "__pos" ? " selected" : ""}>📍 지금 위치</option>` : ""}${ds.map(d => `<option value="${E(d)}"${d === curGu ? " selected" : ""}>${E(d)}</option>`).join("")}</select></label>`;
+    box.innerHTML = `<div class="careDoc"><h2>${title}</h2><div class="careGuRow">${pick}</div>
       <div class="careTabs" role="tablist"${k === "med" ? " hidden" : ""}>${[["heat", "🌡 무더위쉼터"], ["cold", "🧣 한파쉼터"]].map(([v, t]) => `<button type="button" class="${v === k ? "on" : ""}" data-care="${v}">${t}</button>`).join("")}</div>
-      <div class="careWhere">${CUR.at || !(k === "med" ? CARE.ph.length || CARE.er.length : CARE.sh.some(x => (x.type || "heat") === k)) ? "" : `<button type="button" data-care-pos="1">📍 지금 위치로 찾기</button><span>위치는 이 기기 안에서 거리 계산에만 써요</span>`}</div>
+
       ${k === "med" ? medHtml(at) : shelterHtml(k, at)}</div>`;
     box.querySelectorAll("[data-care]").forEach(b => b.onclick = () => { CUR.kind = b.dataset.care; render() });
+    const gs = box.querySelector(".careGu select");
+    if (gs) gs.onchange = () => {
+      const v = gs.value;
+      if (v === "__pos") {
+        if (!navigator.geolocation) return;
+        typeof toast === "function" && toast("📍 위치 찾는 중… (이 기기 안에서 거리 계산에만 써요)");
+        navigator.geolocation.getCurrentPosition(p => { POS = { lat: p.coords.latitude, lng: p.coords.longitude, label: "지금 위치 기준" }; render() },
+          () => { typeof toast === "function" && toast("위치 권한이 없어서 동네 기준으로 보여 드려요"); render() },
+          { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+        return;
+      }
+      POS = null; CUR.at = null;
+      try { v ? localStorage.setItem(careGuKey(), v) : localStorage.removeItem(careGuKey()) } catch (e) {}
+      render();
+    };
     const pb = box.querySelector("[data-care-pos]");
     if (pb) pb.onclick = () => {
       if (!navigator.geolocation) { typeof toast === "function" && toast("이 기기에서는 위치를 쓸 수 없어요"); return }
