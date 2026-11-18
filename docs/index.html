@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-18 오후 크리밍: 동물병원·강아지 아파요 → 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
   · 2026-11-18 코스 제목 한 줄·지역 칩 가로(#alHeadFix20261118) · '시장 구경하고 먹방'은 권역마다 오늘 열린 시장+근처 밥집(marketPickToday) · 오늘 뭐하지 탭 고른 칸 진하게(#dnTabsOn20261118) · 크리밍 그때그때 질문 3개+🎲(askIdeas) · 키즈카페·도서관·장날 물으면 그 목록으로(kidsCafeAI·libraryAI) · 첫 화면 문구에 공휴일·선거·수능·기념일·축제·기온·일교차·미세먼지 등 · 검색창 예시 돌아가며 · '이번 주말 공연'처럼 언제+무엇 검색은 날짜별 목록 · 관리자 점검표 폰 줄맞춤
   · 2026-11-17 저녁 코스: 한 곳뿐이면 '저녁·카페 → 밤 산책'으로 앞에 붙임(decisionVariedPicks) · 코스 짜기에서 시간 못 맞춘 행사는 이유+'내일 기준으로 다시 짜기' · 크리밍 '오늘' 목록은 지금 시각에 갈 수 있는 것만 · ♡ 뒤 캘린더 묻는 창 세로 깨짐 고침(#calAskFix20261117) · 키즈카페 '번호 찾기'
   · 2026-11-16 아이랑 어디 갈까?에 '🧸 키즈카페' 칸: docs/data/kidscafes.json(수집기가 기타유원시설업 CSV에서 만듦) · 장소 목록과 섞지 않음(kcSection·kcCard)
@@ -10765,6 +10766,26 @@ function libraryAI(s) {
    <p class="pfNote"><button class="btn" type="button" onclick="showTab('local')">🏘 동네 탭에서 도서관·강좌 다 보기 →</button></p></div>`;
   scrollAI?.();
 }
+/* 밤에 가볼 곳 (지금 권역 · 야경·야시장·밤바다·조명 명소 · 오늘 쉬는 곳 빼고 · 사는 동네 가까운 순) */
+function nightAI(s) {
+  const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || null;
+  const NIGHT_RX = /야경|야간|조명|야시장|미디어아트|빛축제|빛의|드론|밤바다|낭만포차|케이블카|분수쇼|음악분수|해상\s*W|불빛|포장마차|밤마실/;
+  let list = VENUES.filter(v => inRegion(v) && openToday(v) !== false && (NIGHT_IDS.includes(v.id) || NIGHT_RX.test([v.name, v.desc, v.note, v.hours, (v.tags || []).join(" ")].join(" "))));
+  if (gu && list.some(v => v.district === gu)) list = list.filter(v => v.district === gu);
+  // 저녁 7시 전에 문 닫는 실내 전시관(전일빌딩 등)은 밤 추천에서 빼기
+  const st = Math.max(tripNowMin(), 19 * 60 + 30), late = list.filter(v => { try { return tripFitsFrom(v, "venue", { start: st, move: s }).ok !== false } catch (e) { return true } });
+  if (late.length >= 3) list = late;
+  const total = list.length;
+  list = HOME ? sortHome(list) : aiDiverse(list, aiQueryKey(s, "night"), 1, list.length);
+  const strong = v => NIGHT_RX.test([v.name, v.desc, v.note, (v.tags || []).join(" ")].join(" ")) ? 0 : 1;   // 진짜 야경·야시장 명소 먼저
+  list = list.map((v, i) => [v, i]).sort((a, b) => strong(a[0]) - strong(b[0]) || a[1] - b[1]).map(x => x[0]);
+  const hm = tripNowMin(), early = hm < 17 * 60;
+  $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🌙 ${gu ? esc(gu) + " " : ""}밤에 가볼 곳</b><span>${total}곳</span></div>
+   <p class="pfNote">야경·야시장·밤바다처럼 해 진 뒤에 더 좋은 곳만 골랐어요${HOME ? `. 🏠 ${esc(HOME.gu)}에서 가까운 순이에요` : ""}.${early ? " 해 지고 가면 딱 좋아요." : ""} 야외는 운영 시간이 계절마다 달라서 가기 전에 확인하세요.</p>
+   <div class="grid">${list.slice(0, 6).map(v => aiPlaceCard(v)).join("") || "<p class='empty'>이 동네엔 밤에 가볼 곳이 아직 없어요.</p>"}</div>
+   <p class="pfNote"><button class="btn" type="button" onclick="recommend('오늘 저녁 공연')">🎭 오늘 저녁 공연도 보기 →</button></p></div>`;
+  scrollAI?.();
+}
 /* 오늘 열린 시장 고르기 (지금 권역 · 5일장은 오늘 장날인 곳만 · 큰 장·사는 동네 가까운 곳 먼저) */
 function marketPickToday(s) {
   const t = todayISO(), dd = Number(t.slice(8)) % 10 || 10;
@@ -10791,6 +10812,27 @@ function recommend(t, forced = null, fixedMeal = null) {
   if (!forced && /빵지순례|빵집|베이커리|제과점|빵\s*투어/.test(s)) return bakeryListAI(s);
   // 2026-11-18: 물어본 뜻대로 — 키즈카페·도서관·장날을 물었는데 공원 코스가 나오던 것
   if (!forced && /키즈\s*카페|키카|실내\s*놀이터|방방|트램펄?폴?린/.test(s)) return kidsCafeAI(s);
+  // 2026-11-18: 동물병원 — 진료 시간이 있는 네이버 지도로 바로 (앱엔 동물병원 자료를 따로 두지 않음)
+  if (!forced && (/동물\s*병원|수의사|24시\s*동물|애견\s*병원|반려\s*동물\s*병원/.test(s) || (/강아지|댕댕|멍멍|개가|고양이|냥이|반려/.test(s) && /아파|아픈|아프|다쳤|다친|토해|토했|설사|열이|병원|응급|숨|경련|먹었/.test(s)))) {
+    const gu = REGIONS[REGION].districts.find(d => s.includes(d) || (/[시군]$/.test(d) && d.length >= 3 && s.includes(d.slice(0, -1)))) || HOME?.gu || "";
+    const area = gu ? (GJ_GU.includes(gu) ? "광주 " + gu : gu) : ({ gj: "광주", ys: "순천", mp: "목포" }[REGION] || "광주");
+    const btn = (q, t) => `<a class="btn" target="_blank" rel="noopener noreferrer" href="${mapLink(q)}">${t} ↗</a>`;
+    $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🐾 ${esc(area)} 동물병원</b></div>
+     <p class="pfNote">동물병원은 진료 시간·야간 진료가 병원마다 달라서, 시간과 후기가 함께 나오는 네이버 지도로 바로 찾아드릴게요. 밤이나 휴일엔 <b>24시 동물병원</b>부터 보세요. 가기 전에 꼭 전화로 진료 되는지 물어보세요.</p>
+     <p class="pfNote" style="display:flex;flex-wrap:wrap;gap:8px">${btn("24시 동물병원 " + area, "🌙 24시 동물병원")}${btn("동물병원 " + area, "🐾 가까운 동물병원")}</p>
+     <p class="pfNote">💡 119는 사람 응급만 받아요. 숨을 잘 못 쉬거나 경련, 이물질을 삼킨 것 같으면 바로 24시 동물병원에 전화하세요.</p></div>`;
+    scrollAI?.(); return;
+  }
+  // 2026-11-18: 크리밍에게 약국·병원·쉼터를 물었는데 나들이 코스가 나오던 것 → 바로 약국·응급실·쉼터 화면으로
+  if (!forced && /약국|응급실|응급|병원|의원|소아과|아파|아플|열이\s*나|쉼터/.test(s) && !/동물\s*병원|애견|반려/.test(s)) {
+    const sh = /쉼터|한파|무더위|폭염/.test(s), m = new Date().getMonth() + 1, kind = sh ? (/한파|추위|추운/.test(s) ? "cold" : /무더위|폭염|더위|더운/.test(s) ? "heat" : (m >= 5 && m <= 9 ? "heat" : "cold")) : "med";
+    $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>${sh ? "🏠 가까운 쉼터" : "🏥 문 연 약국·병원·응급실"}</b></div>
+     <p class="pfNote">${sh ? "지금 권역의 쉼터를 사는 동네 가까운 순으로 보여드릴게요." : "밤엔 심야약국, 주말·공휴일엔 당번약국과 문 여는 병·의원, 그리고 가까운 응급실을 보여드릴게요. 급하면 119예요."}</p>
+     <p class="pfNote"><button class="btn" type="button" onclick="openCare('${kind}')">${sh ? "🏠 쉼터 보기" : "🏥 약국·응급실 보기"} →</button></p></div>`;
+    window.openCare?.(kind); return;
+  }
+  // 2026-11-18: '밤에 갈만한 곳'을 물었는데 낮 산책길이 먼저 나오던 것 → 야경·야시장·밤바다 명소만
+  if (!forced && /밤에|밤늦|늦은\s*밤|야경|야간|밤바다|야시장|밤\s*산책|밤마실|심야|밤\s*나들이/.test(s) && !/약국|병원|응급|코스|공연|콘서트|먹|맛집|술|카페|빵|데이트|축제/.test(s)) return nightAI(s);
   if (!forced && /도서관|책\s*읽|독서/.test(s) && !/공연|축제|코스|맛집|먹|카페/.test(s)) return libraryAI(s);
   if (!forced && /장\s*(?:서는|선|날)|오일장|5일장|장날/.test(s)) { const mk = marketPickToday(s); if (mk) return recommend(`${mk.name} 구경하고 근처 맛집`, mk) }
   if (!forced && /역사\s*유적|유적지?|사적지|역사\s*탐방/.test(s) && !/5·18|518|오월|코스|하루|맛집|카페|밥|먹|데이트|보고|그리고|\+|ktx|기차/.test(s)) return historyList(s);
