@@ -7732,5 +7732,86 @@
   "restaurants|연화식당|전남광주통합특별시 서구 마륵복개로 147 (치평동, 아트빌)|wiki": {
     "v": 1,
     "checked": "2026-11-11"
+  },
+  "venues|여수 낭만포차거리|전남 여수시 하멜로 102 (종화동)": {
+    "lat": 34.736547,
+    "lng": 127.749497,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/47/3422947_image2_1.png",
+    "imageCredit": "한국관광공사",
+    "tourId": "2647847",
+    "checked": "2026-11-18"
+  },
+  "venues|여수 돌산공원 (돌산대교 야경)|전남 여수시 돌산읍 우두리 일대": {
+    "lat": 34.730559,
+    "lng": 127.741503,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/54/3534454_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "128755",
+    "checked": "2026-11-18"
+  },
+  "venues|순천 조례호수공원|전남 순천시 조례동 1867": {
+    "lat": 34.966044,
+    "lng": 127.522015,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/18/4101618_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "2737298",
+    "checked": "2026-11-18"
+  },
+  "venues|목포 평화광장 · 춤추는 바다분수|전남 목포시 미항로 115 (상동)": {
+    "lat": 34.796662,
+    "lng": 126.433791,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/04/3548304_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "2663184",
+    "checked": "2026-11-18"
+  },
+  "venues|목포 스카이워크 · 유달유원지|전남 목포시 해양대학로 59 (죽교동)": {
+    "lat": 34.787729,
+    "lng": 126.367348,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/30/4098630_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "2714513",
+    "checked": "2026-11-18"
+  },
+  "venues|ACC 하늘마당 (국립아시아문화전당 야외)|광주 동구 문화전당로 38": {
+    "lat": 35.147274,
+    "lng": 126.920808,
+    "geoSrc": "OpenStreetMap(주소)",
+    "checked": "2026-11-18"
+  },
+  "venues|ACC 하늘마당 (국립아시아문화전당 야외)|광주 동구 문화전당로 38|wiki": {
+    "v": 1,
+    "checked": "2026-11-18"
+  },
+  "venues|무등산 잣고개 전망대|광주 동구 산수동 무등로 일대 (잣고개)": {
+    "miss": "2026-11-18"
+  },
+  "venues|무등산 잣고개 전망대|광주 동구 산수동 무등로 일대 (잣고개)|wiki": {
+    "v": 1,
+    "checked": "2026-11-18"
+  },
+  "venues|수완호수공원|광주 광산구 수완동 수완호수공원": {
+    "lat": 35.187942,
+    "lng": 126.820245,
+    "geoSrc": "한국관광공사",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/59/4143659_image2_1.jpg",
+    "imageCredit": "한국관광공사",
+    "tourId": "2822573",
+    "checked": "2026-11-18"
+  },
+  "venues|양산호수공원|광주 북구 양산동 양산호수공원": {
+    "lat": 35.203375,
+    "lng": 126.872325,
+    "geoSrc": "OpenStreetMap(이름)",
+    "checked": "2026-11-18"
+  },
+  "venues|양산호수공원|광주 북구 양산동 양산호수공원|wiki": {
+    "v": 1,
+    "checked": "2026-11-18"
   }
 }
