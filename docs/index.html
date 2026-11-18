@@ -41,6 +41,8 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 주말·휴일 약국: 🟢지금 열림 → ⏰이따 열림 → 🔒오늘 끝남(접기) · 토요일·공휴일 전날엔 '내일 문 여는 약국' 미리 보기
+  · 2026-11-19 새벽에 문 연 약국이 없으면 '없어요' 빨간 안내+응급실 버튼, 닫힌 약국은 접고 🔒 흐리게 (지금 연 줄 착각하던 것)
   · 2026-11-18 저녁 전체 메뉴 '벚꽃 명소🌸/단풍 명소🍁'는 그 철(홈 칸 기간)에만 보임 · 철 아니면 메뉴에서 감춤(SEASON_ON)
   · 2026-11-18 저녁 첫 화면 문구: 지금 관측이 비면 비로 보고(curWet) 비 올 때·올 예정일 때 '볕 좋을 때'류 문구 안 나오게
   · 2026-11-18 오후 약국·응급실 화면 119 아래 바로가기(💊약국·🏥응급실·🩺병의원·🐾동물병원, careJump) · 화면 아래 "🐾 반려동물이 아플 때"(vetHtml, 메뉴 검색 '동물병원'도 여기로) · 크리밍: 동물병원·강아지 아파요 → 전남대 동물병원 24시 응급센터 + 네이버 지도 24시/가까운 동물병원 · '밤에 갈만한 곳'은 야경·야시장·밤바다 명소만(nightAI) · 약국·병원·열·쉼터를 물으면 바로 약국·응급실·쉼터 화면으로
@@ -5399,6 +5401,20 @@ html body details.careMore[open]>summary{margin-bottom:10px}
 .cjAnchor:not(#_){display:block;height:0;scroll-margin-top:96px}
 [data-theme=dark] .careJump button:not(#_){background:#1b2433;border-color:#3a4a66;color:#dbe6ff}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) .careJump button:not(#_){background:#1b2433;border-color:#3a4a66;color:#dbe6ff}}
+</style>
+<style id="careNone20261119">
+.careNone:not(#_){margin:6px 0 10px;padding:14px;border-radius:14px;background:#fff1f0;border:1.5px solid #f3b8b2;display:flex;flex-direction:column;gap:8px}
+.careNone b:not(#_){color:#b42318}.careNone>b:not(#_){font-size:15px;line-height:1.45}
+.careNone span:not(#_){font-size:13.5px;line-height:1.55;color:#4a3533}
+.careNone button:not(#_){align-self:flex-start;padding:9px 14px;border-radius:12px;border:0;background:#1f3d73;color:#fff;font-weight:800;font-size:14px;cursor:pointer}
+.careSub:not(#_){margin:10px 2px 6px;font-weight:800;font-size:14px}.careSub.open:not(#_){color:#1a7f4b}.careSub.later:not(#_){color:#9a5b00}
+[data-theme=dark] .careSub.open:not(#_){color:#6fdca0}[data-theme=dark] .careSub.later:not(#_){color:#ffc46b}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .careSub.open:not(#_){color:#6fdca0}html:not([data-theme=light]) .careSub.later:not(#_){color:#ffc46b}}
+.careItem.isClosed:not(#_){opacity:.62;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(127,127,127,.06) 10px 20px)}
+.careItem .closedTag:not(#_){display:inline-block;margin-bottom:6px;padding:2px 9px;border-radius:999px;background:#e9ecf2;color:#5b6475;font-size:12px;font-weight:800}
+[data-theme=dark] .careNone:not(#_){background:#3a1f1f;border-color:#7a3b36}[data-theme=dark] .careNone b:not(#_){color:#ffb4ab}[data-theme=dark] .careNone span:not(#_){color:#f1dcda}
+[data-theme=dark] .careItem .closedTag:not(#_){background:#2b3446;color:#c4cddc}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .careNone:not(#_){background:#3a1f1f;border-color:#7a3b36}html:not([data-theme=light]) .careNone b:not(#_){color:#ffb4ab}html:not([data-theme=light]) .careNone span:not(#_){color:#f1dcda}html:not([data-theme=light]) .careItem .closedTag:not(#_){background:#2b3446;color:#c4cddc}}
 </style>
 </head>
 <body data-tab="home" data-screen="home">
@@ -14602,7 +14618,7 @@ document.addEventListener("keydown",function(e){
   const dTxt = d => d < 1 ? `약 ${Math.max(100, Math.round(d * 10) * 100)}m` : `약 ${d.toFixed(1)}km`;
   const ranked = (list, at, maxKm) => list.filter(x => +x.lat && +x.lng).map(x => [x, dist(at, { lat: +x.lat, lng: +x.lng })]).filter(([, d]) => d <= maxKm).sort((a, b) => a[1] - b[1]);
 
-  const itemHtml = (x, d, st, extraTel) => `<div class="careItem"><b>${E(x.name)}</b>
+  const itemHtml = (x, d, st, extraTel) => `<div class="careItem${st && !st.open ? " isClosed" : ""}">${st && !st.open ? `<span class="closedTag">🔒 지금 닫혀 있어요</span>` : ""}<b>${E(x.name)}</b>
     <small>${E(dTxt(d))}${st ? ` · <span class="careSt ${st.open ? (st.soon ? "soon" : "open") : "closed"}">${st.open ? (st.soon ? "곧 닫아요 · " : "지금 열려 있어요 · ") : ""}${E(st.txt)}</span>` : ""}</small>
     ${x.address ? `<small>📍 ${E(x.address)}</small>` : ""}${x.note ? `<small>${E(x.note)}</small>` : ""}
     <div class="careBtns">${extraTel ? `<a class="tel" href="${telHref(extraTel)}">📞 응급실 ${E(extraTel)}</a>` : ""}${x.tel ? `<a class="${extraTel ? "" : "tel"}" href="${telHref(x.tel)}">📞 ${extraTel ? "대표" : "전화"} ${E(x.tel)}</a>` : ""}<a target="_blank" rel="noopener noreferrer" href="${E(mapLink(x.name + " " + (x.address || "")))}">지도 ↗</a></div></div>`;
@@ -14621,17 +14637,42 @@ document.addEventListener("keydown",function(e){
       const list = (arr, k) => `<div class="careList">${arr.slice(0, k).map(([x, d, st]) => itemHtml(x, d, st)).join("")}</div>`;
       const openNow = all.filter(a => a[2].open);
       if (off) {
-        const todayOpen = all.filter(([x]) => todaySpan(x)).sort((a, b) => (b[2].open - a[2].open) || (a[1] - b[1]));
+        // 2026-11-19: 주말·휴일 약국을 '지금 열림 → 이따 열림 → 오늘 끝남'으로 나눠서, 닫힌 곳을 연 곳으로 착각하지 않게
+        const todayOpen = all.filter(([x]) => todaySpan(x)), nTxt = n => n > 20 ? "20곳 넘게" : n + "곳";
+        const nowO = todayOpen.filter(a => a[2].open).sort((a, b) => a[1] - b[1]);
+        const laterO = todayOpen.filter(a => !a[2].open && a[2].later).sort((a, b) => (todaySpan(a[0]).o - todaySpan(b[0]).o) || (a[1] - b[1]));
+        const doneO = todayOpen.filter(a => !a[2].open && !a[2].later).sort((a, b) => a[1] - b[1]);
         h += `<h3>🗓 오늘(${E(dayName)}) 문 여는 약국 <small style="font-weight:600">· 주말·휴일 당번</small></h3>`;
-        h += todayOpen.length ? list(todayOpen, 6) : `<p class="careEmpty">가까운 곳(10km 안)에 오늘 문 연다고 신고한 약국이 없어요. 아래 휴일지킴이약국에서 당번 약국을 찾아보세요.</p>`;
-      } else if (mnow >= 21 * 60 || mnow < 7 * 60) {
-        h += `<h3>🌙 지금 문 연 심야약국</h3>`;
-        h += openNow.length ? list(openNow, 6) : `<p class="careEmpty">가까운 곳(10km 안)에 지금 열려 있는 약국이 없어요.${all.length ? " 가장 가까운 약국의 여는 시간이에요." : ""}</p>${openNow.length || !all.length ? "" : list(all, 3)}`;
+        if (!todayOpen.length) h += `<div class="careNone"><b>🔒 가까운 곳(10km 안)에 오늘 문 연다고 신고한 약국이 없어요</b><span>아래 <b>휴일지킴이약국</b>에서 오늘 당번 약국을 찾아보세요. 급하면 <b>응급실</b>에서 진료받고 약을 받을 수 있어요.</span><button type="button" onclick="careJump('er')">🏥 가까운 응급실 보기</button></div>`;
+        else {
+          if (nowO.length) h += `<p class="careSub open">🟢 지금 열려 있어요 · ${nTxt(nowO.length)}</p>` + list(nowO, 6);
+          else h += `<div class="careNone"><b>🔒 지금은 문 연 약국이 없어요</b><span>${laterO.length ? `오늘 <b>${E(fmt(todaySpan(laterO[0][0]).o))}</b>부터 여는 곳이 있어요. ` : ""}급하면 <b>응급실</b>에서 진료받고 약을 받을 수 있어요. 상비약은 <b>편의점</b>에도 있어요.</span><button type="button" onclick="careJump('er')">🏥 가까운 응급실 보기</button></div>`;
+          if (laterO.length) h += `<p class="careSub later">⏰ 오늘 이따 열어요 · ${nTxt(laterO.length)}</p>` + list(laterO, nowO.length ? 3 : 5);
+          if (doneO.length) h += `<details class="careMore"><summary>🔒 오늘 영업이 끝난 약국 ${Math.min(3, doneO.length)}곳</summary>${list(doneO, 3)}</details>`;
+        }
+      }
+      { // 내일이 일요일·공휴일이면 '내일 문 여는 약국' 미리 보기
+        const tIso = isoPlus(1), tDow = (dow + 1) % 7, tHoli = isHoli(tIso) ? HOLIDAYS[tIso] : "";
+        if (tDow === 0 || tHoli) {
+          const tm = all.filter(([x]) => span(x, keyOf(tIso, tDow))).sort((a, b) => a[1] - b[1]);
+          if (tm.length) var tmrHtml = `<details class="careMore"><summary>📅 내일(${E(tHoli || "일요일")}) 문 여는 약국 미리 보기 · ${tm.length > 20 ? "20곳 넘게" : tm.length + "곳"}</summary><div class="careList">${tm.slice(0, 5).map(([x, d]) => { const sp = span(x, keyOf(tIso, tDow)); return itemHtml(x, d, { open: true, txt: `내일 ${fmt(sp.o)}–${fmt(sp.c)}` }) }).join("")}</div></details>`;
+        }
+      }
+      if (off) {} else if (mnow >= 21 * 60 || mnow < 7 * 60) {
+        // 2026-11-19: 새벽에 닫힌 약국이 '지금 문 연 심야약국' 제목 밑에 나와 열린 줄 알던 것 → 없으면 없다고 크게, 닫힌 곳은 접어서
+        if (openNow.length) { h += `<h3>🌙 지금 문 연 심야약국</h3>` + list(openNow, 6) }
+        else {
+          h += `<h3>🌙 지금 문 연 약국 <small style="font-weight:600">· 심야약국</small></h3>
+            <div class="careNone"><b>🔒 가까운 곳(10km 안)에 지금 문 연 약국이 없어요</b><span>급하게 약이 필요하면 <b>응급실</b>에서 진료받고 약을 받을 수 있어요. 가벼운 상비약(해열제·감기약·소화제)은 <b>편의점</b>에도 있어요.</span>
+            <button type="button" onclick="careJump('er')">🏥 가까운 응급실 보기</button></div>`;
+          if (all.length) h += `<details class="careMore"><summary>☀️ 아침에 여는 가까운 약국 ${Math.min(3, all.length)}곳</summary>${list(all, 3)}</details>`;
+        }
       } else {
         h += `<h3>🌙 오늘 밤늦게까지 여는 약국 <small style="font-weight:600">· 심야약국</small></h3><p class="careNote" style="margin-top:-4px">평일 낮엔 동네 약국 대부분이 열려 있어서, 밤 10시 넘어서까지 하는 곳만 모았어요.</p>`;
         h += late.length ? list(late, 5) : `<p class="careEmpty">가까운 곳(10km 안)에 밤 10시 넘어까지 하는 약국이 없어요.</p>`;
         if (openNow.length) h += `<details class="careMore"><summary>지금 문 연 가까운 약국 ${Math.min(3, openNow.length)}곳 보기</summary>${list(openNow, 3)}</details>`;
       }
+      if (typeof tmrHtml !== "undefined" && tmrHtml) h += tmrHtml;
     }
     // 2026-11-18: 🩺 일요일·공휴일에 문 여는 병·의원 (data/clinics.json · 국립중앙의료원)
     if ((CARE.cl || []).length) {
