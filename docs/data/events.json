@@ -2469,6 +2469,38 @@
     ]
   },
   {
+    "detailAt": "2026-11-19",
+    "id": "kopis-PF303646",
+    "apiId": "PF303646",
+    "category": "공연",
+    "subtype": "복합",
+    "title": "도란도란 이야기보따리 [목포]",
+    "venue": "목포시민문화체육센터",
+    "venueId": null,
+    "district": "목포시",
+    "address": "전남광주통합특별시 목포시 부주로 312 (옥암동)",
+    "date": "2026-11-28 ~ 2026-11-28",
+    "time": "토요일(11:30,14:30)",
+    "price": "전석무료",
+    "age": "48개월 이상",
+    "cast": "한선옥, 김점숙, 김명자, 유영임, 송준헌, 박종유, 강유정 등",
+    "runtime": "1시간",
+    "status": "공연예정",
+    "start": "2026-11-28",
+    "end": "2026-11-28",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF303646_261016_153053.png",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://www.nanumticket.or.kr/pe/detail.html?p_marking=&p_new=&start2=0&page_no2=1&p_idx=14111",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-19",
+    "tags": [
+      "공연",
+      "복합",
+      "전남"
+    ]
+  },
+  {
     "detailAt": "2026-11-16",
     "id": "kopis-PF304938",
     "apiId": "PF304938",
@@ -2696,6 +2728,38 @@
     "tags": [
       "공연",
       "서양음악(클래식)",
+      "전남"
+    ]
+  },
+  {
+    "detailAt": "2026-11-19",
+    "id": "kopis-PF306927",
+    "apiId": "PF306927",
+    "category": "음악",
+    "subtype": "한국음악(국악)",
+    "title": "제968회 전남도립국악단 토요가무악희 시즌3, 그린국악: 특별초청공연, 국가무형유산 제58호 줄타기 보존회",
+    "venue": "남도소리울림터",
+    "venueId": null,
+    "district": "무안군",
+    "address": "전남광주통합특별시 무안군 삼향읍 남악로 222",
+    "date": "2026-11-28 ~ 2026-11-28",
+    "time": "토요일(16:00)",
+    "price": "전석 10,000원",
+    "age": "6세 이상",
+    "cast": "",
+    "runtime": "1시간 10분",
+    "status": "공연예정",
+    "start": "2026-11-28",
+    "end": "2026-11-28",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF306927_261119_102703.jpg",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "http://www.ticketlink.co.kr/product/67072",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-19",
+    "tags": [
+      "공연",
+      "한국음악(국악)",
       "전남"
     ]
   },
@@ -4624,6 +4688,38 @@
       "공연",
       "뮤지컬",
       "광주"
+    ]
+  },
+  {
+    "detailAt": "2026-11-19",
+    "id": "kopis-PF306980",
+    "apiId": "PF306980",
+    "category": "공연",
+    "subtype": "연극",
+    "title": "원몰타임 [여수]",
+    "venue": "상상플레이스 여순광점(여수 웅천 트리마제벨마레 2305호)",
+    "venueId": null,
+    "district": "여수시",
+    "address": "전남광주통합특별시 여수시 여문문화1길 36 (여서동)",
+    "date": "2026-12-19 ~ 2027-01-31",
+    "time": "토요일 ~ 일요일(17:00), HOL(17:00)",
+    "price": "전석 30,000원",
+    "age": "15세 이상",
+    "cast": "박유선, 임성탁",
+    "runtime": "1시간 20분",
+    "status": "공연예정",
+    "start": "2026-12-19",
+    "end": "2027-01-31",
+    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF306980_261119_140928.png",
+    "source": "KOPIS 공연예술통합전산망",
+    "url": "https://booking.naver.com/booking/12/bizes/1768029",
+    "origin": "auto",
+    "api": "kopis",
+    "verified": "2026-11-19",
+    "tags": [
+      "공연",
+      "연극",
+      "전남"
     ]
   },
   {
