@@ -41,6 +41,8 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-20 1.0.9 계절 명소(단풍·벚꽃)를 '지금 아니면 1년' 칸 안에 합침 · 홈의 계절 명소 칸은 숨김 · 메뉴 '단풍/벚꽃 명소'·'지금만'은 그 칸을 펼쳐서 이동
+  · 2026-11-20 1.0.8 '지금 아니면 1년' 칸 맨 아래 '단풍 명소도 지금이 절정' 버튼 뺌 (바로 밑 계절 명소 칸과 한 칸처럼 보이던 것)
   · 2026-11-20 1.0.7 '더 자세히 보기' 줄임: 나들이 광주권 오매광주·남도여행길잡이 / 순천여수권 여수·순천 / 무안목포권 목포·남도여행길잡이, 일정 광주권 디어마이광주 / 그 밖 남도여행길잡이
   · 2026-11-20 1.0.6 '더 자세히 보기' 권역별로: 광주권 디어마이광주(dmgj.kr)·광주문화재단·ACC·오매광주 / 순천여수권 여수관광문화·순천여행 / 무안목포권 목포 문화관광 + 남도여행길잡이·구석구석
   · 2026-11-20 1.0.5 나들이 화면 아래 '더 자세히 보기': 광주권 오매광주·남도여행길잡이·구석구석 / 전남 권역 남도여행길잡이·구석구석 · 일정 화면엔 광주권 디어마이광주·오매광주, 전남 권역 남도여행길잡이
@@ -5493,6 +5495,16 @@ body .vetNote b:not(#_){color:#b42318}
 [data-theme=dark] .kidsAgeChips button:not(#_){background:#1f1a16;border-color:#5a3f2a;color:#f5e6da}[data-theme=dark] .kidsAgeChips button small:not(#_){color:#cdb3a0}
 [data-theme=dark] .kidsAgeChips button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}[data-theme=dark] .kidsAgeChips button.on small:not(#_){color:#4a2a12}[data-theme=dark] .kidsAgeNote:not(#_){color:#d9b99f}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) .kidsAgeBar:not(#_){background:#2b2119;border-color:#5a3f2a}html:not([data-theme=light]) .kidsAgeBar > b:not(#_){color:#ffcfa8}html:not([data-theme=light]) .kidsAgeChips button:not(#_){background:#1f1a16;border-color:#5a3f2a;color:#f5e6da}html:not([data-theme=light]) .kidsAgeChips button small:not(#_){color:#cdb3a0}html:not([data-theme=light]) .kidsAgeChips button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}html:not([data-theme=light]) .kidsAgeChips button.on small:not(#_){color:#4a2a12}html:not([data-theme=light]) .kidsAgeNote:not(#_){color:#d9b99f}}
+</style>
+<style id="seasonInOnly20261120">
+#onlyNow .spBadge:not(#_){display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:12.5px;font-weight:800;vertical-align:1px}
+#onlyNow .spBadge.peak:not(#_){background:#ffe1d6;color:#c0391b}#onlyNow .spBadge.soon:not(#_){background:#e6f2ee;color:#2f7d6b}#onlyNow .spBadge.late:not(#_){background:#f1ece2;color:#7a6a4f}
+[data-theme=dark] #onlyNow .spBadge.peak:not(#_){background:#43251c;color:#ff9f86}[data-theme=dark] #onlyNow .spBadge.soon:not(#_){background:#1f3a33;color:#8fd6c0}[data-theme=dark] #onlyNow .spBadge.late:not(#_){background:#3a3428;color:#d8c9a8}
+html body #seasonPick.homeOnly:not(#_){display:none!important}
+#onlyNow .onSub:not(#_){margin:14px 2px 6px;font-size:15px;font-weight:800;color:#7a3a10}
+#onlyNow .onSub small:not(#_){font-size:12.5px;font-weight:600;color:#8a6a52;margin-left:4px}
+[data-theme=dark] #onlyNow .onSub:not(#_){color:#ffcfa8}[data-theme=dark] #onlyNow .onSub small:not(#_){color:#cdb3a0}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) #onlyNow .onSub:not(#_){color:#ffcfa8}html:not([data-theme=light]) #onlyNow .onSub small:not(#_){color:#cdb3a0}}
 </style>
 </head>
 <body data-tab="home" data-screen="home">
@@ -12429,7 +12441,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.7 (2026.11.20)"; // 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.9 (2026.11.20)"; // 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -13817,10 +13829,16 @@ window.renderSeason = renderSeason;
         +'<span class="wTag">'+h(x[2])+' · '+when+'</span><b>'+h(x[0])+badge+'</b><small>'+h(x[7])+'</small>'
         +'<span class="spTip">💡 '+h(x[8])+' · 📍 지도 보기</span></span></button>';
     }).join("");
-    var link = sh ? '<button type="button" class="onLink" data-jump="seasonPick">'+(season.classList.contains("spring")?"🌸 벚꽃":"🍁 단풍")+' 명소도 지금이 절정이에요 →</button>' : '';
+    // 2026-11-20: 단풍·벚꽃 명소도 '1년에 한 번'이라 이 칸 안에 함께 (계절 명소 칸은 홈에서 따로 안 보임)
+    var seasonHtml = '';
+    if (sh) {
+      var spItems = Array.prototype.map.call(season.querySelectorAll('.weekendList .weekendItem'), function(n){ return n.outerHTML; }).join('');
+      if (spItems) seasonHtml = '<h3 class="onSub" id="onSeason">'+(season.classList.contains("spring")?"🌸 벚꽃 명소":"🍁 단풍 명소")+' <small>절정 시기 · 평년 기준</small></h3><div class="weekendList">'+spItems+'</div>'
+        + (list.length ? '<h3 class="onSub">⏳ 제철·철새·꽃</h3>' : '');
+    }
     el.innerHTML='<div class="weekendBox"><div class="weekendHead"><div><span class="eyebrow">ONLY NOW</span>'
-      +'<h2>⏳ 지금 아니면 1년 기다려야 해요</h2><small>제철·철새·꽃 · 평년 기준이라 가기 전에 확인해 주세요</small></div></div>'
-      +'<div class="weekendList">'+items+'</div>'+link+'</div>';
+      +'<h2>⏳ 지금 아니면 1년 기다려야 해요</h2><small>제철·철새·꽃·단풍·벚꽃 · 평년 기준이라 가기 전에 확인해 주세요</small></div></div>'
+      +seasonHtml+'<div class="weekendList">'+items+'</div></div>';
   }
   document.addEventListener("click",function(e){
     var b=e.target.closest && e.target.closest("#onlyNow [data-q], #onlyNow [data-jump]"); if(!b) return;
@@ -14267,13 +14285,14 @@ document.addEventListener("keydown",function(e){
     if (k === "care") { window.openCare?.("med"); return }
     if (k === "shelter") { const m = new Date().getMonth() + 1; window.openCare?.(m >= 5 && m <= 9 ? "heat" : "cold"); return }
     // 2026-11-15: 홈 안의 칸으로 바로 가기 (칸이 비어 있으면 가까운 화면으로)
-    const HOMESEC = { onlyNow: "onlyNow", culture: "cultureSpot", season: "seasonPick", notice: "noticeBoard" };
+    const HOMESEC = { onlyNow: "onlyNow", culture: "cultureSpot", season: "onlyNow", notice: "noticeBoard" };   // 2026-11-20 계절 명소는 '지금 아니면 1년' 칸 안으로
     if (HOMESEC[k]) {
       const el = $id(HOMESEC[k]);
       if (!el || el.hidden || !el.textContent.trim()) { showTab(k === "notice" ? "favorites" : k === "season" ? "places" : "events"); return }
       try { window.goHome ? goHome() : showTab("home") } catch (e) {}
-      if (k === "season") window.unfoldHome?.("seasonPick");
-      [120, 450, 900].forEach(ms => setTimeout(() => toTop(el), ms)); return;
+      if (k === "season" || k === "onlyNow" || k === "culture") window.unfoldHome?.(HOMESEC[k]);
+      const tgt = () => (k === "season" && $id("onSeason")) || el;
+      [120, 450, 900].forEach(ms => setTimeout(() => toTop(tgt()), ms)); return;
     }
     const rail = document.querySelector(`#rightQuick [data-rightjump="${k}"]`);
     if (rail) { rail.click(); return }
@@ -14661,11 +14680,14 @@ document.addEventListener("keydown",function(e){
   function limitOnlyNow(){
     const on = $id("onlyNow"); if (!on) return;
     const fix = () => {
-      const items = [...on.querySelectorAll(".weekendList > .weekendItem")];
+      // 2026-11-20: 단풍·벚꽃 묶음은 다 보이고, '제철·철새·꽃' 목록(맨 마지막)만 3개 + 더 보기
+      const lists = [...on.querySelectorAll(".weekendList")], main = lists[lists.length - 1];
+      on.querySelectorAll(".weekendItem.onMore").forEach(b => { if (!main || !main.contains(b)) b.classList.remove("onMore") });
+      const items = main ? [...main.querySelectorAll(":scope > .weekendItem")] : [];
       items.forEach((b, i) => b.classList.toggle("onMore", i >= 3));
       let mb = on.querySelector(".onMoreBtn");
       if (items.length <= 3) { mb?.remove(); return }
-      if (!mb) { mb = document.createElement("button"); mb.type = "button"; mb.className = "onMoreBtn"; on.querySelector(".weekendList")?.insertAdjacentElement("afterend", mb) }
+      if (!mb || mb.previousElementSibling !== main) { mb?.remove(); mb = document.createElement("button"); mb.type = "button"; mb.className = "onMoreBtn"; main.insertAdjacentElement("afterend", mb) }
       mb.textContent = on.classList.contains("onOpen") ? "접기 ▴" : `⏳ ${items.length - 3}개 더 보기 ▾`;
       mb.onclick = () => { on.classList.toggle("onOpen"); fix() };
     };
