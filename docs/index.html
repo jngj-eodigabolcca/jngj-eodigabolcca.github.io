@@ -41,6 +41,8 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 아이랑: 우리 아이 나이(0~2·3~6·7~12세) 고르면 관람 연령 안 되는 공연 빼고 맞는 곳 앞으로(KIDS_AGE, 이 기기에 기억)
+  · 2026-11-19 금·토(일 15시 전) 홈 위쪽 '이번 주말 고른 5곳'(#wkFri20261119) · 주말 추천에서 단체 전용·모집 공고 빼기
   · 2026-11-19 더 깊은 공식 서비스로 잇기(moreSourcesHtml): 일정(광주권)→디어마이광주 · 약국·응급실→E-Gen · 쉼터→안전디딤돌
   · 2026-11-19 홈 길이 줄이기(지금만 되는 것·문화가 있는 날·한 달 축제 접기) · 작은 안내 글씨 12.5px 이상(#readable20261119) · 긴 안내 문장 줄이기 · 홈 추천 한 줄·도서관 시간 짧게(libHoursShort)
   · 2026-11-19 주말·휴일 약국: 🟢지금 열림 → ⏰이따 열림 → 🔒오늘 끝남(접기) · 토요일·공휴일 전날엔 '내일 문 여는 약국' 미리 보기
@@ -5464,6 +5466,22 @@ body .vetNote b:not(#_){color:#b42318}
 [data-theme=dark] .moreSrc a:not(#_){background:#1f2a3d;border-color:#33425c;color:#e6edf8}[data-theme=dark] .moreSrc a small:not(#_){color:#b3bfd3}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) .moreSrc:not(#_){background:#182131;border-color:#2c3a52}html:not([data-theme=light]) .moreSrc > b:not(#_){color:#cfe0ff}html:not([data-theme=light]) .moreSrc a:not(#_){background:#1f2a3d;border-color:#33425c;color:#e6edf8}html:not([data-theme=light]) .moreSrc a small:not(#_){color:#b3bfd3}}
 </style>
+<style id="kidsAge20261119">
+.kidsAgeBar:not(#_){margin:12px 0 6px;padding:12px;border-radius:16px;background:#fff7ec;border:1.5px solid #f3d9b8}
+.kidsAgeBar > b:not(#_){display:block;font-size:14px;color:#7a3a10;margin-bottom:8px}
+.kidsAgeChips:not(#_){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.kidsAgeChips button:not(#_){display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px;border-radius:12px;border:1.5px solid #ecd2b3;background:#fff;color:#4a2a12;font-weight:800;font-size:14px;cursor:pointer;transition:transform .12s}
+.kidsAgeChips button span:not(#_){font-size:20px;line-height:1.1}
+.kidsAgeChips button small:not(#_){font-size:12.5px;font-weight:700;color:#8a6a52}
+.kidsAgeChips button:active:not(#_){transform:scale(.95)}
+.kidsAgeChips button.on:not(#_){background:#e8590c;border-color:#e8590c;color:#fff;box-shadow:0 3px 10px rgba(232,89,12,.3)}
+.kidsAgeChips button.on small:not(#_){color:#ffe3cf}
+.kidsAgeNote:not(#_){margin:8px 2px 0;font-size:13px;color:#7a5236}
+[data-theme=dark] .kidsAgeBar:not(#_){background:#2b2119;border-color:#5a3f2a}[data-theme=dark] .kidsAgeBar > b:not(#_){color:#ffcfa8}
+[data-theme=dark] .kidsAgeChips button:not(#_){background:#1f1a16;border-color:#5a3f2a;color:#f5e6da}[data-theme=dark] .kidsAgeChips button small:not(#_){color:#cdb3a0}
+[data-theme=dark] .kidsAgeChips button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}[data-theme=dark] .kidsAgeChips button.on small:not(#_){color:#4a2a12}[data-theme=dark] .kidsAgeNote:not(#_){color:#d9b99f}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .kidsAgeBar:not(#_){background:#2b2119;border-color:#5a3f2a}html:not([data-theme=light]) .kidsAgeBar > b:not(#_){color:#ffcfa8}html:not([data-theme=light]) .kidsAgeChips button:not(#_){background:#1f1a16;border-color:#5a3f2a;color:#f5e6da}html:not([data-theme=light]) .kidsAgeChips button small:not(#_){color:#cdb3a0}html:not([data-theme=light]) .kidsAgeChips button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}html:not([data-theme=light]) .kidsAgeChips button.on small:not(#_){color:#4a2a12}html:not([data-theme=light]) .kidsAgeNote:not(#_){color:#d9b99f}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8881,6 +8899,44 @@ const KIDS_SUBS = [
 // 아이와 탭에 들어가는 장소
 function isKidsPlace(v) { if (seasonOff(v)) return false; return v.kind === "동물원·테마파크" || v.kind === "과학관" || v.kind === "워터파크" || !!v.kids || isKidsScience(v) }
 let KIDS_SUB = "전체", KIDS_IO = "전체", KIDS_GU = "전체", KIDS_OPEN = false;
+/* 2026-11-19 아이 나이별 추천: 공연의 관람 연령(만 N세·N개월 이상)으로 거르고, 장소·키즈카페는 나이에 맞는 곳을 앞으로 */
+const KIDS_AGES = [["전체", "👨‍👩‍👧", "모든 나이", null], ["0~2세", "👶", "아기", [0, 35]], ["3~6세", "🧒", "유아", [36, 83]], ["7~12세", "🎒", "초등", [84, 155]]];
+let KIDS_AGE = (() => { try { const a = localStorage.getItem("glm_kids_age"); return KIDS_AGES.some(x => x[0] === a) ? a : "전체" } catch (e) { return "전체" } })();
+const kidsAgeRange = () => (KIDS_AGES.find(x => x[0] === KIDS_AGE) || KIDS_AGES[0])[3];
+function evMinAgeMonths(e) {
+  const t = [e.age, e.child].filter(Boolean).join(" ");
+  if (!t) return null;
+  if (/전체\s*관람|전\s*연령|누구나|제한\s*없/.test(t)) return 0;
+  let m = t.match(/(\d+)\s*개월\s*이상/); if (m) return +m[1];
+  m = t.match(/(?:만\s*)?(\d+)\s*세\s*이상/); if (m) return +m[1] * 12;
+  return null;
+}
+function kidsAgeEvOk(e) {
+  const r = kidsAgeRange(); if (!r) return true;
+  const min = evMinAgeMonths(e); if (min != null && min > r[1]) return false;      // 관람 연령이 안 되면 빼기
+  const t = (e.title || "") + " " + (e.subtype || "") + " " + (e.tags || []).join(" ");
+  if (r[0] >= 84 && /영유아|베이비|아기|0\s*~\s*3세|36개월\s*미만|걸음마/.test(t)) return false;   // 초등엔 아기 전용 빼기
+  if (r[1] <= 35 && /초등|청소년|중학생|고학년/.test(t)) return false;              // 아기엔 초등 대상 빼기
+  return true;
+}
+function kidsAgePlaceScore(v) {
+  const r = kidsAgeRange(); if (!r) return 0;
+  const k = v.kind || "", t = (v.name || "") + " " + (v.desc || "") + " " + (v.kids || "");
+  const has = re => re.test(k) || re.test(t);
+  if (r[1] <= 35) return (has(/공원·정원|자연·경관/) ? 2 : 0) + (has(/동물원|아쿠아|수족관/) ? 2 : 0) + (has(/유아|영유아|아기|그림책|키즈|어린이도서관/) ? 2 : 0) + (has(/어린이/) ? 1 : 0) - (has(/과학관/) ? 1 : 0) - (has(/역사유적|5·18|사적지|기념관/) ? 2 : 0) - (has(/트레킹|등산|스포츠/) ? 3 : 0);
+  if (r[1] <= 83) return (has(/동물원|테마파크|아쿠아/) ? 2 : 0) + (has(/어린이|체험|키즈|그림책/) ? 2 : 0) + (has(/공원·정원|워터파크|과학관/) ? 1 : 0) - (has(/역사유적|사적지|기념관/) ? 1 : 0) - (has(/트레킹|등산/) ? 2 : 0);
+  return (has(/과학관|천문|우주|과학/) ? 3 : 0) + (has(/박물관|역사|5·18|기념관|사적지|체험/) ? 2 : 0) + (has(/워터파크|스포츠|테마파크|트레킹/) ? 1 : 0) - (has(/영유아|베이비|아기/) ? 2 : 0);
+}
+function kcAgeScore(v) {
+  const r = kidsAgeRange(); if (!r) return 0;
+  const n = v.name || "";
+  const jump = /점핑|트램|방방|바운스|챔피언|클라이밍|스포츠|짐|플렉스|아이점프/.test(n), baby = /베이비|영유아|아기|요미|맘스|토들러/.test(n);
+  if (r[1] <= 35) return (baby ? 2 : 0) - (jump ? 2 : 0);
+  if (r[1] <= 83) return (baby ? 0 : 1);
+  return (jump ? 2 : 0) - (baby ? 2 : 0);
+}
+const kidsAgeSort = (list, f) => { if (!kidsAgeRange()) return list; return list.map((v, i) => [v, f(v), i]).filter(x => x[1] > -2).sort((a, b) => (b[1] - a[1]) || (a[2] - b[2])).map(x => x[0]) };
+window.setKidsAge = a => { KIDS_AGE = a; try { localStorage.setItem("glm_kids_age", a) } catch (e) {} renderKids() };
 const isYangnimPlace = v => /양림|사직/.test((v.address || "") + (v.name || "")) || /근대문화유산|양림 카페/.test(v.kind || "");
 const PLACE_GROUPS = [
   ["전체", "✦", () => true],
@@ -8958,7 +9014,7 @@ function kidsFilter(v) {
 function kidsEvRow(x) {
   const when = x.date || [x.start, x.end].filter(Boolean).map(d => d.slice(5).replace("-", ".")).join(" ~ ");
   const st = ticketOf(x).status, live = !x.start || x.start <= todayISO();
-  return `<button type="button" class="kidsEv" onclick="detail('${jsq(x.id)}')"><span class="kidsEvTag ${live ? "on" : ""}">${live ? "진행중" : "예정"}</span><b>${esc(x.title)}</b><small>${esc([when, x.venue, /무료/.test((x.price || "") + (x.discount || "")) ? "무료" : ""].filter(Boolean).join(" · "))}</small></button>`;
+  return `<button type="button" class="kidsEv" onclick="detail('${jsq(x.id)}')"><span class="kidsEvTag ${live ? "on" : ""}">${live ? "진행중" : "예정"}</span><b>${esc(x.title)}</b><small>${esc([when, x.venue, x.age && !/전체|전\s*연령/.test(x.age) ? x.age : "", /무료/.test((x.price || "") + (x.discount || "")) ? "무료" : ""].filter(Boolean).join(" · "))}</small></button>`;
 }
 function renderKidsQuick() {
   const el = document.getElementById("kidsQuickSub"); if (!el) return;
@@ -8970,13 +9026,14 @@ function renderKids() {
   renderKidsQuick();
   const el = document.getElementById("kidsView"); if (!el) return;
   const base = VENUES.filter(isKidsPlace);
-  const list = sortHome(base.filter(kidsFilter));
+  const list = kidsAgeSort(sortHome(base.filter(kidsFilter)), kidsAgePlaceScore);
   const kidsN = (k, val) => { const keep = k === "io" ? KIDS_IO : KIDS_GU; if (k === "io") KIDS_IO = val; else KIDS_GU = val; const n = base.filter(kidsFilter).length; if (k === "io") KIDS_IO = keep; else KIDS_GU = keep; return n };
   const t = todayISO();
-  const evs = EVENTS.filter(isKidsEvent).sort((a, b) => ((a.start && a.start > t) - (b.start && b.start > t)) || String(a.start || "").localeCompare(String(b.start || "")));
+  const evs = EVENTS.filter(e => isKidsEvent(e) && kidsAgeEvOk(e)).sort((a, b) => ((a.start && a.start > t) - (b.start && b.start > t)) || String(a.start || "").localeCompare(String(b.start || "")));
   const d = DAY_KO[kstNow().getUTCDay()];
   el.innerHTML = `<div class="sectionHead"><div><span class="eyebrow">WITH KIDS · ${esc(RNAME())}</span><h2 class="kidsHeadTitle"><svg class="kidsDuo creamingHead kidsDuo--family" viewBox="0 0 84 56" aria-hidden="true" focusable="false"><ellipse cx="42" cy="53.6" rx="38" ry="2.4" fill="#000" opacity=".12"/><use href="#kdDad"/><use href="#kdMom" transform="translate(84,0) scale(-1,1)"/><path d="M24 25q6.1 8 11.0 18.0" stroke="#2f8f83" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M60 25q-6.1 8 -11.0 18.0" stroke="#ef7a63" stroke-width="3.6" stroke-linecap="round" fill="none"/><ellipse cx="42" cy="55" rx="11" ry="1.6" fill="#000" opacity=".14"/><image class="kidsCreaming" href="${CREAMING_SRC}" x="24" y="11.5" width="36" height="44" preserveAspectRatio="xMidYMax meet"/><circle cx="34.6" cy="43.2" r="2.1" fill="#f4cba3"/><circle cx="49.4" cy="43.2" r="2.1" fill="#f4cba3"/></svg>아이랑 어디 갈까?<small>크리밍이랑 손잡고 · 아이와 볼 행사와 갈 곳을 모았어요</small></h2></div><span>${base.length}곳</span></div>
   <div class="kidsScienceNav kidsTop" aria-label="아이와 갈 곳 세부 분류"><b class="kidsSubLabel">${CR_IC} 아이와 · 어떤 곳?</b>${KIDS_SUBS.map(([k, ic, f]) => [k, ic, base.filter(f).length]).filter(([k, , n]) => k === "전체" || k === KIDS_SUB || n).map(([k, ic, n]) => `<button type="button" class="${k === KIDS_SUB ? "selected" : ""}" onclick="setKids('sub','${k}')">${ic} ${k}<small>${n}</small></button>`).join("")}${KIDSCAFES.length ? `<button type="button" class="${KIDS_SUB === KC_SUB ? "selected" : ""}" onclick="setKids('sub','${KC_SUB}')">🧸 ${KC_SUB}<small>${KIDSCAFES.length}</small></button>` : ""}</div>
+  <div class="kidsAgeBar" role="group" aria-label="아이 나이"><b>우리 아이 나이</b><div class="kidsAgeChips">${KIDS_AGES.map(([k, ic, lab]) => `<button type="button" class="${k === KIDS_AGE ? "on" : ""}" aria-pressed="${k === KIDS_AGE}" onclick="setKidsAge('${k}')"><span>${ic}</span>${k === "전체" ? "모두" : esc(k)}<small>${esc(lab)}</small></button>`).join("")}</div>${KIDS_AGE !== "전체" ? `<p class="kidsAgeNote">${esc(KIDS_AGE)}에 맞는 곳을 앞에 두고, 관람 연령이 안 되는 공연은 뺐어요.</p>` : ""}</div>
   ${evs.length ? `<h3 class="sub" id="kidsEvents">${CAL_IC} 아이와 볼 행사 ${evs.length}</h3><div class="kidsEvList">${evs.map(kidsEvRow).join("")}</div>` : ""}
   ${KIDS_SUB === KC_SUB ? kcSection() : `<h3 class="sub" id="kidsPlaces">📍 ${KIDS_SUB === "전체" ? "아이와 갈 곳" : esc(KIDS_SUB)} ${list.length}</h3>
   <div class="filterBar">
@@ -9008,7 +9065,7 @@ function homeBasePill() {
 function kcSection() {
   const gus = ["전체", ...new Set(KIDSCAFES.map(v => v.district).filter(Boolean))];
   const pick = KIDS_GU === "전체" || gus.includes(KIDS_GU) ? KIDS_GU : "전체";
-  const list = sortHome(KIDSCAFES.filter(v => pick === "전체" || v.district === pick));
+  const list = kidsAgeSort(sortHome(KIDSCAFES.filter(v => pick === "전체" || v.district === pick)), kcAgeScore);
   return `<h3 class="sub" id="kidsPlaces">🧸 키즈카페·실내놀이터 ${list.length}</h3>
   <div class="filterBar kcBar"><select aria-label="동네 선택" onchange="setKids('gu',this.value)">${gus.map(g => `<option ${g === pick ? "selected" : ""} value="${esc(g)}">${g === "전체" ? "모든 동네" : esc(g)} (${g === "전체" ? KIDSCAFES.length : KIDSCAFES.filter(v => v.district === g).length})</option>`).join("")}</select>${homeBasePill()}</div>
   ${paged("renderKids", list, kcCard, "<p class='empty'>이 동네엔 등록된 키즈카페가 없어요. '모든 동네'로 바꿔 보세요.</p>")}
@@ -12185,7 +12242,7 @@ function weekendDays() {
 function seeded(str) { let h = 2166136261; for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) } return (h >>> 0) / 4294967296 }
 function weekendPicks() {
   const days = weekendDays(), wk = days[0];
-  const onWeekend = e => days.some(d => happensOn(e, d)) && !["매진", "종료"].includes(ticketOf(e).status);
+  const onWeekend = e => days.some(d => happensOn(e, d)) && !["매진", "종료"].includes(ticketOf(e).status) && !/단체|기관\s*대상|학교\s*대상|교사\s*연수|관계자|서포터즈|기자단|봉사단|참가자\s*모집|모집\s*공고|공모/.test(e.title || "");   // 2026-11-19 단체 전용·모집 공고는 주말 추천에서 빼기
   const ev = EVENTS.filter(onWeekend);
   const isFree = x => /무료/.test((x.price || "") + (x.discount || "") + (x.tags || []).join(" "));
   const endsSoon = x => x.end && x.end <= isoPlus(9);
@@ -14968,4 +15025,59 @@ html body main .isZero:not(.on):not(.active){opacity:.45}
   mq.addEventListener?.("change", pass);
 })();
 </script>
+<script id="wkFri20261119">
+/* 2026-11-19 금요일엔 '이번 주말 고른 5곳'을 홈 위쪽에 크게 (주말토리의 '매주 새 추천'처럼)
+   금 하루 종일 · 토 하루 종일 · 일 15시 전까지만. 고르는 방식은 주말 탭과 같은 weekendPicks() (주마다 자동으로 바뀜) */
+(function(){
+  function show(){ const n = kstNow(), d = n.getUTCDay(), h = n.getUTCHours(); return d === 5 || d === 6 || (d === 0 && h < 15) }
+  function render(){
+    let el = document.getElementById("wkFri");
+    const hero = document.getElementById("hero"); if (!hero) return;
+    if (!el) { el = document.createElement("section"); el.id = "wkFri"; el.className = "wkFri homeOnly"; el.setAttribute("aria-label", "이번 주말 고른 5곳") }
+    if (hero.nextElementSibling !== el) hero.insertAdjacentElement("afterend", el);
+    if (!show()) { el.hidden = true; el.innerHTML = ""; return }
+    let r; try { r = weekendPicks() } catch (e) { el.hidden = true; return }
+    if (!r || !r.picks.length) { el.hidden = true; el.innerHTML = ""; return }
+    const d = kstNow().getUTCDay();
+    const lab = x => `${+x.slice(5, 7)}.${+x.slice(8)}(${DAYC[isoDow(x)]})`;
+    const head = d === 5 ? "🗓 이번 주말, 여기 어때요?" : d === 6 ? "🗓 오늘·내일 가볼 5곳" : "🗓 오늘 오후 가볼 곳";
+    const kick = d === 5 ? "금요일엔 주말 계획!" : "이번 주말 고른 곳";
+    const isEv = x => !!x.title;
+    el.hidden = false;
+    el.innerHTML = `<div class="wkfBox"><div class="wkfHead"><div><span class="wkfKick">${kick}</span><h2>${head}</h2><small>${r.days.map(lab).join("~")} · ${HOME ? "🏠 " + esc(HOME.gu) + "에서 가까운 곳 위주" : esc(RNAME()) + " 기준"} · 매주 새로 골라요</small></div></div>
+      <ol class="wkfList">${r.picks.map(([label, x], i) => { const nm = isEv(x) ? cardTitle(x.title).m.replace(/\s*\(\d{1,2}\/\d{1,2}\)\s*$/, "") : x.name; const ic = (label.match(/^\S+/) || [""])[0]; return `<li><button type="button" onclick="${isEv(x) ? `detail('${jsq(x.id)}')` : `aiProfile('${jsq(x.id)}')`}"><span class="wkfNo">${i + 1}</span><span class="wkfTxt"><b><i aria-hidden="true">${ic}</i> ${esc(nm)}</b><small>${esc((isEv(x) ? x.venue : x.district) || "")}</small></span></button></li>` }).join("")}</ol>
+      <div class="wkfBtns"><button type="button" class="wkfMore" onclick="try{setNowWhen(2)}catch(e){};document.getElementById('nowShow')?.scrollIntoView({behavior:'smooth',block:'start'})">주말 일정 더 보기</button><button type="button" class="wkfShare" onclick="shareWeekend()">📤 보내기</button></div></div>`;
+  }
+  window.renderWkFri = () => { try { render() } catch (e) { console.warn("[wkFri]", e) } };
+  ["renderAll", "arrangeHome", "setHome", "clearHome", "setRegion"].forEach(fn => {
+    if (typeof window[fn] === "function") { const o = window[fn]; window[fn] = function () { const r = o.apply(this, arguments); window.renderWkFri(); return r } }
+  });
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", () => setTimeout(window.renderWkFri, 500)) : setTimeout(window.renderWkFri, 500);
+  window.addEventListener("load", () => setTimeout(window.renderWkFri, 1500));
+})();
+</script>
+<style id="wkFriStyle20261119">
+.wkFri:not(#_){margin:14px 0 6px}
+.wkfBox:not(#_){border-radius:20px;padding:13px 12px 10px;background:linear-gradient(135deg,#fff4e0,#ffe7ef);border:1.5px solid #f7cfa7;box-shadow:0 6px 18px rgba(214,120,60,.12)}
+.wkfKick:not(#_){display:inline-block;padding:3px 10px;border-radius:999px;background:#e8590c;color:#fff;font-size:12.5px;font-weight:800}
+.wkfHead h2:not(#_){margin:6px 0 1px;font-size:18px;line-height:1.3;color:#3a1d0b}
+.wkfHead small:not(#_){font-size:12.5px;color:#7a5236}
+.wkfList:not(#_){list-style:none;margin:10px 0 8px;padding:0;display:flex;flex-direction:column;gap:4px}
+.wkfList button:not(#_){width:100%;display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:14px;border:0;background:rgba(255,255,255,.88);text-align:left;cursor:pointer;color:#2a1a10}
+.wkfList button:active:not(#_){transform:scale(.98)}
+.wkfNo:not(#_){flex:0 0 22px;height:22px;border-radius:50%;background:#e8590c;color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+.wkfTxt:not(#_){flex:1;min-width:0;display:flex;flex-direction:column;gap:0}
+.wkfTxt em:not(#_){font-style:normal;font-size:12.5px;font-weight:700;color:#b5480c}
+.wkfTxt b:not(#_){font-size:14.5px;font-weight:800;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wkfTxt small:not(#_){font-size:12.5px;color:#6b5547;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wkfTxt b i:not(#_){font-style:normal}
+.wkfBtns:not(#_){display:flex;gap:8px}
+.wkfMore:not(#_){flex:1;padding:10px;border-radius:12px;border:0;background:#3a1d0b;color:#fff;font-weight:800;font-size:14px;cursor:pointer}
+.wkfShare:not(#_){padding:10px 14px;border-radius:12px;border:1.5px solid #e2b48f;background:#fff;color:#7a3a10;font-weight:800;font-size:14px;cursor:pointer}
+[data-theme=dark] .wkfBox:not(#_){background:linear-gradient(135deg,#2e2117,#2b1c24);border-color:#5a3b25}
+[data-theme=dark] .wkfHead h2:not(#_){color:#ffe2c8}[data-theme=dark] .wkfHead small:not(#_){color:#d9b99f}
+[data-theme=dark] .wkfList button:not(#_){background:rgba(0,0,0,.28);color:#f5e6da}[data-theme=dark] .wkfTxt em:not(#_){color:#ffae73}[data-theme=dark] .wkfTxt small:not(#_){color:#cdb3a0}
+[data-theme=dark] .wkfMore:not(#_){background:#ffae73;color:#2a1508}[data-theme=dark] .wkfShare:not(#_){background:transparent;color:#ffcfa8;border-color:#7a5236}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .wkfBox:not(#_){background:linear-gradient(135deg,#2e2117,#2b1c24);border-color:#5a3b25}html:not([data-theme=light]) .wkfHead h2:not(#_){color:#ffe2c8}html:not([data-theme=light]) .wkfHead small:not(#_){color:#d9b99f}html:not([data-theme=light]) .wkfList button:not(#_){background:rgba(0,0,0,.28);color:#f5e6da}html:not([data-theme=light]) .wkfTxt em:not(#_){color:#ffae73}html:not([data-theme=light]) .wkfTxt small:not(#_){color:#cdb3a0}html:not([data-theme=light]) .wkfMore:not(#_){background:#ffae73;color:#2a1508}html:not([data-theme=light]) .wkfShare:not(#_){background:transparent;color:#ffcfa8;border-color:#7a5236}}
+</style>
 </body></html>
