@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 1.0.4 계절 명소: 절정 끝난 지 3일 넘은 곳은 목록에서 빼고, 다 지나면 칸째로 숨김
   · 2026-11-19 1.0.3 앱 이름 띄어쓰기 '어디가볼까' → '어디 가볼까' (맞춤법)
   · 2026-11-19 1.0.2 맨 아래에 '© 2026 · 저작권 등록 제 C-2026-061252호' (2026-11-19 한국저작권위원회 등록)
   · 2026-11-19 1.0.1 '오늘 하루 플랜' 제목 안 설명이 20px로 커지던 것(작은 글씨 키우기 규칙 탓) → 원래 13px로
@@ -12412,7 +12413,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.3 (2026.11.19)"; // 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.4 (2026.11.19)"; // 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -13638,10 +13639,13 @@ function renderSeason() {
   const hubKm = sp => { try { const R = REGIONS[REGION]; return km({ lat: R.wx[0], lng: R.wx[1] }, { lat: sp[1], lng: sp[2] }) } catch (e) { return null } };
   const dist = sp => { try { return homeKm({ lat: sp[1], lng: sp[2] }) } catch (e) { return null } };
   const near = sp => { const d = dist(sp); return d != null ? d : hubKm(sp) };
-  const list = SEASON_SPOTS[key].spots.map(sp => ({ sp, st: state(sp), d: dist(sp) }))
+  // 2026-11-19: 절정이 지난 지 3일 넘은 곳은 빼기 (11/19에 '절정 10/25~11/8 막바지'가 나오던 것)
+  const yr = todayISO().slice(0, 4), past = sp => (Date.parse(todayISO()) - Date.parse(yr + "-" + sp[5])) / 864e5;
+  const list = SEASON_SPOTS[key].spots.filter(sp => past(sp) <= 3).map(sp => ({ sp, st: state(sp), d: dist(sp) }))
     .sort((a, b) => order[a.st] - order[b.st] || ((near(a.sp) ?? 1e9) - (near(b.sp) ?? 1e9)) || a.sp[4].localeCompare(b.sp[4]));
   const lab = { peak: "🔥 지금 절정", soon: "곧 물들어요", late: "막바지" };
   if (key === "spring") lab.soon = "곧 피어요";
+  if (!list.length) { el.innerHTML = ""; el.hidden = true; el.classList.remove("spring", "autumn"); return }   // 다 지나면 칸째로 숨김
   const mmdd = s => `${+s.slice(0, 2)}/${+s.slice(3)}`;
   const kmTag = d => d == null ? "" : ` · 🏠 ${d.toFixed(d < 10 ? 1 : 0)}km`;
   el.hidden = false;
