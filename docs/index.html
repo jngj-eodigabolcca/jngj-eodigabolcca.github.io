@@ -41,6 +41,9 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-20 1.0.7 '더 자세히 보기' 줄임: 나들이 광주권 오매광주·남도여행길잡이 / 순천여수권 여수·순천 / 무안목포권 목포·남도여행길잡이, 일정 광주권 디어마이광주 / 그 밖 남도여행길잡이
+  · 2026-11-20 1.0.6 '더 자세히 보기' 권역별로: 광주권 디어마이광주(dmgj.kr)·광주문화재단·ACC·오매광주 / 순천여수권 여수관광문화·순천여행 / 무안목포권 목포 문화관광 + 남도여행길잡이·구석구석
+  · 2026-11-20 1.0.5 나들이 화면 아래 '더 자세히 보기': 광주권 오매광주·남도여행길잡이·구석구석 / 전남 권역 남도여행길잡이·구석구석 · 일정 화면엔 광주권 디어마이광주·오매광주, 전남 권역 남도여행길잡이
   · 2026-11-19 1.0.4 계절 명소: 절정 끝난 지 3일 넘은 곳은 목록에서 빼고, 다 지나면 칸째로 숨김
   · 2026-11-19 1.0.3 앱 이름 띄어쓰기 '어디가볼까' → '어디 가볼까' (맞춤법)
   · 2026-11-19 1.0.2 맨 아래에 '© 2026 · 저작권 등록 제 C-2026-061252호' (2026-11-19 한국저작권위원회 등록)
@@ -9002,7 +9005,7 @@ function renderPlaces() {
     <label class="chk"><input type="checkbox" id="placeOpen" ${PLACE_OPEN ? "checked" : ""} onchange="setPlace('open',this.checked)"> 오늘(${d}) 문 연 곳만</label>
   </div>
   ${paged("renderPlaces", list, sp ? sp[1] : placeCard, "<p class='empty'>조건에 맞는 곳이 없어요. 위 조건을 하나 풀어보세요.</p>")}
-  <div class="verify" style="margin-top:12px">비 오는 날은 '실내', 날 좋은 날은 '야외'를 눌러보세요. 관람시간·휴관일은 전시 교체·공휴일에 따라 바뀔 수 있어요.</div>`;
+  <div class="verify" style="margin-top:12px">비 오는 날은 '실내', 날 좋은 날은 '야외'를 눌러보세요. 관람시간·휴관일은 전시 교체·공휴일에 따라 바뀔 수 있어요.</div>${moreSourcesHtml("places")}`;
 }
 window.setPlace = (k, v) => { if (k === "group") { if (v === "아이와" || v === "아이랑") return showKids("전체"); PLACE_GROUP = v } if (k === "io") PLACE_IO = v; if (k === "gu") PLACE_GU = v; if (k === "open") PLACE_OPEN = v; renderPlaces() };
 window.setPlaceKind = k => { if (k === "아이와" || k === "아이랑") return showKids("전체"); PLACE_GROUP = PLACE_GROUPS.some(x => x[0] === k) ? k : "전체"; renderPlaces() };
@@ -10949,12 +10952,25 @@ function libraryAI(s) {
 }
 /* 2026-11-19 더 깊은 공식 서비스로 이어주기 — 경쟁이 아니라 관문: 공연·전시는 디어마이광주, 의료는 E-Gen, 재난·쉼터는 안전디딤돌 */
 const MORE_SRC = {
-  dmg: ["🎭 디어마이광주", "광주문화재단 · 공연·전시 후기와 예매, 예술인 소식", "https://search.naver.com/search.naver?query=" + encodeURIComponent("디어마이광주")],
+  dmg: ["🎭 디어마이광주", "광주문화재단 · 공연·전시·축제·체험 한눈에, 예매까지", "https://dmgj.kr/"],
+  gjcf: ["🎨 광주문화재단", "축제·문화예술 행사·공모 소식", "https://www.gjcf.or.kr/"],
+  acc: ["🏛 국립아시아문화전당(ACC)", "전시·공연·어린이문화원 프로그램", "https://www.acc.go.kr/"],
+  yeosu: ["⚓ 여수관광문화", "여수시 공식 관광 누리집 · 섬·바다·축제", "https://www.yeosu.go.kr/tour"],
+  sc: ["🌾 순천여행", "순천시 공식 관광 누리집 · 순천만·국가정원·축제", "https://www.suncheon.go.kr/tour/"],
+  mokpo: ["🌉 목포 문화관광", "목포시 공식 관광 누리집 · 해상케이블카·바다분수·축제", "https://www.mokpo.go.kr/tour"],
   egen: ["🚑 응급의료포털 E-Gen", "국립중앙의료원 · 실시간 응급실 병상, 달빛어린이병원", "https://www.e-gen.or.kr"],
-  safe: ["🛟 안전디딤돌 앱", "행정안전부 · 재난문자, 대피소·쉼터 지도", "https://mois.go.kr/frt/sub/a06/b11/safetyStep/screen.do"]
+  safe: ["🛟 안전디딤돌 앱", "행정안전부 · 재난문자, 대피소·쉼터 지도", "https://mois.go.kr/frt/sub/a06/b11/safetyStep/screen.do"],
+  omae: ["🧡 오매광주", "광주 공식 문화관광 누리집 · 관광지·축제·코스", "https://tour.gwangju.go.kr/"],
+  namdo: ["🌊 남도여행길잡이", "전남 공식 관광 누리집 · 시군별 관광지·축제", "https://www.namdokorea.com/"],
+  kto: ["🗺 대한민국 구석구석", "한국관광공사 · 여행지·축제·코스", "https://korean.visitkorea.or.kr/"]
 };
 function moreSourcesHtml(where) {
-  const keys = where === "events" ? (REGION === "gj" ? ["dmg"] : []) : where === "med" ? ["egen"] : where === "shelter" ? ["safe"] : [];
+  // 2026-11-20: 권역별 공식 관광·문화 누리집 (주소는 관광공사 자료·기관 안내로 확인한 것만)
+  // 한 화면에 2개까지만 — 그 지역을 가장 잘 아는 공식 누리집만 (전국 단위·겹치는 곳은 뺌)
+  const R = { gj: { events: ["dmg"], places: ["omae", "namdo"] },
+              ys: { events: ["namdo"], places: ["yeosu", "sc"] },
+              mp: { events: ["namdo"], places: ["mokpo", "namdo"] } }[REGION] || {};
+  const keys = where === "med" ? ["egen"] : where === "shelter" ? ["safe"] : (R[where] || []);
   if (!keys.length) return "";
   return `<div class="moreSrc"><b>🔗 더 자세히 보기</b>${keys.map(k => { const [t, s, u] = MORE_SRC[k]; return `<a target="_blank" rel="noopener noreferrer" href="${u}"><span>${t} ↗</span><small>${s}</small></a>` }).join("")}</div>`;
 }
@@ -12413,7 +12429,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.4 (2026.11.19)"; // 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.7 (2026.11.20)"; // 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
