@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 1.0.1 '오늘 하루 플랜' 제목 안 설명이 20px로 커지던 것(작은 글씨 키우기 규칙 탓) → 원래 13px로
   · 2026-11-19 ★ 앱 버전 1.0 — 여기서부터 정식 시작 (이후엔 기능 추가보다 써보며 고칠 것만)
   · 2026-11-19 아이랑: 우리 아이 나이(0~2·3~6·7~12세) 고르면 관람 연령 안 되는 공연 빼고 맞는 곳 앞으로(KIDS_AGE, 이 기기에 기억)
   · 2026-11-19 금·토(일 15시 전) 홈 위쪽 '이번 주말 고른 5곳'(#wkFri20261119) · 주말 추천에서 단체 전용·모집 공고 빼기
@@ -5433,16 +5434,20 @@ html body details.careMore[open]>summary{margin-bottom:10px}
 </style>
 <style id="readable20261119">
 /* 2026-11-19 작은 회색 글씨 읽기 쉽게: 안내·보조 글씨는 최소 12.5px, 흐린 회색은 한 단계 진하게 (어두운 화면도) */
-body small:not(#_), body .careNote:not(#_), body .pfNote:not(#_), body .spNote:not(#_), body .spTip:not(#_), body .kcPriceNote:not(#_),
+body .careNote:not(#_), body .pfNote:not(#_), body .spNote:not(#_), body .spTip:not(#_), body .kcPriceNote:not(#_),
 body .nowNote:not(#_), body .repFestivalNotice:not(#_), body .careSt:not(#_), body .closedTag:not(#_), body .recReason:not(#_),
-body .vetNote:not(#_), body .careEmpty:not(#_), body .updated:not(#_){font-size:max(12.5px, .86em)}
+body .vetNote:not(#_), body .careEmpty:not(#_), body .updated:not(#_){font-size:clamp(12.5px, .86em, 15px)}
+/* 2026-11-19 오후: 큰 제목 안의 작은 설명(오늘 하루 플랜 등)이 20px로 커지던 것 → 일반 small은 원래 크기를 우선하고, 따로 정한 크기가 없을 때만 12.5px 이상 */
+:where(body small){font-size:clamp(12.5px, .86em, 15px)}
 /* 정보가 담긴 작은 글씨(확인 날짜·주차·관람 상태·영업 상태·기준 동네 등)는 12.5px 아래로 안 내려가게 — 사진 위 꼬리표·장식 글씨는 그대로 */
 html body .trustPill:not(#_):not(#__), html body .pkLine a:not(#_):not(#__), html body .pkLine i:not(#_):not(#__), html body .goLine i:not(#_):not(#__),
 html body button .ok:not(#_):not(#__), html body button .unk:not(#_):not(#__), html body button .soon:not(#_):not(#__), html body .ncTags .t-ok:not(#_):not(#__),
 html body .recReason span:not(#_):not(#__), html body .closedTag:not(#_):not(#__), html body .careSt:not(#_):not(#__), html body .baseGu span:not(#_):not(#__),
 html body .ltGu span:not(#_):not(#__), html body .nowAllBtn span:not(#_):not(#__), html body .repFestivalNotice:not(#_):not(#__), html body .manualLaunch span:not(#_):not(#__),
 html body .heroFresh:not(#_):not(#__), html body .homeAsk button:not(#_):not(#__), html body details > summary span:not(#_):not(#__), html body .repFestHero summary small:not(#_):not(#__),
-html body .flTag:not(#_):not(#__){font-size:12.5px!important}
+html body .flTag:not(#_):not(#__),
+html body .nowPick small:not(#_):not(#__), html body .deadlineCard small:not(#_):not(#__), html body .deadlineHead small:not(#_):not(#__), html body .kidsEv small:not(#_):not(#__),
+html body .ncSub:not(#_):not(#__), html body .weekendItem small:not(#_):not(#__), html body .sectionHead h2 small:not(#_):not(#__){font-size:12.5px!important}
 body .careItem .careSt.closed:not(#_){color:#5f6672}
 body .vetNote b:not(#_){color:#b42318}
 [data-theme=dark] body .careItem .careSt.closed:not(#_){color:#b3bac6}
@@ -12405,7 +12410,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0 (2026.11.19)"; // 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.1 (2026.11.19)"; // 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
