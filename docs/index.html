@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 홈 길이 줄이기(지금만 되는 것·문화가 있는 날·한 달 축제 접기) · 작은 안내 글씨 12.5px 이상(#readable20261119) · 긴 안내 문장 줄이기 · 홈 추천 한 줄·도서관 시간 짧게(libHoursShort)
   · 2026-11-19 주말·휴일 약국: 🟢지금 열림 → ⏰이따 열림 → 🔒오늘 끝남(접기) · 토요일·공휴일 전날엔 '내일 문 여는 약국' 미리 보기
   · 2026-11-19 새벽에 문 연 약국이 없으면 '없어요' 빨간 안내+응급실 버튼, 닫힌 약국은 접고 🔒 흐리게 (지금 연 줄 착각하던 것)
   · 2026-11-18 저녁 전체 메뉴 '벚꽃 명소🌸/단풍 명소🍁'는 그 철(홈 칸 기간)에만 보임 · 철 아니면 메뉴에서 감춤(SEASON_ON)
@@ -5416,6 +5417,42 @@ html body details.careMore[open]>summary{margin-bottom:10px}
 [data-theme=dark] .careItem .closedTag:not(#_){background:#2b3446;color:#c4cddc}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) .careNone:not(#_){background:#3a1f1f;border-color:#7a3b36}html:not([data-theme=light]) .careNone b:not(#_){color:#ffb4ab}html:not([data-theme=light]) .careNone span:not(#_){color:#f1dcda}html:not([data-theme=light]) .careItem .closedTag:not(#_){background:#2b3446;color:#c4cddc}}
 </style>
+<style id="homeShort20261119">
+.nowFest:not(#_){margin:18px 0 4px}
+.nowFest > summary:not(#_){list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line,#e2e6ee);font-weight:800;font-size:15px}
+.nowFest > summary::-webkit-details-marker{display:none}
+.nowFest > summary small:not(#_){font-size:13px;font-weight:700;color:#1f3d73;white-space:nowrap}
+.nowFest[open] > summary small:not(#_){font-size:0}.nowFest[open] > summary small::after{content:"접기 ▴";font-size:13px}
+.nowFest[open] > .stList:not(#_){margin-top:10px}
+[data-theme=dark] .nowFest > summary small:not(#_){color:#cfe0ff}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .nowFest > summary small:not(#_){color:#cfe0ff}}
+</style>
+<style id="readable20261119">
+/* 2026-11-19 작은 회색 글씨 읽기 쉽게: 안내·보조 글씨는 최소 12.5px, 흐린 회색은 한 단계 진하게 (어두운 화면도) */
+body small:not(#_), body .careNote:not(#_), body .pfNote:not(#_), body .spNote:not(#_), body .spTip:not(#_), body .kcPriceNote:not(#_),
+body .nowNote:not(#_), body .repFestivalNotice:not(#_), body .careSt:not(#_), body .closedTag:not(#_), body .recReason:not(#_),
+body .vetNote:not(#_), body .careEmpty:not(#_), body .updated:not(#_){font-size:max(12.5px, .86em)}
+/* 정보가 담긴 작은 글씨(확인 날짜·주차·관람 상태·영업 상태·기준 동네 등)는 12.5px 아래로 안 내려가게 — 사진 위 꼬리표·장식 글씨는 그대로 */
+html body .trustPill:not(#_):not(#__), html body .pkLine a:not(#_):not(#__), html body .pkLine i:not(#_):not(#__), html body .goLine i:not(#_):not(#__),
+html body button .ok:not(#_):not(#__), html body button .unk:not(#_):not(#__), html body button .soon:not(#_):not(#__), html body .ncTags .t-ok:not(#_):not(#__),
+html body .recReason span:not(#_):not(#__), html body .closedTag:not(#_):not(#__), html body .careSt:not(#_):not(#__), html body .baseGu span:not(#_):not(#__),
+html body .ltGu span:not(#_):not(#__), html body .nowAllBtn span:not(#_):not(#__), html body .repFestivalNotice:not(#_):not(#__), html body .manualLaunch span:not(#_):not(#__),
+html body .heroFresh:not(#_):not(#__), html body .homeAsk button:not(#_):not(#__), html body details > summary span:not(#_):not(#__), html body .repFestHero summary small:not(#_):not(#__),
+html body .flTag:not(#_):not(#__){font-size:12.5px!important}
+body .careItem .careSt.closed:not(#_){color:#5f6672}
+body .vetNote b:not(#_){color:#b42318}
+[data-theme=dark] body .careItem .careSt.closed:not(#_){color:#b3bac6}
+[data-theme=dark] body .careItem .careSt.open:not(#_){color:#6fdca0}
+[data-theme=dark] body .careItem .careSt.soon:not(#_){color:#ffc46b}
+[data-theme=dark] body .vetNote b:not(#_){color:#ffb4ab}
+[data-theme=dark] body #answer .vetBox .vetNote b:not(#_){color:#ffd28a}
+@media (prefers-color-scheme:dark){
+ html:not([data-theme=light]) body .careItem .careSt.closed:not(#_){color:#b3bac6}
+ html:not([data-theme=light]) body .careItem .careSt.open:not(#_){color:#6fdca0}
+ html:not([data-theme=light]) body .careItem .careSt.soon:not(#_){color:#ffc46b}
+ html:not([data-theme=light]) body .vetNote b:not(#_){color:#ffb4ab}
+ html:not([data-theme=light]) body #answer .vetBox .vetNote b:not(#_){color:#ffd28a}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -5647,7 +5684,7 @@ html body details.careMore[open]>summary{margin-bottom:10px}
 </main>
 
 <footer class="foot2"><svg viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L1440 0 L1440 20 C1380 26 1320 14 1240 22 C1160 30 1120 46 1040 44 C960 42 930 24 850 26 C770 28 720 52 640 54 C560 56 520 36 440 34 C360 32 300 46 220 42 C140 38 70 22 0 26 Z" fill="#f6f1e7"/></svg>
-<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>이 앱의 정보는 공공기관·공식 누리집에서 자동으로 모으고, 끝난 일정은 자동으로 정리해요. 시간·요금·휴무는 갑자기 바뀔 수 있으니, 가시기 전에 공식 안내에서 한 번 더 확인하면 더 정확해요. 공공데이터에 올라온 행사·장소만 담기 때문에 작은 갤러리·책방 행사는 빠질 수 있어요. 빠진 곳은 각 항목의 '정보 수정'으로 알려 주세요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주통합특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">자료 갱신</span><span>행사·일정은 하루 두 번 자동으로 업데이트돼요. 키즈카페처럼 파일로 받는 공공데이터는 주기적(최소 6개월에 1회)으로 새 파일로 바꿔 줘야 해요. (키즈카페: 행정안전부 전국기타유원시설업소 표준데이터)</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 매직글러브(개발자). 앱 화면·코드·편집 데이터의 저작권은 개발자에게 있으며, 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 단, 지방자치단체·공공기관이 비영리 공공서비스로 이용하려는 경우 개발자와 협의해 무상·비독점으로 이용(복제·수정·운영)할 수 있으며, 이때 개발자 표시는 남겨 주세요. 기관에 이관한 뒤에도 저작권은 개발자에게 있고, 개발자는 이 앱을 공모전·포트폴리오 등에 활용할 수 있습니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터는 원작자가 개발자에게 이용을 허락해 사용하고 있습니다. 캐릭터의 저작권은 원작자에게 있으며, 허락 없이 사용·복제·재배포할 수 없습니다. 앱을 이관받는 기관도 원작자에게 따로 허락을 받아야 캐릭터를 쓸 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
+<div class="wrap"><div class="footerManual"><button type="button" class="manualLaunch" onclick="openUserManual()" aria-haspopup="dialog">📖 앱 사용설명서 <span>앱 소개 · 기능 · 이용방법 ›</span></button><button type="button" class="reviewLaunch" onclick="openReview()">💬 이 앱 어땠어요? 한 줄 후기 남기기</button><button type="button" class="privacyLink" onclick="openPrivacy()">🔒 개인정보 처리 안내</button><button type="button" class="privacyLink" onclick="openRightsAndLicenses()" aria-haspopup="dialog">⚖️ 라이선스·자료 이용 안내</button></div><b>오늘, 전남광주 어디가볼까?</b><p>무등산에서 남해 바다까지, 전남광주 — 오늘도 징하게 재밌는 하루 되쇼잉.</p><p class="footNotice"><b>ℹ️ 정보 안내</b>공공기관·공식 누리집 정보를 자동으로 모아요. 시간·요금·휴무는 바뀔 수 있으니 가기 전에 한 번 더 확인하세요. 빠진 곳은 '정보 수정'으로 알려 주세요.</p><details class="footMore"><summary>ℹ️ 개인이 만든 비공식 앱이에요 <span>출처·저작권·사진 안내 보기</span></summary><ol class="footList"><li><span class="flTag">비공식 앱</span><span>개인이 만든 비공식 안내 앱이에요. 전남광주통합특별시(시청)의 공식 서비스가 아니에요.</span></li><li><span class="flTag">지도·날씨</span><span>지도 © OpenStreetMap contributors · Esri · 날씨 Open-Meteo (연결 지연 시 보조 날씨 사용)</span></li><li><span class="flTag">사진</span><span>사진은 공공데이터(한국관광공사·한국문화정보원 등) 및 기관 누리집의 외부 자료를 연결하여 표시할 수 있습니다. 공개된 자료라도 사진별 재이용 허락이 자동으로 확인되는 것은 아닙니다. 원래 자료에 사진이 없거나, 기관이 사진 주소를 바꾸거나 외부 연결을 막으면 안 보일 수 있어요. 포스터 비율이 맞지 않으면 남는 곳은 흐리게 채워져요. 사진은 실제와 다를 수 있으니 날짜·시간은 글 정보를 기준으로 봐 주세요.</span></li><li><span class="flTag">일정 출처</span><span>한국문화정보원 · 한국관광공사 · 공연예술통합전산망(KOPIS) · 각 기관 누리집</span></li><li><span class="flTag">자료 갱신</span><span>행사·일정은 하루 두 번 자동으로 업데이트돼요. 키즈카페처럼 파일로 받는 공공데이터는 주기적(최소 6개월에 1회)으로 새 파일로 바꿔 줘야 해요. (키즈카페: 행정안전부 전국기타유원시설업소 표준데이터)</span></li><li><span class="flTag">개발</span><span>매직글러브 (기획·개발)</span></li><li><span class="flTag">저작권</span><span>© 2026 매직글러브(개발자). 앱 화면·코드·편집 데이터의 저작권은 개발자에게 있으며, 무단 복제·수정·재배포와 상업적 이용을 금지합니다. 단, 지방자치단체·공공기관이 비영리 공공서비스로 이용하려는 경우 개발자와 협의해 무상·비독점으로 이용(복제·수정·운영)할 수 있으며, 이때 개발자 표시는 남겨 주세요. 기관에 이관한 뒤에도 저작권은 개발자에게 있고, 개발자는 이 앱을 공모전·포트폴리오 등에 활용할 수 있습니다. 이용·협업 문의는 '틀린 정보 알려주기'로 남겨 주세요. 업체 홍보·광고는 게재하지 않으며, 일정은 공공기관·공식 누리집 정보만 모아요.</span></li><li><span class="flTag">캐릭터</span><span>크리밍 캐릭터는 원작자가 개발자에게 이용을 허락해 사용하고 있습니다. 캐릭터의 저작권은 원작자에게 있으며, 허락 없이 사용·복제·재배포할 수 없습니다. 앱을 이관받는 기관도 원작자에게 따로 허락을 받아야 캐릭터를 쓸 수 있습니다.</span></li><li><span class="flTag">AI 활용</span><span>첫 화면 '아이랑 어디 갈까?'의 가족과 크리밍이 손잡은 그림 등 일부 그림은 생성형 AI로 만들었어요. 실제 장소·행사 사진이 아니에요.</span></li></ol></details></div></footer>
 
 <nav class="bottom navAway" aria-hidden="true"><button class="on navHome" data-jump="decide" aria-label="홈 (첫 화면)"><span class="navHomeEmoji" aria-hidden="true">🏠</span><span>홈</span></button><button data-jump="events"><i class="calIc" aria-hidden="true"></i><span>일정</span></button><button data-jump="places">🏛<span>나들이</span></button><button data-jump="local">🏘<span>동네서</span></button><button data-jump="pick">✨<span>오늘 뭐하지</span></button><button data-jump="map">🗺<span>지도</span></button></nav>
 <div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()" aria-label="닫기">×</button><div id="modalContent"></div></div></div>
@@ -7217,7 +7254,7 @@ function upcomingFestHtml(dates) {
   if (!ev.length && !guess.length) return "";
   const row = e => `<button class="stRow" onclick="detail('${jsq(e.id)}')"><span class="stDate">${md(e.start)}</span><span class="stMain"><b>${esc(e.title)}</b><small>📍 ${esc((e.venue || "").split(" (")[0])}${e.district ? " · " + esc(e.district) : ""} · ${md(e.start)}~${md(e.end || e.start)}</small></span><em class="ok">${Math.round((new Date(e.start + "T00:00:00+09:00") - new Date(t + "T00:00:00+09:00")) / 864e5)}일 뒤</em></button>`;
   const grow = a => { const last = a.last || (a.this && a.this.year < y ? a.this : null); return `<button class="stRow" onclick="showTab('events');setTimeout(()=>document.querySelector('#eventsView h3.sub:last-of-type')?.scrollIntoView({behavior:'smooth'}),300)"><span class="stDate">${a.month}월</span><span class="stMain"><b>${esc(a.name)} <small style="font-weight:600;color:var(--gold-d)">· 곧 열릴 때예요</small></b><small>📍 ${esc(a.place)} · ${esc(a.when)}${last ? ` · 작년 ${md(last.start)}~${md(last.end)}` : ""}</small></span><em>날짜 발표 전</em></button>` };
-  return `<h3 class="sub" style="margin-top:22px">🎪 한 달 안에 열리는 축제 · ${esc(RNAME())} ${ev.length + guess.length}</h3><div class="stList">${ev.slice(0, 10).map(row).join("")}${guess.map(grow).join("")}</div>`;
+  return `<details class="nowFest"><summary>🎪 한 달 안에 열리는 축제 ${ev.length + guess.length} <small>펼치기 ▾</small></summary><div class="stList">${ev.slice(0, 10).map(row).join("")}${guess.map(grow).join("")}</div></details>`;   // 2026-11-19 접어서 홈 길이 줄이기
 }
 /* 2026-11-09: '장날'은 장날이 정해진 시장(말바우 2·4·7·9 등)·야시장만 셈 → 장날 없이 매일 여는 시장(송정역·양동·남광주 등)이 빠진 걸 한 줄로 알림. 이름은 지금 권역 자료에서 고름 */
 function dailyMarketNote(iso) {
@@ -7261,7 +7298,7 @@ function renderNowShow() {
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${jsq(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
    ${upcomingFestHtml(dates)}
    ${dates.some(x => HOLIDAYS[x]) ? `<p class="nowNote">📌 ${dates.filter(x => HOLIDAYS[x]).map(x => HOLIDAYS[x]).join(", ")}엔 미술관·박물관 휴관일이 바뀌기도 해요(공휴일 개관 → 다음 날 휴관). 가기 전에 한 번 확인!</p>` : ""}
-   ${items.some(x => x.h && !x.h.sure) ? `<p class="nowNote">'기간 중'으로 표시된 건 날짜별 시간표가 아직 없어서, 공식 채널에서 시간을 확인하세요.</p>` : ""}`;
+   ${items.some(x => x.h && !x.h.sure) ? `<p class="nowNote">'기간 중'은 아직 시간표가 없어요. 시간은 공식 안내에서 확인하세요.</p>` : ""}`;
   const todayN = NOW_WHEN === 0 ? items.length : nowItems([t0]).length, wkN = counts[2];
   const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>이번 주말</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
   // 이번 주말 5선: 평일(월~금)엔 '주말 뭐 하지?' 칸으로 따로, 토·일엔 '오늘'과 겹치므로 '이번 주말' 탭 안에만
@@ -8453,7 +8490,10 @@ function renderNowStart(refresh=false) {
   if(!picks.length){grid.innerHTML=`<div class="nowPick"><b>${period} 시간대에 확인된 후보가 부족해요.</b><small>운영시간이 불명확한 곳은 무리하게 추천하지 않았어요. 나들이·지도를 확인해 주세요.</small></div>`; if(note)note.textContent=`${RNAME()} · 현재 ${period} · 이용 가능 시간 확인된 장소 없음`;return}
   const tag=p=>p.kind==='event'?(p.x.category||'오늘 일정'):(p.x.kind||'나들이');
   const name=p=>p.kind==='event'?p.x.title:p.x.name;
-  const meta=p=>{const d=homeKm(p.x);return `${p.window.label} · ${p.kind==='event'?(p.x.venue||''):(p.x.district||'')}${d!=null?` · 🏠 ${d<0.95?Math.max(100,Math.round(d*10)*100)+'m':d.toFixed(1)+'km'}`:''} · ${p.kind==='event'?(p.x.time||''):(p.x.hours||'')}`};
+  // 2026-11-19: 한 줄이 길어서(도착·마감·머무는 시간·운영시간이 겹쳐 나옴) → '가는 시간 · 마감 · 동네 · 거리'만
+  const meta=p=>{const d=homeKm(p.x);const parts=String(p.window.label||'').split(' · ');let keep=parts.filter(x=>/에서 약|약 \d+분|입장마감|마감|상시/.test(x)&&!/둘러보기|식사|도착/.test(x));if(keep.some(x=>/입장마감/.test(x)))keep=keep.filter(x=>!/^\d{1,2}:\d{2} 마감$/.test(x));
+    const hasClose=keep.some(x=>/마감|상시/.test(x));const hrs=p.kind==='event'?(p.x.time||''):(p.x.hours||'');
+    return [...(keep.length?keep:parts.slice(0,2)), p.kind==='event'?(p.x.venue||''):(p.x.district||''), d!=null?`🏠 ${d<0.95?Math.max(100,Math.round(d*10)*100)+'m':d.toFixed(1)+'km'}`:'', hasClose?'':String(hrs).split(/\s*[·(]/)[0]].filter(Boolean).join(' · ')};
   const click=p=>p.kind==='event'?`detail('${jsq(p.x.id)}')`:`aiProfile('${jsq(p.x.id)}')`;
   grid.innerHTML=picks.map((p,i)=>`<button class="nowPick" type="button" onclick="${click(p)}"><div class="nowPickTop"><span class="nowPickNo">${i+1}</span><span class="nowPickTag">${esc(tag(p))}</span></div><b>${esc(name(p))}</b><small>${esc(meta(p))}</small></button>`).join('');
   if(note){const o=tripOriginInfo({});note.textContent=`🚩 ${o.label||'미정'}에서 차로 출발 기준 · 임시휴무는 방문 전 확인`}
@@ -8944,7 +8984,7 @@ function kcCard(v) {
   const tel = v.phone ? `<a class="miniBtn" href="tel:${esc(v.phone.replace(/[^\d+]/g, ""))}">📞 전화</a>` : `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">📞 번호 찾기 ↗</a>`;
   return `<div class="listCard place kcCard"><div class="listMain"><div class="kindRow">${homeTag(v)}<span class="kind">🧸 키즈카페·실내놀이터</span><span class="kind">🏠 실내</span></div>
   <h3>${esc(v.name)}</h3>
-  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>요금(보통)</dt><dd>${/무인/.test(v.name) ? "아이 2시간 1만원 안팎 · 보호자 무료 (무인 키즈카페 보통 요금)" : "아이 2시간 1만~1만8천원 · 보호자 4~5천원(음료 포함 많음)"}<small class="kcPriceNote">2026년 보통 시세예요 · 이 가게 요금은 ${v.phone ? "전화나 " : ""}지도에서 확인</small></dd><dt>시간</dt><dd>가게마다 달라요 · 지도에서 확인</dd></dl>
+  <dl>${v.rides ? `<dt>놀이</dt><dd>${esc(v.rides)}</dd>` : ""}<dt>요금(보통)</dt><dd>${/무인/.test(v.name) ? "아이 2시간 1만원 안팎 · 보호자 무료 (무인 키즈카페 보통 요금)" : "아이 2시간 1만~1만8천원 · 보호자 4~5천원(음료 포함 많음)"}<small class="kcPriceNote">2026년 보통 시세 · 가게마다 달라요</small></dd><dt>시간</dt><dd>가게마다 달라요 · 지도에서 확인</dd></dl>
   <small>${esc(v.address)}${v.phone ? ` · ☎ ${esc(v.phone)}` : ""}</small>
   <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(v.name + " " + (v.district || ""))}">네이버 지도 ↗</a>${tel}</div></div></div>`;
 }
@@ -9501,6 +9541,15 @@ function libEventsLine(l) {
   if (!ev.length) return "";
   return `<small class="libEv">📚 지금 전시: ${ev.map(e => `<a href="#" onclick="detail('${jsq(e.id)}');return false">${esc(e.title)}</a>`).join(" · ")}</small>`;
 }
+/* 2026-11-19 도서관 시간 줄이기: 같은 시간은 묶고(평일·주말 / 매일), 휴관은 짧게 */
+function libHoursShort(l) {
+  const f = x => String(x || "").replace(/(\d{2}):(\d{2})/g, (m, h, mi) => String(+h) + (mi === "00" ? "" : ":" + mi)).replace(/~/g, "–").trim() || "-";
+  const w = f(l.weekday), sa = f(l.saturday), ho = f(l.holiday);
+  const hrs = w === sa && sa === ho ? `매일 ${w}시` : sa === ho ? `평일 ${w}시 · 주말·공휴일 ${sa}시` : `평일 ${w}시 · 토 ${sa}시 · 일·공휴일 ${ho}시`;
+  let cl = String(l.closed || "").replace(/\s+/g, " ").replace(/\+/g, "·").replace(/\(.*?\)/g, "").replace(/특별한 사유로 관장이 지정한 날|대체공휴일|법정공휴일/g, m => m === "법정공휴일" ? "공휴일" : m === "대체공휴일" ? "" : "").replace(/·{2,}/g, "·").replace(/^·|·$/g, "");
+  if (cl.length > 26) cl = cl.slice(0, 25) + "…";
+  return hrs.replace(/-시/g, "-") + (cl ? ` · 휴관 ${cl}` : "");
+}
 function libCard(l) {
   const t = libToday(l);
   const badge = t.open === false ? `<span class="kind" style="background:#f3e3e0;color:#9a3b2a">${esc(t.why)}</span>`
@@ -9509,7 +9558,7 @@ function libCard(l) {
     : t.open ? `<span class="kind k-gm">지금 열림 · ~${esc(t.hours.split("~")[1])}</span>` : `<span class="kind">${esc(t.why)}</span>`;
   return `<div class="listCard"><div class="listMain"><div class="kindRow">${flagTag(l)}${homeTag(l)}${badge}<span class="gu">${esc(l.district)}</span>${l.type ? `<span class="menu">${esc(l.type)}</span>` : ""}</div><b>📚 ${esc(l.name)}</b>
   <small>${esc(l.address)}</small>
-  <small class="note">평일 ${esc(l.weekday || "-")} · 토 ${esc(l.saturday || "-")} · 일·공휴일 ${esc(l.holiday || "-")}${l.closed ? ` · 휴관 ${esc(l.closed)}` : ""}</small>
+  <small class="note">${esc(libHoursShort(l))}</small>
   ${libEventsLine(l)}
   <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink(l.name)}">지도 ↗</a>${l.url ? `<a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${esc(/^https?:/.test(l.url) ? l.url : "http://" + l.url)}">도서관 누리집 ↗</a>` : ""}${l.phone ? `<a class="miniBtn" href="tel:${esc(l.phone)}">☎ ${esc(l.phone)}</a>` : ""}</div></div></div>`;
 }
@@ -10803,7 +10852,7 @@ function kidsCafeAI(s) {
   list = sortHome(list);
   if (!HOME) list = aiDiverse(list, aiQueryKey(s, "kc"), 6, Math.min(30, list.length));
   $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🧸 ${gu ? esc(gu) + " " : ""}키즈카페·실내놀이터</b><span>${total}곳</span></div>
-   <p class="pfNote">${HOME ? `🏠 ${esc(HOME.gu)}에서 가까운 순이에요.` : "사는 동네를 고르면 가까운 순으로 보여드려요."} 시간·요금은 가게마다 달라서 가기 전에 전화나 지도로 확인하세요.</p>
+   <p class="pfNote">${HOME ? `🏠 ${esc(HOME.gu)}에서 가까운 순이에요.` : "동네를 고르면 가까운 순이에요."} 시간·요금은 가게마다 달라요.</p>
    <div class="grid">${list.slice(0, 6).map(kcCard).join("")}</div>
    <p class="pfNote"><button class="btn" type="button" onclick="showKids(KC_SUB)">🧸 키즈카페 ${KIDSCAFES.length}곳 전체 보기 →</button></p></div>`;
   scrollAI?.();
@@ -10831,7 +10880,7 @@ function vetHtml(gu, big) {
       <b>전남대학교 동물병원 24시 응급의료센터</b><small>대학 동물병원 응급센터 · 밤·주말·공휴일에도 응급 진료${REGION !== "gj" ? ` · ${esc(area)}에서는 멀어요. 근처 24시 병원부터 찾아보세요` : ""}</small>
       <div class="btnRow"><a class="miniBtn" target="_blank" rel="noopener noreferrer" href="${mapLink("전남대학교 동물병원")}">📞 전화·길찾기 ↗</a></div></div></div>
      <a class="vet24" target="_blank" rel="noopener noreferrer" href="${mapLink("24시 동물병원 " + area)}">🌙 근처 24시 동물병원 모두 보기 ↗</a>
-     <p class="vetNote">이름에 '24시'가 있어도 야간 진료를 그만두었거나 요일마다 다른 곳이 있어요. <b>가기 전에 꼭 전화로 지금 진료 되는지</b> 물어보세요. 119는 사람 응급만 받아요.</p>
+     <p class="vetNote">'24시'라도 밤에 쉬는 곳이 있어요. <b>가기 전에 꼭 전화로 확인</b>하세요. 119는 사람만 받아요.</p>
      <a class="vetDay" target="_blank" rel="noopener noreferrer" href="${mapLink("동물병원 " + area)}">🐾 낮 진료 · 가까운 동물병원 ↗</a></div>`;
 }
 /* 약국·응급실 화면 안에서 해당 칸으로 이동 (접힌 병·의원 목록은 펼치기) */
@@ -10861,7 +10910,7 @@ function nightAI(s) {
   list = list.map((v, i) => [v, i]).sort((a, b) => strong(a[0]) - strong(b[0]) || a[1] - b[1]).map(x => x[0]);
   const hm = tripNowMin(), early = hm < 17 * 60;
   $("#answer").innerHTML = `<div class="aiList"><div class="alHead"><b>🌙 ${gu ? esc(gu) + " " : ""}밤에 가볼 곳</b><span>${total}곳</span></div>
-   <p class="pfNote">야경·야시장·밤바다처럼 해 진 뒤에 더 좋은 곳만 골랐어요${HOME ? `. 🏠 ${esc(HOME.gu)}에서 가까운 순이에요` : ""}.${early ? " 해 지고 가면 딱 좋아요." : ""} 야외는 운영 시간이 계절마다 달라서 가기 전에 확인하세요.</p>
+   <p class="pfNote">해 진 뒤에 더 좋은 곳만 골랐어요${HOME ? ` · 🏠 ${esc(HOME.gu)}에서 가까운 순` : ""}. 야외는 계절마다 시간이 달라요.</p>
    <div class="grid">${list.slice(0, 6).map(v => aiPlaceCard(v)).join("") || "<p class='empty'>이 동네엔 밤에 가볼 곳이 아직 없어요.</p>"}</div>
    <p class="pfNote"><button class="btn" type="button" onclick="recommend('오늘 저녁 공연')">🎭 오늘 저녁 공연도 보기 →</button></p></div>`;
   scrollAI?.();
@@ -13527,7 +13576,10 @@ window.renderSeason = renderSeason;
 /* 2026-11-06 홈 추천 칸 접기: 주말 추천·계절 명소·오늘 하루 코스는 제목만 보이고 누르면 펼침.
    칸 내용은 각 render 함수가 새로 그려도 되도록, 그릴 때마다 맨 위에 제목 줄을 다시 붙인다. 펼친 상태는 이 기기에 기억. */
 (function(){
-  const FOLD = {seasonPick:"🌿 지금 가기 좋은 계절 명소", today:"🚩 오늘 하루 플랜 (자동) · 오전·오후·저녁"};
+  const FOLD = {seasonPick:"🌿 지금 가기 좋은 계절 명소", today:"🚩 오늘 하루 플랜 (자동) · 오전·오후·저녁",
+    // 2026-11-19 홈이 너무 길어서: '지금만 되는 것'·'문화가 있는 날'도 제목만 (문화가 있는 날 당일엔 펼친 채로)
+    onlyNow:"⏳ 지금 아니면 1년 기다려야 해요", cultureSpot:"🎫 문화가 있는 날 · 할인 안내"};
+  const DEF_OPEN = { cultureSpot: () => { try { return cultureInfo().state === "today" } catch (e) { return false } } };
   const KEY = "glm_fold_open";
   let open; try { open = JSON.parse(localStorage.getItem(KEY) || "{}") } catch (e) { open = {} }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(open)) } catch (e) {} };
@@ -13541,8 +13593,8 @@ window.renderSeason = renderSeason;
   function paint(id){
     const sec = document.getElementById(id); if (!sec) return;
     let bar = sec.querySelector(":scope > .foldBar");
-    if (!bar) { bar = document.createElement("button"); bar.type = "button"; bar.className = "foldBar"; bar.onclick = () => { open[id] = !open[id]; save(); paint(id) }; sec.prepend(bar) }
-    const isOpen = !!open[id];
+    if (!bar) { bar = document.createElement("button"); bar.type = "button"; bar.className = "foldBar"; bar.onclick = () => { open[id] = !(id in open ? open[id] : !!(DEF_OPEN[id] && DEF_OPEN[id]())); save(); paint(id) }; sec.prepend(bar) }
+    const isOpen = id in open ? !!open[id] : !!(DEF_OPEN[id] && DEF_OPEN[id]());
     sec.classList.toggle("isFolded", !isOpen);
     bar.setAttribute("aria-expanded", String(isOpen));
     const txt = label(sec, id), sub = isOpen ? "접기 ▴" : "펼치기 ▾";
@@ -13559,14 +13611,16 @@ window.renderSeason = renderSeason;
     }
   }
   window.unfoldHome = id => { if (FOLD[id] && !open[id]) { open[id] = true; save(); paint(id) } };
+  const watched = new Set();
   function init(){
     Object.keys(FOLD).forEach(id => {
-      const sec = document.getElementById(id); if (!sec) return;
+      const sec = document.getElementById(id); if (!sec || watched.has(id)) return; watched.add(id);
       paint(id);
       new MutationObserver(() => { if (!sec.querySelector(":scope > .foldBar") || sec.firstElementChild?.className !== "foldBar") { const b = sec.querySelector(":scope > .foldBar"); if (b) sec.prepend(b); paint(id) } else paint(id) }).observe(sec, {childList: true});
     });
     // 오른쪽 '더 보기' → 하루 코스로 갈 때는 펼쳐서 보여 줌
     document.querySelectorAll('[data-rightjump="dayplan"]').forEach(b => b.addEventListener("click", () => unfoldHome("today"), true));
+    if (Object.keys(FOLD).some(id => !watched.has(id)) && (init.n = (init.n || 0) + 1) < 20) setTimeout(init, 700);   // 늦게 생기는 칸(지금만 되는 것)도 잡기
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();
@@ -14171,6 +14225,7 @@ document.addEventListener("keydown",function(e){
       </div>
       <div class="amBody">
         ${GROUPS.map(([g, ks], i) => `<section class="amSec" id="amSec${i}" aria-labelledby="amSec${i}h"><h3 id="amSec${i}h">${g}<em>${ks.length}</em></h3><div class="mgGrid">${ks.map(btn).join("")}</div></section>`).join("")}
+
         <section class="amSec amExtra" aria-label="그 밖에"><h3>그 밖에</h3><div class="mgGrid">${["weather"].map(btn).join("")}</div></section>
         <p class="amNone" hidden>오매, 그런 메뉴는 없당께요. 다른 말로 찾아보쇼<br><button type="button" class="amAsk">크리밍한테 물어보기</button></p>
       </div>
@@ -14663,7 +14718,7 @@ document.addEventListener("keydown",function(e){
         if (openNow.length) { h += `<h3>🌙 지금 문 연 심야약국</h3>` + list(openNow, 6) }
         else {
           h += `<h3>🌙 지금 문 연 약국 <small style="font-weight:600">· 심야약국</small></h3>
-            <div class="careNone"><b>🔒 가까운 곳(10km 안)에 지금 문 연 약국이 없어요</b><span>급하게 약이 필요하면 <b>응급실</b>에서 진료받고 약을 받을 수 있어요. 가벼운 상비약(해열제·감기약·소화제)은 <b>편의점</b>에도 있어요.</span>
+            <div class="careNone"><b>🔒 가까운 곳(10km 안)에 지금 문 연 약국이 없어요</b><span>급하면 <b>응급실</b>에서 진료받고 약을 받을 수 있어요. 상비약은 <b>편의점</b>에도 있어요.</span>
             <button type="button" onclick="careJump('er')">🏥 가까운 응급실 보기</button></div>`;
           if (all.length) h += `<details class="careMore"><summary>☀️ 아침에 여는 가까운 약국 ${Math.min(3, all.length)}곳</summary>${list(all, 3)}</details>`;
         }
@@ -14726,7 +14781,7 @@ document.addEventListener("keydown",function(e){
       const bar = `<nav class="careJump" aria-label="바로가기">${B.map(([k, e, t]) => `<button type="button" data-cj="${k}" onclick="careJump('${k}', this)"><span>${e}</span>${t}</button>`).join("")}</nav>`;
       h = h.replace(/(<div class="care119">[\s\S]*?<\/div>)/, "$1" + bar);
     }
-    if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">영업시간은 약국·병원이 국립중앙의료원에 신고한 시간이라 실제와 다를 수 있어요. 가기 전에 꼭 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·병의원·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
+    if (CARE.ph.length || CARE.er.length) h += `<p class="careNote">신고된 영업시간이라 실제와 다를 수 있어요. 가기 전에 전화로 확인하세요.${src ? `<br>출처: 국립중앙의료원 약국·병의원·응급의료기관 정보 · ${E(src)} 확인` : ""}</p>`;
     return h;
   }
 
@@ -14740,7 +14795,7 @@ document.addEventListener("keydown",function(e){
         : `<p class="careEmpty">5km 안에 등록된 ${word}가 없어요.</p>`;
     } else h += `<p class="careEmpty">${word} 목록을 아직 받아오지 못했어요. 아래 공식 누리집에서 가까운 쉼터를 찾을 수 있어요.</p>`;
     h += links([["🗺 국민재난안전포털", `행정안전부 · ${word} 찾기`, "https://www.safekorea.go.kr"]]);
-    h += `<p class="careNote">${heat ? "경로당·주민센터 같은 곳이 많아요. " : ""}운영 기간과 시간은 쉼터마다 달라요. 문이 닫혀 있을 수 있으니 가기 전에 확인하세요.${CARE.shUpd ? `<br>출처: 행정안전부·시군 ${word} 목록 · ${E(CARE.shUpd)} 기준` : ""}</p>`;
+    h += `<p class="careNote">${heat ? "경로당·주민센터 같은 곳이 많아요. " : ""}쉼터마다 운영 시간이 달라요. 가기 전에 확인하세요.${CARE.shUpd ? `<br>출처: 행정안전부·시군 ${word} 목록 · ${E(CARE.shUpd)} 기준` : ""}</p>`;
     return h;
   }
 
