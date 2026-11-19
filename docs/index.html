@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 1.0.2 맨 아래에 '© 2026 · 저작권 등록 제 C-2026-061252호' (2026-11-19 한국저작권위원회 등록)
   · 2026-11-19 1.0.1 '오늘 하루 플랜' 제목 안 설명이 20px로 커지던 것(작은 글씨 키우기 규칙 탓) → 원래 13px로
   · 2026-11-19 ★ 앱 버전 1.0 — 여기서부터 정식 시작 (이후엔 기능 추가보다 써보며 고칠 것만)
   · 2026-11-19 아이랑: 우리 아이 나이(0~2·3~6·7~12세) 고르면 관람 연령 안 되는 공연 빼고 맞는 곳 앞으로(KIDS_AGE, 이 기기에 기억)
@@ -2275,7 +2276,7 @@ body[data-manual-open="1"] .rightQuick,body:has(#modal.show) .rightQuick,body:ha
 @media(max-width:600px){.rightQuick{top:46%}.rightQuickPanel{max-width:min(190px,calc(100vw - 36px))}}
 
 /* ── (이름 없는 블록) ── */
-.exitBox .appVer{display:block;font-size:11px;color:#8a948f;margin:-6px 0 10px}.appVerFoot{text-align:center;font-size:11px;opacity:.6;margin-top:8px}
+.exitBox .appVer{display:block;font-size:11px;color:#8a948f;margin:-6px 0 10px}.appVerFoot{text-align:center;font-size:11px;opacity:.6;margin-top:8px}.appCopyFoot{text-align:center;font-size:12px;opacity:.7;margin-top:2px}
 
 /* ── (이름 없는 블록) ── */
 #adminCheck{position:fixed;inset:0;z-index:9999;background:rgba(10,20,18,.55);overflow:auto;padding:16px}#adminCheck .dcBox{background:#fff;color:#1d2b26;max-width:760px;margin:0 auto;border-radius:18px;padding:16px}#adminCheck .dcHead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}#adminCheck .dcHead small{flex:1;color:#5b6a64}#adminCheck .dcHead button{border:0;background:#eef3f1;border-radius:10px;padding:8px 12px;font-weight:700}.adminTbl{width:100%;border-collapse:collapse;font-size:13px}.adminTbl th,.adminTbl td{padding:8px 6px;border-top:1px solid #e6ece9;text-align:left;vertical-align:top}.adminTbl th{font-size:11.5px;color:#7a8781;border-top:0}.adminTbl td:first-child{width:24px}.adminFoot{font-size:12px;color:#5b6a64;margin-top:10px}
@@ -12410,7 +12411,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.1 (2026.11.19)"; // 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.2 (2026.11.19)"; // 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -12824,7 +12825,7 @@ window.openArtistFollowQuick=function(){
  document.addEventListener('pointerdown',e=>{if(!rail.contains(e.target))close()});
 })();
 </script>
-<script>(function(){try{const f=document.querySelector("footer.foot2 .wrap")||document.querySelector("footer.foot2");if(f&&typeof APP_VER!=="undefined"){const d=document.createElement("div");d.className="appVerFoot";d.textContent="앱 버전 "+APP_VER;f.appendChild(d)}}catch(e){}})();</script>
+<script>(function(){try{const f=document.querySelector("footer.foot2 .wrap")||document.querySelector("footer.foot2");if(f&&typeof APP_VER!=="undefined"){const d=document.createElement("div");d.className="appVerFoot";d.textContent="앱 버전 "+APP_VER;f.appendChild(d);const c=document.createElement("div");c.className="appCopyFoot";c.textContent="© 2026 · 저작권 등록 제 C-2026-061252호";f.appendChild(c)}}catch(e){}})();</script>
 <script id="adminScript">
 /* ───────── 관리자 점검 (주소 끝에 #admin) ─────────
    자동 운영이 잘 돌고 있는지 신호등으로 한눈에. 이용자 화면에는 안 나와요. */
