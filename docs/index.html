@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-19 더 깊은 공식 서비스로 잇기(moreSourcesHtml): 일정(광주권)→디어마이광주 · 약국·응급실→E-Gen · 쉼터→안전디딤돌
   · 2026-11-19 홈 길이 줄이기(지금만 되는 것·문화가 있는 날·한 달 축제 접기) · 작은 안내 글씨 12.5px 이상(#readable20261119) · 긴 안내 문장 줄이기 · 홈 추천 한 줄·도서관 시간 짧게(libHoursShort)
   · 2026-11-19 주말·휴일 약국: 🟢지금 열림 → ⏰이따 열림 → 🔒오늘 끝남(접기) · 토요일·공휴일 전날엔 '내일 문 여는 약국' 미리 보기
   · 2026-11-19 새벽에 문 연 약국이 없으면 '없어요' 빨간 안내+응급실 버튼, 닫힌 약국은 접고 🔒 흐리게 (지금 연 줄 착각하던 것)
@@ -5453,6 +5454,16 @@ body .vetNote b:not(#_){color:#b42318}
  html:not([data-theme=light]) body .vetNote b:not(#_){color:#ffb4ab}
  html:not([data-theme=light]) body #answer .vetBox .vetNote b:not(#_){color:#ffd28a}}
 </style>
+<style id="moreSrc20261119">
+.moreSrc:not(#_){margin:16px 0 8px;padding:12px 14px;border-radius:14px;background:#f3f6fb;border:1px solid #dfe5ef;display:flex;flex-direction:column;gap:8px}
+.moreSrc > b:not(#_){font-size:14px;color:#1f3d73}
+.moreSrc a:not(#_){display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #e3e8f0;text-decoration:none;color:#16223a}
+.moreSrc a span:not(#_){font-weight:800;font-size:15px}
+.moreSrc a small:not(#_){font-size:12.5px;color:#5b6475}
+[data-theme=dark] .moreSrc:not(#_){background:#182131;border-color:#2c3a52}[data-theme=dark] .moreSrc > b:not(#_){color:#cfe0ff}
+[data-theme=dark] .moreSrc a:not(#_){background:#1f2a3d;border-color:#33425c;color:#e6edf8}[data-theme=dark] .moreSrc a small:not(#_){color:#b3bfd3}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .moreSrc:not(#_){background:#182131;border-color:#2c3a52}html:not([data-theme=light]) .moreSrc > b:not(#_){color:#cfe0ff}html:not([data-theme=light]) .moreSrc a:not(#_){background:#1f2a3d;border-color:#33425c;color:#e6edf8}html:not([data-theme=light]) .moreSrc a small:not(#_){color:#b3bfd3}}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -8571,7 +8582,7 @@ function renderEvents(listOverride = null, heading = "오늘·이번 달 추천"
   // 지역 대표축제 달력은 기존 일정 화면 상단의 버튼 하나로 바로 열 수 있게 합니다.
   // 지역별 축제 달력은 일정 목록 맨 위(필터 바로 아래)에 눈에 띄는 배너로 둡니다. 누르면 달력이 바로 열려요.
   if (annualHtml.bottom) { annualHtml.top = annualHtml.bottom; annualHtml.bottom = ""; }
-  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${FILTER === "김대중컨벤션센터" ? "🏢 상무지구 김대중컨벤션센터의 박람회·전시·콘서트만 모았어요" : `${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요`}</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || (FILTER === "김대중컨벤션센터" ? "<p class='empty'>지금 김대중컨벤션센터에 잡힌 일정이 없어요. 행사가 등록되면 자동으로 올라와요.</p>" : "<p class='empty'>조건에 맞는 일정이 없어요. 위 필터를 바꿔 보세요.</p>")}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom;
+  $("#eventsView").innerHTML = annualHtml.top + `<div class="sectionHead"><div><span class="eyebrow">WHAT'S ON</span><h2>${heading === "오늘·이번 달 추천" ? `요즘 ${RW()}에선 뭐 한당가<small>${FILTER === "김대중컨벤션센터" ? "🏢 상무지구 김대중컨벤션센터의 박람회·전시·콘서트만 모았어요" : `${esc(RNAME())} 전시·공연·축제·경기 — 끝난 일정은 알아서 사라져요`}</small>` : esc(heading)}</h2></div><span>${list.length}개</span></div><div class="grid">${list.slice(0, EV_SHOW.n).map(eventCard).join("") || (FILTER === "김대중컨벤션센터" ? "<p class='empty'>지금 김대중컨벤션센터에 잡힌 일정이 없어요. 행사가 등록되면 자동으로 올라와요.</p>" : "<p class='empty'>조건에 맞는 일정이 없어요. 위 필터를 바꿔 보세요.</p>")}</div>${list.length > EV_SHOW.n ? `<div style="text-align:center;margin-top:14px"><button class="btn evMore" onclick="EV_SHOW.n+=12;renderEvents(EV_SHOW.override,EV_SHOW.heading)">일정 더 보기 (${list.length - EV_SHOW.n}개 남음) ↓</button></div>` : ""}` + annualHtml.bottom + moreSourcesHtml("events");
 }
 
 /* ───────── 해마다 열리는 축제 (docs/data/annual.json) ─────────
@@ -10869,6 +10880,17 @@ function libraryAI(s) {
    <div class="grid">${list.slice(0, 6).map(libCard).join("") || "<p class='empty'>오늘 문 연 도서관을 못 찾았어요.</p>"}</div>
    <p class="pfNote"><button class="btn" type="button" onclick="showTab('local')">🏘 동네 탭에서 도서관·강좌 다 보기 →</button></p></div>`;
   scrollAI?.();
+}
+/* 2026-11-19 더 깊은 공식 서비스로 이어주기 — 경쟁이 아니라 관문: 공연·전시는 디어마이광주, 의료는 E-Gen, 재난·쉼터는 안전디딤돌 */
+const MORE_SRC = {
+  dmg: ["🎭 디어마이광주", "광주문화재단 · 공연·전시 후기와 예매, 예술인 소식", "https://search.naver.com/search.naver?query=" + encodeURIComponent("디어마이광주")],
+  egen: ["🚑 응급의료포털 E-Gen", "국립중앙의료원 · 실시간 응급실 병상, 달빛어린이병원", "https://www.e-gen.or.kr"],
+  safe: ["🛟 안전디딤돌 앱", "행정안전부 · 재난문자, 대피소·쉼터 지도", "https://mois.go.kr/frt/sub/a06/b11/safetyStep/screen.do"]
+};
+function moreSourcesHtml(where) {
+  const keys = where === "events" ? (REGION === "gj" ? ["dmg"] : []) : where === "med" ? ["egen"] : where === "shelter" ? ["safe"] : [];
+  if (!keys.length) return "";
+  return `<div class="moreSrc"><b>🔗 더 자세히 보기</b>${keys.map(k => { const [t, s, u] = MORE_SRC[k]; return `<a target="_blank" rel="noopener noreferrer" href="${u}"><span>${t} ↗</span><small>${s}</small></a>` }).join("")}</div>`;
 }
 /* 반려동물이 아플 때 — 크리밍 대답과 '문 연 약국·응급실' 화면에서 같이 씀 */
 function vetHtml(gu, big) {
@@ -14766,6 +14788,7 @@ document.addEventListener("keydown",function(e){
         ["🏥 응급의료포털 E-Gen", "국립중앙의료원 · 문 연 병원·약국·응급실", "https://www.e-gen.or.kr"]
       ]);
     }
+    if (CARE.ph.length && CARE.er.length) h += moreSourcesHtml("med");   // 2026-11-19 실시간 병상·달빛어린이병원은 E-Gen에서
     { const g = careGu(); h += `<div class="careVet">${vetHtml((REGIONS[REGION]?.districts || []).includes(g) ? g : "", false)}</div>` }   // 2026-11-18 반려동물 아플 때
     const src = [CARE.phUpd && `약국 ${CARE.phUpd}`, CARE.erUpd && `응급실 ${CARE.erUpd}`].filter(Boolean).join(" · ");
     // 2026-11-18: 119 아래 바로가기 — 약국·응급실·병의원·동물병원 칸으로 한 번에
@@ -14794,7 +14817,7 @@ document.addEventListener("keydown",function(e){
       h += near.length ? `<div class="careList">${near.map(([x, d]) => itemHtml({ ...x, note: [x.hours, x.facility].filter(Boolean).join(" · ") }, d, null)).join("")}</div>`
         : `<p class="careEmpty">5km 안에 등록된 ${word}가 없어요.</p>`;
     } else h += `<p class="careEmpty">${word} 목록을 아직 받아오지 못했어요. 아래 공식 누리집에서 가까운 쉼터를 찾을 수 있어요.</p>`;
-    h += links([["🗺 국민재난안전포털", `행정안전부 · ${word} 찾기`, "https://www.safekorea.go.kr"]]);
+    h += links([["🗺 국민재난안전포털", `행정안전부 · ${word} 찾기`, "https://www.safekorea.go.kr"]]) + moreSourcesHtml("shelter");
     h += `<p class="careNote">${heat ? "경로당·주민센터 같은 곳이 많아요. " : ""}쉼터마다 운영 시간이 달라요. 가기 전에 확인하세요.${CARE.shUpd ? `<br>출처: 행정안전부·시군 ${word} 목록 · ${E(CARE.shUpd)} 기준` : ""}</p>`;
     return h;
   }
