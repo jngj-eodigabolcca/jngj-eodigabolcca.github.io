@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-21 1.0.11 '이번 주말, 여기 어때요?' 고르는 기준 칩(✨추천·🏠가까운 곳·🆓무료·🧸아이랑·☔실내, WK_MODE 기억) + 기준 동네 바꾸기
   · 2026-11-20 1.0.10 맨 아래 '비공식 앱' 안내: 생활 정보 출처·자동 갱신 범위·저작권 등록번호 보강, 맨 아래 한 줄에 개발자명(매직글러브) · 앱 사용설명서: 약국 바로가기·주말 3단·동물병원, 쉼터, 아이 나이·키즈카페, 금요일 주말 5곳, 지금 아니면 1년(단풍·벚꽃), 공식 사이트(남도여행길잡이·여수·순천·목포·디어마이광주·E-Gen·안전디딤돌), 공공데이터 원본 목록
   · 2026-11-20 1.0.9 계절 명소(단풍·벚꽃)를 '지금 아니면 1년' 칸 안에 합침 · 홈의 계절 명소 칸은 숨김 · 메뉴 '단풍/벚꽃 명소'·'지금만'은 그 칸을 펼쳐서 이동
   · 2026-11-20 1.0.8 '지금 아니면 1년' 칸 맨 아래 '단풍 명소도 지금이 절정' 버튼 뺌 (바로 밑 계절 명소 칸과 한 칸처럼 보이던 것)
@@ -12278,23 +12279,38 @@ function weekendDays() {
   return [sat, d.toISOString().slice(0, 10)];
 }
 function seeded(str) { let h = 2166136261; for (const ch of str) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) } return (h >>> 0) / 4294967296 }
+let WK_MODE = (() => { try { return localStorage.getItem("glm_wk_mode") || "추천" } catch (e) { return "추천" } })();
+const WK_MODES = [["추천", "✨"], ["가까운 곳", "🏠"], ["무료", "🆓"], ["아이랑", "🧸"], ["실내", "☔"]];
+window.setWkMode = m => { WK_MODE = m; try { localStorage.setItem("glm_wk_mode", m) } catch (e) {} try { renderWeekend() } catch (e) {} window.renderWkFri?.() };
 function weekendPicks() {
   const days = weekendDays(), wk = days[0];
   const onWeekend = e => days.some(d => happensOn(e, d)) && !["매진", "종료"].includes(ticketOf(e).status) && !/단체|기관\s*대상|학교\s*대상|교사\s*연수|관계자|서포터즈|기자단|봉사단|참가자\s*모집|모집\s*공고|공모/.test(e.title || "");   // 2026-11-19 단체 전용·모집 공고는 주말 추천에서 빼기
   const ev = EVENTS.filter(onWeekend);
   const isFree = x => /무료/.test((x.price || "") + (x.discount || "") + (x.tags || []).join(" "));
   const endsSoon = x => x.end && x.end <= isoPlus(9);
+  // 2026-11-21 고르는 기준: 추천(기본) · 가까운 곳 · 무료 · 아이랑 · 실내 — 이 기기에 기억
+  const mode = (typeof WK_MODE !== "undefined" && WK_MODE) || "추천";
+  const isKid = x => { try { return x.title ? isKidsEvent(x) : isKidsPlace(x) } catch (e) { return false } };
+  const isOut = x => x.title ? /축제|행사|스포츠/.test(x.category || "") && !/실내|홀|극장|문화센터|전당|미술관|박물관/.test((x.venue || "") + (x.title || "")) : !/실내/.test(x.inout || "");
+  const hub = (() => { try { const R = REGIONS[REGION]; return { lat: R.wx[0], lng: R.wx[1] } } catch (e) { return null } })();
+  const distOf = x => { const d = homeKm(x); if (d != null) return d; if (mode !== "가까운 곳" || !hub) return null; const p = x.lat ? x : (x.venueId && VENUES.find(v => v.id === x.venueId)) || null; try { return p && p.lat ? km(hub, { lat: +p.lat, lng: +p.lng }) : null } catch (e) { return null } };
+  const keep = x => mode === "무료" ? isFree(x) : mode === "아이랑" ? isKid(x) : mode === "실내" ? !isOut(x) : true;   // 기준에 맞는 것만 (없으면 그 칸은 비움)
   const score = x => {
-    const d = homeKm(x);
-    return (d == null ? 6 : Math.min(d, 25)) - (isFree(x) ? 3 : 0) - (endsSoon(x) ? 2.5 : 0) - (x.image ? 0.5 : 0) + seeded(wk + (x.id || x.name)) * 2;
+    const d = distOf(x);
+    const base = (d == null ? 6 : Math.min(d, 25)) * (mode === "가까운 곳" ? 3 : 1) - (isFree(x) ? 3 : 0) - (endsSoon(x) ? 2.5 : 0) - (x.image ? 0.5 : 0) + seeded(wk + (x.id || x.name)) * 2;
+    return base - (mode === "무료" && isFree(x) ? 30 : 0) - (mode === "아이랑" && isKid(x) ? 30 : 0) + (mode === "실내" && isOut(x) ? 30 : 0);
   };
-  const best = (arr, n = 1) => arr.slice().sort((a, b) => score(a) - score(b)).slice(0, n);
+  const best = (arr, n = 1) => arr.filter(keep).sort((a, b) => score(a) - score(b)).slice(0, n);
   const slots = [
     ["🎪 축제·행사", ev.filter(e => /축제|행사/.test(e.category) && e.subtype !== "교육·체험")],
     ["🎵 공연·음악", ev.filter(e => /공연|음악|스포츠/.test(e.category))],
     ["🎨 전시", ev.filter(e => e.category === "전시")],
     ["✍️ 체험·배움", ev.filter(e => e.subtype === "교육·체험" || (e.tags || []).includes("체험"))],
-    ["🌳 바깥 나들이", VENUES.filter(v => /공원|정원|자연|경관|트레킹|골목|시장/.test(v.kind || "") && days.some(d => openOn(v, isoDow(d)) !== false))],
+    mode === "실내"
+      ? ["🏛 실내 나들이", VENUES.filter(v => /실내/.test(v.inout || "") && /미술관|박물관|과학관|전시관|기념관|복합문화공간/.test(v.kind || "") && days.some(d => openOn(v, isoDow(d)) !== false))]
+      : mode === "아이랑"
+      ? ["🧸 아이랑 나들이", VENUES.filter(v => { try { return isKidsPlace(v) } catch (e) { return false } }).filter(v => days.some(d => openOn(v, isoDow(d)) !== false))]
+      : ["🌳 바깥 나들이", VENUES.filter(v => /공원|정원|자연|경관|트레킹|골목|시장/.test(v.kind || "") && days.some(d => openOn(v, isoDow(d)) !== false))],
   ];
   const used = new Set(), out = [];
   for (const [label, arr] of slots) { const x = best(arr.filter(a => !used.has(a.id || a.name)))[0]; if (x) { used.add(x.id || x.name); out.push([label, x]) } }
@@ -12442,7 +12458,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.10 (2026.11.20)"; // 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.11 (2026.11.21)"; // 1.0.11: 이번 주말 5곳 고르는 기준(추천·가까운 곳·무료·아이랑·실내) + 기준 동네 · 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -15094,14 +15110,17 @@ html body main .isZero:not(.on):not(.active){opacity:.45}
     if (hero.nextElementSibling !== el) hero.insertAdjacentElement("afterend", el);
     if (!show()) { el.hidden = true; el.innerHTML = ""; return }
     let r; try { r = weekendPicks() } catch (e) { el.hidden = true; return }
-    if (!r || !r.picks.length) { el.hidden = true; el.innerHTML = ""; return }
+    if (!r || (!r.picks.length && WK_MODE === "추천")) { el.hidden = true; el.innerHTML = ""; return }   // 기준을 골랐는데 없으면 칸은 남기고 안내 (다른 기준으로 바꿀 수 있게)
     const d = kstNow().getUTCDay();
     const lab = x => `${+x.slice(5, 7)}.${+x.slice(8)}(${DAYC[isoDow(x)]})`;
     const head = d === 5 ? "🗓 이번 주말, 여기 어때요?" : d === 6 ? "🗓 오늘·내일 가볼 5곳" : "🗓 오늘 오후 가볼 곳";
     const kick = d === 5 ? "금요일엔 주말 계획!" : "이번 주말 고른 곳";
     const isEv = x => !!x.title;
     el.hidden = false;
-    el.innerHTML = `<div class="wkfBox"><div class="wkfHead"><div><span class="wkfKick">${kick}</span><h2>${head}</h2><small>${r.days.map(lab).join("~")} · ${HOME ? "🏠 " + esc(HOME.gu) + "에서 가까운 곳 위주" : esc(RNAME()) + " 기준"} · 매주 새로 골라요</small></div></div>
+    el.innerHTML = `<div class="wkfBox"><div class="wkfHead"><div><span class="wkfKick">${kick}</span><h2>${head}</h2><small>${r.days.map(lab).join("~")} · 매주 새로 골라요</small></div></div>
+      <div class="wkfModes" role="group" aria-label="고르는 기준">${WK_MODES.map(([m, ic]) => `<button type="button" class="${m === WK_MODE ? "on" : ""}" aria-pressed="${m === WK_MODE}" onclick="setWkMode('${m}')"><span aria-hidden="true">${ic}</span>${m === "가까운 곳" ? "가까운곳" : m}</button>`).join("")}</div>
+      ${WK_MODE === "가까운 곳" || HOME ? `<div class="wkfBase">${typeof homeBasePill === "function" ? homeBasePill() : ""}</div>` : ""}
+      ${r.picks.length ? "" : `<p class="wkfEmpty">이번 주말엔 '${esc(WK_MODE)}' 기준에 맞는 곳을 못 찾았어요. 다른 기준을 눌러 보세요.</p>`}
       <ol class="wkfList">${r.picks.map(([label, x], i) => { const nm = isEv(x) ? cardTitle(x.title).m.replace(/\s*\(\d{1,2}\/\d{1,2}\)\s*$/, "") : x.name; const ic = (label.match(/^\S+/) || [""])[0]; return `<li><button type="button" onclick="${isEv(x) ? `detail('${jsq(x.id)}')` : `aiProfile('${jsq(x.id)}')`}"><span class="wkfNo">${i + 1}</span><span class="wkfTxt"><b><i aria-hidden="true">${ic}</i> ${esc(nm)}</b><small>${esc((isEv(x) ? x.venue : x.district) || "")}</small></span></button></li>` }).join("")}</ol>
       <div class="wkfBtns"><button type="button" class="wkfMore" onclick="try{setNowWhen(2)}catch(e){};document.getElementById('nowShow')?.scrollIntoView({behavior:'smooth',block:'start'})">주말 일정 더 보기</button><button type="button" class="wkfShare" onclick="shareWeekend()">📤 보내기</button></div></div>`;
   }
@@ -15119,6 +15138,15 @@ html body main .isZero:not(.on):not(.active){opacity:.45}
 .wkfKick:not(#_){display:inline-block;padding:3px 10px;border-radius:999px;background:#e8590c;color:#fff;font-size:12.5px;font-weight:800}
 .wkfHead h2:not(#_){margin:6px 0 1px;font-size:18px;line-height:1.3;color:#3a1d0b}
 .wkfHead small:not(#_){font-size:12.5px;color:#7a5236}
+.wkfModes:not(#_){display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:10px 0 2px}
+.wkfModes button:not(#_){display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 2px;border-radius:12px;white-space:nowrap;border:1.5px solid #ecc9a6;background:rgba(255,255,255,.9);color:#5a2e10;font-weight:800;font-size:13.5px;cursor:pointer;transition:transform .12s}
+.wkfModes button:active:not(#_){transform:scale(.95)}
+.wkfModes button.on:not(#_){background:#e8590c;border-color:#e8590c;color:#fff;box-shadow:0 3px 8px rgba(232,89,12,.3)}
+[data-theme=dark] .wkfModes button:not(#_){background:rgba(0,0,0,.28);border-color:#7a5236;color:#f5e6da}[data-theme=dark] .wkfModes button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}
+@media (prefers-color-scheme:dark){html:not([data-theme=light]) .wkfModes button:not(#_){background:rgba(0,0,0,.28);border-color:#7a5236;color:#f5e6da}html:not([data-theme=light]) .wkfModes button.on:not(#_){background:#ff8a3d;border-color:#ff8a3d;color:#2a1508}}
+.wkfEmpty:not(#_){margin:10px 2px;font-size:14px;color:#7a5236}[data-theme=dark] .wkfEmpty:not(#_){color:#d9b99f}
+.wkfBase:not(#_){margin-top:8px}.wkfBase .baseGu:not(#_){background:rgba(255,255,255,.85)}
+[data-theme=dark] .wkfBase .baseGu:not(#_){background:rgba(0,0,0,.25)}
 .wkfList:not(#_){list-style:none;margin:10px 0 8px;padding:0;display:flex;flex-direction:column;gap:4px}
 .wkfList button:not(#_){width:100%;display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:14px;border:0;background:rgba(255,255,255,.88);text-align:left;cursor:pointer;color:#2a1a10}
 .wkfList button:active:not(#_){transform:scale(.98)}
