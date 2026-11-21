@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-21 1.0.14 '오늘 열리는 것' 날짜 탭(4개면 두 줄 단추): 오늘·내일이 토·일이면 '이번 주말' 빼고 안내 한 줄, 모레~7일 안 평일 휴일은 '휴일' 탭(nowTabs) · 없는 탭을 부르면 오늘/내일로
   · 2026-11-21 1.0.13 주말 5곳 ✨추천·🆓무료는 사는 동네 거리 빼고 권역 전체에서 고름 + '📍 ○○권 전체에서' 표시
   · 2026-11-21 1.0.12 겹침 정리: 주말 기준 3개(추천·가까운 곳·무료)로 줄이고 얇은 한 줄, 동네 칸은 기준 단추 위로 · 주말 칸이 뜨면 '이번 주말' 탭 안 같은 5곳 숨김 · 동네 고르기는 '우리 동네 오늘' 한 곳(사는 동네와 하나로, 📍 지금 위치 포함)
   · 2026-11-21 1.0.11 '이번 주말, 여기 어때요?' 고르는 기준 칩(✨추천·🏠가까운 곳·🆓무료·🧸아이랑·☔실내, WK_MODE 기억) + 기준 동네 바꾸기
@@ -5510,6 +5511,11 @@ html body #seasonPick.homeOnly:not(#_){display:none!important}
 [data-theme=dark] #onlyNow .onSub:not(#_){color:#ffcfa8}[data-theme=dark] #onlyNow .onSub small:not(#_){color:#cdb3a0}
 @media (prefers-color-scheme:dark){html:not([data-theme=light]) #onlyNow .onSub:not(#_){color:#ffcfa8}html:not([data-theme=light]) #onlyNow .onSub small:not(#_){color:#cdb3a0}}
 </style>
+<style id="nowTabs20261121">
+html body #nowShow .nowSeg.segTight button:not(#_):not(#__){flex-direction:column!important;gap:1px!important;padding:5px 1px!important;font-size:12.5px!important;line-height:1.15!important}
+html body #nowShow .nowSeg.segTight button span:not(#_){white-space:nowrap;letter-spacing:-.3px}
+html body #nowShow .nowSegNote:not(#_){margin:-8px 2px 10px;font-size:12.5px;color:var(--muted,#6b7486);font-weight:650}
+</style>
 </head>
 <body data-tab="home" data-screen="home">
 <a class="skipLink" href="#mainContent">본문 바로가기</a>
@@ -7231,10 +7237,25 @@ function happensOn(e, iso) {
    "오늘 당장, 이번 주말에 실제로 열리는 것"만 골라요: 전시 · 공연·음악 · 축제·행사 · 장날(오일장·야시장)
    · 끝난 일정은 자동으로 빠지고(앱이 열릴 때마다 오늘 날짜로 다시 계산), 새 일정은 하루 두 번 자동 수집으로 들어와요.
    · 휴관 요일·공연 요일·장날(날짜 끝자리)까지 따져서 '그날 실제로 열리는 것'만 보여줘요. */
-let NOW_WHEN = 0; // 0 오늘 · 1 내일 · 2 이번 주말
-window.setNowWhen = n => { NOW_WHEN = n; window.NOW_MORE = false; renderNowShow() };
+let NOW_WHEN = 0; // 0 오늘 · 1 내일 · 2 이번 주말 · 3 휴일
 function weekendDates() { const dow = kstNow().getUTCDay(); if (dow === 6) return [isoPlus(0), isoPlus(1)]; if (dow === 0) return [isoPlus(0)]; return [isoPlus(6 - dow), isoPlus(7 - dow)] }
-const nowDates = n => n === 0 ? [isoPlus(0)] : n === 1 ? [isoPlus(1)] : weekendDates();
+/* 2026-11-21 1.0.14: 날짜 탭 겹침 없애기
+   · 오늘이나 내일이 토·일이면(금·토·일) '이번 주말' 탭은 빼고 오늘·내일만 (오늘·내일과 주말이 겹쳐 헷갈림)
+   · 모레~일주일 안에 평일 휴일(공휴일·대체공휴일·연휴)이 있으면 '휴일' 탭 (이어진 휴일은 한 탭으로)
+   · 순서: 오늘 · 내일 · 휴일 · 이번 주말 (날짜 순) */
+function nowTabs() {
+  const t0 = isoPlus(0), t1 = isoPlus(1), wkIn = [t0, t1].some(d => [0, 6].includes(isoDow(d)));
+  const tabs = [{ n: 0, name: "오늘", dates: [t0] }, { n: 1, name: "내일", dates: [t1] }];
+  const hol = [];
+  for (let i = 2; i <= 7; i++) { const d = isoPlus(i), w = isoDow(d); if (HOLIDAYS[d] && w !== 0 && w !== 6) { if (hol.length && hol[hol.length - 1] !== isoPlus(i - 1)) break; hol.push(d) } else if (hol.length) break }
+  if (hol.length) tabs.push({ n: 3, name: "휴일", dates: hol });
+  if (!wkIn) tabs.push({ n: 2, name: "이번 주말", dates: weekendDates() });
+  tabs.sort((a, b) => a.dates[0] < b.dates[0] ? -1 : a.dates[0] > b.dates[0] ? 1 : 0);
+  tabs.wkIn = wkIn; return tabs;
+}
+function nowTabOk(n) { const tabs = nowTabs(); if (tabs.some(t => t.n === n)) return n; if (n === 2 || n === 3) { const w = tabs.find(t => t.n < 2 && isOff(t.dates[0])); return w ? w.n : 0 } return 0 }   // 없는 탭(예: 주말에 '이번 주말')을 부르면 그날이 쉬는 날인 오늘/내일로
+window.setNowWhen = n => { NOW_WHEN = nowTabOk(n); window.NOW_MORE = false; renderNowShow() };
+const nowDates = n => n === 0 ? [isoPlus(0)] : n === 1 ? [isoPlus(1)] : n === 3 ? ((nowTabs().find(t => t.n === 3) || {}).dates || [isoPlus(0)]) : weekendDates();
 const nowKind = e => e.category === "전시" ? "ex" : /음악|공연/.test(e.category) ? "mu" : e.category === "스포츠" ? "sp" : "fe";
 const NK = { ex: ["🎨", "전시회"], mu: ["🎵", "음악회·공연"], fe: ["🎪", "축제·행사"], sp: ["🏟", "경기"], mk: ["🏮", "장날"] };
 const NOW_CATS = [["전체", null], ["전시", "ex"], ["공연·음악", "mu"], ["축제·행사", "fe"], ["장날", "mk"]];
@@ -7284,7 +7305,7 @@ function nowRow(e, h, iso) {
   return `<article class="nowCard ${k === "mu" ? "mu" : k}" tabindex="0" onclick="detail('${jsq(e.id)}')">
    <div class="ncPic"${bg(img)}>${img ? `<i class="ncBlur"${bg(img)}></i><i class="ncFull"${bg(img)}></i>` : ""}<span class="ncIcon">${ic}</span><span class="ncCat">${cat}</span>${last ? `<span class="ncHot">${NOW_WHEN ? `${dd}일(${dayName}) 마지막 날` : "오늘 마지막 날!"}</span>` : dl != null && dl <= 14 ? `<span class="ncHot">D-${dl}</span>` : ""}</div>
    <div class="ncBody"><b title="${esc(e.title)}">${esc(cardTitle(e.title).m)}</b>${cardTitle(e.title).sub ? `<small class="ncSub">${esc(cardTitle(e.title).sub)}</small>` : ""}<small class="ncVenue">📍 ${esc((e.venue || "").split(" (")[0])}${e.district && !GJ_GU.includes(e.district) ? " · " + esc(e.district) : ""}</small>
-    <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN === 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags">${tk[0] === "unk" ? "" : `<em class="t-${tk[0]}">${esc(tk[1])}</em>`}${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
+    <div class="ncMeta"><small class="ncTime">🕘 ${esc(h.when || "시간 확인")}${NOW_WHEN >= 2 ? ` · ${dayName}요일` : ""}</small><span class="ncTags">${tk[0] === "unk" ? "" : `<em class="t-${tk[0]}">${esc(tk[1])}</em>`}${isFree(e) ? `<em class="free">무료</em>` : ""}</span></div>${parkLine(e)}
     <div class="ncBtns" onclick="event.stopPropagation()"><button onclick="aiCourse('${jsq(e.id)}')" title="이 일정에 밥·카페를 붙인 코스 짜기">🍽 코스 짜기</button>${favBtn(e.id)}${visitBtn(e.id)}</div></div></article>`;
 }
 function nowMarket(v, iso, night) {
@@ -7327,6 +7348,8 @@ window.setNowCat = c => { NOW_CAT = c; window.NOW_MORE = false; renderNowShow() 
 function renderNowShow() {
   const el = document.getElementById("nowShow"); if (!el) return;
   const wpBox = document.getElementById("weekendPick"); if (wpBox && el.contains(wpBox)) el.after(wpBox);   // 다시 그리기 전에 주말 5선을 밖으로 빼 둠
+  NOW_WHEN = nowTabOk(NOW_WHEN);   // 날짜가 바뀌어 탭이 없어졌으면 맞춤
+  const TABS = nowTabs(), has2 = TABS.some(t => t.n === 2);
   const dates = nowDates(NOW_WHEN), t0 = isoPlus(0), off0 = isOff(t0);
   const items = nowItems(dates);
   const by = k => items.filter(x => x.k === k);
@@ -7338,26 +7361,27 @@ function renderNowShow() {
   const shown = sorted.filter(x => !cat[1] || x.k === cat[1] || (cat[1] === "fe" && x.k === "sp"));
   const MAXN = window.NOW_MORE ? shown.length : 3, list = shown.slice(0, MAXN);   // 2026-11-09: 홈에서는 3건만, 나머지는 펼치기/접기
   const wk = weekendDates(), md = s => `${Number(s.slice(5, 7))}.${Number(s.slice(8))}`;
-  const labels = [`오늘 ${md(t0)}(${DAYC[isoDow(t0)]})`, `내일${HOLIDAYS[isoPlus(1)] ? "(휴일)" : ""}`, `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`];
-  const counts = [0, 1, 2].map(n => n === NOW_WHEN ? items.length : nowItems(nowDates(n)).length);
-  const label = ["오늘", "내일", "이번 주말"][NOW_WHEN];
+  const tabTitle = t => t.n === 0 ? `오늘 ${md(t0)}(${DAYC[isoDow(t0)]})` : t.n === 1 ? `내일 ${md(t.dates[0])}(${DAYC[isoDow(t.dates[0])]})${HOLIDAYS[t.dates[0]] ? " " + HOLIDAYS[t.dates[0]] : ""}` : t.n === 3 ? `휴일 ${t.dates.map(d => md(d) + DAYC[isoDow(d)]).join("·")} ${HOLIDAYS[t.dates[0]]}` : `이번 주말 ${wk.map(d => md(d) + DAYC[isoDow(d)]).join("·")}`;
+  const counts = {}; TABS.forEach(t => counts[t.n] = t.n === NOW_WHEN ? items.length : nowItems(t.dates).length);
+  const label = NOW_WHEN === 3 ? `${md(dates[0])}(${DAYC[isoDow(dates[0])]}) 휴일에` : ["오늘", "내일", "이번 주말"][NOW_WHEN];
   const nextMusic = EVENTS.filter(e => /음악|공연/.test(e.category) && e.start && e.start > dates[dates.length - 1]).sort((a, b) => a.start < b.start ? -1 : 1)[0];
   const museumsOpen = VENUES.filter(v => /미술관|갤러리|박물관|기념관/.test(v.kind) && openOn(v, isoDow(dates[0])) === true).length;
   el.innerHTML = `<div class="nowHead"><div><span class="eyebrow">오늘 · 주말 · ${esc(RNAME())}</span><h2>${label} 열리는 것<small>${esc(RNAME())}에서 ${label} 열리는 일정만 모았어요 · 날짜와 종류를 선택하세요</small></h2></div>
-    <div class="seg nowSeg">${labels.map((x, i) => `<button class="${i === NOW_WHEN ? "on" : ""}" title="${esc(x)}" onclick="setNowWhen(${i})"><span>${i === 0 ? "오늘" : i === 1 ? "내일" : "이번 주말"}</span><b>${counts[i]}</b></button>`).join("")}</div></div>
+    <div class="seg nowSeg${TABS.length >= 4 || TABS.some(t => t.n === 1 && HOLIDAYS[t.dates[0]] && !isOff(t0)) ? " segTight" : ""}" style="grid-template-columns:repeat(${TABS.length},minmax(0,1fr))!important">${TABS.map(t => `<button class="${t.n === NOW_WHEN ? "on" : ""}" title="${esc(tabTitle(t))}" onclick="setNowWhen(${t.n})"><span>${t.name}${t.n === 1 && HOLIDAYS[t.dates[0]] && !isOff(t0) ? "(휴일)" : ""}</span><b>${counts[t.n]}</b></button>`).join("")}</div>
+    ${TABS.wkIn ? `<p class="nowSegNote">📅 주말엔 '오늘·내일'로만 나눠 보여 드려요</p>` : ""}</div>
    <div class="nowChips">${NOW_CATS.map(([c, k]) => { const n = k ? items.filter(x => x.k === k || (k === "fe" && x.k === "sp")).length : items.length; return `<button class="${c === NOW_CAT ? "on" : ""}" onclick="setNowCat('${c}')">${k ? NK[k][0] + " " : ""}${c} <b>${n}</b></button>` }).join("")}</div>
    ${list.length ? `<div class="nowGrid">${list.map(x => x.k === "mk" ? nowMarket(x.v, x.iso, x.night) : nowRow(x.e, x.h, x.iso)).join("")}</div>` : ""}
    ${shown.length > 3 ? (window.NOW_MORE ? `<button type="button" class="nowMoreBtn" aria-expanded="true" onclick="NOW_MORE=false;renderNowShow();document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">접기 ▴</button>` : `<button type="button" class="nowMoreBtn" aria-expanded="false" onclick="NOW_MORE=true;renderNowShow()">${label} 열리는 것 ${shown.length - 3}건 더 보기 ▾</button>`) : ""}
    ${NOW_CAT === "장날" ? dailyMarketNote(dates[0]) : ""}
-   ${(() => { if (NOW_WHEN === 2) return ""; let n = 0; try { n = weekendPicks().picks.length } catch (e) {} return n ? `<button type="button" class="nowAllBtn wkHint" onclick="setNowWhen(2);document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">🗓 이번 주말 추천 ${n}곳 보기 <span>주말 탭에서 골라 둔 곳 ›</span></button>` : "" })()}
+   ${(() => { if (NOW_WHEN === 2 || !has2) return ""; let n = 0; try { n = weekendPicks().picks.length } catch (e) {} return n ? `<button type="button" class="nowAllBtn wkHint" onclick="setNowWhen(2);document.getElementById('nowShow').scrollIntoView({behavior:'smooth',block:'start'})">🗓 이번 주말 추천 ${n}곳 보기 <span>주말 탭에서 골라 둔 곳 ›</span></button>` : "" })()}
    <button type="button" class="nowAllBtn" onclick="showTab('events')">${CAL_IC} 전체 일정 보기 <span>전시·공연·축제 필터로 찾기 ›</span></button>
-   ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
+   ${!items.length ? `<div class="nowEmpty">${label}은 ${esc(RNAME())}에 등록된 행사가 아직 없어요. 하루 두 번(09시·18시) 새 일정을 자동으로 받아와요.${museumsOpen ? ` 대신 문 여는 미술관·박물관 ${museumsOpen}곳 <button class="btn" onclick="showTab('galleries');setVT('galleries','open',true)">보러 가기 →</button>` : ""}${NOW_WHEN !== 2 && has2 ? ` <button class="btn" onclick="setNowWhen(2)">이번 주말 보기 →</button>` : ""}</div>` : ""}
    ${!by("mu").length && (NOW_CAT === "전체" || NOW_CAT === "공연·음악") && nextMusic ? `<div class="nowMore"><span>🎵 ${label} 음악회가 없어요 · 가장 가까운 공연</span><button onclick="detail('${jsq(nextMusic.id)}')">${esc(nextMusic.title)} · ${md(nextMusic.start)}(${DAYC[isoDow(nextMusic.start)]}) →</button></div>` : ""}
    ${upcomingFestHtml(dates)}
    ${dates.some(x => HOLIDAYS[x]) ? `<p class="nowNote">📌 ${dates.filter(x => HOLIDAYS[x]).map(x => HOLIDAYS[x]).join(", ")}엔 미술관·박물관 휴관일이 바뀌기도 해요(공휴일 개관 → 다음 날 휴관). 가기 전에 한 번 확인!</p>` : ""}
    ${items.some(x => x.h && !x.h.sure) ? `<p class="nowNote">'기간 중'은 아직 시간표가 없어요. 시간은 공식 안내에서 확인하세요.</p>` : ""}`;
-  const todayN = NOW_WHEN === 0 ? items.length : nowItems([t0]).length, wkN = counts[2];
-  const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>이번 주말</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : 2); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
+  const todayN = counts[0], wkN = has2 ? counts[2] : counts[1];
+  const hs = $("#heroNow"); if (hs) { hs.innerHTML = `<span class="heroNowPair"><strong>${todayN}</strong><span>오늘 열리는 것</span></span><span class="heroNowPair"><strong>${wkN}</strong><span>${has2 ? "이번 주말" : "내일"}</span></span>`; hs.onclick = () => { setNowWhen(off0 ? 0 : has2 ? 2 : 1); document.querySelector('#nowShow').scrollIntoView({ behavior: 'smooth' }) } }
   // 이번 주말 5선: 평일(월~금)엔 '주말 뭐 하지?' 칸으로 따로, 토·일엔 '오늘'과 겹치므로 '이번 주말' 탭 안에만
   if (wpBox) {
     // 2026-11-10: 첫 화면에 따로 있던 '🗓 이번 주말 추천' 칸은 없애고, 평일이든 주말이든 '이번 주말' 탭을 눌렀을 때만 그 안에
@@ -12462,7 +12486,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.13 (2026.11.21)"; // 1.0.13: 주말 추천·무료는 권역 전체에서 고르고 표시 · 1.0.12: 주말 기준 3개로 줄이고 홈에서 겹치는 동네 고르기·주말 5곳 정리 · 1.0.11: 이번 주말 5곳 고르는 기준 + 기준 동네 · 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.14 (2026.11.21)"; // 1.0.14: 오늘 열리는 것 날짜 탭 — 주말이 끼면 오늘·내일만, 평일 휴일이 있으면 휴일 탭 · 1.0.13: 주말 추천·무료는 권역 전체에서 고르고 표시 · 1.0.12: 주말 기준 3개로 줄이고 홈에서 겹치는 동네 고르기·주말 5곳 정리 · 1.0.11: 이번 주말 5곳 고르는 기준 + 기준 동네 · 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -12675,6 +12699,7 @@ initNav();
    <div class="manualItem"><strong>📍 권역 선택</strong><p>광주권·순천여수권·무안목포권 등 원하는 방문 지역을 먼저 선택해요.</p></div>
    <div class="manualItem"><strong>🔎 통합 검색</strong><p>장소명, 전시, 섬 방문의 해, 가수 이름 등 궁금한 키워드를 입력해요.</p></div>
    <div class="manualItem"><strong>✨ 오늘 뭐하지? 추천</strong><p>'지금 바로'·'조건 골라'·'크리밍한테'·'하루 코스' 네 가지 방법 중 골라 써요. '조건 골라'에서 동행인·이용시간·예산을 고르면 어울리는 코스를 제안하고, '크리밍한테'는 "토요일 오전 애들이랑 공짜로"처럼 말로 물어볼 수 있어요.</p></div>
+   <div class="manualItem"><strong>📅 오늘 열리는 것 · 날짜 탭</strong><p>평일엔 '오늘·내일·이번 주말'로 나눠 보여 줘요. 금·토·일처럼 오늘이나 내일이 주말이면 겹치지 않게 '오늘·내일'만 나와요. 일주일 안에 평일 휴일(연휴·대체공휴일 포함)이 있으면 '휴일' 탭이 따로 생겨요.</p></div>
    <div class="manualItem"><strong>🎤 공연·문화 일정</strong><p>대중가수 콘서트와 전시·축제·스포츠·영화 등 일정을 살펴봐요.</p></div>
    <div class="manualItem"><strong>🗺 지도·길찾기</strong><p>장소 위치와 주변 정보를 확인하고 길찾기 링크를 이용해요. '지금 위치로'를 직접 누르고 위치 권한을 허용하면 가까운 곳부터 볼 수 있으며, 허용하지 않아도 동네를 선택할 수 있어요.</p></div>
    <div class="manualItem"><strong>♡ 즐겨찾기·상세정보</strong><p>관심 있는 장소를 저장하고 운영시간·요금·공식 안내를 확인해요.</p></div>
