@@ -24,7 +24,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/832376",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -171,44 +171,6 @@
     },
     "image": "https://tong.visitkorea.or.kr/cms/resource/49/2822349_image2_1.jpg",
     "imageCredit": "한국관광공사 · 대표 이미지"
-  },
-  {
-    "detailAt": "2026-11-18",
-    "id": "tour-3488655",
-    "apiId": "3488655",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "2026 문화가 있는 날 청춘마이크",
-    "venue": "광주중외공원 및 전라/제주권역 일대",
-    "district": "북구",
-    "address": "전남광주통합특별시 북구 하서로 50 (운암동)",
-    "date": "2026-03-12 ~ 2026-12-11",
-    "time": "47회차 공연별 상이",
-    "price": "무료",
-    "age": "전 연령",
-    "program": "- 청춘마이크 '청춘어람' : 일상의 공간에서 마주하는 아티스트별 공연 및 프로젝트팀 컬래버레이션 공연 - 출연 : 청년공연팀, 실버공연팀",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "문화체육관광부",
-    "status": "진행중",
-    "start": "2026-03-12",
-    "end": "2026-12-11",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/85/4039885_image2_1.jpg",
-    "lat": 35.1814560887758,
-    "lng": 126.884278856104,
-    "contact": "062-412-1197",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": null,
-    "verified": "2026-11-22",
-    "tags": [
-      "축제",
-      "광주"
-    ]
   },
   {
     "id": "gma-928",
@@ -834,7 +796,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301780",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -866,7 +828,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1105823",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1012,7 +974,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306535",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1219,7 +1181,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304289",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -1282,7 +1244,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF299410",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1314,7 +1276,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302926",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -1375,7 +1337,7 @@
     "age": "",
     "cast": "",
     "runtime": "",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-22",
     "end": "2026-11-22",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF305710_261109_110356.jpeg",
@@ -1383,7 +1345,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305710",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1407,7 +1369,7 @@
     "age": "",
     "cast": "",
     "runtime": "",
-    "status": "공연예정",
+    "status": "공연중",
     "start": "2026-11-22",
     "end": "2026-11-22",
     "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302886_261012_112342.jpg",
@@ -1415,7 +1377,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302886",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1512,7 +1474,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302142",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1586,7 +1548,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1781147",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -1618,7 +1580,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300799",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1650,7 +1612,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305130",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1682,7 +1644,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1762662",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -1714,7 +1676,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305066",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -1746,7 +1708,7 @@
     "url": "http://www.ticketlink.co.kr/product/66567",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1778,7 +1740,7 @@
     "url": "http://www.ticketlink.co.kr/product/66848",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -1810,7 +1772,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301697",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -1873,7 +1835,7 @@
     "url": "http://www.ticketlink.co.kr/product/66769",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -1905,7 +1867,7 @@
     "url": "https://jindo.gugak.go.kr/site/performinfo/performInfoDetail.do?menuCd=B0100&searchMainPerformance_id=39570",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -1937,7 +1899,7 @@
     "url": "https://www.nanumticket.or.kr/pe/detail.html?p_marking=&p_new=&start2=0&page_no2=1&p_idx=14111",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "복합",
@@ -1969,7 +1931,7 @@
     "url": "http://www.ticketlink.co.kr/product/66530",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2001,7 +1963,7 @@
     "url": "http://www.ticketlink.co.kr/product/66605",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2033,7 +1995,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301456",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -2065,7 +2027,7 @@
     "url": "https://www.accf.or.kr/main/product/detail/ko/447",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -2200,7 +2162,7 @@
     "url": "http://www.ticketlink.co.kr/product/66802",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2232,7 +2194,7 @@
     "url": "http://www.ticketlink.co.kr/product/67072",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -2264,7 +2226,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301878",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2296,7 +2258,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301294",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -2361,7 +2323,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301477",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -2393,7 +2355,7 @@
     "url": "https://www.acc.go.kr/main/event.do?PID=0302&action=Read&bnkey=EM_0000010265",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "복합",
@@ -2537,7 +2499,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000010276",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2569,7 +2531,7 @@
     "url": "http://www.ticketlink.co.kr/product/65259",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2601,7 +2563,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306498",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -2633,7 +2595,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304133",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -2665,7 +2627,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305739",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -2728,7 +2690,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305819",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2791,7 +2753,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1772474",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -2887,7 +2849,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300593",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -2919,7 +2881,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301348",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2951,7 +2913,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302245",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -2983,7 +2945,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1770512",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -3015,7 +2977,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300497",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3047,7 +3009,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF298237",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3110,7 +3072,7 @@
     "url": "http://www.ticketlink.co.kr/product/67104",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -3142,7 +3104,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301289",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -3174,7 +3136,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305905",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3206,7 +3168,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF299951",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3269,7 +3231,7 @@
     "url": "http://www.ticketlink.co.kr/product/66874",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3301,7 +3263,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306474",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3333,7 +3295,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306662",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3365,7 +3327,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306724",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -3397,7 +3359,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306692",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3429,7 +3391,7 @@
     "url": "http://www.ticketlink.co.kr/product/66490",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -3492,7 +3454,7 @@
     "url": "https://ticket.yes24.com/Perf/61209",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -3555,7 +3517,7 @@
     "url": "http://www.ticketlink.co.kr/product/66200",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3587,7 +3549,7 @@
     "url": "http://yeongam.moonhwain.kr/rsvc/rsv_pm.html?b_id=yeongam&p_idx=19",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3650,7 +3612,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306472",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -3682,7 +3644,7 @@
     "url": "http://www.ticketlink.co.kr/product/65599",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3714,7 +3676,7 @@
     "url": "http://www.ticketlink.co.kr/product/64546",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -3746,7 +3708,7 @@
     "url": "https://ticket.yes24.com/Perf/61214",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -3778,7 +3740,7 @@
     "url": "https://ticket.melon.com/performance/index.htm?prodId=214048",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -3810,7 +3772,7 @@
     "url": "http://www.ticketlink.co.kr/product/64892",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3842,7 +3804,7 @@
     "url": "http://www.ticketlink.co.kr/product/66119",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -3905,7 +3867,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1767678",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -3937,7 +3899,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301656",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4031,7 +3993,7 @@
     "url": "http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=26015270",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -4063,7 +4025,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1781718",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "한국음악(국악)",
@@ -4095,7 +4057,7 @@
     "url": "http://www.ticketlink.co.kr/product/66796",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4127,7 +4089,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302858",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -4190,7 +4152,7 @@
     "url": "http://www.ticketlink.co.kr/product/65287",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4222,7 +4184,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1743417",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4254,7 +4216,7 @@
     "url": "http://www.ticketlink.co.kr/product/66446",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4286,7 +4248,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1768029",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4318,7 +4280,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1769948",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -4350,7 +4312,7 @@
     "url": "http://gjah.moonhwain.kr/rsvc/rsv_pm.html?b_id=gjah&p_idx=10",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4418,7 +4380,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1762223",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -4450,7 +4412,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1745813",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4546,7 +4508,7 @@
     "url": "https://www.ticketlink.co.kr/product/63785",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4578,7 +4540,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF304693",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4610,7 +4572,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1763011",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4642,7 +4604,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF293701",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "연극",
@@ -4738,7 +4700,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF303074",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "무용(서양/한국무용)",
@@ -4770,7 +4732,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302915",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -4802,7 +4764,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF303753",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -4988,7 +4950,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301362",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5020,7 +4982,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300028",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5052,7 +5014,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF302898",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -5084,7 +5046,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF303552",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서양음악(클래식)",
@@ -5116,7 +5078,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF300837",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "뮤지컬",
@@ -5148,7 +5110,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF303705",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -5180,7 +5142,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF306669",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "서커스/마술",
@@ -5212,7 +5174,7 @@
     "url": "https://booking.naver.com/booking/12/bizes/1768088",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -5283,7 +5245,7 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF301683",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
@@ -5315,49 +5277,11 @@
     "url": "https://www.kopis.or.kr/por/db/pblprfr/pblprfrView.do?menuId=MNU_00020&mt20Id=PF305972",
     "origin": "auto",
     "api": "kopis",
-    "verified": "2026-11-21",
+    "verified": "2026-11-22",
     "tags": [
       "공연",
       "대중음악",
       "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-11-18",
-    "id": "tour-2614198",
-    "apiId": "2614198",
-    "category": "축제",
-    "subtype": "관광공사 행사",
-    "title": "2027 ACE Fair",
-    "venue": "김대중컨벤션센터",
-    "district": "서구",
-    "address": "전남광주통합특별시 서구 상무누리로 30",
-    "date": "2027-09-23 ~ 2027-09-26",
-    "time": "10:00~17:00",
-    "price": "[현장등록] - 성인 10,000원 - 청소년 5,000원 - 어린이/경로(65세이상)/장애인/유공자 무료[단체참관]- 사무국 문의",
-    "age": "전 연령",
-    "program": "- 메인 프로그램 : 문화콘텐츠 전시회 - 부대 행사 및 프로그램 : 라이선싱 수출 상담회 / 학술행사 / 크리에이터·아티스트가 참여하는 무대 이벤트 / 일러스트레이션페어 / 쥬씨 페스티벌 / 세모귀 마켓 / 보드게임존 / 버블쇼 등",
-    "booking": "",
-    "parking": "",
-    "spendtime": "",
-    "sponsor": "문화체육관광부, 전남광주통합특별시",
-    "status": "예정",
-    "start": "2027-09-23",
-    "end": "2027-09-26",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4147834_image2_1.jpg",
-    "lat": 35.1468884464,
-    "lng": 126.8405217823,
-    "contact": "062-611-2242",
-    "description": "",
-    "source": "한국관광공사 TourAPI",
-    "url": "",
-    "origin": "auto",
-    "api": "tourapi",
-    "venueId": "kdj",
-    "verified": "2026-11-22",
-    "tags": [
-      "축제",
-      "광주"
     ]
   },
   {
