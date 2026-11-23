@@ -55,7 +55,7 @@
     "url": "http://www.donggumc.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -119,7 +119,7 @@
     "url": "http://www.jindo.go.kr",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -204,7 +204,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "광주"
@@ -238,7 +238,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "id": "gma-939",
@@ -268,7 +268,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "detailAt": "2026-11-22",
@@ -296,7 +296,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "행사",
       "교육·체험",
@@ -330,7 +330,7 @@
     "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "행사",
       "교육·체험",
@@ -362,7 +362,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -371,7 +371,7 @@
     ]
   },
   {
-    "detailAt": "2026-11-16",
+    "detailAt": "2026-11-24",
     "id": "culture-385584",
     "apiId": "385584",
     "category": "전시",
@@ -396,7 +396,7 @@
     "url": "https://naju.museum.go.kr/prog/spclexht/B/kor/sub02_02_01/view.do?spclExhtId=SPCLEXHT_00000000046",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -429,7 +429,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000009776",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "기타",
@@ -533,7 +533,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009927",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "광주",
@@ -587,7 +587,7 @@
     "imageCredit": "ACC 행사 안내용 비주얼"
   },
   {
-    "detailAt": "2026-11-16",
+    "detailAt": "2026-11-24",
     "id": "culture-401101",
     "apiId": "401101",
     "category": "전시",
@@ -612,48 +612,14 @@
     "url": "https://minhwamuseum.com/g5/bbs/board.php?bo_table=exhibition&wr_id=76",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남"
     ]
   },
   {
-    "detailAt": "2026-11-23",
-    "id": "culture-397252",
-    "apiId": "397252",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "「2026 일상문화예술실험실」선정 프로젝트 <육퇴 엄마 클럽>",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-01 ~ 2026-11-26",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "가격은 공식 원문에서 확인",
-    "contact": "일상상아트랩 010-8592-7042(문자)",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-01",
-    "end": "2026-11-26",
-    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202609/85a830c356394987ae01f4eebd771102.png",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://www.cfsc.or.kr/contents/open/open0101.asp?bseq=1&cat=-1&sk=&sv=&yy=2026&page=1&mode=view&aseq=4104",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-16",
+    "detailAt": "2026-11-24",
     "id": "culture-401138",
     "apiId": "401138",
     "category": "전시",
@@ -678,283 +644,11 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "광주",
       "무료"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405019",
-    "apiId": "405019",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 오물조물 도예교실1",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "120,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344432198.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4149",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405020",
-    "apiId": "405020",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 오물조물 도예교실2",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "120,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344446506.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4150",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405022",
-    "apiId": "405022",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 유아 네버랜드2",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "130,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344423995.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4148",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405023",
-    "apiId": "405023",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 창의미술-아르떼1",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "120,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344497732.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4143",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405024",
-    "apiId": "405024",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 창의미술-아르떼2",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "수강료 120,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344495786.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4144",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405025",
-    "apiId": "405025",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[광주YMCA-유아강좌] 창의미술-아르떼3",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-19",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "120,000원",
-    "contact": "062-613-7180",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-19",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344467291.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4145",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405026",
-    "apiId": "405026",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[놀이요점빵] 꼬물꼬물 자연탐구 \"종이접기\"1(토10:00-11:00)",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-26",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "120,000원",
-    "contact": "0505-007-0613",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-26",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344424737.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4095",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-405027",
-    "apiId": "405027",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[치른시빌] 2-1. 미술관이 살아있다! (토)",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-03 ~ 2026-12-26",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "360,000원",
-    "contact": "010-3312-5782",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-03",
-    "end": "2026-12-26",
-    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026102621344562143.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://gjartmuse.jeonnam-gwangju.go.kr/pj/pjEducate.php?pageID=artmuse0405000000&action=view&cat=210&seq=4094",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
     ]
   },
   {
@@ -983,45 +677,11 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
       "무료"
-    ]
-  },
-  {
-    "detailAt": "2026-11-23",
-    "id": "culture-401411",
-    "apiId": "401411",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "[저녁노을미술관] 작은 숲 탐험대",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-10-10 ~ 2026-11-28",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "가격은 공식 원문에서 확인",
-    "contact": "061-240-8062",
-    "description": "",
-    "status": "진행중",
-    "start": "2026-10-10",
-    "end": "2026-11-28",
-    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202610/271c1c67c95048a1be4218fd48c0ba18.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://www.shinan.go.kr/home/museum/education/education_02/show/144217?page=1&search=&keyword=",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
     ]
   },
   {
@@ -1051,7 +711,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "category": "행사",
@@ -1114,7 +774,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "detailAt": "2026-11-20",
@@ -1222,7 +882,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15207625&category_1=%EC%A0%84%EC%8B%9C&mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -1255,7 +915,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15207617&category_1=%EC%A0%84%EC%8B%9C&mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -1295,7 +955,7 @@
     ]
   },
   {
-    "detailAt": "2026-11-16",
+    "detailAt": "2026-11-24",
     "id": "culture-408525",
     "apiId": "408525",
     "category": "전시",
@@ -1310,7 +970,7 @@
     "price": "무료관람",
     "contact": "010-2110-8990",
     "description": "",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-11-17",
     "end": "2026-11-29",
     "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202611/c67f5d5cf0274c59b1a97d873aaa9235.png",
@@ -1320,7 +980,7 @@
     "url": "https://blog.naver.com/kr_gallery/224479171425",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -1328,7 +988,7 @@
     ]
   },
   {
-    "detailAt": "2026-11-16",
+    "detailAt": "2026-11-24",
     "id": "culture-408506",
     "apiId": "408506",
     "category": "전시",
@@ -1343,7 +1003,7 @@
     "price": "무료",
     "contact": "국립아시아문화전당 1899-5566",
     "description": "",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-11-19",
     "end": "2026-11-29",
     "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202611/490b1685a2674374910903a6836740fb.jpg",
@@ -1353,7 +1013,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0204&action=Read&bnkey=EM_0000010284",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "광주",
@@ -1384,7 +1044,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -1447,7 +1107,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -1468,7 +1128,7 @@
     "price": "무료",
     "contact": "061-390-8578",
     "description": "영화상영",
-    "status": "예정",
+    "status": "진행중",
     "start": "2026-11-24",
     "end": "2026-11-24",
     "image": "",
@@ -1478,7 +1138,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -1867,7 +1527,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -2110,40 +1770,6 @@
     ]
   },
   {
-    "detailAt": "2026-11-23",
-    "id": "culture-405985",
-    "apiId": "405985",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "복을 짓는 바느질: 행운의 물고기 만들기",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-11-28 ~ 2026-11-28",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "가격은 공식 원문에서 확인",
-    "contact": "함평군립미술관 061-320-2276~8",
-    "description": "",
-    "status": "예정",
-    "start": "2026-11-28",
-    "end": "2026-11-28",
-    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202611/8754878eb9324574bce8918ee2b7e39a.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart22&boardId=ART_004&seq=7143538&movePage=1&recordCnt=12",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
     "detailAt": "2026-11-16",
     "id": "kopis-PF304938",
     "apiId": "PF304938",
@@ -2361,7 +1987,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -2424,7 +2050,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-23"
+      "checked": "2026-11-24"
     },
     "id": "gtcc-saturday-2026-11-28",
     "date": "11.28 — 11.28",
@@ -2433,7 +2059,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "detailAt": "2026-11-21",
@@ -2712,7 +2338,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -2821,6 +2447,39 @@
     "tags": [
       "공연",
       "서양음악(클래식)",
+      "전남"
+    ]
+  },
+  {
+    "detailAt": "2026-11-24",
+    "id": "culture-409211",
+    "apiId": "409211",
+    "category": "음악",
+    "subtype": "음악/콘서트",
+    "title": "[전남 광주] 전남광주통합특별시립국악단 창단 40주년 특별기획공연: 다시, 너머, 잇다",
+    "venue": "남도소리울림터",
+    "venueId": null,
+    "district": "무안군",
+    "address": "전남광주통합특별시 무안군 삼향읍 남악로 222 남도소리울림터",
+    "date": "2026-12-04 ~ 2026-12-05",
+    "time": "시간은 공식 원문에서 확인",
+    "price": "전석 10,000원",
+    "contact": "061-285-6928",
+    "description": "",
+    "status": "예정",
+    "start": "2026-12-04",
+    "end": "2026-12-05",
+    "image": "https://www.culture.go.kr/upload/rdf/26/11/rdf_202611232117529774.jpg",
+    "lat": 34.8049343084,
+    "lng": 126.462934988,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://www.ticketlink.co.kr/product/67198",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-11-24",
+    "tags": [
+      "음악",
+      "음악/콘서트",
       "전남"
     ]
   },
@@ -2944,7 +2603,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -3007,7 +2666,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -3070,7 +2729,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -3326,7 +2985,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -3485,7 +3144,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -3621,6 +3280,39 @@
     ]
   },
   {
+    "detailAt": "2026-11-24",
+    "id": "culture-409127",
+    "apiId": "409127",
+    "category": "음악",
+    "subtype": "음악/콘서트",
+    "title": "Dear Winter",
+    "venue": "보헤미안 소극장",
+    "venueId": null,
+    "district": "동구",
+    "address": "전남광주통합특별시 동구 문화전당로 43 지하1층",
+    "date": "2026-12-11 ~ 2026-12-11",
+    "time": "시간은 공식 원문에서 확인",
+    "price": "일반 25,000원 / 청소년 10,000원",
+    "contact": "010-2872-3590",
+    "description": "",
+    "status": "예정",
+    "start": "2026-12-11",
+    "end": "2026-12-11",
+    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202611/d70e0f9fb574472084a576552cfc8b75.jpg",
+    "lat": 35.1463079,
+    "lng": 126.9185474,
+    "source": "한국문화정보원 문화정보",
+    "url": "https://booking.naver.com/booking/5/bizes/1183421/items/7546654?startDateTime=2026-12-11T00%3A00%3A00%2B09%3A00&tab=details",
+    "origin": "auto",
+    "api": "culture",
+    "verified": "2026-11-24",
+    "tags": [
+      "음악",
+      "음악/콘서트",
+      "광주"
+    ]
+  },
+  {
     "detailAt": "2026-11-18",
     "id": "kopis-PF306692",
     "apiId": "PF306692",
@@ -3708,7 +3400,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "공연",
       "지역 공연",
@@ -3811,40 +3503,6 @@
     ]
   },
   {
-    "detailAt": "2026-11-23",
-    "id": "culture-408875",
-    "apiId": "408875",
-    "category": "행사",
-    "subtype": "교육·체험",
-    "title": "새해 마음 새김, 2027 캘리그래피 달력 만들기",
-    "venue": "",
-    "venueId": null,
-    "district": "",
-    "address": "",
-    "date": "2026-12-12 ~ 2026-12-12",
-    "time": "시간은 공식 원문에서 확인",
-    "price": "가격은 공식 원문에서 확인",
-    "contact": "함평군립미술관 061-320-2283, 76",
-    "description": "",
-    "status": "예정",
-    "start": "2026-12-12",
-    "end": "2026-12-12",
-    "image": "https://www.culture.go.kr/upload/ucms/oneCltInfo/2026/202611/34a1e965bf5245a7b6f6963af0d7670d.jpg",
-    "lat": null,
-    "lng": null,
-    "source": "한국문화정보원 문화정보",
-    "url": "https://www.hampyeong.go.kr/hpart/boardView.do?pageId=hpart22&boardId=ART_004&seq=2752614&movePage=1&recordCnt=12",
-    "origin": "auto",
-    "api": "culture",
-    "verified": "2026-11-23",
-    "tags": [
-      "행사",
-      "교육·체험",
-      "전남",
-      "체험"
-    ]
-  },
-  {
     "detailAt": "2026-11-20",
     "id": "kopis-PF299784",
     "apiId": "PF299784",
@@ -3900,7 +3558,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -4155,7 +3813,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -4254,7 +3912,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-23"
+    "verified": "2026-11-24"
   },
   {
     "id": "std-b08d82411466",
@@ -4280,7 +3938,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -4440,7 +4098,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -4763,7 +4421,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -4795,7 +4453,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "지역 행사",
@@ -4955,7 +4613,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "전시",
       "전남",
@@ -4988,7 +4646,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000010330",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -5636,7 +5294,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "kdj",
-    "verified": "2026-11-23",
+    "verified": "2026-11-24",
     "tags": [
       "축제",
       "광주"
