@@ -55,7 +55,7 @@
     "url": "http://www.donggumc.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "지역 행사",
@@ -119,58 +119,13 @@
     "url": "http://www.jindo.go.kr",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
       "전남",
       "무료"
     ]
-  },
-  {
-    "id": "hjw-collection-2026",
-    "category": "전시",
-    "subtype": "기획전",
-    "title": "2026 하정웅컬렉션 〈1993–2018〉",
-    "venue": "하정웅미술관 4~6전시실",
-    "venueId": "hajungwoong",
-    "district": "서구",
-    "address": "광주 서구 상무대로 1165",
-    "date": "03.10 — 11.25",
-    "start": "2026-03-10",
-    "end": "2026-11-25",
-    "time": "10:00–18:00 · 월요일 휴관",
-    "price": "무료",
-    "discount": "",
-    "group": "",
-    "child": "",
-    "pet": "",
-    "stroller": "",
-    "nursing": "",
-    "parking": "주차 가능",
-    "accessibility": "",
-    "reservation": "",
-    "contact": "062-613-5390",
-    "status": "진행중",
-    "verified": "2026-10-03",
-    "origin": "manual",
-    "tags": [
-      "전시",
-      "무료",
-      "미술관"
-    ],
-    "verify": "이우환·박서보·조양규·피카소·앤디 워홀 등 22명 · 회화 36점과 아카이브 약 20점 · 재일 디아스포라 / 서양 근대 판화 / 한국 추상 세 갈래",
-    "source": "아트월드뉴스 (광주시립미술관 발표)",
-    "url": "https://www.artworldnews.co.kr/news/articleView.html?idxno=4617",
-    "lat": 35.1544439,
-    "lng": 126.8890892,
-    "ticket": {
-      "status": "관람가능",
-      "note": "무료 · 월요일 휴관",
-      "checked": "2026-10-03"
-    },
-    "image": "https://tong.visitkorea.or.kr/cms/resource/49/2822349_image2_1.jpg",
-    "imageCredit": "한국관광공사 · 대표 이미지"
   },
   {
     "detailAt": "2026-11-23",
@@ -204,7 +159,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": null,
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "광주"
@@ -238,7 +193,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "id": "gma-939",
@@ -268,7 +223,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "detailAt": "2026-11-22",
@@ -296,7 +251,7 @@
     "url": "https://www.acc.go.kr/main/education.do?PID=0402&action=Read&bnkey=EM_0000009255",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "행사",
       "교육·체험",
@@ -330,7 +285,7 @@
     "url": "https://www.sorokdo.go.kr/museum/board/boardView.do?seq=6171&board_id=033&menu_cd=04_01&bn=newsView&depth=nn",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "행사",
       "교육·체험",
@@ -362,7 +317,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -396,7 +351,7 @@
     "url": "https://naju.museum.go.kr/prog/spclexht/B/kor/sub02_02_01/view.do?spclExhtId=SPCLEXHT_00000000046",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -404,35 +359,35 @@
     ]
   },
   {
-    "detailAt": "2026-11-22",
-    "id": "culture-394071",
-    "apiId": "394071",
-    "category": "공연",
-    "subtype": "기타",
+    "detailAt": "2026-11-26",
+    "id": "culture-402291",
+    "apiId": "402291",
+    "category": "음악",
+    "subtype": "음악/콘서트",
     "title": "[대관공연] 캔들라이트 콘서트(8-12월)",
     "venue": "국립아시아문화전당 극장2",
     "venueId": "acc",
     "district": "동구",
     "address": "전남광주통합특별시 동구 문화전당로 38 국립아시아문화전당",
-    "date": "2026-08-01 ~ 2026-12-25",
+    "date": "2026-08-01 ~ 2026-12-26",
     "time": "시간은 공식 원문에서 확인",
-    "price": "A구역 50,000원 B구역 40,000원 C구역 30,500원",
+    "price": "A구역 50,000원 / B구역 40,000원 / C구역 30,500원",
     "contact": "080-352-8774",
     "description": "",
     "status": "진행중",
     "start": "2026-08-01",
-    "end": "2026-12-25",
-    "image": "https://www.culture.go.kr/upload/rdf/26/08/rdf_202608192124639913.jpg",
+    "end": "2026-12-26",
+    "image": "https://www.culture.go.kr/upload/rdf/26/10/rdf_2026101421172279332.jpg",
     "lat": 35.14704938925195,
     "lng": 126.92005723156174,
     "source": "한국문화정보원 문화정보",
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000009776",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
-      "공연",
-      "기타",
+      "음악",
+      "음악/콘서트",
       "광주"
     ]
   },
@@ -533,7 +488,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0202&action=Read&bnkey=EM_0000009927",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "광주",
@@ -612,7 +567,7 @@
     "url": "https://minhwamuseum.com/g5/bbs/board.php?bo_table=exhibition&wr_id=76",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남"
@@ -644,7 +599,7 @@
     "url": "http://deyoungmuseum.co.kr/",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "광주",
@@ -677,7 +632,7 @@
     "url": "https://park1538.posco.com:8243/S91/S91G10/web/user/kor/artmuseum/KP-K32-01.do",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -711,7 +666,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "category": "행사",
@@ -774,7 +729,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "detailAt": "2026-11-20",
@@ -882,7 +837,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15207625&category_1=%EC%A0%84%EC%8B%9C&mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -915,7 +870,7 @@
     "url": "https://www.muan.go.kr/museum/exhibition/project/schedule?idx=15207617&category_1=%EC%A0%84%EC%8B%9C&mode=view",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -980,7 +935,7 @@
     "url": "https://blog.naver.com/kr_gallery/224479171425",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -1013,7 +968,7 @@
     "url": "https://www.acc.go.kr/main/exhibition.do?PID=0204&action=Read&bnkey=EM_0000010284",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "광주",
@@ -1044,7 +999,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -1107,7 +1062,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -1144,70 +1099,6 @@
       "공연",
       "서커스/마술",
       "전남"
-    ]
-  },
-  {
-    "detailAt": "2026-11-25",
-    "id": "kopis-PF302142",
-    "apiId": "PF302142",
-    "category": "음악",
-    "subtype": "서양음악(클래식)",
-    "title": "ACC 브런치콘서트 플러스, 이서준 도슨트의 미술관으로 간 클래식: 프랑스 (11월)",
-    "venue": "국립아시아문화전당",
-    "venueId": "acc",
-    "district": "동구",
-    "address": "전남광주통합특별시 동구 문화전당로 38 (광산동)",
-    "date": "2026-11-25 ~ 2026-11-25",
-    "time": "수요일(11:00,19:30)",
-    "price": "R석 30,000원, S석 20,000원",
-    "age": "만 6세 이상",
-    "cast": "이서준, 백건, 서우형, 정정환, 백자현",
-    "runtime": "1시간 30분",
-    "status": "공연중",
-    "start": "2026-11-25",
-    "end": "2026-11-25",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF302142_260930_143628.png",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "https://www.accf.or.kr/main/product/detail/ko/404",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-11-25",
-    "tags": [
-      "공연",
-      "서양음악(클래식)",
-      "광주"
-    ]
-  },
-  {
-    "detailAt": "2026-11-25",
-    "id": "kopis-PF307344",
-    "apiId": "PF307344",
-    "category": "음악",
-    "subtype": "서양음악(클래식)",
-    "title": "프로젝트 더 울림 Masterpiece project Episode Ⅱ. 세상의 창조: 재즈, 도시 그리고 바람",
-    "venue": "빛고을시민문화관",
-    "venueId": "bitgoeul",
-    "district": "남구",
-    "address": "전남광주통합특별시 남구 천변좌로338번길 7 (구동)",
-    "date": "2026-11-25 ~ 2026-11-25",
-    "time": "수요일(19:00)",
-    "price": "전석무료",
-    "age": "만 7세 이상",
-    "cast": "박근태, 김지원, 지아셀, 신혜지, 조효주, 김민정, 정진용 등",
-    "runtime": "",
-    "status": "공연중",
-    "start": "2026-11-25",
-    "end": "2026-11-25",
-    "image": "https://www.kopis.or.kr/upload/pfmPoster/PF_PF307344_261124_133805.png",
-    "source": "KOPIS 공연예술통합전산망",
-    "url": "http://www.ticketlink.co.kr/product/67237",
-    "origin": "auto",
-    "api": "kopis",
-    "verified": "2026-11-25",
-    "tags": [
-      "공연",
-      "서양음악(클래식)",
-      "광주"
     ]
   },
   {
@@ -1559,7 +1450,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -1592,7 +1483,7 @@
     "url": "https://www.ticketlink.co.kr/product/66769",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -2084,7 +1975,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "지역 행사",
@@ -2147,7 +2038,7 @@
     "ticket": {
       "status": "무료",
       "note": "현장 등록 · 연령 제한 없음",
-      "checked": "2026-11-25"
+      "checked": "2026-11-26"
     },
     "id": "gtcc-saturday-2026-11-28",
     "date": "11.28 — 11.28",
@@ -2156,7 +2047,7 @@
     "status": "예정",
     "origin": "manual",
     "recurring": "gtcc-saturday",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "detailAt": "2026-11-21",
@@ -2435,7 +2326,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -2501,7 +2392,7 @@
     "url": "https://blog.naver.com/kr_gallery/224491012868",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -2764,7 +2655,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -2827,7 +2718,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -2890,7 +2781,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -3178,7 +3069,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -3337,7 +3228,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -3498,7 +3389,7 @@
     "url": "https://booking.naver.com/booking/5/bizes/1183421/items/7546654?startDateTime=2026-12-11T00%3A00%3A00%2B09%3A00&tab=details",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -3593,7 +3484,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "공연",
       "지역 공연",
@@ -3751,7 +3642,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -4006,7 +3897,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -4105,7 +3996,7 @@
     ],
     "origin": "auto",
     "api": "gma",
-    "verified": "2026-11-25"
+    "verified": "2026-11-26"
   },
   {
     "id": "std-b08d82411466",
@@ -4131,7 +4022,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "지역 행사",
@@ -4323,7 +4214,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -4646,7 +4537,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "지역 행사",
@@ -4678,7 +4569,7 @@
     "url": "https://www.jangseong.go.kr/home/www/openinfo/openinfo_15/openinfo_15_01",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "지역 행사",
@@ -4838,7 +4729,7 @@
     "url": "https://www.data.go.kr/",
     "origin": "auto",
     "api": "stdevents",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "전시",
       "전남",
@@ -4871,7 +4762,7 @@
     "url": "https://www.acc.go.kr/main/performance.do?PID=0102&action=Read&bnkey=EM_0000010330",
     "origin": "auto",
     "api": "culture",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "음악",
       "음악/콘서트",
@@ -5519,7 +5410,7 @@
     "origin": "auto",
     "api": "tourapi",
     "venueId": "kdj",
-    "verified": "2026-11-25",
+    "verified": "2026-11-26",
     "tags": [
       "축제",
       "광주"
