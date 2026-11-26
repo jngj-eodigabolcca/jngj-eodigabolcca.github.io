@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-26T17:03:57+09:00",
+  "updated_at": "2026-11-27T03:57:39+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -19,15 +19,15 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 99,
       "ok": true,
-      "count": 108,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 10시간 전 자료 99건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 36,
+      "count": 37,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -41,8 +41,8 @@
       "id": "stdevents",
       "name": "공공데이터 표준(축제·공연행사)",
       "ok": true,
-      "count": 30,
-      "message": "정상 수집 (문화축제 3건 (API 1372행) · 공연행사 27건 (API 10562행))"
+      "count": 28,
+      "message": "정상 수집 (문화축제 3건 (API 1372행) · 공연행사 25건 (API 10562행))"
     }
   ],
   "api_status": [
@@ -63,15 +63,15 @@
     {
       "id": "kopis",
       "name": "KOPIS 공연",
+      "count": 99,
       "ok": true,
-      "count": 108,
-      "message": "정상 수집"
+      "message": "하루 한 번만 받아요 · 10시간 전 자료 99건 사용"
     },
     {
       "id": "culture",
       "name": "문화정보원 전시·체험",
       "ok": true,
-      "count": 36,
+      "count": 37,
       "message": "정상 수집 (지역별 조회 · 5쪽 읽음)"
     },
     {
@@ -85,39 +85,39 @@
       "id": "stdevents",
       "name": "공공데이터 표준(축제·공연행사)",
       "ok": true,
-      "count": 30,
-      "message": "정상 수집 (문화축제 3건 (API 1372행) · 공연행사 27건 (API 10562행))"
+      "count": 28,
+      "message": "정상 수집 (문화축제 3건 (API 1372행) · 공연행사 25건 (API 10562행))"
     }
   ],
   "counts": {
-    "total": 171,
-    "auto": 142,
+    "total": 167,
+    "auto": 138,
     "manual": 29
   },
   "manual_count": 103,
-  "events_count": 171,
+  "events_count": 167,
   "note": "직접 확인한 일정 우선 병합 · 출처별 실패 시 지난 자료 유지",
   "kidscafes": {
     "count": 166,
-    "message": "키즈카페 166곳 (인허가 96 + 놀이시설 새로 70 · 좌표 70 (받은 줄 3253 · 항목 pfctSn,pfctNm,zip,lotnoAddr,lotnoDaddr,ronaAddr,ronaDaddr,instlYmd,clsgYmd,acptnYmd,etcSufa,exfcYn,fcar,instlPlaceCd,instlPlaceCdNm,dutyCd,dutyCdNm,prvtPblcYnCd,prvtPblcYnCdNm,operYnCd))"
+    "message": "키즈카페 166곳 (인허가 96 + 놀이시설 새로 70 · 좌표 70 (받은 줄 3254 · 항목 pfctSn,pfctNm,zip,lotnoAddr,lotnoDaddr,ronaAddr,ronaDaddr,instlYmd,clsgYmd,acptnYmd,etcSufa,exfcYn,fcar,instlPlaceCd,instlPlaceCdNm,dutyCd,dutyCdNm,prvtPblcYnCd,prvtPblcYnCdNm,operYnCd))"
   },
   "shelters": {
     "count": 19162,
-    "message": "cold: 9357곳 · 좌표 9357 · 시간 1296 (전국 56271줄 · 57쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT) / heat: 9805곳 · 좌표 9805 · 시간 133 (전국 62101줄 · 63쪽 · 항목 DTL_ADRES,XCORD,LO,CHCK_MATTER_WKEND_HDAY_OPN_AT,WKEND_HDAY_OPER_BEGIN_TIME,MODF_TIME,ARCD,WKDAY_OPER_BEGIN_TIME,YEAR,USE_PSBL_NMPR,CHCK_MATTER_NIGHT_OPN_AT,RSTR_NM,WKEND_HDAY_OPER_END_TIME,CHCK_MATTER_STAYNG_PSBL_AT,MNGDPT_CD,COLR_HOLD_ARCNDTN,RN_DTL_ADRES,INPT_TIME,DTL_POSITION,WKDAY_OPER_END_TIME,FCLTY_SCLAS,COLR_HOLD_ELEFN,AR,YCORD)"
+    "message": "cold: 9357곳 · 좌표 9357 · 시간 1295 (전국 56398줄 · 57쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT) / heat: 9805곳 · 좌표 9805 · 시간 133 (전국 62101줄 · 63쪽 · 항목 DTL_ADRES,XCORD,LO,CHCK_MATTER_WKEND_HDAY_OPN_AT,WKEND_HDAY_OPER_BEGIN_TIME,MODF_TIME,ARCD,WKDAY_OPER_BEGIN_TIME,YEAR,USE_PSBL_NMPR,CHCK_MATTER_NIGHT_OPN_AT,RSTR_NM,WKEND_HDAY_OPER_END_TIME,CHCK_MATTER_STAYNG_PSBL_AT,MNGDPT_CD,COLR_HOLD_ARCNDTN,RN_DTL_ADRES,INPT_TIME,DTL_POSITION,WKDAY_OPER_END_TIME,FCLTY_SCLAS,COLR_HOLD_ELEFN,AR,YCORD)"
   },
   "local": {
     "holidays": {
       "name": "공휴일",
-      "ok": false,
+      "ok": true,
       "count": 46,
-      "fetched_at": "2026-11-20T16:05:54+09:00",
-      "message": "수집 실패 · 지난 자료 유지 (<urlopen error _ssl.c:994: The handshake operation timed out>)"
+      "fetched_at": "2026-11-27T04:10:00+09:00",
+      "fields": []
     },
     "libraries": {
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-26T17:19:22+09:00",
+      "fetched_at": "2026-11-27T04:10:00+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 280,
-      "fetched_at": "2026-11-26T17:19:22+09:00",
+      "fetched_at": "2026-11-27T04:10:00+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,7 +186,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-26T17:19:58+09:00",
+    "checked_at": "2026-11-27T04:10:15+09:00",
     "tourapi_calls": 3,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -200,11 +200,11 @@
         "with_image": 255
       },
       "restaurants": {
-        "total": 214,
-        "with_coords": 172,
+        "total": 213,
+        "with_coords": 171,
         "coords_filled": 33,
-        "hours_filled": 155,
-        "with_image": 117
+        "hours_filled": 154,
+        "with_image": 116
       },
       "bakeries": {
         "total": 15,
@@ -236,6 +236,6 @@
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-26T17:19:57+09:00"
+    "checked_at": "2026-11-27T04:10:14+09:00"
   }
 }
