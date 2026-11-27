@@ -41,6 +41,7 @@
       홈 순서(메뉴→오늘 뭐하지→오늘 열리는 것→놓치면 끝나요→지금만) · 동네 고르기 한 줄 · 크리밍 말귀 넓히기(creamNormalize·creamAsk).
       오른쪽 '더 보기'·하단 '빠른메뉴' 손잡이는 화면에서만 뺐고 버튼·동작은 남아 있음(전체 메뉴가 그대로 눌러 씀). 메뉴 목록은 이 블록의 M·GLANCE·GROUPS 한곳에서 고침
       '오늘 뭐하지?' 안 추천 입구 4개(지금 바로·조건 골라·크리밍한테·하루 코스)를 탭으로 합침(decideTab) · 동네 고르기 한 줄은 '지금 바로' 아래로 · 지금만 되는 것은 3개 + 'N개 더 보기'
+  · 2026-11-27 1.0.16 전체 메뉴 '나들이' 묶음에 🎪 축제 (누르면 일정 화면에서 축제만, 축제 달력은 그 화면 위)
   · 2026-11-23 1.0.15 전체 메뉴 '나들이' 묶음에 🌤 오늘 날씨 (찾기에서만 보이던 '그 밖에' 칸은 없앰)
   · 2026-11-21 1.0.14 '오늘 열리는 것' 날짜 탭(4개면 두 줄 단추): 오늘·내일이 토·일이면 '이번 주말' 빼고 안내 한 줄, 모레~7일 안 평일 휴일은 '휴일' 탭(nowTabs) · 없는 탭을 부르면 오늘/내일로
   · 2026-11-21 1.0.13 주말 5곳 ✨추천·🆓무료는 사는 동네 거리 빼고 권역 전체에서 고름 + '📍 ○○권 전체에서' 표시
@@ -12487,7 +12488,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(() => { if (todayISO() !== LAST_DAY) { LAST_DAY = todayISO(); load() } }, 60000);
 
 /* ───────── 뒤로가기: 앱 안에서 한 단계씩 돌아가고, 첫 화면에서는 나갈지 물어본다 ───────── */
-const APP_VER = "1.0.15 (2026.11.23)"; // 1.0.15: 전체 메뉴 나들이 묶음에 날씨 · 1.0.14: 오늘 열리는 것 날짜 탭 — 주말이 끼면 오늘·내일만, 평일 휴일이 있으면 휴일 탭 · 1.0.13: 주말 추천·무료는 권역 전체에서 고르고 표시 · 1.0.12: 주말 기준 3개로 줄이고 홈에서 겹치는 동네 고르기·주말 5곳 정리 · 1.0.11: 이번 주말 5곳 고르는 기준 + 기준 동네 · 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
+const APP_VER = "1.0.16 (2026.11.27)"; // 1.0.16: 전체 메뉴 나들이 묶음에 🎪 축제 · 1.0.15: 전체 메뉴 나들이 묶음에 날씨 · 1.0.14: 오늘 열리는 것 날짜 탭 — 주말이 끼면 오늘·내일만, 평일 휴일이 있으면 휴일 탭 · 1.0.13: 주말 추천·무료는 권역 전체에서 고르고 표시 · 1.0.12: 주말 기준 3개로 줄이고 홈에서 겹치는 동네 고르기·주말 5곳 정리 · 1.0.11: 이번 주말 5곳 고르는 기준 + 기준 동네 · 1.0.10: 앱 사용설명서 최신 기능 반영 · 1.0.9: 단풍·벚꽃 명소를 지금 아니면 1년 칸 안으로 합침 · 1.0.8: 지금만 되는 것 칸에서 단풍 바로가기 버튼 뺌 · 1.0.7: 공식 누리집 링크는 화면마다 2개까지만 · 1.0.6: 권역별 공식 관광·문화 누리집(디어마이광주·광주문화재단·ACC·여수·순천·목포) · 1.0.5: 나들이·일정 아래 오매광주·남도여행길잡이·구석구석 연결 · 1.0.4: 절정 지난 단풍·벚꽃 명소 빼기 · 1.0.3: 앱 이름 띄어쓰기 '어디 가볼까' · 1.0.2: 저작권 등록번호(C-2026-061252) 맨 아래 표시 · 1.0.1: 큰 제목 안 설명 글씨가 커지던 것 바로잡음 · 2026-11-19 정식 시작 1.0 · 이후 작은 수정은 1.0.1, 1.0.2 … 기능이 바뀌면 1.1
 let NAV_READY = false, LEAVING = false;
 function navPush(st) { if (NAV_READY) history.pushState({ glm: 1, ...st, idx: ((history.state && history.state.idx) || 0) + 1 }, "") }
 /* 나가기: 앱보다 앞에 열려 있던 페이지가 있으면 그리로 돌아가고,
@@ -12701,6 +12702,7 @@ initNav();
    <div class="manualItem"><strong>🔎 통합 검색</strong><p>장소명, 전시, 섬 방문의 해, 가수 이름 등 궁금한 키워드를 입력해요.</p></div>
    <div class="manualItem"><strong>✨ 오늘 뭐하지? 추천</strong><p>'지금 바로'·'조건 골라'·'크리밍한테'·'하루 코스' 네 가지 방법 중 골라 써요. '조건 골라'에서 동행인·이용시간·예산을 고르면 어울리는 코스를 제안하고, '크리밍한테'는 "토요일 오전 애들이랑 공짜로"처럼 말로 물어볼 수 있어요.</p></div>
    <div class="manualItem"><strong>📅 오늘 열리는 것 · 날짜 탭</strong><p>평일엔 '오늘·내일·이번 주말'로 나눠 보여 줘요. 금·토·일처럼 오늘이나 내일이 주말이면 겹치지 않게 '오늘·내일'만 나와요. 일주일 안에 평일 휴일(연휴·대체공휴일 포함)이 있으면 '휴일' 탭이 따로 생겨요.</p></div>
+   <div class="manualItem"><strong>🎪 축제</strong><p>'전체' 메뉴 '나들이' 묶음의 '축제'를 누르면 지금 권역의 축제만 골라 보여 줘요. 그 화면 위 '지역별 축제 달력 보기'를 열면 시·군별, 날짜별로 한눈에 볼 수 있어요.</p></div>
    <div class="manualItem"><strong>🎤 공연·문화 일정</strong><p>대중가수 콘서트와 전시·축제·스포츠·영화 등 일정을 살펴봐요.</p></div>
    <div class="manualItem"><strong>🗺 지도·길찾기</strong><p>장소 위치와 주변 정보를 확인하고 길찾기 링크를 이용해요. '지금 위치로'를 직접 누르고 위치 권한을 허용하면 가까운 곳부터 볼 수 있으며, 허용하지 않아도 동네를 선택할 수 있어요.</p></div>
    <div class="manualItem"><strong>♡ 즐겨찾기·상세정보</strong><p>관심 있는 장소를 저장하고 운영시간·요금·공식 안내를 확인해요.</p></div>
@@ -14295,6 +14297,7 @@ document.addEventListener("keydown",function(e){
     food:     ["🍽", "먹을 곳", "나들이 길 한 끼"],
     map:      ["🗺", "지도", "가까운 곳"],
     weather:  ["🌤", "오늘 날씨", "옷차림·챙길 것"],
+    festival: ["🎪", "축제", "축제 일정·달력"],
     care:     ["🏥", "문 연 약국·응급실", "아플 때"],
     shelter:  [(m => m >= 5 && m <= 9 ? "🌡" : "🧣")(new Date().getMonth() + 1), "쉼터", "무더위·한파"],
     galleries:["🖼", "미술관·갤러리", ""],
@@ -14321,7 +14324,7 @@ document.addEventListener("keydown",function(e){
   const GROUPS = [
     ["오늘 정하기", ["decide", "today", "weekend", "onlyNow", "culture"]],
     ["공연·전시", ["events", "stages", "popshows", "galleries", "museums"]],
-    ["나들이", ["places", "kids", "indoor", "weather", ...(SEASON_ON() ? ["season"] : []), "dayplan"]],   // 1.0.15: 날씨는 '나들이' 묶음으로 (나들이 전에 보는 것)
+    ["나들이", ["places", "festival", "kids", "indoor", "weather", ...(SEASON_ON() ? ["season"] : []), "dayplan"]],   // 1.0.15: 날씨는 '나들이' 묶음으로 (나들이 전에 보는 것)
     ["우리 동네", ["hood", "local", "markets", "care", "shelter"]],
     ["먹고 쉬기", ["food", "bakeries", "cafes", "cinemas", "stays"]],
     ["지도·찜·도움말", ["map", "favorites", "notice", "manual", "review"]]
@@ -14361,6 +14364,12 @@ document.addEventListener("keydown",function(e){
       showTab("places"); try { renderPlaces() } catch (e) {}
       [60, 350, 800].forEach(ms => setTimeout(() => toTop($id("placesView")), ms)); return;
     }
+    // 1.0.16: 축제 = '일정' 화면에서 🎪 축제만 골라 보여 줌 (축제 달력은 그 화면 맨 위)
+    if (k === "festival") {
+      showTab("events");
+      setTimeout(() => { const f = document.querySelector('#chips [data-filter="축제"]'); if (f) { f.click(); } [60, 400].forEach(ms => setTimeout(() => { const c = $id("chips"), f2 = c && c.querySelector('[data-filter="축제"]'); if (c && c.offsetParent) { toTop(c); if (f2) c.scrollLeft = Math.max(0, f2.offsetLeft - 40) } else toTop($id("eventsView")) }, ms)) }, 60);
+      return;
+    }
     if (k === "today" || k === "weekend") {
       window.ensureHome?.(); try { setNowWhen(k === "weekend" ? 2 : 0) } catch (e) {}
       [120, 450, 900].forEach(ms => setTimeout(() => toTop($id("nowShow")), ms)); return;
@@ -14377,7 +14386,7 @@ document.addEventListener("keydown",function(e){
     events: "전시 공연 축제 행사 달력", stages: "공연장 무대 음악 국악 클래식 연극 뮤지컬", popshows: "가수 콘서트 팬미팅 아이돌",
     places: "나들이 산책 체험 공원 정원", kids: "아이 애들 아기 어린이 가족 키즈 키즈카페 실내놀이터 방방 트램폴린", indoor: "비 실내 우천 더위 추위",
     hood: "동네 강좌 도서관 주민", local: "도서관 책 강좌", markets: "시장 장날 오일장 야시장", food: "밥 식당 맛집 한끼 먹을",
-    map: "지도 가까운 근처 위치", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파 동물병원 24시동물병원 애견병원 강아지아파 고양이아파 반려동물 수의사", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
+    map: "지도 가까운 근처 위치", festival: "축제 페스티벌 행사 박람회 불꽃 축제달력", weather: "날씨 옷차림 비 우산 미세먼지", care: "약국 응급실 병원 아플 아파 동물병원 24시동물병원 애견병원 강아지아파 고양이아파 반려동물 수의사", shelter: "쉼터 무더위 한파 더위 추위 폭염 경로당",
     galleries: "미술 그림 전시 갤러리", museums: "박물관 역사 유물", bakeries: "빵 제과 제빵 빵집 디저트", cafes: "강아지 개 반려견 카페 멍",
     cinemas: "영화 극장", stays: "숙소 호텔 잠 펜션 모텔", decide: "추천 코스 뭐하지", today: "오늘 행사", weekend: "주말 토요일 일요일",
     dayplan: "하루 코스 일정 짜기", onlyNow: "지금만 1년 한정 시즌", culture: "문화가 있는 날 수요일 할인 영화", season: "계절 단풍 벚꽃 꽃 명소", notice: "알림 소식 새 공연 관심 가수", favorites: "찜 저장 하트 즐겨찾기", manual: "설명 도움말 사용법", review: "후기 의견 건의"
