@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-28T03:51:53+09:00",
+  "updated_at": "2026-11-28T16:35:59+09:00",
   "auto_update": true,
   "sources": [
     {
@@ -103,7 +103,7 @@
   },
   "shelters": {
     "count": 19169,
-    "message": "cold: 9357곳 · 좌표 9357 · 시간 1295 (전국 56540줄 · 57쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT) / heat: 9812곳 · 좌표 9812 · 시간 133 (전국 62120줄 · 63쪽 · 항목 DTL_ADRES,XCORD,LO,CHCK_MATTER_WKEND_HDAY_OPN_AT,WKEND_HDAY_OPER_BEGIN_TIME,MODF_TIME,ARCD,WKDAY_OPER_BEGIN_TIME,YEAR,USE_PSBL_NMPR,CHCK_MATTER_NIGHT_OPN_AT,RSTR_NM,WKEND_HDAY_OPER_END_TIME,CHCK_MATTER_STAYNG_PSBL_AT,MNGDPT_CD,COLR_HOLD_ARCNDTN,RN_DTL_ADRES,INPT_TIME,DTL_POSITION,WKDAY_OPER_END_TIME,FCLTY_SCLAS,COLR_HOLD_ELEFN,AR,YCORD)"
+    "message": "cold: 9357곳 · 좌표 9357 · 시간 1295 (전국 56540줄 · 57쪽 · 항목 REARE_NM,SNDY_OPER_BGNG_HR,MDFCN_HR,RONA_DADDR,LHLDY_OPER_END_HR,DADDR,UTZTN_PSBLTY_TNOP,WKDY_OPER_BGNG_HR,STDY_OPER_END_HR,SNDY_OPER_END_HR,FCLT_TYPE,FCLTY_SCLAS,REARE_FCLT_NO,INPT_HR,LOT,STDY_OPER_BGNG_HR,RMRK,LHLDY_OPER_BGNG_HR,WKDY_OPER_END_HR,YR,LAT) / heat: 9812곳 · 좌표 9812 · 시간 133 (전국 62258줄 · 63쪽 · 항목 DTL_ADRES,XCORD,LO,CHCK_MATTER_WKEND_HDAY_OPN_AT,WKEND_HDAY_OPER_BEGIN_TIME,MODF_TIME,ARCD,WKDAY_OPER_BEGIN_TIME,YEAR,USE_PSBL_NMPR,CHCK_MATTER_NIGHT_OPN_AT,RSTR_NM,WKEND_HDAY_OPER_END_TIME,CHCK_MATTER_STAYNG_PSBL_AT,MNGDPT_CD,COLR_HOLD_ARCNDTN,RN_DTL_ADRES,INPT_TIME,DTL_POSITION,WKDAY_OPER_END_TIME,FCLTY_SCLAS,COLR_HOLD_ELEFN,AR,YCORD)"
   },
   "local": {
     "holidays": {
@@ -117,7 +117,7 @@
       "name": "도서관",
       "ok": true,
       "count": 470,
-      "fetched_at": "2026-11-28T04:08:53+09:00",
+      "fetched_at": "2026-11-28T16:57:52+09:00",
       "fields": [
         "bookCo",
         "closeDay",
@@ -153,7 +153,7 @@
       "name": "평생학습 강좌",
       "ok": true,
       "count": 275,
-      "fetched_at": "2026-11-28T04:08:53+09:00",
+      "fetched_at": "2026-11-28T16:57:52+09:00",
       "fields": [
         "edcColseTime",
         "edcEndDay",
@@ -186,7 +186,7 @@
     }
   },
   "place_fill": {
-    "checked_at": "2026-11-28T04:08:56+09:00",
+    "checked_at": "2026-11-28T16:57:55+09:00",
     "tourapi_calls": 3,
     "osm_lookups": 0,
     "wiki_lookups": 0,
@@ -229,13 +229,13 @@
       }
     }
   },
-  "kopis_last_try": "2026-11-28T03:51:53+09:00",
-  "kopis_last_ok": "2026-11-28T03:51:53+09:00",
+  "kopis_last_try": "2026-11-28T16:35:59+09:00",
+  "kopis_last_ok": "2026-11-28T16:35:59+09:00",
   "pet_places": {
     "ok": true,
     "count": 1,
     "api_calls": 1,
     "scanned": 70,
-    "checked_at": "2026-11-28T04:08:55+09:00"
+    "checked_at": "2026-11-28T16:57:54+09:00"
   }
 }
